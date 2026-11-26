@@ -167,3 +167,39 @@ test('session memory resumes hobbies without asking the same answered question a
   turn(p,'聊聊爱好吧','你有什么爱好？');
  }
 });
+
+
+test('separate daily, work and study facts resume across spoken topic changes',()=>{
+ const make=(missing=null)=>createSemanticPilot({enabled:true,lookupExact:q=>q===missing?null:lookupApprovedPandaVoice(q)});
+ const turn=(p,raw,want)=>{
+  const x=p.plan(raw,{mode:'free-chat'});assert.equal(x?.line.hanzi,want,raw);
+  assert.equal(x.voiceStatus,'registered-exact');assert(x.audio.src,raw);
+  assert(pilotLearnerMetadata(raw,x.semantic)?.translation,raw);assert.equal(x.toneVerified,false);
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+ };
+ for(const b of ['吃','不吃','我吃早饭','我不吃早饭'])for(const sleep of ['十点','十一点','十二点']){
+  const p=make();turn(p,'聊聊我的一天吧','你早上吃早饭吗？');
+  turn(p,b,'你晚上几点睡觉？');turn(p,'聊聊工作吧','你今天忙吗？');
+  turn(p,'聊聊我的一天吧','你晚上几点睡觉？');turn(p,sleep,'你接下来想做什么？');
+  turn(p,'聊聊我的一天吧','你接下来想做什么？');turn(p,'休息','那你休息一下吧。');
+ }
+ for(const busy of ['忙','不忙','我今天很忙'])for(const t of ['八点','九点','我不上班']){
+  const p=make();turn(p,'聊聊工作吧','你今天忙吗？');turn(p,busy,'你几点去上班？');
+  turn(p,'聊聊我的一天吧','你早上吃早饭吗？');turn(p,'聊聊工作吧','你几点去上班？');
+  turn(p,t,'你接下来想做什么？');turn(p,'聊聊工作吧','你接下来想做什么？');
+ }
+ for(const reason of ['因为我喜欢中文','因为我想和朋友说中文']){
+  const p=make();turn(p,'聊聊学习中文吧','你为什么想学中文？');
+  turn(p,reason,'你接下来想做什么？');turn(p,'聊聊工作吧','你今天忙吗？');
+  turn(p,'聊聊学习中文吧','你接下来想做什么？');
+ }
+ for(const kind of ['reset','expiry','missing']){
+  const p=make(kind==='missing'?'你晚上几点睡觉？':null);
+  turn(p,'聊聊我的一天吧','你早上吃早饭吗？');
+  if(kind==='missing')assert.equal(p.plan('吃',{mode:'free-chat'}),null);
+  else turn(p,'吃','你晚上几点睡觉？');
+  if(kind==='reset')p.reset();
+  if(kind==='expiry')for(let i=0;i<26;i++)p.observePanda({hanzi:'你好。'});
+  turn(p,'聊聊我的一天吧','你早上吃早饭吗？');
+ }
+});
