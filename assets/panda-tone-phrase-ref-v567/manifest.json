@@ -1,0 +1,19 @@
+{
+  "source": "User-provided Luvvoice MP3s 2026-11-26; trimmed silence and transcoded to 24 kbps mono 24 kHz for preview; originals retained; pitch direction checked, not certified phonetic reference; speaker identity not independently verified.",
+  "clips": [
+    {
+      "zh": "不是",
+      "pinyin": "bú shì",
+      "src": "./assets/panda-tone-phrase-ref-v567/bushi.mp3",
+      "bytes": 3096,
+      "sha256": "47e61b746933d2ef02da240fe4641ca73b6f630af53e2ad2a78ae9347c58d42d"
+    },
+    {
+      "zh": "一天",
+      "pinyin": "yì tiān",
+      "src": "./assets/panda-tone-phrase-ref-v567/yitian.mp3",
+      "bytes": 3096,
+      "sha256": "530d0317a1f12b75cdc24d2ea1dbd4fd9f32d4670d597cc0a758f5f0114d09c4"
+    }
+  ]
+}

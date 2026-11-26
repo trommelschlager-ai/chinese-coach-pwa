@@ -151,7 +151,7 @@ test('contextual advice respects sandhi, neutral and variable third tone without
  }
 });
 
-test('five selectable phrases use explicit surface tones and never substitute missing reference audio',async()=>{
+test('five selectable phrases use explicit surface tones and exact reference paths',async()=>{
  const {readFileSync}=await import('node:fs');
  const page=readFileSync(new URL('../panda-hsk2-tone-sentence-pilot.html',import.meta.url),'utf8');
  const start=page.indexOf('const phraseOptions='),end=page.indexOf('const requested=',start);
@@ -159,8 +159,8 @@ test('five selectable phrases use explicit surface tones and never substitute mi
  assert.deepEqual(options.map(p=>p.tokens.map(t=>t.surfaceTone)),[[2,3,0,2,3],[2,3],[2,3],[2,4],[4,1]]);
  assert.equal(options[1].src,'./assets/panda-live-voice-v2/hello.mp3');
  assert.equal(options[2].src,'./assets/panda-live-voice-v2/good.mp3');
- assert.equal(options[3].src,null);
- assert.equal(options[4].src,null);
+ assert.equal(options[3].src,'./assets/panda-tone-phrase-ref-v567/bushi.mp3');
+ assert.equal(options[4].src,'./assets/panda-tone-phrase-ref-v567/yitian.mp3');
  assert(options.every(p=>p.tokens.length===p.weights.length&&p.tokens.map(t=>t.zh).join('')===p.zh.replace('。','')));
  assert(page.includes("if(!reference?.valid)return 'Нет проверяемого образца"));
  assert(page.includes("$('listen').disabled=!source;"));

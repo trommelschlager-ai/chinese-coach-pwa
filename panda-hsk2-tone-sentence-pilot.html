@@ -49,7 +49,7 @@
 <h1>🎙️ Проверь произношение</h1>
 <p class="lead">Пилот: измерение высоты голоса на каждом слоге предложения. Границы слогов определяются <b>приблизительно</b>, без оценки «правильно/неправильно».</p>
 <section class="panel" aria-label="Фраза из урока">
-<label for="phrase-select" class="small">Выбери фразу</label><select id="phrase-select" style="width:100%;min-height:42px;font:inherit;border-radius:12px;margin-bottom:8px;color:inherit;background:#fff;border:1px solid #d9bbeb"><option value="daily">我早上洗脸。</option><option value="hello">你好</option><option value="good">很好</option><option value="not">不是 · без образца</option><option value="day">一天 · без образца</option></select><div class="phrase" id="target-phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin" id="target-pinyin">Wǒ zǎoshang xǐliǎn.</div>
+<label for="phrase-select" class="small">Выбери фразу</label><select id="phrase-select" style="width:100%;min-height:42px;font:inherit;border-radius:12px;margin-bottom:8px;color:inherit;background:#fff;border:1px solid #d9bbeb"><option value="daily">我早上洗脸。</option><option value="hello">你好</option><option value="good">很好</option><option value="not">不是</option><option value="day">一天</option></select><div class="phrase" id="target-phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin" id="target-pinyin">Wǒ zǎoshang xǐliǎn.</div>
 <div class="translation" id="target-translation">Я утром умываюсь.</div><p id="phrase-rule" class="small"></p>
 <div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец урока</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
 <div class="rms"><div id="level"></div></div>
@@ -106,8 +106,8 @@ const phraseOptions=[
  {zh:'脸',py:'liǎn',surfaceTone:3,tone:'3-й · низкий или с подъёмом в конце фразы'}]},
  {id:'hello',zh:'你好',py:'ní hǎo',ru:'Привет!',rule:'3 + 3 → 2 + 3 при слитном произнесении.',src:'./assets/panda-live-voice-v2/hello.mp3',weights:[1,1.2],tokens:[{zh:'你',py:'nǐ',surfaceTone:2,tone:'3-й → 2-й (ní)'},{zh:'好',py:'hǎo',surfaceTone:3,tone:'3-й · низкий или с подъёмом'}]},
  {id:'good',zh:'很好',py:'hén hǎo',ru:'Очень хорошо.',rule:'3 + 3 → 2 + 3 при слитном произнесении.',src:'./assets/panda-live-voice-v2/good.mp3',weights:[1,1.2],tokens:[{zh:'很',py:'hěn',surfaceTone:2,tone:'3-й → 2-й (hén)'},{zh:'好',py:'hǎo',surfaceTone:3,tone:'3-й · низкий или с подъёмом'}]},
- {id:'not',zh:'不是',py:'bú shì',ru:'Не является / нет.',rule:'不 перед 4-м тоном обычно становится 2-м.',src:null,weights:[1,1],tokens:[{zh:'不',py:'bù',surfaceTone:2,tone:'4-й → 2-й (bú)'},{zh:'是',py:'shì',surfaceTone:4,tone:'4-й · нисходящий'}]},
- {id:'day',zh:'一天',py:'yì tiān',ru:'Один день.',rule:'一 перед 1-м тоном обычно становится 4-м.',src:null,weights:[1,1.1],tokens:[{zh:'一',py:'yī',surfaceTone:4,tone:'1-й → 4-й (yì)'},{zh:'天',py:'tiān',surfaceTone:1,tone:'1-й · ровный'}]}
+ {id:'not',zh:'不是',py:'bú shì',ru:'Не является / нет.',rule:'不 перед 4-м тоном обычно становится 2-м.',src:'./assets/panda-tone-phrase-ref-v567/bushi.mp3',weights:[1,1],tokens:[{zh:'不',py:'bù',surfaceTone:2,tone:'4-й → 2-й (bú)'},{zh:'是',py:'shì',surfaceTone:4,tone:'4-й · нисходящий'}]},
+ {id:'day',zh:'一天',py:'yì tiān',ru:'Один день.',rule:'一 перед 1-м тоном обычно становится 4-м.',src:'./assets/panda-tone-phrase-ref-v567/yitian.mp3',weights:[1,1.1],tokens:[{zh:'一',py:'yī',surfaceTone:4,tone:'1-й → 4-й (yì)'},{zh:'天',py:'tiān',surfaceTone:1,tone:'1-й · ровный'}]}
 ];
 const requested=new URLSearchParams(location.search).get('phrase');
 const phrase=phraseOptions.find(p=>p.id===requested)||phraseOptions[0];
