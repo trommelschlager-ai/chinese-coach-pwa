@@ -53,6 +53,16 @@ const OPEN_ANSWERS=Object.freeze({
   '我周末喜欢游泳':['Wǒ zhōumò xǐhuan yóuyǒng.','По выходным я люблю плавать.','游泳'],
   '休息':['Xiūxi.','Отдыхать.','休息']
  },
+ 'hobby-plan':{
+  '跑步':['Pǎobù.','Бегать.','跑步'],
+  '看书':['Kàn shū.','Читать книги.','看书'],
+  '游泳':['Yóuyǒng.','Плавать.','游泳'],
+  '休息':['Xiūxi.','Отдыхать.','休息'],
+  '我打算跑步':['Wǒ dǎsuàn pǎobù.','Я собираюсь бегать.','跑步'],
+  '我打算看书':['Wǒ dǎsuàn kàn shū.','Я собираюсь читать.','看书'],
+  '我打算休息':['Wǒ dǎsuàn xiūxi.','Я собираюсь отдыхать.','休息'],
+  '还没想好':['Hái méi xiǎng hǎo.','Ещё не решил(а).','undecided']
+ },
  'food-more':{
   '不要了':['Bú yào le.','Больше не нужно.','no'],
   '不用了':['Bú yòng le.','Больше не нужно.','no'],
@@ -91,12 +101,17 @@ function interpretOpenAnswer(raw,context){
  const [pinyin,translation,value]=answers[key];
  return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'?'daily':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
-function reviewedOpenQuestion(hanzi,previous,linked){
+function reviewedOpenQuestion(hanzi,previous,linked,memory){
  const s=cleanOpen(hanzi);
  let slot=null;
  if(s==='你为什么想学中文')slot='study-reason';
  else if(s==='你有什么爱好')slot='hobby';
  else if(s==='你想吃什么')slot='food';
+ else if(linked&&previous?.intent==='request-topic-change'&&previous.value==='hobby'&&memory?.hobby){
+  if(s==='你周末喜欢做什么'&&!memory.weekend)slot='hobby-weekend';
+  else if(s==='你周末有什么计划'&&memory.weekend&&!memory.plan)slot='hobby-plan';
+  else if(s==='你接下来想做什么'&&memory.plan)slot='next-action';
+ }
  else if(linked&&previous?.intent==='answer-open-reviewed'&&previous.slot==='study-reason'&&previous.value==='china-trip'&&s==='你打算什么时候去')slot='travel-time';
  else if(linked&&previous?.intent==='answer-open-reviewed'&&previous.slot==='travel-time'&&s==='你打算怎么去')slot='travel-method';
  else if(linked&&previous?.intent==='answer-open-reviewed'){
@@ -104,7 +119,7 @@ function reviewedOpenQuestion(hanzi,previous,linked){
   else if(previous.slot==='hobby-frequency'&&s==='你周末喜欢做什么')slot='hobby-weekend';
   else if(previous.slot==='food'&&s==='还要别的吗')slot='food-more';
   else if(previous.slot==='food-more'&&previous.value==='yes'&&s==='你还喜欢吃什么')slot='food-preference';
-  else if(['hobby-weekend','food-more','food-preference'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
+  else if(['hobby-weekend','hobby-plan','food-more','food-preference'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
  }
  return slot?{intent:'ask-open-reviewed',subject:'你',slot,raw:hanzi}:null;
 }
@@ -125,16 +140,42 @@ function interpretTopicRequest(raw){
  return {raw:String(raw),intent:'request-topic-change',value,pinyin,translation,toneVerified:false};
 }
 
+
+// A bounded, session-only record of answered hobby questions. Not a user profile.
+// Keep no raw transcript, names, addresses, travel dates or inferred preferences.
+// Facts expire together after 24 turns; resets and explicit corrections clear them.
+const emptyHobbyMemory=()=>({hobby:null,weekend:null,plan:null,at:0});
+function recentHobbyMemory(state){
+ const m=state?.hobbyMemory;
+ return m&&Number.isFinite(m.at)&&state.turn-m.at<=24?m:emptyHobbyMemory();
+}
+function interpretHobbyCorrection(raw,context){
+ const key=cleanOpen(raw),m=/^我不喜欢(跑步|看书|听音乐|游泳)了$/u.exec(key);
+ if(!m||context.hobbyMemory?.hobby!==m[1])return null;
+ const py={跑步:'pǎobù',看书:'kàn shū',听音乐:'tīng yīnyuè',游泳:'yóuyǒng'}[m[1]];
+ const ru={跑步:'бегать',看书:'читать книги',听音乐:'слушать музыку',游泳:'плавать'}[m[1]];
+ return {raw:String(raw),intent:'correct-hobby-memory',value:m[1],pinyin:'Wǒ bù xǐhuan '+py+' le.',translation:'Я больше не люблю '+ru+'.',toneVerified:false};
+}
+function updateHobbyMemory(state,semantic){
+ const current=recentHobbyMemory(state),at=state.turn+1;
+ if(semantic?.intent==='correct-hobby-memory')return emptyHobbyMemory();
+ if(semantic?.intent!=='answer-open-reviewed')return current;
+ if(semantic.slot==='hobby')return {...emptyHobbyMemory(),hobby:semantic.value,at};
+ if(semantic.slot==='hobby-weekend'&&current.hobby)return {...current,weekend:semantic.value,at};
+ if(semantic.slot==='hobby-plan'&&current.hobby)return {...current,plan:semantic.value,at};
+ return current;
+}
+
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return interpretTopicRequest(source)||interpretOpenAnswer(source,context)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretOpenAnswer(source,context)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){
- return {version:1,turn:0,lastSpeaker:null,lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:null,resumeQuestion:null};
+ return {version:1,turn:0,lastSpeaker:null,lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:null,resumeQuestion:null,hobbyMemory:emptyHobbyMemory()};
 }
 function advanceSemanticState(state,event,interpret){
  const current=state?.version===1?state:initialSemanticState();
@@ -146,21 +187,21 @@ function advanceSemanticState(state,event,interpret){
   const previous=current.lastSpeaker==='learner'?current.lastLearnerSemantic:null;
   // Re-open the exact previously displayed question only after an explicit repeat/meaning request.
   const resumed=previous&&['request-repeat','request-meaning'].includes(previous.intent)&&current.resumeQuestion?.hanzi===line.hanzi?current.resumeQuestion.pending:null;
-  const pending=resumed||reviewedOpenQuestion(line.hanzi,previous,event.continuesLearnerTurn===true)||(understood?.intent==='ask-yes-no'&&understood.subject==='你'?understood:null);
+  const pending=resumed||reviewedOpenQuestion(line.hanzi,previous,event.continuesLearnerTurn===true,recentHobbyMemory(current))||(understood?.intent==='ask-yes-no'&&understood.subject==='你'?understood:null);
   // The caller must explicitly link Panda's reply to the immediately preceding learner action.
   // A topic label alone is not evidence that the utterance refers to that action.
   const linked=event.continuesLearnerTurn===true&&previous?.intent==='express-action'&&previous.subject==='我'&&(!pending||pending.action===previous.action)?previous:null;
   const lastPandaTurn={hanzi:line.hanzi,pinyin:typeof line.pinyin==='string'?line.pinyin:null,ru:typeof line.ru==='string'?line.ru:null};
-  return {state:{version:1,turn:current.turn+1,lastSpeaker:'panda',lastPandaTurn,pendingQuestion:pending,lastLearnerAction:linked,lastLearnerSemantic:null,resumeQuestion:null},semantic:understood};
+  return {state:{version:1,turn:current.turn+1,lastSpeaker:'panda',lastPandaTurn,pendingQuestion:pending,lastLearnerAction:linked,lastLearnerSemantic:null,resumeQuestion:null,hobbyMemory:recentHobbyMemory(current)},semantic:understood};
  }
  if(event?.type==='learner'){
   const raw=String(event.raw??'').trim();
   if(!raw)return {state:current,semantic:null};
   // A pending question is consumed once; consecutive learner messages cannot reuse it.
-  const context=current.lastSpeaker==='panda'?{lastPandaTurn:current.lastPandaTurn,pendingQuestion:current.pendingQuestion,lastLearnerAction:current.lastLearnerAction}:{};
+  const context=current.lastSpeaker==='panda'?{lastPandaTurn:current.lastPandaTurn,pendingQuestion:current.pendingQuestion,lastLearnerAction:current.lastLearnerAction,hobbyMemory:recentHobbyMemory(current)}:{hobbyMemory:recentHobbyMemory(current)};
   const semantic=interpret(raw,context);
   const resumeQuestion=semantic&&['request-repeat','request-meaning'].includes(semantic.intent)&&semantic.reference===context.lastPandaTurn?.hanzi&&context.pendingQuestion?{hanzi:semantic.reference,pending:context.pendingQuestion}:null;
-  return {state:{version:1,turn:current.turn+1,lastSpeaker:'learner',lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:semantic,resumeQuestion},semantic};
+  return {state:{version:1,turn:current.turn+1,lastSpeaker:'learner',lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:semantic,resumeQuestion,hobbyMemory:updateHobbyMemory(current,semantic)},semantic};
  }
  return {state:current,semantic:null};
 }
