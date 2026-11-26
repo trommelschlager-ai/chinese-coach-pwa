@@ -225,9 +225,17 @@ export function analysePhraseBuffer(buffer,{estimatePitch}){
  let data=buffer.getChannelData(0);
  if(buffer.numberOfChannels>1){const right=buffer.getChannelData(1);if(averageRms(right,0,limit)>averageRms(data,0,limit))data=right;}
  const width=4096,hop=Math.max(256,Math.round(rate*.016)),runs=[];let run=[];
+ // Apply the same bounded gain principle as the isolated-syllable recorder.
+ // Keep periodicity requirements unchanged; quiet audio is not a tone grade.
+ let peak=0;
+ for(let i=0;i+width<=limit;i+=hop)peak=Math.max(peak,averageRms(data,i,width));
+ const gain=peak>=.004?Math.max(1,Math.min(12,.055/peak)):1;
+ const input=new Float32Array(width);
  const flush=()=>{if(run.length>=3)runs.push(run);run=[];};
  for(let start=0;start+width<=limit;start+=hop){
-  const p=estimatePitch(data.subarray(start,start+width),rate);
+  const slice=data.subarray(start,start+width);
+  for(let i=0;i<width;i++)input[i]=Math.max(-1,Math.min(1,slice[i]*gain));
+  const p=estimatePitch(input,rate);
   if(!p||p.clarity<.78||!Number.isFinite(p.hz)||p.hz<70||p.hz>550)continue;
   const t=(start+width/2)/rate,prev=run.at(-1);
   if(prev&&(t-prev.t>.085||Math.abs(12*Math.log2(p.hz/prev.hz))>=5))flush();
