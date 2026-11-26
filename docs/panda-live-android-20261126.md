@@ -1,0 +1,3 @@
+# Live Android follow-up — 26 Nov 2026
+
+Owner screenshots show correctly recognized doctor question, tomorrow routine, sequence, current action, introduction (安顿 recognized instead of intended 安东), affection and general greeting. No acoustic tone score or proof of actual speaker output from screenshots. Failures: 什么 following a music statement, 你的健康怎么样, 你的心情怎么样. Fix free-chat clarification by repeating exact last Panda turn with translation and pinyin; add twelve reviewed health/mood variants. Name ambiguity is not auto-corrected. Health reply can reuse exact approved 我身体很好; mood reply requires exact lookup, otherwise text-only. No design or recording changes. Release/browser checks pending.

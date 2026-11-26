@@ -1,0 +1,3 @@
+# Panda face animation regression
+
+Root cause: approved layout v547 explicitly hid .pg353-face-canvas with display:none!important and forced the original image visible. The corresponding browser test enforced that regression. Core audio signals and face pixel deformation were still present. Restore visible canvas only when initialized, preserve original image fallback, fixed mascot and stone geometry, no new artwork or recordings. Browser test samples changing mouth-region pixel hashes during actual recorded playback in Short/Non-Stop at 360,393,412px, checks visible canvas, resting state, alignment and fixed body. CI and physical Android verification pending.
