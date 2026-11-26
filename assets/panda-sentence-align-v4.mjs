@@ -267,3 +267,21 @@ export function sentencePitchWindowSize(rate,sampleCount){
  if(!Number.isFinite(rate)||rate<8000||!Number.isInteger(sampleCount)||sampleCount<0)return 0;
  return Math.min(sampleCount,Math.max(1024,Math.round(rate*.065)));
 }
+
+
+// Shared live-graph policy: do not connect samples across missing audio or
+// large pitch jumps. A 40 ms nominal poll is compatible with the 85 ms gap
+// limit, unlike the former 110 ms poll. Late timers create visible gaps.
+export const SENTENCE_LIVE_POLL_MS=40;
+export const SENTENCE_PITCH_GAP_SEC=.085;
+export function sentenceLivePitchFrame(samples,rate){
+ const n=sentencePitchWindowSize(rate,samples?.length);
+ if(n<1024)return null;
+ return samples.subarray(samples.length-n);
+}
+export function sentencePitchPen(previous,current){
+ if(!previous||!current||!Number.isFinite(previous.t)||!Number.isFinite(current.t)||
+  !(previous.hz>0)||!(current.hz>0))return 'M';
+ const gap=current.t-previous.t;
+ return gap<=0||gap>SENTENCE_PITCH_GAP_SEC||Math.abs(12*Math.log2(current.hz/previous.hz))>=5?'M':'L';
+}
