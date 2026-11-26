@@ -118,6 +118,8 @@ function toneGuidance(s,result){
 function captureGuidance(s,result,sound,partialPreview){
  if(result.stats?.octaveJumpCount>0)
   return 'Обнаружен резкий скачок измеренной частоты. Это может быть сбой анализатора, а не ошибка произношения. '+(partialPreview.length?'Показан только устойчивый фрагмент. ':'')+'Послушай запись или повтори естественным голосом.';
+ if(result.stats?.gapCount>0)
+  return 'В измерениях высоты есть пропуски. Это не означает ошибку произношения. '+(partialPreview.length?'Показан только устойчивый фрагмент. ':'')+'Послушай запись или повтори естественным голосом.';
  if(sound?.discardedOtherRegions>0)
   return 'Обнаружено несколько отдельных звуковых участков. Анализатор выделил только один из них; движение всего слога не подтверждено. Для слов и предложений используй тренировку свободной фразы.';
  if(partialPreview.length&&!result.points?.length)
