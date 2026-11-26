@@ -398,7 +398,7 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  if(Object.hasOwn(reactions567,s)){
   const [py,ru]=reactions567[s],prior=norm(previousPanda);
   const actionQuestion=/^你(?:今天|现在|明天|周末)?(?:想|要|喜欢)?做什么$/u.test(prior);
-  const reply=actionQuestion?['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?']:['你今天忙吗？','Nǐ jīntiān máng ma?','Ты сегодня занят(а)?'];
+  const reply=actionQuestion?['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?']:/^(?:我)?非常好$/u.test(s)?['太好了！','Tài hǎo le!','Отлично!']:['你今天忙吗？','Nǐ jīntiān máng ma?','Ты сегодня занят(а)?'];
   return {...result(raw,py,ru,reply,null,1),domain:'everyday',message:actionQuestion?'Панда поняла оценку, но это не ответ о действии. Уточняет, что ты хочешь делать. Тоны не оценивались.':'Панда поняла смысл. Тоны по тексту не оценивались.'};
  }
 
