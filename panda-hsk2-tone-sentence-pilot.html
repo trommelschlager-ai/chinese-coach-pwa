@@ -95,7 +95,7 @@
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
-import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice} from './assets/panda-sentence-align-v4.mjs?v=5';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch} from './assets/panda-sentence-align-v4.mjs?v=6';
 const $=id=>document.getElementById(id);
 const phraseOptions=[
  {id:'daily',zh:'我早上洗脸。',py:'Wǒ zǎoshang xǐliǎn.',ru:'Утром я умываюсь.',rule:'我早: wó zǎo при слитной речи; 洗脸: xí liǎn.',weights:[1,1.15,.65,1,1.2],tokens:[
@@ -182,7 +182,7 @@ function describeMovement(i){
  if(!learner?.valid)return '';
  if(!$('boundary-verified').checked)return 'Границы пока не проверены на слух: отдельный контур не связываем с конкретным иероглифом.';
  if(!reference?.valid)return 'Нет проверяемого образца: доступен только график своей записи.';
- return contextualPitchAdvice({surfaceTone:tokens[i].surfaceTone,evidence:syllableQuality(i),verified:true}).text;
+ return compareContextualPitch({surfaceTone:tokens[i].surfaceTone,evidence:syllableQuality(i),referenceEvidence:intervalPitchEvidence(reference.frames,reference.bounds,i),verified:true}).text;
 }
 function adjustControls(){
  $('boundary-verified').checked=false;$('boundary-verified-row').hidden=!(learner?.valid&&reference?.valid);
