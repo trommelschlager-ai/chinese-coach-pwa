@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {alignFromReference,reviewInterval,intervalPitchEvidence} from '../assets/panda-sentence-align-v4.mjs';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice} from '../assets/panda-sentence-align-v4.mjs';
 
 const rate=12000;
 const bounds=[0.10,0.42,0.81,1.17,1.52,1.95];
@@ -128,4 +128,25 @@ test('identical audio preserves off-grid reference landmarks without rounding to
  assert.equal(out.ok,true);
  for(let i=0;i<landmarks.length;i++)assert.ok(Math.abs(out.bounds[i]-landmarks[i])<1e-7);
  assert.equal(out.uncertain,true);
+});
+
+test('contextual advice respects sandhi, neutral and variable third tone without scoring',()=>{
+ const evidence=hz=>({weak:false,points:hz.map((h,i)=>({hz:h,t:i*.025}))});
+ const rise=evidence([100,104,108,112,116,120,124,128,132,136,140,144]);
+ const fall=evidence([144,140,136,132,128,124,120,116,112,108,104,100]);
+ const dip=evidence([140,132,124,116,108,100,100,108,116,124,132,140]);
+ for(const [input,kind,word] of [
+  [{surfaceTone:2,evidence:rise,verified:true},'rise','похоже'],
+  [{surfaceTone:2,evidence:fall,verified:true},'fall','плавный подъём'],
+  [{surfaceTone:3,evidence:fall,verified:true},'fall','не обязателен'],
+  [{surfaceTone:3,evidence:dip,verified:true},'dip','не обязателен'],
+  [{surfaceTone:0,evidence:fall,verified:true},'neutral','нет фиксированного'],
+  [{surfaceTone:2,evidence:rise,verified:false},'unverified','не проверены'],
+  [{surfaceTone:2,evidence:{weak:true},verified:true},'uncertain','ненадёжны']
+ ]){
+  const out=contextualPitchAdvice(input);
+  assert.equal(out.kind,kind);
+  assert.ok(out.text.includes(word));
+  assert.equal(out.isToneGrade,false);
+ }
 });
