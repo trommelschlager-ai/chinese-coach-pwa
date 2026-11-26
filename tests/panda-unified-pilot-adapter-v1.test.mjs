@@ -203,3 +203,31 @@ test('separate daily, work and study facts resume across spoken topic changes',(
   turn(p,'聊聊我的一天吧','你早上吃早饭吗？');
  }
 });
+
+
+test('family context respects explicit refusal and auto-topic choice avoids answered personal questions',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice});
+ const turn=(p,raw,want)=>{
+  const x=p.plan(raw,{mode:'free-chat'});assert.equal(x?.line.hanzi,want,raw);
+  assert.equal(x.voiceStatus,'registered-exact');assert(x.audio.src,raw);
+  assert(pilotLearnerMetadata(raw,x.semantic)?.translation,raw);assert.equal(x.toneVerified,false);
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+ };
+ for(const s of ['有','没有','我有一个哥哥','我有一个姐姐','我没有兄弟姐妹'])for(const n of ['两口人','三口人','四口人']){
+  const p=make();turn(p,'聊聊家庭吧','你有兄弟姐妹吗？');turn(p,s,'明白了。你家有几口人？');
+  turn(p,'聊聊吃的吧','你想吃什么？');turn(p,'聊聊家庭吧','明白了。你家有几口人？');
+  turn(p,n,'你接下来想做什么？');turn(p,'聊聊家庭吧','你接下来想做什么？');
+ }
+ for(const refusal of ['不想说','我不想说']){
+  const p=make();turn(p,'聊聊家庭吧','你有兄弟姐妹吗？');turn(p,refusal,'好的。我们聊点别的吧！');
+  turn(p,'聊聊家庭吧','好的。我们聊点别的吧！');turn(p,'你来选话题吧','你有什么爱好？');
+ }
+ for(const pick of ['你来选话题吧','你选吧']){
+  const p=make();turn(p,pick,'你有什么爱好？');turn(p,'跑步','你经常做这件事吗？');
+  turn(p,pick,'你早上吃早饭吗？');turn(p,'不吃','你晚上几点睡觉？');turn(p,'十点','你接下来想做什么？');
+  turn(p,pick,'你为什么想学中文？');turn(p,'因为我喜欢中文','你接下来想做什么？');
+  turn(p,pick,'你今天忙吗？');turn(p,'不忙','你几点去上班？');turn(p,'八点','你接下来想做什么？');
+  turn(p,pick,'你接下来想做什么？');
+ }
+ for(const raw of ['有','没有','三口人'])assert.equal(make().plan(raw,{mode:'free-chat'}),null,raw);
+});
