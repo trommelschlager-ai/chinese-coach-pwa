@@ -9,7 +9,7 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
  const clarify=()=>line('你想问什么？','Nǐ xiǎng wèn shénme?','Что ты хочешь спросить?','clarification');
  const virtual=(action,py,ru)=>line('我是虚拟熊猫，不能真的'+action+'。','Wǒ shì xūnǐ xióngmāo, bù néng zhēn de '+py+'.','Я виртуальная панда и не могу на самом деле '+ru+'.');
  const {intent,action,topic,modality,negated}=semantic;
- if(intent==='express-study-difficulty')return line('你想练习什么？','Nǐ xiǎng liànxí shénme?','Что ты хочешь потренировать?','follow-up',true);
+ if(semantic.studyDifficulty===true||intent==='express-study-difficulty')return line('你想练习什么？','Nǐ xiǎng liànxí shénme?','Что ты хочешь потренировать?','follow-up',true);
  if(intent==='express-transport-plan')return line('祝你旅途愉快！','Zhù nǐ lǚtú yúkuài!','Желаю приятного путешествия!');
  if(intent==='ask-panda-travel-time')return line('我是虚拟熊猫，没有实际的旅行经历。','Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.','Я виртуальная панда, у меня нет реального опыта путешествий.');
  if(intent==='request-repeat'||intent==='request-meaning'){

@@ -305,7 +305,8 @@ function interpretStudyDifficulty(raw){
  const names={中文:['Zhōngwén','китайский язык'],汉语:['Hànyǔ','китайский язык'],声调:['shēngdiào','тоны'],发音:['fāyīn','произношение'],语法:['yǔfǎ','грамматика'],汉字:['Hànzì','иероглифы'],听力:['tīnglì','понимание на слух'],口语:['kǒuyǔ','разговорная речь']};
  const [py,ru]=names[topic],d={很:['hěn','очень'],非常:['fēicháng','очень'],有点:['yǒudiǎn','немного'],太:['tài','слишком'],'':['','']}[degree];
  const translated=(subject?'Мне кажется, что ':'')+ru+' — '+[d[1],'трудно'].filter(Boolean).join(' ')+'.';
- return {raw:String(raw),intent:'express-study-difficulty',topic:'study',value:topic,pinyin:reviewedSentence([subject?'wǒ juéde':'',py,d[0],'nán',particle?'le':'']),translation:translated.charAt(0).toUpperCase()+translated.slice(1),toneVerified:false};
+ const opinion=interpretOpinion(raw);
+ return {...opinion,raw:String(raw),intent:opinion?.intent==='express-opinion'?'express-opinion':'express-study-difficulty',studyDifficulty:true,topic:'study',value:topic,pinyin:reviewedSentence([subject?'wǒ juéde':'',py,d[0],'nán',particle?'le':'']),translation:translated.charAt(0).toUpperCase()+translated.slice(1),toneVerified:false};
 }
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();

@@ -73,6 +73,14 @@ try{
    for(const [q,want] of [['因为我想去中国','你打算什么时候去？'],['什么意思','你打算什么时候去？'],['什么时候去中国','你打算什么时候去？'],['我下个月去中国','你打算怎么去？'],['我打算坐飞机','祝你旅途愉快！'],['聊聊我的一天吧','你早上吃早饭吗？'],['我吃早饭早上','你晚上几点睡觉？'],['聊聊工作吧','你今天忙吗？'],['聊聊我的一天吧','你晚上几点睡觉？'],['我睡觉晚上十点','你接下来想做什么？']]){
     const x=await send(q);assert.equal(x.history.at(-1).hanzi,want,q);assert.equal(x.history.at(-1).analysis.semanticPilot,true,q);
    }
+   // Exercise new composed forms on the actual live page.
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+   for(const [q,want] of [['聊聊我的一天吧','你早上吃早饭吗？'],['我早上一般不吃早饭','你晚上几点睡觉？'],['我晚上十一点半睡觉','你接下来想做什么？'],['聊聊工作吧','你今天忙吗？'],['我今天非常忙','你几点去上班？'],['我早上七点半去上班','你接下来想做什么？'],['我觉得中文很难','你想练习什么？'],['我想练习声调','没关系，我们慢慢来。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,want,q);assert.equal(x.history.at(-1).analysis.semanticPilot,true,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.waitForFunction(()=>window.__pilotPlaying.some(src=>src.includes('/panda-voice-clips-v365/p127.mp3')));
+   console.log('PASS composed daily/work answers and recorded study-difficulty conversation');
    // Simulate a transient error on the exact recorded travel question.
    // Use native Audio for the second attempt and assert actual playback.
    await page.evaluate(()=>{
