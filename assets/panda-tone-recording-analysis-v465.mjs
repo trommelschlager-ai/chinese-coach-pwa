@@ -203,3 +203,50 @@ export async function analyseRecordedBlob(blob,{estimatePitch,analyseContour,Aud
   try{await context.close();}catch{}
  }
 }
+
+// A measured reference is displayed only if enough stable F0 is available.
+// It is not a grade; the two voices have independent median pitch baselines.
+export function referenceContourPath(analysis){
+ const r=analysis?.result,s=analysis?.signal,p=r?.points;
+ if(!analysis?.available||!s?.hasAudibleSignal||s.discardedOtherRegions!==0||r?.kind==='uncertain'||r?.stats?.octaveJumpCount>0||!Array.isArray(p)||p.length<8||s.pitchFrames<8||s.fallbackPitchFrames/s.pitchFrames>.4)return '';
+ if(r.kind==='insufficient'&&r.stats?.previewOnly!==true)return '';
+ const first=p[0].t,duration=p.at(-1).t-first;
+ if(!Number.isFinite(duration)||duration<.15||duration>1.2)return '';
+ if(p.some((v,i)=>!Number.isFinite(v.t)||!Number.isFinite(v.st)||Math.abs(v.st)>8||(i>0&&(v.t<=p[i-1].t||v.t-p[i-1].t>.085))))return '';
+ return p.map((v,i)=>(i?'L':'M')+(30+302*(v.t-first)/1.2).toFixed(1)+' '+Math.max(25,Math.min(117,70-13*v.st)).toFixed(1)).join(' ');
+}
+
+// Whole-phrase diagnostic: analyse decoded audio instead of sparse UI timers.
+// Voiced runs are NOT syllables; no lexical alignment or tone grade is inferred.
+export function analysePhraseBuffer(buffer,{estimatePitch}){
+ const empty={available:false,frames:[],runs:[],durationSec:0,isToneGrade:false};
+ if(!buffer||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000||typeof buffer.getChannelData!=='function'||!Number.isFinite(buffer.length)||buffer.length<4096)return empty;
+ const rate=buffer.sampleRate,limit=Math.min(buffer.length,Math.floor(8*rate));
+ let data=buffer.getChannelData(0);
+ if(buffer.numberOfChannels>1){const right=buffer.getChannelData(1);if(averageRms(right,0,limit)>averageRms(data,0,limit))data=right;}
+ const width=4096,hop=Math.max(256,Math.round(rate*.016)),runs=[];let run=[];
+ // Apply the same bounded gain principle as the isolated-syllable recorder.
+ // Keep periodicity requirements unchanged; quiet audio is not a tone grade.
+ let peak=0;
+ for(let i=0;i+width<=limit;i+=hop)peak=Math.max(peak,averageRms(data,i,width));
+ const gain=peak>=.004?Math.max(1,Math.min(12,.055/peak)):1;
+ const input=new Float32Array(width);
+ const flush=()=>{if(run.length>=3)runs.push(run);run=[];};
+ for(let start=0;start+width<=limit;start+=hop){
+  const slice=data.subarray(start,start+width);
+  for(let i=0;i<width;i++)input[i]=Math.max(-1,Math.min(1,slice[i]*gain));
+  const p=estimatePitch(input,rate);
+  if(!p||p.clarity<.78||!Number.isFinite(p.hz)||p.hz<70||p.hz>550)continue;
+  const t=(start+width/2)/rate,prev=run.at(-1);
+  if(prev&&(t-prev.t>.085||Math.abs(12*Math.log2(p.hz/prev.hz))>=5))flush();
+  run.push({t,hz:p.hz,clarity:p.clarity});
+ }
+ flush();
+ return {available:true,frames:runs.flat(),runs:runs.map(r=>({startSec:r[0].t,endSec:r.at(-1).t,points:r.length})),durationSec:limit/rate,isToneGrade:false};
+}
+export async function analysePhraseBlob(blob,{estimatePitch,AudioContextClass}){
+ if(!blob||blob.size<128||!AudioContextClass)throw Error('Phrase decoder unavailable');
+ const context=new AudioContextClass();
+ try{return analysePhraseBuffer(await context.decodeAudioData(await blob.arrayBuffer()),{estimatePitch});}
+ finally{try{await context.close()}catch{}}
+}
