@@ -130,4 +130,6 @@ test('long pitch contour with internal missing samples is not assigned a directi
  const start=trainer.indexOf('function toneGuidance('),end=trainer.indexOf('function controls(',start);
  const guide=new Function(trainer.slice(start,end)+'\nreturn captureGuidance;')();
  assert.match(guide({n:2},result,null,[]),/не означает ошибку произношения/);
+ assert.match(guide({n:2},result,null,[{t:0,st:0}]),/не означает ошибку произношения/);
+ assert.match(guide({n:2},result,null,[{t:0,st:0}]),/устойчивый фрагмент/);
 });
