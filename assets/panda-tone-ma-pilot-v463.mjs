@@ -122,6 +122,10 @@ function captureGuidance(s,result,sound,partialPreview){
   return 'В измерениях высоты есть пропуски. Это не означает ошибку произношения. '+(partialPreview.length?'Показан только устойчивый фрагмент. ':'')+'Послушай запись или повтори естественным голосом.';
  if(sound?.discardedOtherRegions>0)
   return 'Обнаружено несколько отдельных звуковых участков. Анализатор выделил только один из них; движение всего слога не подтверждено. Для слов и предложений используй тренировку свободной фразы.';
+ // Match the conservative fallback proportion already used for reference plots.
+ // Keep measured points visible, but do not coach from a fallback-heavy trace.
+ if(sound?.pitchFrames>0&&sound.fallbackPitchFrames/sound.pitchFrames>.4)
+  return 'Высота измерена частично резервным методом ('+Math.round(100*sound.fallbackPitchFrames/sound.pitchFrames)+'% точек). Движение тона пока не подтверждено. Это не означает ошибку произношения. Послушай свою запись и образец.';
  if(partialPreview.length&&!result.points?.length)
   return 'Часть высоты голоса измерена. Линия неполная, оценивать китайский тон пока нельзя.';
  return toneGuidance(s,result);
