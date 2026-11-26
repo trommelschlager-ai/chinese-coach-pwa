@@ -113,7 +113,6 @@
   animation:none!important;transition:none!important;
 }
 #pg346[data-pa-layout="v547"] .pg352-mouth,
-#pg346[data-pa-layout="v547"] .pg353-face-canvas,
 #pg346[data-pa-layout="v547"] .pg352-ear-effects{display:none!important}
 #pg346[data-pa-layout="v547"] .pg346-sakura{display:none!important}
 #pg346[data-pa-layout="v547"] .pg354-petals{pointer-events:none!important;z-index:7!important}
@@ -214,13 +213,22 @@
   height:auto!important;transform:none!important;animation:none!important
 }
 
-/* The older v353 face renderer sets opacity:0 on the approved photo once a
-   canvas is ready. v547 deliberately hides the animated canvas, therefore the
-   ORIGINAL approved picture must be visible again in every face-ready state. */
-#pg346[data-pa-layout="v547"] .pg352-mascot .pg346-panda,
-#pg346[data-pa-layout="v547"] .pg352-mascot[data-face-ready="true"] .pg346-panda,
-#pg346[data-pa-layout="v547"] .pg352-mascot[data-face-ready=true] .pg346-panda {
+/* Restore the original pixel-deformation face renderer without moving the
+   mascot or its stone. The original image remains in layout as a sizing
+   reference and visible fallback until the canvas is ready. */
+#pg346[data-pa-layout="v547"] .pg352-mascot .pg346-panda{
   opacity:1!important;visibility:visible!important;display:block!important;
+}
+#pg346[data-pa-layout="v547"] .pg352-mascot .pg353-face-canvas{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  display:none!important;object-fit:contain!important;pointer-events:none!important;
+  z-index:1!important;opacity:1!important;visibility:visible!important;transform:none!important;
+}
+#pg346[data-pa-layout="v547"] .pg352-mascot[data-face-ready="true"] .pg353-face-canvas:not([hidden]){
+  display:block!important;
+}
+#pg346[data-pa-layout="v547"] .pg352-mascot[data-face-ready="true"]:has(.pg353-face-canvas:not([hidden])) .pg346-panda{
+  opacity:0!important;
 }
 /* Speech/listening status must never cover the footer navigation. */
 #pg346[data-pa-layout="v547"] .pg346-live[data-active="true"] {

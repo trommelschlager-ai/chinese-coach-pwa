@@ -47,14 +47,17 @@ try{
       let opaque=0;for(let i=3;i<data.length;i+=4)if(data[i]>100)opaque++;
       return {loaded:img.complete&&img.naturalWidth>100,opacity:cs.opacity,
         display:cs.display,visibility:cs.visibility,
-        faceDisplay:getComputedStyle(face).display,opaque};
+        faceDisplay:getComputedStyle(face).display,faceOpacity:getComputedStyle(face).opacity,faceVisibility:getComputedStyle(face).visibility,faceReady:face.parentElement.dataset.faceReady,faceRect:face.getBoundingClientRect().toJSON(),imgRect:img.getBoundingClientRect().toJSON(),opaque};
     });
     const portrait=await pandaPixels();
     assert(portrait.loaded,'Panda original image is not loaded: '+JSON.stringify(portrait));
-    assert.equal(portrait.opacity,'1','Panda photo is invisible behind a hidden face canvas: '+JSON.stringify(portrait));
+    assert.equal(portrait.faceReady,'true','Original face renderer failed to initialize');
+    assert.equal(portrait.opacity,'0','Original image must retain geometry but not overlap the animated canvas');
     assert.equal(portrait.visibility,'visible','Panda image visibility lost: '+JSON.stringify(portrait));
     assert(portrait.opaque>200,'Panda image has no visible pixels: '+JSON.stringify(portrait));
-    assert.equal(portrait.faceDisplay,'none','Animated canvas must be hidden when static photo is visible');
+    assert.equal(portrait.faceDisplay,'block','Animated canvas must be visible');
+    assert.equal(portrait.faceOpacity,'1');assert.equal(portrait.faceVisibility,'visible');
+    for(const k of ['x','y','width','height'])assert(Math.abs(portrait.faceRect[k]-portrait.imgRect[k])<1.5,'Canvas not aligned: '+k);
     const initial=await snapshot();
     assert.deepEqual(initial.labels,['Главная','История','Panda AI','Профиль'],'Wrong footer order: '+JSON.stringify(initial));
     assert.equal(initial.right.length,2,'Right buttons should be Topics and Lessons only: '+JSON.stringify(initial.right));
@@ -69,11 +72,40 @@ try{
     await page.locator('#pg346-send').click();
     await page.waitForFunction(()=>document.querySelector('#pg346-input')?.value==='',{timeout:6000});
     const afterSend=await snapshot();
-    assert.equal((await pandaPixels()).opacity,'1','Panda disappeared after text send');
+    const afterPortrait=await pandaPixels();
+    assert.equal(afterPortrait.faceDisplay,'block','Animated Panda disappeared after text send');
     for(const key of ['x','y','w','h'])
       assert(Math.abs(afterSend.panda[key]-initial.panda[key])<1.5,'Panda jumps after send: '+key);
     assert.equal(afterSend.stoneTop,initial.stoneTop);
     assert.equal(afterSend.stoneWidth,initial.stoneWidth);
+
+    // Send a known recorded reply and sample actual visible mouth canvas pixels.
+    // Do not fake audio or infer movement from a status label alone.
+    const mouthSnapshot=()=>page.evaluate(()=>{
+      const m=document.querySelector('.pg352-mascot'),cv=m.querySelector('.pg353-face-canvas'),style=getComputedStyle(cv);
+      const ctx=cv.getContext('2d');const w=cv.width,h=cv.height;
+      const d=ctx.getImageData(Math.floor(w*.57),Math.floor(h*.36),Math.floor(w*.16),Math.floor(h*.10)).data;
+      let hash=2166136261;for(const value of d)hash=Math.imul(hash^value,16777619);
+      return {hash,lips:m.dataset.lips,frame:Number(m.dataset.mouthFrame),visible:style.display!=='none'&&style.opacity==='1'&&style.visibility==='visible',rect:m.getBoundingClientRect().toJSON()};
+    });
+    for(const mode of ['short','nonstop']){
+      await page.locator('#pg346-'+mode).click();
+      const input=page.locator('#pg346-input'),send=page.locator('#pg346-send');
+      if(!await input.isVisible())await send.click();
+      await input.fill('你现在在做什么');await send.click();
+      await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.lips==='moving',null,{timeout:10000});
+      const samples=[];
+      for(let i=0;i<6;i++){samples.push(await mouthSnapshot());await page.waitForTimeout(90);}
+      assert(samples.every(x=>x.visible),'Mouth canvas hidden during playback');
+      assert(new Set(samples.filter(x=>x.lips==='moving').map(x=>x.hash)).size>=2,'Visible mouth pixels did not change: '+JSON.stringify(samples));
+      for(const x of samples)for(const k of ['x','y','width','height'])assert(Math.abs(x.rect[k]-samples[0].rect[k])<1.5,'Body moved during speech '+k);
+      await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.lips==='rest',null,{timeout:15000});
+      console.log('PASS visible mouth motion '+width+'px '+mode);
+    }
+    // If initialization fails, original artwork must remain visible.
+    await page.evaluate(()=>document.querySelector('.pg352-mascot').dataset.faceReady='false');
+    const fallback=await pandaPixels();assert.equal(fallback.opacity,'1');assert.equal(fallback.faceDisplay,'none');
+    await page.evaluate(()=>document.querySelector('.pg352-mascot').dataset.faceReady='true');
 
     // Mimic the Android keyboard changing visualViewport: art must be stable.
     await page.evaluate(()=>{
