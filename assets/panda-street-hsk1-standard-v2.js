@@ -21,7 +21,8 @@ const title=(k,t,s='')=>'<div class="eyebrow">'+esc(k)+'</div><h2>'+esc(t)+'</h2
 const audio=(zh,label='Слушать')=>'<button class="audio" data-pg-control="audio" aria-label="Прослушать фразу" data-say="'+esc(zh)+'" '+(hasAudio(zh)?'':'disabled')+'>'+(hasAudio(zh)?'▶ '+esc(label):'Запись пока не готова')+'</button>';
 
 
-const {AS,INNER}=globalThis.PandaStreetApprovedArt;
+const {AS,INNER_BY_LESSON}=globalThis.PandaStreetApprovedArt;
+const INNER=INNER_BY_LESSON[lesson-1];
 const AI='./panda-street-ai-preview.html';
 const icon=k=>'<img src="'+AS.icons[k]+'" alt="">';
 const btn=(type,label,ic,sub='')=>'<button data-stage-jump="'+type+'">'+icon(ic)+'<b>'+label+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</button>';

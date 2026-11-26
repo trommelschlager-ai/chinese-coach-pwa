@@ -332,3 +332,121 @@
 #app .content .record-card .recorder:not(:has(button:not([hidden]))){display:none}
 #app .dialogue-card>.street-standard-speed{display:flex}
 @media(max-height:740px){#app .dialogue-card>.street-standard-speed{font-size:10px;line-height:1;min-height:22px}#app .street-standard-speed select{padding:2px}}
+
+/* v583: exact reference grouping; keep cover and current navigation untouched. */
+#app:not([data-stage="cover"]):not([data-stage="map"]) {background:#f7f6fc}
+#app:not([data-stage="cover"]):not([data-stage="map"])>.screenhead {background:linear-gradient(#fff,#f8f6fc);border-bottom-color:#ddd5ec}
+#app:not([data-stage="cover"]):not([data-stage="map"])>.content {
+  display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:8px;min-height:0;
+  padding:10px 12px 12px;overflow:auto;background:linear-gradient(#faf9fd,#f3f1fa);color:#17102f;
+}
+#app:not([data-stage="cover"])>.content>.eyebrow {color:#26133f;font-size:12px;font-weight:900;letter-spacing:0;margin:0;flex:none}
+#app:not([data-stage="cover"])>.content>h2 {flex:none;margin:0 auto 2px;padding:4px 16px;font-size:clamp(18px,5vw,24px);line-height:1.15;max-width:100%;font-weight:900;background:linear-gradient(#ff657c,#e4002d);color:white;box-shadow:0 2px 3px #d6003026;border:1px solid #ff9aaf;border-radius:20px}
+#app:is([data-stage="phrase"],[data-stage="listen"],[data-stage="build"],[data-stage="record"],[data-stage="finish"])>.content>h2 {background:none;border:0;box-shadow:none;padding:0;color:#190d35;font-size:clamp(19px,5.4vw,25px)}
+/* No distributed free space: each group maintains the tight proportions of the reference. */
+#app:not([data-stage="cover"])>.content>.sheet {
+ flex:0 0 auto;min-height:0;width:100%;padding:14px 10px 12px;gap:10px;
+ background:linear-gradient(150deg,#fff,#f8f7fd);border:1px solid #d6cdef;border-radius:20px;
+ box-shadow:0 2px 5px #644ba31c;
+}
+#app .content .phrase-card {display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;position:relative;text-align:center}
+#app .content .phrase-card .hanzi {font-size:clamp(28px,9vw,44px);line-height:1.15;margin:1px 0 0;padding:0 38px 0 38px;overflow-wrap:anywhere;max-width:100%;font-weight:900}
+#app .content .phrase-card .py {display:inline-block;width:fit-content;max-width:100%;font-size:clamp(16px,5.1vw,23px);line-height:1.15;background:linear-gradient(#ffe3f4,#ffaddb);border:1px solid #f3add3;color:#b50043;border-radius:12px;padding:4px 12px;margin:0;font-weight:900;box-shadow:none}
+#app .content .phrase-card .ru {font-size:clamp(16px,4.7vw,21px);line-height:1.18;margin:1px 0 0;font-weight:700;color:#181527}
+#app .content .phrase-card .mascot {display:block;flex:none;width:min(72%,244px);max-width:244px;height:auto;min-height:0;max-height:125px;object-fit:contain;object-position:center bottom;margin:0 auto -4px;border-radius:0;mix-blend-mode:multiply;aspect-ratio:auto}
+#app .content .phrase-card>.audio:not(.redplay) {width:75%;max-width:260px;min-height:44px;margin:0 auto;flex:none}
+#app .content .phrase-card>.redplay {position:absolute;right:5px;top:10px}
+#app .content .audio.redplay {min-width:44px;min-height:44px;width:44px;height:44px;padding:0;margin:0;border:0;box-shadow:none;background:transparent;position:relative;display:grid;place-items:center;isolation:isolate;color:#fff;font-size:0}
+#app .content .audio.redplay::before {content:"";width:34px;height:34px;border-radius:50%;background:linear-gradient(#ff677e,#ee0032 65%,#c00025);border:1px solid #ffb8c5;box-shadow:0 2px 1px #ae0024;position:absolute;z-index:-1}
+#app .content .audio.redplay::after {content:"";display:block;width:21px;height:21px;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath fill='white' stroke='none' d='M3 9h4l5-4v14l-5-4H3z'/%3E%3Cpath d='M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14'/%3E%3C/svg%3E")}
+#app[data-stage="listen"] .content .audio.redplay {width:58px;height:58px;min-width:58px;min-height:58px}
+#app[data-stage="listen"] .content .audio.redplay::before {width:54px;height:54px}
+#app[data-stage="listen"] .content .audio.redplay::after {width:24px;height:24px;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M6 3l15 9L6 21z'/%3E%3C/svg%3E")}
+#app .content .dialogue-card {display:flex;flex-direction:column;justify-content:flex-start;gap:12px;padding:14px 8px}
+#app .content .dialogue-line {display:flex;align-items:center;gap:5px;width:100%;margin:0}
+#app .content .dialogue-line.alt {flex-direction:row-reverse}
+#app .content .dialogue-line .avatar {width:clamp(40px,12vw,50px);height:clamp(40px,12vw,50px);flex:0 0 clamp(40px,12vw,50px);object-fit:contain;border-radius:50%;mix-blend-mode:multiply}
+#app .content .dialogue-line .bubble {position:relative;flex:0 1 81%;min-width:0;min-height:0;margin:0;padding:9px 5px 9px 9px;display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:0;align-items:center;background:linear-gradient(#edf9ff,#c4e3fa);border:1px solid #91c6ee;border-radius:16px;box-shadow:0 2px 4px #75b3e31b;text-align:left}
+#app .content .dialogue-line .bubble::before {content:"";position:absolute;left:-6px;right:auto;top:50%;width:10px;height:10px;background:#d9eefc;border-left:1px solid #91c6ee;border-bottom:1px solid #91c6ee;transform:translateY(-50%) rotate(45deg)}
+#app .content .dialogue-line.alt .bubble::before {left:auto;right:-6px;transform:translateY(-50%) rotate(225deg)}
+#app .content .dialogue-line .hanzi {font-size:clamp(20px,5.9vw,26px);font-weight:900;line-height:1.13;margin:0 0 3px;overflow-wrap:anywhere}
+#app .content .dialogue-line .py {font-size:clamp(12px,3.8vw,16px);color:#d30038;line-height:1.13;margin:0 0 2px;font-weight:800;overflow-wrap:anywhere}
+#app .content .dialogue-line .ru {font-size:clamp(13px,3.9vw,17px);line-height:1.18;margin:0;color:#181426;font-weight:600;overflow-wrap:anywhere}
+#app .content .dialogue-card>.audio {width:80%;max-width:300px;min-height:44px;margin:0 auto;flex:none}
+#app .content .dialogue-card>.street-standard-speed {display:flex;align-items:center;justify-content:center;gap:6px;margin:0;font-size:11px}
+#app .content .grammar-card {display:flex;flex-direction:column;gap:6px;align-items:stretch;padding:8px}
+#app .content .grammar-card .rule {display:grid;grid-template-columns:minmax(40px,16%) minmax(0,1fr) 44px;align-items:center;gap:5px;margin:0;padding:6px 3px 6px 5px;background:linear-gradient(#fff,#f4f0fd);border:1px solid #d8cdef;border-radius:12px}
+#app .content .grammar-card .rule-char {display:grid;place-items:center;background:linear-gradient(#fff7cf,#ffe38c);color:#201143;border:1px solid #f7e0a1;border-radius:8px;font-size:clamp(22px,6.6vw,29px);font-weight:900;line-height:1.1;min-height:38px;text-align:center}
+#app .content .grammar-card .rule-py {display:inline-block;background:linear-gradient(#fff7ce,#ffde7a);border-radius:8px;padding:1px 6px;font-size:14px;font-weight:900;color:#19102f}
+#app .content .grammar-card .rule p {font-size:clamp(12px,3.55vw,15px);line-height:1.17;margin:2px 0;overflow-wrap:anywhere}
+#app .content .grammar-card .rule .py {color:#d30038;font-size:clamp(11px,3.3vw,14px)}
+#app .content .grammar-card .note {background:linear-gradient(#fff8d8,#ffe890);border:1px solid #f6d880;padding:7px;margin:1px 0 0;text-align:left;font-size:13px;font-weight:700;color:#211631}
+#app .content>.tones {flex:0 0 auto;display:grid;grid-template-rows:auto auto;gap:8px;align-content:start}
+#app .content .tones .sheet {justify-content:flex-start;gap:2px;min-height:0;padding:8px 4px}
+#app .content .tones .hanzi {font-size:clamp(30px,8.5vw,38px)}
+#app .content .tones .py {font-size:20px;margin:0}
+#app .content .exercise-card,#app .content .record-card,#app .content .finish-card,#app .content .ai-card {display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:9px;margin:0}
+#app .content .exercise-card>p:first-child {font-size:clamp(16px,4.7vw,20px);line-height:1.18;margin:0;font-weight:900}
+#app .content .exercise-card .wave-row {margin:0;gap:12px;min-height:58px;justify-content:center}
+#app .content .wave {flex:0 1 auto;min-width:0;overflow:hidden}
+#app .content .exercise-card .choices {display:grid;gap:7px;margin:0}
+#app .content .exercise-card .choice {min-height:44px;border:1px solid #c8bce6;box-shadow:0 2px 2px #c4b8db55;background:linear-gradient(#fff,#f7f4fd);color:#1b1234;font-weight:900;font-size:clamp(18px,5.4vw,24px);text-align:left;padding:7px 12px;border-radius:24px}
+#app .content .exercise-card .choice.correct {background:linear-gradient(#edffd9,#bdf2a5);border-color:#86c85b;color:#194b19}
+#app .content .exercise-card .choice.wrong {background:#ffe5e8;border-color:#e88e9c;color:#8a1833}
+#app .content .exercise-card .note.ru {padding:10px 8px;background:linear-gradient(#fff7d4,#ffe991);border:1px solid #f7d775;font-size:clamp(17px,5vw,22px);margin:0;color:#231640;font-weight:900}
+#app .content .exercise-card .tokens {display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:0;padding:0}
+#app .content .exercise-card .tokens .token {background:linear-gradient(#f9f4ff,#dcd0f6);border:1px solid #c8b4ef;border-radius:11px;box-shadow:0 2px 1px #bbacd7;min-height:44px;color:#271343;font-size:clamp(18px,5.4vw,24px);min-width:44px}
+#app .content .exercise-card .answer {border:0;display:grid;grid-template-columns:repeat(var(--slots,4),minmax(0,1fr));gap:5px;margin:0;padding:0;width:100%}
+#app .content .exercise-card .answer .slot {border:1.5px dashed #7053ad;border-radius:10px;min-width:0;width:100%;min-height:44px;height:44px}
+#app .content .exercise-card .answer .token {min-width:0;width:100%;height:44px;min-height:44px;padding:2px;font-size:18px}
+#app .content .exercise-card .check {background:linear-gradient(#ff6578,#ed002a,#c90024);border-color:#ffb5c3;box-shadow:0 2px 1px #b00020;min-height:44px;width:78%;margin:0 auto;color:white}
+#app .content .record-card {align-items:center;gap:6px;border:1px solid #d6cdef;border-radius:20px}
+#app .content .record-card .hanzi {font-size:clamp(29px,9vw,43px);line-height:1.12;margin:0}
+#app .content .record-card .py {display:inline-block;background:linear-gradient(#fff6c8,#ffdf81);border:1px solid #f8d77b;border-radius:11px;padding:4px 11px;color:#c5002b;font-size:clamp(16px,5vw,23px);margin:0}
+#app .content .record-card .ru {font-size:clamp(16px,4.7vw,21px);line-height:1.18;margin:0}
+#app .content .record-card .audio {margin:0;min-height:44px}
+#app .content .record-card .wave-row {display:flex;align-items:center;justify-content:center;width:100%;gap:8px;margin:1px 0 0}
+#app .content .record-card .rec-mic {width:72px;height:72px;min-width:72px;min-height:72px;flex:none}
+#app .content .record-card .recorder {margin:0}
+#app .content .record-card .recorder:not(:has(button:not([hidden]))) {display:none}
+#app .content .record-card .status {font-size:11px;line-height:1.2;margin:0;min-height:0}
+#app .content .finish-card .mascot {width:min(75%,220px);height:auto;max-height:100px;object-fit:contain;margin:0 auto;mix-blend-mode:multiply}
+#app .content .finish-card .result {display:grid;gap:4px}
+#app .content .finish-card .result div {background:linear-gradient(#fff,#f5f2fb);border:1px solid #ddd4eb;border-radius:9px;padding:7px;font-size:clamp(12px,3.8vw,15px);font-weight:700;line-height:1.15}
+#app .content .finish-card .result .done {color:#168b31}
+#app .content .finish-card .note {margin:0}
+#app .content .ai-card img {width:100%;max-height:180px;object-fit:contain;border-radius:12px}
+#app .content .ai-card .benefits {font-size:15px;line-height:1.35;margin:0;padding:0 8px}
+#app .content .ai-card .ai-link {margin:0;background:linear-gradient(#ff657c,#eb002c,#ce0025);border:1px solid #ff9fae;box-shadow:0 2px 1px #b90020}
+#app .content .status:empty {display:none}
+#app .content .status {margin:0;min-height:0}
+/* Width and height independent. Only dense screens move up on short Android viewports. */
+@media(max-height:740px){
+ #app:not([data-stage="cover"])>.content{gap:5px;padding:6px 8px 7px}
+ #app:not([data-stage="cover"])>.content>.sheet{padding:9px 6px;gap:6px}
+ #app .content .phrase-card{gap:4px}
+ #app .content .phrase-card .mascot{max-height:106px;width:min(72%,225px)}
+ #app .content .dialogue-card{gap:7px}
+ #app .content .dialogue-line .avatar{width:37px;height:37px;flex-basis:37px}
+ #app .content .dialogue-line .bubble{padding:5px 3px 5px 7px}
+ #app .content .dialogue-line .hanzi{font-size:20px}
+ #app .content .dialogue-line .py,#app .content .dialogue-line .ru{font-size:12px}
+ #app .content .grammar-card .rule{padding:4px;gap:4px}
+ #app .content .grammar-card .rule p{font-size:12px}
+ #app .content .grammar-card .note{font-size:11px}
+ #app .content .record-card .rec-mic{width:64px;height:64px;min-width:64px;min-height:64px}
+ #app .content .finish-card .mascot{max-height:72px}
+ #app .content .finish-card .result div{padding:5px;font-size:12px}
+ #app .content .ai-card img{max-height:140px}
+ #app .content .ai-card .benefits{font-size:13px}
+}
+@media(max-height:600px){#app:not([data-stage="cover"])>.content{justify-content:flex-start}#app .content .phrase-card .mascot{max-height:82px}#app .content .dialogue-card{gap:4px}}
+/* A scrollable fallback must never clip the first line when content is taller than the viewport. */
+#app:not([data-stage="cover"]):not([data-stage="map"])>.content{justify-content:safe center}
+/* Phrase speaker sits beside the Hanzi, never in the flex sequence. */
+#app[data-stage="phrase"] .content .phrase-card>.audio.redplay{position:absolute;right:5px;top:10px}
+/* Reference groups stay together; the screen title belongs next to the header. */
+#app:not([data-stage="cover"]):not([data-stage="map"])>.content{justify-content:flex-start}
+#app:not([data-stage="cover"])>.content>.sheet,#app:not([data-stage="cover"])>.content>.tones{margin-top:0}
+/* A wider phone has room for a slightly larger teaching group, not giant text gaps. */
+@media(min-height:741px){#app:not([data-stage="cover"])>.content>.sheet{padding:18px 12px 15px}#app .content .phrase-card{gap:7px}#app .content .dialogue-card{gap:15px}#app .content .dialogue-line .bubble{padding:13px 7px 13px 11px}#app .content .dialogue-line .ru{line-height:1.23}}
