@@ -95,7 +95,7 @@
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
-import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch,sentencePitchWindowSize} from './assets/panda-sentence-align-v4.mjs?v=7';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch,sentencePitchWindowSize,sentenceLivePitchFrame,sentencePitchPen,SENTENCE_LIVE_POLL_MS} from './assets/panda-sentence-align-v4.mjs?v=8';
 const $=id=>document.getElementById(id);
 const phraseOptions=[
  {id:'daily',zh:'我早上洗脸。',py:'Wǒ zǎoshang xǐliǎn.',ru:'Утром я умываюсь.',rule:'我早: wó zǎo при слитной речи; 洗脸: xí liǎn.',weights:[1,1.15,.65,1,1.2],tokens:[
@@ -276,7 +276,7 @@ function playFull(url){
 async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Error('Не удалось прочитать запись');const b=await resp.arrayBuffer();const c=new (window.AudioContext||window.webkitAudioContext)();try{return await c.decodeAudioData(b.slice(0));}finally{await c.close();}}
 
 const GRAPH_LEFT=28,GRAPH_W=514,GRAPH_TOP=23,GRAPH_BOTTOM=159,MAX_RECORD_SECONDS=6;
-let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0;
+let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0,liveEpoch=0,livePeak=0;
 function voicedSeconds(data){
  if(!data?.valid||!data.bounds?.length)return 0;
  return Math.max(0,data.bounds.at(-1)-data.bounds[0]);
@@ -305,8 +305,7 @@ function wholePath(data,isLive=false,axisLive=isLive){
   const x=xAt(p.t-start,axisLive);
   const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
   const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
-  const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
-  const pen=!prev||p.t-prev.t>.085||jump>=5?'M':'L';
+  const pen=sentencePitchPen(prev,p);
   out+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
   prev=p;
  }
@@ -428,6 +427,7 @@ function updateWhole(){
  }
 }
 function stopLive(){
+ liveEpoch++;
  if(liveTimer){clearInterval(liveTimer);liveTimer=null;}
  try{liveSource?.disconnect();}catch{}
  try{liveAnalyzer?.disconnect();}catch{}
@@ -438,14 +438,14 @@ function stopLive(){
  $('whole-cursor').style.display='none';
 }
 async function startLive(s){
- stopLive();liveFrames=[];
+ stopLive();liveFrames=[];livePeak=0;const epoch=liveEpoch;
  if(!(window.AudioContext||window.webkitAudioContext))return;
  try{
   const context=new (window.AudioContext||window.webkitAudioContext)();
   liveContext=context;await context.resume();
-  if(!stream||stream!==s){stopLive();return;}
+  if(epoch!==liveEpoch||!stream||stream!==s||!recorder||document.hidden){if(liveContext===context)stopLive();else try{await context.close()}catch{};return;}
   liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
-  liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
+  liveAnalyzer.fftSize=Math.max(2048,2**Math.ceil(Math.log2(sentencePitchWindowSize(context.sampleRate,131072))));liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
   liveFrame=new Float32Array(liveAnalyzer.fftSize);
   liveStarted=performance.now();firstLiveVoice=null;drawTimeAxis(true);updateDurationLabels();wholeGuides(true);$('whole-ref').setAttribute('d',wholePath(reference,false,true));
   $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
@@ -453,31 +453,33 @@ async function startLive(s){
   liveTimer=setInterval(()=>{
    if(!liveAnalyzer||!liveContext)return;
    liveAnalyzer.getFloatTimeDomainData(liveFrame);
-   let energy=0;for(let i=0;i<liveFrame.length;i+=4)energy+=liveFrame[i]*liveFrame[i];
-   const level=Math.sqrt(energy/(liveFrame.length/4));
+   const frame=sentenceLivePitchFrame(liveFrame,context.sampleRate);if(!frame)return;
+   const level=rms(frame,0,frame.length);livePeak=Math.max(level,livePeak*.98);
    $('level').style.width=Math.round(Math.max(0,Math.min(100,level*1800)))+'%';
    const elapsed=(performance.now()-liveStarted)/1000;
    const pos=xAt(Math.max(0,elapsed-(firstLiveVoice??elapsed)),true);
    const cursor=$('whole-cursor');cursor.style.display='';cursor.setAttribute('x1',pos.toFixed(1));cursor.setAttribute('x2',pos.toFixed(1));
-   if(level>.007){
+   if(level>Math.max(.0035,Math.min(.018,livePeak*.16))){
+    const gain=Math.max(1,Math.min(9,.055/Math.max(.004,livePeak)));
+    const sample=Float32Array.from(frame,v=>Math.max(-1,Math.min(1,v*gain)));
+    const p=estimatePitch(sample,context.sampleRate);
+    if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
     if(firstLiveVoice===null)firstLiveVoice=elapsed;
     const seconds=reference?.valid?reference.bounds.at(-1)-reference.bounds[0]:2;
     const progress=Math.max(0,Math.min(.999,(elapsed-firstLiveVoice)/Math.max(1.2,seconds*1.2)));
     const total=weights.reduce((a,b)=>a+b,0);let sum=0,index=weights.length-1;
     for(let k=0;k<weights.length;k++){sum+=weights[k]/total;if(progress<sum){index=k;break;}}
-    $('whole-active').textContent='≈ Сейчас: '+tokens[index].zh+' · '+tokens[index].py+' (приблизительно)';
+    $('whole-active').textContent='≈ По времени: '+tokens[index].zh+' · '+tokens[index].py+' (приблизительно)';
     for(const [k,el] of [...$('syllables').children].entries())el.classList.toggle('active',k===index);
-    const p=estimatePitch(liveFrame,context.sampleRate);
-    if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
-     liveFrames.push({t:elapsed,hz:p.hz});
-     if(liveFrames.length>90)liveFrames.shift();
+    liveFrames.push({t:elapsed,hz:p.hz});
+     if(liveFrames.length>180)liveFrames.shift();
     }
    }
    if(liveFrames.length>1){
     $('whole-mine').setAttribute('d',wholePath({frames:liveFrames,base:median(liveFrames.map(p=>p.hz))},true));
    }
-  },110);
- }catch(e){stopLive();$('whole-info').textContent='Живой график недоступен на этом устройстве; после записи попробуем построить итоговый.';}
+  },SENTENCE_LIVE_POLL_MS);
+ }catch(e){if(epoch!==liveEpoch)return;stopLive();$('whole-info').textContent='Живой график недоступен на этом устройстве; после записи попробуем построить итоговый.';}
 }
 
 function stopStream(){stopLive();if(micTimer){clearTimeout(micTimer);micTimer=null;}stream?.getTracks().forEach(x=>x.stop());stream=null;$('level').style.width='0%';}
