@@ -26,7 +26,7 @@ test('shared review uses bounded install shell and complete optional download ma
  const shell=sw.slice(sw.indexOf('const INSTALL_SHELL'),sw.indexOf('const COURSE_SHELL'));
  const installUrls=[...shell.matchAll(/"(\.\/[^"\n]+)"/g)].map(m=>m[1]);
  assert(new Set(installUrls).size<=200,'Install shell must stay bounded');
- const activeCore=read('panda-voice-pilot.html').match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0];
+ const activeCore=read('panda-voice-pilot.html').match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+(?:&rev=\d+)?/)?.[0];
  assert(activeCore,'Find currently active Panda AI core from real entrypoint');
  for(const url of ["./assets/panda-hsk2-day-understanding-v1.mjs?v=6","./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538",activeCore]){
   assert(installUrls.includes(url),'Missing installed asset '+url);

@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=565';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -380,6 +380,14 @@ let friendlyStage=null;
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
+ // Accept repeated agreement in conversational context without replacing unrelated lesson answers.
+ if(!state.dayMode&&((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101)))||(!hsk2&&state.mode==='nonstop'))&&/^(对对|对对对|是的是的)$/.test(normalize(input))){
+  const last=[...state.history].reverse().find(t=>t.who==='panda');
+  const s=normalize(input),py=s==='对对'?'Duì, duì.':s==='对对对'?'Duì, duì, duì.':'Shì de, shì de.';
+  learner(input,{known:true,pinyin:py,translation:'Да, верно.',toneVerified:false});
+  const reply=normalize(last?.hanzi)==='你今天休息吗'?{hanzi:'那你休息一下吧。',pinyin:'Nà nǐ xiūxi yíxià ba.',ru:'Тогда немного отдохни.'}:{hanzi:'然后呢？',pinyin:'Ránhòu ne?',ru:'А дальше?'};
+  state.naturalAwaiting=null;state.awaitQuestion=true;say(reply,!!lookupPandaVoiceClip(reply.hanzi));note('Панда поняла согласие; тоны не оценивались.');return;
+ }
  // A standalone 什么 / 什么意思 / 请再说一遍 is a contextual clarification in free chat.
  // Preserve graded lesson flows and never reinterpret a longer question as repetition.
  if(!state.dayMode&&((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101))))&&/^(?:什么|什么意思|请再说一遍|再说一遍|你说什么|没听懂|我没听懂)$/.test(normalize(input))){

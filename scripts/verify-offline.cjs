@@ -11,7 +11,7 @@ const streetPage='./panda-street-ai-preview.html',streetArt='./assets/panda-stre
 const hsk2Page='./hsk2-life-course.html';
 assert(!await cacheAPI.match(streetArt),'Optional Street artwork must not block PWA installation');
 assert((await cacheAPI.match('./panda-voice-pilot.html'))?.ok,'Panda AI entry must install with the shell');
-const activePandaCore='./assets/'+(fs.readFileSync('panda-voice-pilot.html','utf8').match(/panda-hsk2-preview-core-v1\.mjs\?v=\d+/)?.[0]||'');assert((await cacheAPI.match(activePandaCore))?.ok,'Active Panda AI core must install with the shell');
+const activePandaCore='./assets/'+(fs.readFileSync('panda-voice-pilot.html','utf8').match(/panda-hsk2-preview-core-v1\.mjs\?v=\d+(?:&rev=\d+)?/)?.[0]||'');assert((await cacheAPI.match(activePandaCore))?.ok,'Active Panda AI core must install with the shell');
 const retained='./assets/course-human/cmn-我.mp3',oldImage='./assets/hanzi-paper-v141.png',oldData='./assets/hanzi-data/大.json';
 const oldCache=await cacheAPI.open('chinese-coach-pwa-v48');for(const path of [retained,oldImage,oldData])await oldCache.put(path,await network(path));
 const stalePanda='./assets/panda-live-screen-v270.mjs?v=302',stalePandaPage='./panda-voice-pilot.html?v=302';
