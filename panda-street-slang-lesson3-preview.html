@@ -45,6 +45,28 @@
 #app.l3[data-stage="compare"] #pg-content .rule{font-size:clamp(15px,4.4vw,20px)}
 #app.l3[data-stage="compare"] #pg-content .ru{font-size:clamp(14px,4vw,18px);margin:4px 0;line-height:1.2}
 @media(max-height:700px){#app.l3 #pg-content .rule{padding:7px;font-size:15px;line-height:1.25}#app.l3[data-stage="compare"] #pg-content>.sheet{padding:7px 9px}#app.l3[data-stage="compare"] #pg-content .rule{font-size:14px}#app.l3[data-stage="card"] #pg-content>.particle3{padding:8px;gap:5px}#app.l3[data-stage="card"] .particle3 .hanzi{font-size:clamp(56px,20vw,85px)}}
+/* Visual review of 117 screenshots from run 45910061699.
+   Use the available height for reading, not empty central gaps. */
+#app.l3 #pg-content .ex3>.sheet{flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:10px 12px}
+#app.l3 #pg-content .ex3 .hanzi{font-size:clamp(26px,8vw,40px);line-height:1.15}
+#app.l3 #pg-content .ex3 .ru{font-size:clamp(16px,4.6vw,20px)}
+#app.l3 #pg-content .ex3 .py{font-size:clamp(17px,5vw,23px)}
+#app.l3 #pg-content .particle3 .py{font-size:clamp(22px,6vw,28px)}
+#app.l3 #pg-content .particle3 .rule{font-size:clamp(17px,4.8vw,22px)}
+#app.l3[data-stage="finish"] #pg-content>.sheet{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+#app.l3[data-stage="finish"] #pg-content>.sheet .hanzi{font-size:clamp(48px,15vw,76px)}
+@media(min-height:741px){
+ #app.l3[data-stage="quiz"] #pg-content>.sheet{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;gap:12px}
+ #app.l3[data-stage="quiz"] #pg-content .choices{gap:10px}
+ #app.l3[data-stage="quiz"] #pg-content .choice{min-height:68px;font-size:30px}
+ #app.l3[data-stage="quiz"] #pg-content .hanzi{font-size:clamp(36px,10vw,46px)}
+ #app.l3[data-stage="dialogue"] #pg-content .d3{flex:1;min-height:0;justify-content:space-evenly}
+ #app.l3[data-stage="dialogue"] #pg-content .d3 .bubble{padding:10px 12px}
+ #app.l3[data-stage="dialogue"] #pg-content .d3 .hanzi{font-size:clamp(23px,6.6vw,28px)}
+ #app.l3[data-stage="dialogue"] #pg-content .d3 .py{font-size:clamp(15px,4.3vw,19px)}
+ #app.l3[data-stage="dialogue"] #pg-content .d3 .ru{font-size:clamp(14px,4vw,18px)}
+}
+@media(max-height:700px){#app.l3 #pg-content .ex3 .hanzi{font-size:clamp(23px,6.7vw,28px)}#app.l3 #pg-content .ex3 .py{font-size:17px}#app.l3 #pg-content .ex3 .ru{font-size:15px}#app.l3 #pg-content .ex3>.sheet{padding:7px;gap:2px}#app.l3 #pg-content .particle3 .rule{font-size:16px}}
 </style></head>
 <body><main id="app" class="l3" data-stage="cover"><header class="screenhead"><strong>PANDA STREET</strong><div class="headrow"><a href="./panda-street-hsk1-map.html">‹ Все уроки</a><span>Урок 3</span><b id="counter"></b></div><div class="progress" role="progressbar" aria-label="Прогресс" id="progress"><i id="fill"></i></div></header><section id="pg-content" class="content" aria-live="polite"></section><footer class="footer"><button id="back">← Назад</button><button id="next">Начать →</button></footer></main>
 <script src="./assets/panda-street-voice-v20261125.js"></script><script>
