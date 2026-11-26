@@ -325,3 +325,10 @@
  #app .ai-card strong{font-size:17px}
  #app .ai-card .benefits{font-size:14px}
 }
+
+/* Native recorder state and compact speed selector. */
+#app .content button[hidden]{display:none!important}
+#app .record-card .recorder:has(button[hidden]){min-height:44px}
+#app .content .record-card .recorder:not(:has(button:not([hidden]))){display:none}
+#app .dialogue-card>.street-standard-speed{display:flex}
+@media(max-height:740px){#app .dialogue-card>.street-standard-speed{font-size:10px;line-height:1;min-height:22px}#app .street-standard-speed select{padding:2px}}

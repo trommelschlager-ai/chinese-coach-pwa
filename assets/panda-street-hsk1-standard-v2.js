@@ -54,7 +54,7 @@ area.addEventListener('click',async e=>{const b=e.target.closest('button');if(!b
 
 if(b.hasAttribute('data-map')){location.href='./panda-street-hsk1-map.html';return}
 if(b.hasAttribute('data-start')){index=resume>1?resume:1;order=[];render();return}
-if(b.dataset.dialogue!==undefined){const start=index;for(const n of d.dialogs[Number(b.dataset.dialogue)]){if(index!==start)break;play(words[n][0]);const a=voice;if(!a)break;const token=voiceSeq;await new Promise(resolve=>{if(a.ended){resolve();return}for(const event of ['ended','pause','error'])a.addEventListener(event,resolve,{once:true});a.play()?.catch(resolve)});if(index!==start||voiceSeq!==token)break;}return}
+if(b.dataset.dialogue!==undefined){const start=index;for(const n of d.dialogs[Number(b.dataset.dialogue)]){if(index!==start)break;play(words[n][0]);const a=voice;if(!a)break;const token=voiceSeq;await new Promise(resolve=>{if(a.ended){resolve();return}for(const event of ['ended','pause','error'])a.addEventListener(event,resolve,{once:true});if(a.error)resolve()});if(index!==start||voiceSeq!==token)break;}return}
 if(b.dataset.stageJump){const target=views.findIndex(x=>x.type===b.dataset.stageJump);if(target>=0){index=target;order=[];render()}return}
 if(b.dataset.say){play(b.dataset.say);if(v.type==='listen'){const a=voice;if(a)a.addEventListener('playing',()=>{if(views[index]!==v)return;heard[i]=true;area.querySelectorAll('[data-answer]').forEach(x=>x.disabled=false);save()},{once:true})}return}
 if(b.dataset.answer!==undefined){answers[i]=Number(b.dataset.answer);if(answers[i]!==d.listen[i])attempts['l'+i]=(attempts['l'+i]||0)+1;render(true);return}
