@@ -6,10 +6,16 @@ import {interpretContextualTurn,interpretLinkedTurn,interpretOpinion,interpretAc
 // China-trip chain, never inferred from an unrelated short answer.
 const cleanOpen=s=>String(s??'').normalize('NFC').replace(/[\p{P}\s]/gu,'');
 const OPEN_ANSWERS=Object.freeze({
+ "daily-breakfast":{"吃":["Chī.","Да, завтракаю.","yes"],"吃早饭":["Chī zǎofàn.","Завтракаю.","yes"],"我吃早饭":["Wǒ chī zǎofàn.","Я завтракаю.","yes"],"不吃":["Bù chī.","Нет, не завтракаю.","no"],"我不吃早饭":["Wǒ bù chī zǎofàn.","Я не завтракаю.","no"]},
+ "daily-sleep":{"九点":["Jiǔ diǎn.","В девять вечера.","21"],"十点":["Shí diǎn.","В десять вечера.","22"],"十一点":["Shíyī diǎn.","В одиннадцать вечера.","23"],"十二点":["Shí'èr diǎn.","В полночь.","00"],"我晚上十点睡觉":["Wǒ wǎnshang shí diǎn shuìjiào.","Я ложусь спать в десять вечера.","22"]},
+ "work-busy":{"忙":["Máng.","Занят(а).","yes"],"很忙":["Hěn máng.","Очень занят(а).","yes"],"我今天很忙":["Wǒ jīntiān hěn máng.","Я сегодня очень занят(а).","yes"],"不忙":["Bù máng.","Не занят(а).","no"]},
+ "work-time":{"八点":["Bā diǎn.","В восемь.","8"],"九点":["Jiǔ diǎn.","В девять.","9"],"十点":["Shí diǎn.","В десять.","10"],"我不上班":["Wǒ bú shàngbān.","Я не хожу на работу.","none"]},
  'study-reason':{
   '因为我想去中国':['Yīnwèi wǒ xiǎng qù Zhōngguó.','Потому что я хочу поехать в Китай.','china-trip'],
   '我想去中国':['Wǒ xiǎng qù Zhōngguó.','Я хочу поехать в Китай.','china-trip'],
-  '想去中国':['Xiǎng qù Zhōngguó.','Хочу поехать в Китай.','china-trip']
+  '想去中国':['Xiǎng qù Zhōngguó.','Хочу поехать в Китай.','china-trip'],
+  '因为我想和朋友说中文':['Yīnwèi wǒ xiǎng hé péngyou shuō Zhōngwén.','Потому что хочу говорить по-китайски с друзьями.','friends'],
+  '因为我喜欢中文':['Yīnwèi wǒ xǐhuan Zhōngwén.','Потому что мне нравится китайский.','interest']
  },
  'travel-time':{
   '明天':['Míngtiān.','Завтра.','明天'],
@@ -99,7 +105,7 @@ function interpretOpenAnswer(raw,context){
  const answers=OPEN_ANSWERS[pending.slot],key=cleanOpen(raw);
  if(!Object.hasOwn(answers,key))return null;
  const [pinyin,translation,value]=answers[key];
- return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'?'daily':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
+ return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot==='study-reason'?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
 function reviewedOpenQuestion(hanzi,previous,linked,memory){
  const s=cleanOpen(hanzi);
@@ -107,6 +113,11 @@ function reviewedOpenQuestion(hanzi,previous,linked,memory){
  if(s==='你为什么想学中文')slot='study-reason';
  else if(s==='你有什么爱好')slot='hobby';
  else if(s==='你想吃什么')slot='food';
+ else if(s==='你早上吃早饭吗')slot='daily-breakfast';
+ else if(s==='你今天忙吗')slot='work-busy';
+ else if(s==='你晚上几点睡觉')slot='daily-sleep';
+ else if(s==='你几点去上班')slot='work-time';
+ else if(linked&&previous?.intent==='request-topic-change'&&['daily','work','study'].includes(previous.value)&&s==='你接下来想做什么')slot='next-action';
  else if(linked&&previous?.intent==='request-topic-change'&&previous.value==='hobby'&&memory?.hobby){
   if(s==='你周末喜欢做什么'&&!memory.weekend)slot='hobby-weekend';
   else if(s==='你周末有什么计划'&&memory.weekend&&!memory.plan)slot='hobby-plan';
@@ -119,7 +130,7 @@ function reviewedOpenQuestion(hanzi,previous,linked,memory){
   else if(previous.slot==='hobby-frequency'&&s==='你周末喜欢做什么')slot='hobby-weekend';
   else if(previous.slot==='food'&&s==='还要别的吗')slot='food-more';
   else if(previous.slot==='food-more'&&previous.value==='yes'&&s==='你还喜欢吃什么')slot='food-preference';
-  else if(['hobby-weekend','hobby-plan','food-more','food-preference'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
+  else if(['hobby-weekend','hobby-plan','food-more','food-preference','daily-sleep','daily-breakfast','work-busy','work-time','study-reason'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
  }
  return slot?{intent:'ask-open-reviewed',subject:'你',slot,raw:hanzi}:null;
 }
@@ -130,6 +141,9 @@ const TOPIC_REQUESTS=Object.freeze({
  '我们聊点别的吧':['Wǒmen liáo diǎn bié de ba.','Давай поговорим о другом.','other'],
  '聊聊爱好吧':['Liáoliao àihào ba.','Давай поговорим об увлечениях.','hobby'],
  '我们聊聊爱好吧':['Wǒmen liáoliao àihào ba.','Давай поговорим об увлечениях.','hobby'],
+ '聊聊我的一天吧':['Liáoliao wǒ de yì tiān ba.','Давай поговорим о моём дне.','daily'],
+ '聊聊工作吧':['Liáoliao gōngzuò ba.','Давай поговорим о работе.','work'],
+ '聊聊学习中文吧':['Liáoliao xuéxí Zhōngwén ba.','Давай поговорим об изучении китайского.','study'],
  '聊聊吃的吧':['Liáoliao chī de ba.','Давай поговорим о еде.','food'],
  '我们聊聊吃的吧':['Wǒmen liáoliao chī de ba.','Давай поговорим о еде.','food']
 });
@@ -166,6 +180,17 @@ function updateHobbyMemory(state,semantic){
  return current;
 }
 
+// Separate, short-lived, reviewed session facts. No persistence.
+const TOPIC_FACTS=['daily-breakfast','daily-sleep','work-busy','work-time','study-reason'];
+function recentTopicMemory(state){
+ const entries=state?.topicMemory||{};
+ return Object.fromEntries(TOPIC_FACTS.filter(k=>entries[k]&&Number.isFinite(entries[k].at)&&state.turn-entries[k].at<=24).map(k=>[k,entries[k]]));
+}
+function updateTopicMemory(state,semantic){
+ const m=recentTopicMemory(state);
+ if(semantic?.intent==='answer-open-reviewed'&&TOPIC_FACTS.includes(semantic.slot))m[semantic.slot]={value:semantic.value,at:state.turn+1};
+ return m;
+}
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
@@ -175,7 +200,7 @@ function dispatchSemantic(raw,context={},parsers){
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){
- return {version:1,turn:0,lastSpeaker:null,lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:null,resumeQuestion:null,hobbyMemory:emptyHobbyMemory()};
+ return {version:1,turn:0,lastSpeaker:null,lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:null,resumeQuestion:null,hobbyMemory:emptyHobbyMemory(),topicMemory:{}};
 }
 function advanceSemanticState(state,event,interpret){
  const current=state?.version===1?state:initialSemanticState();
@@ -192,7 +217,7 @@ function advanceSemanticState(state,event,interpret){
   // A topic label alone is not evidence that the utterance refers to that action.
   const linked=event.continuesLearnerTurn===true&&previous?.intent==='express-action'&&previous.subject==='我'&&(!pending||pending.action===previous.action)?previous:null;
   const lastPandaTurn={hanzi:line.hanzi,pinyin:typeof line.pinyin==='string'?line.pinyin:null,ru:typeof line.ru==='string'?line.ru:null};
-  return {state:{version:1,turn:current.turn+1,lastSpeaker:'panda',lastPandaTurn,pendingQuestion:pending,lastLearnerAction:linked,lastLearnerSemantic:null,resumeQuestion:null,hobbyMemory:recentHobbyMemory(current)},semantic:understood};
+  return {state:{version:1,turn:current.turn+1,lastSpeaker:'panda',lastPandaTurn,pendingQuestion:pending,lastLearnerAction:linked,lastLearnerSemantic:null,resumeQuestion:null,hobbyMemory:recentHobbyMemory(current),topicMemory:recentTopicMemory(current)},semantic:understood};
  }
  if(event?.type==='learner'){
   const raw=String(event.raw??'').trim();
@@ -201,7 +226,7 @@ function advanceSemanticState(state,event,interpret){
   const context=current.lastSpeaker==='panda'?{lastPandaTurn:current.lastPandaTurn,pendingQuestion:current.pendingQuestion,lastLearnerAction:current.lastLearnerAction,hobbyMemory:recentHobbyMemory(current)}:{hobbyMemory:recentHobbyMemory(current)};
   const semantic=interpret(raw,context);
   const resumeQuestion=semantic&&['request-repeat','request-meaning'].includes(semantic.intent)&&semantic.reference===context.lastPandaTurn?.hanzi&&context.pendingQuestion?{hanzi:semantic.reference,pending:context.pendingQuestion}:null;
-  return {state:{version:1,turn:current.turn+1,lastSpeaker:'learner',lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:semantic,resumeQuestion,hobbyMemory:updateHobbyMemory(current,semantic)},semantic};
+  return {state:{version:1,turn:current.turn+1,lastSpeaker:'learner',lastPandaTurn:null,pendingQuestion:null,lastLearnerAction:null,lastLearnerSemantic:semantic,resumeQuestion,hobbyMemory:updateHobbyMemory(current,semantic),topicMemory:updateTopicMemory(current,semantic)},semantic};
  }
  return {state:current,semantic:null};
 }
