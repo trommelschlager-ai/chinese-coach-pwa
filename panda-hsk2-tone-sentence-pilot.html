@@ -89,15 +89,21 @@
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
 <div class="actions" style="margin:8px 0"><button type="button" class="action alt" id="review-ref" disabled>🔊 Участок образца</button><button type="button" class="action alt" id="review-mine" disabled>🔊 Мой участок</button></div><p class="small" id="review-status" aria-live="polite">Прослушай выбранный участок и проверь, соответствует ли он иероглифу. Границы предварительные.</p><details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><label id="boundary-verified-row" class="boundary-hint" hidden><input id="boundary-verified" type="checkbox"> Я прослушал обе записи и проверил границы слогов в образце и своей записи.</label><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
 </section>
-<section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
+<section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учебный вариант слитной фразы: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. При паузе после 我 возможен третий тон. Подсказки после проверки границ описывают движение высоты, а не правильность произношения. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
 <footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
 </main><script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
-import {alignFromReference,reviewInterval,intervalPitchEvidence} from './assets/panda-sentence-align-v4.mjs?v=4';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice} from './assets/panda-sentence-align-v4.mjs?v=5';
 const $=id=>document.getElementById(id);
-const tokens=[{zh:'我',py:'wǒ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'早',py:'zǎo',tone:'3-й · низкий'},{zh:'上',py:'shang',tone:'нейтральный · короткий, после третьего тона может звучать относительно высоко'},{zh:'洗',py:'xǐ',tone:'3-й → перед 3-м обычно звучит как 2-й'},{zh:'脸',py:'liǎn',tone:'3-й · часто низкий'}];
+const tokens=[
+ {zh:'我',py:'wǒ',surfaceTone:2,tone:'3-й → обычно 2-й перед zǎo при слитном произнесении (wó)'},
+ {zh:'早',py:'zǎo',surfaceTone:3,tone:'3-й · обычно низкий перед нейтральным слогом'},
+ {zh:'上',py:'shang',surfaceTone:0,tone:'нейтральный · короткий, зависит от предыдущего тона'},
+ {zh:'洗',py:'xǐ',surfaceTone:2,tone:'3-й → 2-й перед liǎn (xí)'},
+ {zh:'脸',py:'liǎn',surfaceTone:3,tone:'3-й · низкий или с подъёмом в конце фразы'}
+];
 const weights=[1.0,1.15,.65,1,1.2];
 const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
 let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
@@ -162,15 +168,7 @@ function syllableQuality(i){
 function describeMovement(i){
  if(!learner?.valid)return '';
  if(!$('boundary-verified').checked)return 'Границы пока не проверены на слух: отдельный контур не связываем с конкретным иероглифом.';
- if(tokens[i].py==='shang')return 'У нейтрального тона нет фиксированного контура. По направлению высоты не определяем ошибку; сравни краткость и лёгкость с образцом.';
- const evidence=syllableQuality(i);
- if(evidence.weak)return 'Измерения участка ненадёжны ('+evidence.text+'): направление пока не определяем.';
- const pts=evidence.points;
- if(pts.length<6)return 'Мало точек F0 для анализа движения.';
- const k=Math.max(2,Math.floor(pts.length*.25)),first=median(pts.slice(0,k).map(p=>p.hz)),last=median(pts.slice(-k).map(p=>p.hz));
- if(!first||!last)return 'Недостаточно данных.';
- const delta=12*Math.log2(last/first);
- return delta>1.8?'Высота в измеренном участке в основном повышается.':delta< -1.8?'Высота в измеренном участке в основном снижается.':'Высота в измеренном участке меняется незначительно.';
+ return contextualPitchAdvice({surfaceTone:tokens[i].surfaceTone,evidence:syllableQuality(i),verified:true}).text;
 }
 function adjustControls(){
  $('boundary-verified').checked=false;$('boundary-verified-row').hidden=!(learner?.valid&&reference?.valid);
