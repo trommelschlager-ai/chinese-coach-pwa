@@ -148,9 +148,15 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  const out=[learnerBounds[0]];
  for(let b=1;b<referenceBounds.length-1;b++){
   const t=referenceBounds[b];
-  let closest=0,diff=Infinity;
-  for(let k=0;k<r.length;k++){const d=Math.abs(r[k].t-t);if(d<diff){closest=k;diff=d;}}
-  const mapped=means[closest];
+  // Interpolate between mapped spectral frame centers rather than snapping
+  // every landmark to a 20 ms grid. This improves temporal precision only.
+  let k=0;
+  while(k+1<r.length&&r[k+1].t<t)k++;
+  let mapped=means[k];
+  if(k+1<r.length&&t>=r[k].t){
+   const fraction=(t-r[k].t)/(r[k+1].t-r[k].t);
+   mapped=means[k]+fraction*(means[k+1]-means[k]);
+  }
   const prev=out.at(-1),remaining=referenceBounds.length-1-b;
   const safe=Math.max(prev+.055,Math.min(learnerBounds.at(-1)-remaining*.055,mapped));
   out.push(safe);
