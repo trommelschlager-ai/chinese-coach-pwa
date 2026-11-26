@@ -100,7 +100,12 @@ function home(){
  '</div>';
  const choices=levels.map(({n,name,description,url})=>'<a class="pg-hsk-level pg-hsk-choice pg-photo1-hit pg-photo1-hit-'+n+'" href="'+url+'" aria-label="'+esc(name)+'. '+esc(description)+'. Открыть уровень">'+
  '<strong class="pg-photo1-sr">'+esc(name)+'</strong><small class="pg-photo1-sr">'+esc(description)+'</small></a>').join('');
- frame(artwork+'<h1 class="pg-hsk-accessible">Panda Go — выбери уровень</h1><nav class="pg-hsk-level-list" aria-label="Выбор уровня китайского языка">'+choices+'</nav></div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
+ const street='<nav class="pg-street-level-list" aria-label="Разговорные курсы Panda Street">'+
+   '<a class="pg-street-level pg-street-level-live" href="./panda-street-hsk1-map.html" aria-label="Открыть Panda Street HSK 1 — живой китайский">'+
+     '<span class="pg-street-paw" aria-hidden="true">🐼</span><span class="pg-street-label"><small>PANDA STREET</small><strong>HSK 1</strong></span><span class="pg-street-open" aria-hidden="true">›</span></a>'+
+   '<div class="pg-street-level pg-street-level-soon" aria-label="Panda Street HSK 2 — скоро">'+
+     '<span class="pg-street-paw" aria-hidden="true">🐼</span><span class="pg-street-label"><small>PANDA STREET</small><strong>HSK 2</strong></span><span class="pg-street-open">СКОРО</span></div></nav>';
+ frame(artwork+'<h1 class="pg-hsk-accessible">Panda Go — выбери уровень</h1><nav class="pg-hsk-level-list" aria-label="Выбор уровня китайского языка">'+choices+'</nav>'+street+'</div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
  'pg-home pg-hsk-page pg-photo1-home');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}
