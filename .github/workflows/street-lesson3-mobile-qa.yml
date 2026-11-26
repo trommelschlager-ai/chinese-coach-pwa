@@ -4,6 +4,8 @@ on:
     paths:
       - 'panda-street-slang-lesson3-preview.html'
       - 'panda-street-hsk1-map.html'
+      - 'panda-street-ai-preview.html'
+      - 'tests/panda-street-particles-practice.test.mjs'
       - 'assets/panda-street-*'
       - 'sw.js'
       - 'assets/offline-pack.json'
@@ -22,6 +24,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --package-lock=false playwright@1.58.2
+      - run: node --test tests/panda-street-particles-practice.test.mjs
       - run: npx playwright install --with-deps chromium
       - name: Run mobile browser tests
         run: |
