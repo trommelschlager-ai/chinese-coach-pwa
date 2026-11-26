@@ -34,3 +34,6 @@ Created separate draft branch from v565 main e1bd42bad83a1d8a0f7e85ef82e836d963e
 
 ## Experimental CI first run
 33/33 native Node tests passed; existing completed release workflows: 13 successful, four skipped, dedicated experimental browser gate failed before opening Chromium because playwright was absent from node_modules (ERR_MODULE_NOT_FOUND). Added same pinned transient playwright@1.56.1 installation used by existing mobile QA; explicit server readiness check. No package manifest or production changes. Browser rerun required.
+
+## Second experimental CI attempt
+Existing regression workflows passed again. Dedicated browser job failed before Chromium launch: ubuntu-latest changed to Ubuntu 26.04, unsupported by pinned Playwright 1.56.1. Existing passing mobile job confirmed Ubuntu 24.04. Pin dedicated runner to 24.04, retain actual browser gate, add checks for real `playing` event on the expected exact MP3 and decoding three registered MP3 files. These audio/browser checks are authored, not yet passed. No changes to production assets or audio files.
