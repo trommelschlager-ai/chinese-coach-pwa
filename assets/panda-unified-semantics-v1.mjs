@@ -69,3 +69,33 @@ export function interpretContextualTurn(raw,context={}){
  }
  return null;
 }
+
+export function interpretLinkedTurn(raw){
+ const text=String(raw??'').normalize('NFC').replace(/[\p{P}\s]/gu,'');
+ const clauses={
+ '我很累':['wǒ hěn lèi','learner','health','tired'],'我很忙':['wǒ hěn máng','learner','work','busy'],'我没时间':['wǒ méi shíjiān','learner','time','unavailable'],'我喜欢中文':['wǒ xǐhuan Zhōngwén','learner','study','like-chinese'],'中文很难':['Zhōngwén hěn nán','chinese','study','difficult'],'我每天学中文':['wǒ měitiān xué Zhōngwén','learner','study','study-daily'],'我想休息':['wǒ xiǎng xiūxi','learner','health','want-rest'],'我还想学习':['wǒ hái xiǎng xuéxí','learner','study','want-study'],'我还是去上班':['wǒ háishi qù shàngbān','learner','work','go-work'],'我还是学中文':['wǒ háishi xué Zhōngwén','learner','study','study-chinese'],'我还是想去':['wǒ háishi xiǎng qù','learner','leisure','want-go'],'我有空':['wǒ yǒu kòng','learner','time','available'],'明天下雨':['míngtiān xià yǔ',null,'weather','rain'],'我不出去':['wǒ bù chūqu','learner','leisure','not-go-out'],'我去公园':['wǒ qù gōngyuán','learner','leisure','go-park'],'我就休息':['wǒ jiù xiūxi','learner','health','rest']
+ };
+ const action={
+ '起床':['qǐchuáng','daily'],'刷牙':['shuāyá','daily'],'洗脸':['xǐliǎn','daily'],'吃早饭':['chī zǎofàn','food'],'下班':['xiàbān','work'],'回家':['huí jiā','daily'],'吃饭':['chīfàn','food'],'休息':['xiūxi','health'],'睡觉':['shuìjiào','daily'],'看书':['kàn shū','leisure'],'听音乐':['tīng yīnyuè','leisure'],'喝茶':['hē chá','food'],'喝咖啡':['hē kāfēi','food'],'学习中文':['xuéxí Zhōngwén','study'],'做饭':['zuòfàn','food'],'散步':['sànbù','leisure'],'跑步':['pǎobù','leisure'],'看电视':['kàn diànshì','leisure'],'聊天':['liáotiān','social']
+ };
+ const base={raw:String(raw),intent:'express-linked-actions',toneVerified:false};
+ const getClause=k=>Object.hasOwn(clauses,k)?{text:k,pinyin:clauses[k][0],subject:clauses[k][1],topic:clauses[k][2],meaning:clauses[k][3]}:null;
+ const capitalize=s=>s[0].toUpperCase()+s.slice(1);
+ for(const [prefix,join,kind,pyA,pyB] of [['虽然','但是','concession','suīrán','dànshì'],['因为','所以','cause','yīnwèi','suǒyǐ']]){
+  if(!text.startsWith(prefix))continue;
+  const rest=text.slice(prefix.length),i=rest.indexOf(join);if(i<1)return null;
+  const a=getClause(rest.slice(0,i)),b=getClause(rest.slice(i+join.length));if(!a||!b)return null;
+  return {...base,construction:prefix+'…'+join+'…',relation:kind,clauses:[a,b],pinyin:capitalize(pyA+' '+a.pinyin+', '+pyB+' '+b.pinyin)+'.'};
+ }
+ // Preserve explicitly stated subject. No assertion of who acts without evidence.
+ const m=/^(我|我们|他|她)(一边|一|先)(.+?)(一边|就|然后|再)(.+)$/u.exec(text);
+ if(!m)return null;const [,subject,first,a,second,b]=m;
+ const kind=first==='一边'&&second==='一边'?'simultaneous':first==='一'&&second==='就'?'immediate':first==='先'&&['再','然后'].includes(second)?'sequence':null;
+ if(!kind||a===b||!Object.hasOwn(action,a)||!Object.hasOwn(action,b))return null;
+ const subjectPy={我:'Wǒ',我们:'Wǒmen',他:'Tā',她:'Tā'}[subject];
+ const firstPy={一边:'yìbiān',一:'yí',先:'xiān'}[first];
+ const secondPy={一边:'yìbiān',就:'jiù',然后:'ránhòu',再:'zài'}[second];
+ // yī changes to yì before tones 1–3 and yí before tone 4.
+ const initialPy=first==='一'?( /[àèìòùǜ]/u.test(action[a][0].split(' ')[0])?'yí':'yì'):firstPy;
+ return {...base,construction:first+'…'+second+'…',relation:kind,subject,actions:[a,b],topics:[action[a][1],action[b][1]],pinyin:subjectPy+' '+initialPy+' '+action[a][0]+', '+secondPy+' '+action[b][0]+'.'};
+}
