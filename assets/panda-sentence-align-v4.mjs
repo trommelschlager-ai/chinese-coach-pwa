@@ -82,12 +82,30 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
     referenceBounds.some((v,i)=>!Number.isFinite(v)||(i>0&&v<=referenceBounds[i-1]))||
     learnerBounds.some((v,i)=>!Number.isFinite(v)||(i>0&&v<=learnerBounds[i-1])))
   return {ok:false,reason:'Не найдены корректные границы записи'};
+ const validBufferBounds=(buffer,bounds)=>{
+  if(!buffer?.getChannelData||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000)return false;
+  try{const data=buffer.getChannelData(0);return !!data&&bounds[0]>=0&&bounds.at(-1)<=data.length/buffer.sampleRate+1e-6;}catch{return false;}
+ };
+ if(!validBufferBounds(referenceBuffer,referenceBounds)||!validBufferBounds(learnerBuffer,learnerBounds))
+  return {ok:false,reason:'Границы выходят за пределы записи'};
  const dr=referenceBounds.at(-1)-referenceBounds[0],du=learnerBounds.at(-1)-learnerBounds[0],ratio=du/dr;
- if(ratio<.55||ratio>1.95)return {ok:false,reason:'Слишком различается длительность фраз: сравнение ненадёжно'};
+ // A substantially shorter recording can omit an entire interval. Refuse
+ // automatic transfer; fast natural speech remains valid for manual review.
+ if(ratio<.75||ratio>1.95)return {ok:false,reason:'Длительность фраз сильно различается: автоматический перенос границ ненадёжен. Это не ошибка произношения',uncertain:true};
  const r=features(referenceBuffer,referenceBounds[0],referenceBounds.at(-1));
  const u=features(learnerBuffer,learnerBounds[0],learnerBounds.at(-1));
  if(!r||!u||r.length<12||u.length<12||r.length>500||u.length>650)
   return {ok:false,reason:'Недостаточно звуковых кадров или слишком длинная запись'};
+ // Guard against matching silence to silence and unvoiced holes.
+ // Energy coverage is only a safety gate, not lexical identity or pronunciation.
+ const sufficientEnergy=frames=>{
+  const peak=Math.max(...frames.map(f=>f.rms));
+  if(!Number.isFinite(peak)||peak<.004)return false;
+  const gate=Math.max(.0025,Math.min(.018,peak*.12));
+  return frames.filter(f=>f.rms>=gate).length>=Math.max(8,Math.ceil(frames.length*.25));
+ };
+ if(!sufficientEnergy(r)||!sufficientEnergy(u))
+  return {ok:false,reason:'Недостаточно звукового сигнала для сопоставления'};
  const n=r.length,z=u.length,stride=z+1;
  const costs=new Float64Array((n+1)*stride),parent=new Uint8Array((n+1)*stride);
  costs.fill(Infinity);costs[0]=0;
@@ -99,7 +117,7 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
   const high=Math.min(z,Math.ceil(ideal+band));
   for(let j=low;j<=high;j++){
    const drift=j/z-i/n;
-   const local=cost(r[i-1],u[j-1])+1.8*(drift/.18)**2;
+   const local=cost(r[i-1],u[j-1])+1.2*(drift/.18)**2;
    const diag=costs[(i-1)*stride+j-1];
    const up=costs[(i-1)*stride+j]+.075;
    const left=costs[i*stride+j-1]+.075;
@@ -111,11 +129,12 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  }
  if(!Number.isFinite(costs[n*stride+z]))return {ok:false,reason:'Акустическое сопоставление не нашло непрерывный путь'};
  const links=Array.from({length:n},()=>[]);
- let i=n,j=z,steps=0,stretched=0;
+ let i=n,j=z,steps=0,stretched=0;const matches=[];
  while(i>0&&j>0&&steps<n+z+3){
   const code=parent[i*stride+j];
   if(!code)break;
   links[i-1].push(u[j-1].t);
+  matches.push({rt:r[i-1].t,ut:u[j-1].t,cost:cost(r[i-1],u[j-1]),rms:u[j-1].rms});
   if(code===1){i--;j--;}else if(code===2){i--;stretched++;}else {j--;stretched++;}
   steps++;
  }
@@ -137,6 +156,21 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
   out.push(safe);
  }
  out.push(learnerBounds.at(-1));
+ // Global average can conceal an entire unmatched interval. Reject the
+ // proposed boundary transfer, not the learner's pronunciation.
+ // These experimental gates require validation across real speakers.
+ const peakU=Math.max(...u.map(f=>f.rms));
+ const gateU=Math.max(.0025,Math.min(.018,peakU*.12));
+ const localDiagnostics=referenceBounds.slice(0,-1).map((a,k)=>{
+  const b=referenceBounds[k+1],m=matches.filter(x=>x.rt>=a&&x.rt<b);
+  const unique=new Map(m.map(x=>[x.ut,x.rms]));
+  const localCost=m.reduce((sum,x)=>sum+x.cost,0)/Math.max(1,m.length);
+  const coverage=[...unique.values()].filter(v=>v>=gateU).length/Math.max(1,unique.size);
+  const relativeDuration=(out[k+1]-out[k])/(b-a)/ratio;
+  return {frames:unique.size,localCost,coverage,relativeDuration};
+ });
+ const questionable=localDiagnostics.some(d=>d.frames<3||d.localCost>1.5||d.coverage<.25||d.relativeDuration<.30||d.relativeDuration>3);
+ if(questionable)return {ok:false,reason:'Один или несколько участков не удалось надёжно сопоставить. Проверь фразу и границы вручную',diagnostics:{localDiagnostics},uncertain:true};
  const avg=costs[n*stride+z]/Math.max(1,steps);
  // Diagnostics only, NOT a pronunciation score or confidence percentage.
  if(avg>2.6||stretched/Math.max(1,steps)>.76)
@@ -144,4 +178,29 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
  return {ok:true,bounds:out,method:'spectral-dtw',referenceFrames:n,learnerFrames:z,
   diagnostics:{avgCost:+avg.toFixed(3),warpingFraction:+(stretched/steps).toFixed(2)},
   uncertain:true,description:'Предварительное сопоставление по звучанию; не фонетически точная разметка и не оценка тонов'};
+}
+
+// An interval is a provisional audio landmark, not a recognized syllable.
+export function reviewInterval(buffer,bounds,index){
+ if(!buffer?.getChannelData||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000||
+    !Array.isArray(bounds)||!Number.isInteger(index)||index<0||index>=bounds.length-1||
+    bounds.some((x,i)=>!Number.isFinite(x)||x<0||(i>0&&x<=bounds[i-1])))return null;
+ const start=bounds[index],end=bounds[index+1];
+ let limit;try{limit=buffer.getChannelData(0).length/buffer.sampleRate}catch{return null}
+ if(end>limit+1e-6||end-start<.055)return null;
+ return {startSec:start,durationSec:Math.min(limit,end)-start};
+}
+// Do not infer a pitch direction from disconnected or fallback-heavy points.
+export function intervalPitchEvidence(frames,bounds,index){
+ const fail=(text,count=0)=>({weak:true,text,count,isToneGrade:false});
+ if(!Array.isArray(frames)||!Array.isArray(bounds)||!Number.isInteger(index)||index<0||index>=bounds.length-1)return fail('нет данных');
+ const a=bounds[index],b=bounds[index+1];
+ if(!Number.isFinite(a)||!Number.isFinite(b)||b<=a)return fail('нет границ');
+ const points=frames.filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.hz)&&p.hz>=65&&p.hz<=550&&p.t>=a&&(index===bounds.length-2?p.t<=b:p.t<b));
+ const count=points.length;
+ if(count<6)return fail('мало F0',count);
+ if(points.filter(p=>p.method==='autocorrelation').length/count>.4)return fail('неустойчивое F0',count);
+ if(points.some((p,i)=>i>0&&(p.t<=points[i-1].t||p.t-points[i-1].t>.085||Math.abs(12*Math.log2(p.hz/points[i-1].hz))>=5)))return fail('разрыв F0',count);
+ if((points.at(-1).t-points[0].t)/(b-a)<.45)return fail('мало покрытия F0',count);
+ return {weak:false,text:'контур виден',count,points,isToneGrade:false};
 }
