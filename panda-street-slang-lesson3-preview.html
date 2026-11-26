@@ -36,6 +36,15 @@
 #app.l3 .particle3,#app.l3 .ex3{flex-shrink:0}
 #app.l3 .hero3{min-height:0}
 @media(max-height:700px){#app.l3 .hero3 h1{font-size:clamp(34px,10vw,48px)}#app.l3 .hero3 .py{margin:2px 0}#app.l3 .hero3 h2{margin:2px 0}#app.l3 .tiles span{padding:3px 0;font-size:clamp(23px,7vw,32px)}#app.l3 .hero3{gap:4px}#app.l3 .ex3 .hanzi{font-size:clamp(21px,6.4vw,27px)}#app.l3 .rule{padding:7px;font-size:15px}#app.l3 .d3 .bubble{padding:4px 8px}#app.l3 .d3 .hanzi{font-size:19px}#app.l3 .d3 .py{font-size:13px}#app.l3 .d3 .ru{font-size:12px}}
+/* The generic grammar rule reserves columns for a character and an audio icon.
+   This lesson contains full-width explanations rather than those three-column rules. */
+#app.l3 #pg-content .rule{display:block;grid-template-columns:none;width:100%;text-align:center;line-height:1.32;padding:10px;margin:5px 0;overflow-wrap:break-word}
+#app.l3[data-stage="card"] #pg-content>.particle3{flex:1 1 auto;min-height:0;gap:8px;justify-content:center;padding:12px}
+#app.l3[data-stage="compare"] #pg-content>.sheet{flex:0 0 auto;min-height:0;padding:10px 12px}
+#app.l3[data-stage="compare"] #pg-content .hanzi{font-size:clamp(28px,8vw,40px);margin:2px 0}
+#app.l3[data-stage="compare"] #pg-content .rule{font-size:clamp(15px,4.4vw,20px)}
+#app.l3[data-stage="compare"] #pg-content .ru{font-size:clamp(14px,4vw,18px);margin:4px 0;line-height:1.2}
+@media(max-height:700px){#app.l3 #pg-content .rule{padding:7px;font-size:15px;line-height:1.25}#app.l3[data-stage="compare"] #pg-content>.sheet{padding:7px 9px}#app.l3[data-stage="compare"] #pg-content .rule{font-size:14px}#app.l3[data-stage="card"] #pg-content>.particle3{padding:8px;gap:5px}#app.l3[data-stage="card"] .particle3 .hanzi{font-size:clamp(56px,20vw,85px)}}
 </style></head>
 <body><main id="app" class="l3" data-stage="cover"><header class="screenhead"><strong>PANDA STREET</strong><div class="headrow"><a href="./panda-street-hsk1-map.html">‹ Все уроки</a><span>Урок 3</span><b id="counter"></b></div><div class="progress" role="progressbar" aria-label="Прогресс" id="progress"><i id="fill"></i></div></header><section id="pg-content" class="content" aria-live="polite"></section><footer class="footer"><button id="back">← Назад</button><button id="next">Начать →</button></footer></main>
 <script src="./assets/panda-street-voice-v20261125.js"></script><script>
