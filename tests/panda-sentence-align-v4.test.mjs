@@ -119,3 +119,13 @@ test('substantially shorter input requires manual review, never a pronunciation 
  const normal=alignFromReference(syntheticSpeech(),syntheticSpeech(.8),bounds,bounds.map(x=>x*.8));
  assert.equal(normal.ok,true);
 });
+
+test('identical audio preserves off-grid reference landmarks without rounding to frame centers',()=>{
+ const landmarks=[.1,.423,.817,1.173,1.527,1.95];
+ const samples=Float32Array.from({length:25200},(_,i)=>.2*Math.sin(2*Math.PI*155*i/rate)+.1*Math.sin(2*Math.PI*365*i/rate));
+ const audio={sampleRate:rate,getChannelData:()=>samples};
+ const out=alignFromReference(audio,audio,landmarks,landmarks);
+ assert.equal(out.ok,true);
+ for(let i=0;i<landmarks.length;i++)assert.ok(Math.abs(out.bounds[i]-landmarks[i])<1e-7);
+ assert.equal(out.uncertain,true);
+});
