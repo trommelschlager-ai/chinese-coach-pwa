@@ -400,13 +400,13 @@ function submit(raw){
  // All other input follows the established engine below, including corrections.
  // ASR already asks confirmation below .65. A known transcript is not a tone score.
  if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.65)){
-  const planned=semanticPilot.plan(input,{mode:'free-chat'});
-  const spoken=planned&&semanticMetadata(input,planned.semantic);
+  const planned=semanticPilot.plan(input,{mode:'free-chat',confidence:state.confidence});
+  const spoken=planned&&(planned.spoken||semanticMetadata(input,planned.semantic));
   if(spoken){
    friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
-   learner(input,spoken);semanticContinues=planned.continuesLearnerTurn===true;
+   learner(input,spoken);if(planned.inlineCorrection)rememberPersonalCorrection(spoken.correction,state.confidence);semanticContinues=planned.continuesLearnerTurn===true;
    say(planned.line,true,{semanticPilot:true,kind:planned.kind,toneVerified:false,...(planned.kind==='explain-exact'?{explanation:meaningExplanation(planned.line)}:{})});
-   note(planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл реплики. Тоны по тексту не оценивались.');
+   note(planned.inlineCorrection?'Панда поняла смысл и показала исправление. Продолжаем разговор. Тоны не оценивались.':planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл реплики. Тоны по тексту не оценивались.');
    return;
   }
  }else if(semanticPilot)resetSemanticPilot();
@@ -803,7 +803,7 @@ function startRecognition(){
   submit(text);
   // ASR returns text and optional confidence, never a validated acoustic tone score.
   const latestLearner=[...state.history].reverse().find(turn=>turn.who==='you'&&turn.hanzi===text);
-  const correctionHanzi=latestLearner?.analysis?.correction?.hanzi||null;
+  const correctionHanzi=latestLearner?.analysis?.correction?.inlineConversation?null:latestLearner?.analysis?.correction?.hanzi||null;
   const reliable=!selected.recovered&&state.confidence!==null&&state.confidence>=.85;
   const kind=state.confidence!==null&&state.confidence<.65?'uncertain'
     :correctionHanzi&&reliable?'content-error':'text-only';
@@ -992,7 +992,7 @@ if(entry.kind==='hsk2'){
 // Load only on the explicit experimental URL, fail open to the established brain.
 if(semanticRequested){
  Promise.all([import('./panda-unified-pilot-adapter-v1.mjs'),import('./panda-unified-pilot-metadata-v1.mjs')]).then(([adapter,meta])=>{
-  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip});
+  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip,correctGrammar:correctPandaGrammarV2,metadata:meta.pilotLearnerMetadata});
   if(semanticFreeChat()){const last=state.history.at(-1);if(last?.who==='panda')observeSemanticPanda(last);}
   document.documentElement.dataset.pandaSemanticPilot='ready';
  }).catch(()=>{semanticPilot=null;document.documentElement.dataset.pandaSemanticPilot='unavailable';});
