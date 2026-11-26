@@ -210,8 +210,6 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[],grammarPage
      '<div class="pgc-feature-list">'+cards+'</div>'+
      '<a class="pgc-grammar-link" href="?view=grammar"><span aria-hidden="true">📖</span> Грамматика HSK 2</a>'+
      (topicsMarkup?'<div class="pgc-topic-list">'+topicsMarkup+'</div>':'')+
-     '<a class="pgc-street-course" href="./panda-street-hsk1-map.html" aria-label="Открыть Panda Street, разговорный китайский, HSK 1">'+
-       '<span class="pgc-street-icon" aria-hidden="true">🐼</span><span class="pgc-street-copy"><small>PANDA STREET · HSK 1</small><strong>Живой китайский</strong><span>Разговорные уроки, фразы и Panda AI</span></span><span class="pgc-street-action" aria-hidden="true">Открыть курс&nbsp; →</span></a>'+
      '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
    '</main>'+
    '<footer class="pg433-footer"><a class="pg433-secondary pgc-home-link" href="./index.html">⌂ Главное меню Panda Go</a>'+
