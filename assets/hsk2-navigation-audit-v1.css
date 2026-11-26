@@ -1,30 +1,6 @@
 /* Panda Go · course audit 2026-11-20
    Safely scoped to the HSK2 course catalog accordion and extra practice screen.
    Never included by either approved stand-alone HSK2 lesson. */
-#app #pg433.pgc-catalog .pgc-street-course{
-  display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:11px;
-  width:100%;min-width:0;margin:14px 0 6px;padding:12px;
-  color:#fff!important;text-decoration:none!important;
-  border:1.5px solid #f3b65e;border-bottom:4px solid #a7448f;border-radius:19px;
-  background:radial-gradient(circle at 6% 0%,#632e83 0,transparent 38%),linear-gradient(120deg,#101629,#20142e 56%,#38143e);
-  box-shadow:0 5px 13px #25133138,inset 0 1px #ffffff30;
-}
-#app #pg433.pgc-catalog .pgc-street-course:active{transform:translateY(2px);box-shadow:0 2px 7px #25133138}
-#app #pg433.pgc-catalog .pgc-street-course:focus-visible{outline:3px solid #ef9adf;outline-offset:3px}
-#app #pg433.pgc-catalog .pgc-street-icon{
-  display:grid;place-items:center;width:50px;height:50px;border-radius:15px;
-  font-size:27px;background:linear-gradient(145deg,#f8bb5a,#d94d9c 72%,#7b38b5);
-  box-shadow:0 0 13px #e17bd977,inset 0 1px #ffffff85;
-}
-#app #pg433.pgc-catalog .pgc-street-copy{display:grid;gap:3px;min-width:0}
-#app #pg433.pgc-catalog .pgc-street-copy small{color:#ffd27e;font-size:10px;font-weight:900;letter-spacing:.8px}
-#app #pg433.pgc-catalog .pgc-street-copy strong{color:#fff;font-size:17px;line-height:1.1}
-#app #pg433.pgc-catalog .pgc-street-copy span{color:#e5d7ed;font-size:11px;line-height:1.25}
-#app #pg433.pgc-catalog .pgc-street-action{
-  justify-self:end;padding:8px 9px;border:1px solid #f1a3df;border-radius:12px;
-  background:linear-gradient(145deg,#d94ac5,#8021ac);color:#fff;font-size:11px;font-weight:850;
-  box-shadow:0 2px 6px #0803127a;white-space:nowrap;
-}
 #app #pg433.pgc-catalog .pgc-home-link{
   display:flex;align-items:center;justify-content:center;min-height:45px;padding:8px 10px;
   color:#672578!important;text-decoration:none!important;text-align:center;
@@ -203,10 +179,6 @@
   box-shadow:0 3px 0 #b878c0,0 5px 9px #a36aa44d!important;
 }
 @media(max-width:375px){
-  #app #pg433.pgc-catalog .pgc-street-course{grid-template-columns:42px minmax(0,1fr);gap:8px;padding:10px}
-  #app #pg433.pgc-catalog .pgc-street-icon{width:42px;height:42px;font-size:23px}
-  #app #pg433.pgc-catalog .pgc-street-action{grid-column:2;justify-self:start;padding:6px 9px}
-  #app #pg433.pgc-catalog .pgc-street-copy strong{font-size:16px}
   #app #pg433.pgc-catalog .pgc-home-link{font-size:11px;padding-inline:7px}
   #app #pg433.pgc-catalog .pgc-mini-panel{padding-inline:6px}
   #app #pg433.pgc-catalog button.pgc-mini-card{grid-template-columns:28px minmax(0,1fr) 24px;gap:5px!important;padding-inline:6px!important}
