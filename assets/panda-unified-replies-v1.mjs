@@ -13,7 +13,14 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
   const p=referencePlanner(prior,semantic);
   return p?{...p,continuesLearnerTurn:false}:clarify();
  }
+ if(intent==='request-topic-change'){
+  if(semantic.value==='hobby')return line('你有什么爱好？','Nǐ yǒu shénme àihào?','Какие у тебя увлечения?','follow-up');
+  if(semantic.value==='food')return line('你想吃什么？','Nǐ xiǎng chī shénme?','Что ты хочешь поесть?','follow-up');
+  return line('好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Давай поговорим о другом!','reply');
+ }
  if(intent==='answer-open-reviewed'){
+  if(semantic.slot==='hobby')return line('你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?','follow-up');
+  if(semantic.slot==='food')return line('还要别的吗？','Hái yào bié de ma?','Хочешь что-нибудь ещё?','follow-up');
   if(semantic.slot==='study-reason'&&semantic.value==='china-trip')return line('你打算什么时候去？','Nǐ dǎsuàn shénme shíhou qù?','Когда ты собираешься поехать?','follow-up',true);
   if(semantic.slot==='travel-time')return line('你打算怎么去？','Nǐ dǎsuàn zěnme qù?','Как ты собираешься добраться?','follow-up',true);
   if(semantic.slot==='travel-method')return line('祝你旅途愉快！','Zhù nǐ lǚtú yúkuài!','Желаю приятного путешествия!','reply');

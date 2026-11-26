@@ -1,7 +1,7 @@
 /* Disabled by default; no production imports. Only free chat and exact registered reviewed candidates. */
 import {initialSemanticState,reduceSemanticContext} from './panda-unified-context-v1.mjs';
 import {planSemanticConversationTurn} from './panda-unified-replies-v1.mjs';
-const SAFE_REPLIES=new Set(['那你休息一下吧。','你想学什么？','你为什么想学中文？','然后呢？','你打算什么时候去？','你接下来想做什么？','我在和你聊天。','我今天和你练习中文。','你打算怎么去？','祝你旅途愉快！']);
+const SAFE_REPLIES=new Set(['那你休息一下吧。','你想学什么？','你为什么想学中文？','然后呢？','你打算什么时候去？','你接下来想做什么？','我在和你聊天。','我今天和你练习中文。','你打算怎么去？','祝你旅途愉快！','你有什么爱好？','你想吃什么？','好的。我们聊点别的吧！','你经常做这件事吗？','还要别的吗？']);
 export function createSemanticPilot({enabled=false,lookupExact=null}={}){
  let state=initialSemanticState(),pending=false;
  return {
