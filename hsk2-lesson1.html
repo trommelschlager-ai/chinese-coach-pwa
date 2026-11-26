@@ -326,6 +326,14 @@ footer button:not(:disabled):active{transform:none;box-shadow:inset 0 3px 5px #6
 <script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="2"></script>
 <link rel="stylesheet" href="./assets/hsk2-speech-v559.css">
 <script src="./assets/hsk2-speech-v559.js"></script>
+<style id="hsk2-lesson2-visible-footer-20261126">
+/* Preserve the approved vocabulary visuals; reserve the footer in the viewport. */
+html.course-layout #app[data-view]:not([data-view="1"]){height:100dvh!important;max-height:100dvh!important;min-height:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+html.course-layout #app[data-view]:not([data-view="1"]) > #pg433{display:flex!important;flex-direction:column!important;flex:1 1 0%!important;min-height:0!important;height:auto!important;max-height:100%!important;overflow:hidden!important}
+html.course-layout #app[data-view]:not([data-view="1"]) #pg433 > .pg433-header{flex:0 0 auto!important}
+html.course-layout #app[data-view]:not([data-view="1"]) #pg433 > .pg433-content{flex:1 1 0%!important;min-height:0!important;height:auto!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important}
+html.course-layout #app[data-view]:not([data-view="1"]) #pg433 > .pg433-footer{flex:0 0 auto!important;position:relative!important;bottom:auto!important;height:auto!important;min-height:64px!important;padding-bottom:max(10px,env(safe-area-inset-bottom))!important}
+</style>
 </head>
 <body>
 <div class="app" id="app">
@@ -743,7 +751,7 @@ function newWords() {
     '<article class="word-row">' + vocabImage(i) + hanzi(word.zh) + toneStrokes(word.tones) + '<div>' +
     translate([word.zh,word.py,word.ru]) + '</div>' + audioButton(word.zh,playIcon) + '</article>').join('') +
     '</div><p class="hint audio-note">🔊 Прослушано ' + state.heardWords.length +
-    ' из 6 слов. Сначала прослушай все записи, затем откроется «Дальше».</p>' +
+    ' из 6 слов. ' + (state.heardWords.length === 6 ? 'Можно продолжать.' : 'Прослушай все записи, чтобы продолжить.') + '</p>' +
     '<p class="hint audio-note">💡 洗脸: xǐliǎn — 3 + 3; при произношении первый слог звучит как 2-й тон (xíliǎn).</p>' + safeStatus();
 }
 
