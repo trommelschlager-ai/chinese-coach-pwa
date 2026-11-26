@@ -210,3 +210,30 @@ export function intervalPitchEvidence(frames,bounds,index){
  if((points.at(-1).t-points[0].t)/(b-a)<.45)return fail('мало покрытия F0',count);
  return {weak:false,text:'контур виден',count,points,isToneGrade:false};
 }
+
+
+// Context is supplied by the known teaching phrase, never inferred from F0.
+// These are practice suggestions, not a classification of lexical tone.
+export function contextualPitchAdvice({surfaceTone,evidence,verified}={}){
+ const reply=(kind,text)=>({kind,text,isToneGrade:false});
+ if(!verified)return reply('unverified','Границы пока не проверены на слух: отдельный контур не связываем с конкретным иероглифом.');
+ if(surfaceTone===0)return reply('neutral','У нейтрального тона нет фиксированного контура. Сравни краткость и лёгкость с образцом, не пытайся удерживать заданную высоту.');
+ if(![1,2,3,4].includes(surfaceTone)||!evidence||evidence.weak||!Array.isArray(evidence.points))return reply('uncertain','Измерения участка ненадёжны: направление пока не определяем.');
+ const pts=evidence.points;
+ if(pts.length<8||pts.at(-1).t-pts[0].t<.12||pts.some(p=>!Number.isFinite(p.hz)||p.hz<=0))return reply('uncertain','Участок слишком короткий для подсказки о движении высоты.');
+ const median=values=>{const a=[...values].sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;};
+ const n=pts.length,k=Math.max(2,Math.floor(n*.25));
+ const st=pts.map(p=>12*Math.log2(p.hz));
+ const first=median(st.slice(0,k)),last=median(st.slice(-k)),mid=median(st.slice(Math.floor(n*.35),Math.ceil(n*.65)));
+ const delta=last-first;
+ const kind=first-mid>1.4&&last-mid>1.4?'dip':delta>2?'rise':delta< -2?'fall':Math.max(...st)-Math.min(...st)<2?'level':'uncertain';
+ if(kind==='uncertain')return reply(kind,'Движение неоднозначно. Послушай образец и повтори естественно, не растягивая слог.');
+ const observed={rise:'Высота в измеренном участке повышается.',fall:'Высота в измеренном участке снижается.',dip:'Виден спад и последующий подъём.',level:'Высота почти ровная.'}[kind];
+ const notes={
+  1:kind==='level'?'Движение похоже на схему первого тона.':'Попробуй удерживать высоту ровно.',
+  2:kind==='rise'?'Движение похоже на восходящий тон в этой фразе.':'В этой фразе потренируй плавный подъём от средней высоты; сравни с образцом.',
+  3:'В связной речи третий тон часто низкий, иногда нисходящий. Подъём в конце не обязателен; по этому графику ошибку не определяем.',
+  4:kind==='fall'?'Движение похоже на схему четвёртого тона.':'Потренируй нисходящее движение, не повышая громкость.'
+ };
+ return reply(kind,observed+' '+notes[surfaceTone]+' Это подсказка по высоте, не оценка произношения.');
+}
