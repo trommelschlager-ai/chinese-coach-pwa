@@ -40,3 +40,6 @@ Existing regression workflows passed again. Dedicated browser job failed before 
 
 ## Stage 2 compositional grammar prototype
 Added isolated parser for interest, alternatives, experiential 过, spatial 从…到…. Direct checks: 9 examples, 11 rejected inputs, 96 interest combinations. Preserve subject, choice options, negation and aspect. No temporal inference from route or physical experience claims. Not integrated into dispatcher or reply selection; no release changes. Native review and broader tests pending.
+
+## Stage 2 temporal actions
+Separate explicit time, perfective 了, experiential 过, negative 没/没有/不 and intentions. Narrow action lexicon, conservative rejection of unsupported combinations, no assumption that 了 always means past or that 过 means a particular date. 10 reviewed examples, 11 boundary cases and 144 generated negative-past parser combinations passed direct JS assertions. Rejections are unsupported grammar, not blanket judgments of Mandarin correctness. No live routing, no audio claims, no Vercel deployment; Node tests saved for future execution. Stage 2 branch must be reconciled with current main before integration.
