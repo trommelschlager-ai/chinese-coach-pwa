@@ -177,3 +177,28 @@ export function alignFromReference(referenceBuffer,learnerBuffer,referenceBounds
   diagnostics:{avgCost:+avg.toFixed(3),warpingFraction:+(stretched/steps).toFixed(2)},
   uncertain:true,description:'Предварительное сопоставление по звучанию; не фонетически точная разметка и не оценка тонов'};
 }
+
+// An interval is a provisional audio landmark, not a recognized syllable.
+export function reviewInterval(buffer,bounds,index){
+ if(!buffer?.getChannelData||!Number.isFinite(buffer.sampleRate)||buffer.sampleRate<8000||
+    !Array.isArray(bounds)||!Number.isInteger(index)||index<0||index>=bounds.length-1||
+    bounds.some((x,i)=>!Number.isFinite(x)||x<0||(i>0&&x<=bounds[i-1])))return null;
+ const start=bounds[index],end=bounds[index+1];
+ let limit;try{limit=buffer.getChannelData(0).length/buffer.sampleRate}catch{return null}
+ if(end>limit+1e-6||end-start<.055)return null;
+ return {startSec:start,durationSec:Math.min(limit,end)-start};
+}
+// Do not infer a pitch direction from disconnected or fallback-heavy points.
+export function intervalPitchEvidence(frames,bounds,index){
+ const fail=(text,count=0)=>({weak:true,text,count,isToneGrade:false});
+ if(!Array.isArray(frames)||!Array.isArray(bounds)||!Number.isInteger(index)||index<0||index>=bounds.length-1)return fail('нет данных');
+ const a=bounds[index],b=bounds[index+1];
+ if(!Number.isFinite(a)||!Number.isFinite(b)||b<=a)return fail('нет границ');
+ const points=frames.filter(p=>Number.isFinite(p.t)&&Number.isFinite(p.hz)&&p.hz>=65&&p.hz<=550&&p.t>=a&&(index===bounds.length-2?p.t<=b:p.t<b));
+ const count=points.length;
+ if(count<6)return fail('мало F0',count);
+ if(points.filter(p=>p.method==='autocorrelation').length/count>.4)return fail('неустойчивое F0',count);
+ if(points.some((p,i)=>i>0&&(p.t<=points[i-1].t||p.t-points[i-1].t>.085||Math.abs(12*Math.log2(p.hz/points[i-1].hz))>=5)))return fail('разрыв F0',count);
+ if((points.at(-1).t-points[0].t)/(b-a)<.45)return fail('мало покрытия F0',count);
+ return {weak:false,text:'контур виден',count,points,isToneGrade:false};
+}
