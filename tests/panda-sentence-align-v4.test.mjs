@@ -109,3 +109,13 @@ test('a checked syllable boundary still requires reliable continuous pitch evide
  assert.equal(intervalPitchEvidence(pts.filter((_,i)=>i<4||i>7),bounds,0).weak,true);
  assert.equal(intervalPitchEvidence(pts,bounds,0).isToneGrade,false);
 });
+
+test('substantially shorter input requires manual review, never a pronunciation error',()=>{
+ const out=alignFromReference(syntheticSpeech(),syntheticSpeech(.67),bounds,bounds.map(x=>x*.67));
+ assert.equal(out.ok,false);
+ assert.equal(out.uncertain,true);
+ assert.match(out.reason,/не ошибка произношения/);
+ assert.equal(Object.hasOwn(out,'toneScore'),false);
+ const normal=alignFromReference(syntheticSpeech(),syntheticSpeech(.8),bounds,bounds.map(x=>x*.8));
+ assert.equal(normal.ok,true);
+});
