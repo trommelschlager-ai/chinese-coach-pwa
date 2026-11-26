@@ -12,6 +12,7 @@ const OPEN_ANSWERS=Object.freeze({
  "work-time":{"我八点去上班":["Wǒ bā diǎn qù shàngbān.","Я иду на работу в восемь.","8"],"我九点去上班":["Wǒ jiǔ diǎn qù shàngbān.","Я иду на работу в девять.","9"],"我十点去上班":["Wǒ shí diǎn qù shàngbān.","Я иду на работу в десять.","10"],"八点":["Bā diǎn.","В восемь.","8"],"九点":["Jiǔ diǎn.","В девять.","9"],"十点":["Shí diǎn.","В десять.","10"],"我不上班":["Wǒ bú shàngbān.","Я не хожу на работу.","none"]},
  "family-siblings":{"有":["Yǒu.","Есть.","yes"],"没有":["Méiyǒu.","Нет.","no"],"我没有兄弟姐妹":["Wǒ méiyǒu xiōngdì jiěmèi.","У меня нет братьев и сестёр.","no"],"我有一个哥哥":["Wǒ yǒu yí ge gēge.","У меня есть старший брат.","older-brother"],"我有一个姐姐":["Wǒ yǒu yí ge jiějie.","У меня есть старшая сестра.","older-sister"],"我有一个弟弟":["Wǒ yǒu yí ge dìdi.","У меня есть младший брат.","younger-brother"],"我有一个妹妹":["Wǒ yǒu yí ge mèimei.","У меня есть младшая сестра.","younger-sister"],"不想说":["Bù xiǎng shuō.","Не хочу говорить.","skip"],"我不想说":["Wǒ bù xiǎng shuō.","Я не хочу говорить.","skip"]},
  "family-size":{"两口人":["Liǎng kǒu rén.","Два человека.","2"],"三口人":["Sān kǒu rén.","Три человека.","3"],"四口人":["Sì kǒu rén.","Четыре человека.","4"],"五口人":["Wǔ kǒu rén.","Пять человек.","5"],"我家有三口人":["Wǒ jiā yǒu sān kǒu rén.","В моей семье три человека.","3"],"我家有四口人":["Wǒ jiā yǒu sì kǒu rén.","В моей семье четыре человека.","4"],"不想说":["Bù xiǎng shuō.","Не хочу говорить.","skip"],"我不想说":["Wǒ bù xiǎng shuō.","Я не хочу говорить.","skip"]},
+ 'study-practice':{"声调":["Shēngdiào.","Тоны.","声调"],"我想练习声调":["Wǒ xiǎng liànxí shēngdiào.","Я хочу практиковать тоны.","声调"],"我想学声调":["Wǒ xiǎng xué shēngdiào.","Я хочу изучать тоны.","声调"],"我想学习声调":["Wǒ xiǎng xuéxí shēngdiào.","Я хочу изучать тоны.","声调"],"发音":["Fāyīn.","Произношение.","发音"],"我想练习发音":["Wǒ xiǎng liànxí fāyīn.","Я хочу практиковать произношение.","发音"],"我想学发音":["Wǒ xiǎng xué fāyīn.","Я хочу изучать произношение.","发音"],"我想学习发音":["Wǒ xiǎng xuéxí fāyīn.","Я хочу изучать произношение.","发音"],"语法":["Yǔfǎ.","Грамматику.","语法"],"我想练习语法":["Wǒ xiǎng liànxí yǔfǎ.","Я хочу практиковать грамматику.","语法"],"我想学语法":["Wǒ xiǎng xué yǔfǎ.","Я хочу изучать грамматику.","语法"],"我想学习语法":["Wǒ xiǎng xuéxí yǔfǎ.","Я хочу изучать грамматику.","语法"],"汉字":["Hànzì.","Иероглифы.","汉字"],"我想练习汉字":["Wǒ xiǎng liànxí Hànzì.","Я хочу практиковать иероглифы.","汉字"],"我想学汉字":["Wǒ xiǎng xué Hànzì.","Я хочу изучать иероглифы.","汉字"],"我想学习汉字":["Wǒ xiǎng xuéxí Hànzì.","Я хочу изучать иероглифы.","汉字"],"听力":["Tīnglì.","Понимание на слух.","听力"],"我想练习听力":["Wǒ xiǎng liànxí tīnglì.","Я хочу практиковать понимание на слух.","听力"],"我想学听力":["Wǒ xiǎng xué tīnglì.","Я хочу изучать понимание на слух.","听力"],"我想学习听力":["Wǒ xiǎng xuéxí tīnglì.","Я хочу изучать понимание на слух.","听力"],"口语":["Kǒuyǔ.","Разговорную речь.","口语"],"我想练习口语":["Wǒ xiǎng liànxí kǒuyǔ.","Я хочу практиковать разговорную речь.","口语"],"我想学口语":["Wǒ xiǎng xué kǒuyǔ.","Я хочу изучать разговорную речь.","口语"],"我想学习口语":["Wǒ xiǎng xuéxí kǒuyǔ.","Я хочу изучать разговорную речь.","口语"],"我不想练习":["Wǒ bù xiǎng liànxí.","Я не хочу тренироваться.","skip"],"不知道":["Bù zhīdào.","Не знаю.","unknown"],"还没想好":["Hái méi xiǎng hǎo.","Ещё не решил(а).","unknown"]},
  'study-reason':{
   '因为我想去中国':['Yīnwèi wǒ xiǎng qù Zhōngguó.','Потому что я хочу поехать в Китай.','china-trip'],
   '我想去中国':['Wǒ xiǎng qù Zhōngguó.','Я хочу поехать в Китай.','china-trip'],
@@ -140,7 +141,7 @@ function composeReviewedAnswer(slot,key){
    const [,subject,period,frequency='']=m;
    const f={不:['bù','не завтракаю','no'],一般不:['yìbān bù','обычно не завтракаю','no'],有时候不:['yǒu shíhou bù','иногда не завтракаю','sometimes'],有时候:['yǒu shíhou','иногда завтракаю','sometimes'],通常:['tōngcháng','обычно завтракаю','yes'],一般:['yìbān','обычно завтракаю','yes'],每天:['měitiān','завтракаю каждый день','yes'],从来不:['cónglái bù','никогда не завтракаю','no'],'':['','завтракаю','yes']}[frequency];
    // Reject conflicting doubled time/frequency ("每天每天").
-   if(period==='每天'&&frequency==='每天')return null;
+   if(period==='每天'&&frequency&&!['不',''].includes(frequency))return null;
    const ru='Я '+f[1]+(period==='早上'?' утром':period==='每天'?' каждый день':'')+'.';
    return [reviewedSentence([subject?'wǒ':'',period?({早上:'zǎoshang',每天:'měitiān'}[period]):'',f[0],'chī zǎofàn']),ru,f[2]];
   }
@@ -174,12 +175,13 @@ function interpretOpenAnswer(raw,context){
  const item=Object.hasOwn(answers,key)?answers[key]:/[？?！!。；;，,]/u.test(String(raw).trim().replace(/[。！!]$/u,''))?null:composeReviewedAnswer(pending.slot,key);
  if(!item)return null;
  const [pinyin,translation,value]=item;
- return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot.startsWith('family')?'family':pending.slot==='study-reason'?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
+ return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot.startsWith('family')?'family':pending.slot.startsWith('study')?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
 function reviewedOpenQuestion(hanzi,previous,linked,memory){
  const s=cleanOpen(hanzi);
  let slot=null;
  if(s==='你为什么想学中文')slot='study-reason';
+ else if(s==='你想练习什么'||s==='你想学什么')slot='study-practice';
  else if(s==='你有什么爱好')slot='hobby';
  else if(s==='你想吃什么')slot='food';
  else if(s==='你早上吃早饭吗')slot='daily-breakfast';
@@ -293,12 +295,24 @@ function interpretIndependentTransport(raw){
  const [verbPy,verbRu]=verbs[m[1]],[modePy,modeRu]=modes[m[2]];
  return {raw:String(raw),intent:'express-transport-plan',topic:'travel',value:'坐'+m[2],pinyin:'Wǒ '+verbPy+' zuò '+modePy+(m[3]?' qù Zhōngguó':'')+'.',translation:'Я '+verbRu+' '+modeRu+(m[3]?' в Китай':'')+'.',toneVerified:false};
 }
+// Reviewed learning difficulty statements, with exact metadata.
+function interpretStudyDifficulty(raw){
+ const s=String(raw).trim();
+ if(/[？?。；;，,]/u.test(s.replace(/。$/u,'')))return null;
+ const m=/^(我觉得)?(中文|汉语|声调|发音|语法|汉字|听力|口语)(很|非常|有点|太)?难(了)?$/u.exec(cleanOpen(s));
+ if(!m)return null;
+ const [,subject,topic,degree='',particle]=m;
+ const names={中文:['Zhōngwén','китайский язык'],汉语:['Hànyǔ','китайский язык'],声调:['shēngdiào','тоны'],发音:['fāyīn','произношение'],语法:['yǔfǎ','грамматика'],汉字:['Hànzì','иероглифы'],听力:['tīnglì','понимание на слух'],口语:['kǒuyǔ','разговорная речь']};
+ const [py,ru]=names[topic],d={很:['hěn','очень'],非常:['fēicháng','очень'],有点:['yǒudiǎn','немного'],太:['tài','слишком'],'':['','']}[degree];
+ const translated=(subject?'Мне кажется, что ':'')+ru+' — '+[d[1],'трудно'].filter(Boolean).join(' ')+'.';
+ return {raw:String(raw),intent:'express-study-difficulty',topic:'study',value:topic,pinyin:reviewedSentence([subject?'wǒ juéde':'',py,d[0],'nán',particle?'le':'']),translation:translated.charAt(0).toUpperCase()+translated.slice(1),toneVerified:false};
+}
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentTransport(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentTransport(source)||interpretStudyDifficulty(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){

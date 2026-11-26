@@ -338,3 +338,19 @@ test('composed contextual answers cover clock, frequency, work and travel withou
  }
  for(const a of ['后天','七点半','偶尔'])assert.equal(make().plan(a,{mode:'free-chat'}),null,a);
 });
+
+
+test('learning difficulty uses a recorded question and supportive response, without tone claims',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+ const turn=(p,q,w)=>{const x=p.plan(q,{mode:'free-chat'});assert.equal(x?.line.hanzi,w,q);assert.equal(x.voiceStatus,'registered-exact');assert(x.spoken?.translation&&x.spoken?.pinyin,q);assert.equal(x.toneVerified,false);p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});};
+ for(const topic of ['中文','汉语','声调','发音','语法','汉字','听力','口语'])for(const degree of ['','很','非常','有点','太']){
+  const p=make();turn(p,'我觉得'+topic+degree+'难','你想练习什么？');turn(p,'我想练习声调','没关系，我们慢慢来。');
+ }
+ for(const item of ['声调','发音','语法','汉字','听力','口语'])for(const raw of [item,'我想学'+item,'我想练习'+item,'我想学习'+item]){
+  const p=make();turn(p,'中文很难','你想练习什么？');turn(p,raw,'没关系，我们慢慢来。');
+ }
+ for(const [raw,w] of [['我不想练习','好的。我们聊点别的吧！'],['不知道','你想学什么？'],['还没想好','你想学什么？']]){
+  const p=make();turn(p,'语法很难','你想练习什么？');turn(p,raw,w);
+ }
+ for(const q of ['中文不难','你觉得中文很难吗？','中文很难吗？','他觉得中文很难','声调'])assert.notEqual(make().plan(q,{mode:'free-chat'})?.semantic?.intent,'express-study-difficulty',q);
+});
