@@ -31,3 +31,6 @@ Added pure response selection for contextual agreement, reciprocal questions, ex
 
 ## Experimental integration on latest stable main
 Created separate draft branch from v565 main e1bd42bad83a1d8a0f7e85ef82e836d963e0052d. Existing core lazily imports experimental adapter only for explicit ?semantic=1 on default entry. Only Non-Stop free chat; graded, lesson, short and default entry untouched. Pilot intercepts only reviewed learner metadata and existing exact MP3, other input uses old engine. No service worker, UI art, audio or production deployment changes. Online-only, not an offline feature. Added dedicated browser and Node regression workflow; tests pending. No live link until approved release.
+
+## Experimental CI first run
+33/33 native Node tests passed; existing completed release workflows: 13 successful, four skipped, dedicated experimental browser gate failed before opening Chromium because playwright was absent from node_modules (ERR_MODULE_NOT_FOUND). Added same pinned transient playwright@1.56.1 installation used by existing mobile QA; explicit server readiness check. No package manifest or production changes. Browser rerun required.
