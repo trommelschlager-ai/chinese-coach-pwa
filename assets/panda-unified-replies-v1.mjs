@@ -13,6 +13,12 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
   const p=referencePlanner(prior,semantic);
   return p?{...p,continuesLearnerTurn:false}:clarify();
  }
+ if(intent==='answer-open-reviewed'){
+  if(semantic.slot==='study-reason'&&semantic.value==='china-trip')return line('你打算什么时候去？','Nǐ dǎsuàn shénme shíhou qù?','Когда ты собираешься поехать?','follow-up',true);
+  if(semantic.slot==='travel-time')return line('你打算怎么去？','Nǐ dǎsuàn zěnme qù?','Как ты собираешься добраться?','follow-up',true);
+  if(semantic.slot==='travel-method')return line('祝你旅途愉快！','Zhù nǐ lǚtú yúkuài!','Желаю приятного путешествия!','reply');
+  return null;
+ }
  if(intent==='acknowledgement')return clarify(); // do not assume an answer to a stale question
  if(intent==='answer-yes-no'){
   if(!semantic.accepted)return line('那你想做什么？','Nà nǐ xiǎng zuò shénme?','А что ты хочешь делать?','follow-up');
