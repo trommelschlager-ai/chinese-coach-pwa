@@ -1,0 +1,460 @@
+{
+  "cases": 46,
+  "handled": 42,
+  "unique": 28,
+  "exact": 8,
+  "missing": 20,
+  "reviewBeforeRecording": 9,
+  "rows": [
+    {
+      "hanzi": "那你休息一下吧。",
+      "pinyin": "Nà nǐ xiūxi yíxià ba.",
+      "ru": "Тогда немного отдохни.",
+      "src": "./assets/panda-ai-voice-v557/PA-V556-059.mp3",
+      "source": "panda-xiaoxiao:user-upload-v557",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "我想休息",
+          "prior": null
+        },
+        {
+          "q": "因为我很累所以我想休息",
+          "prior": null
+        },
+        {
+          "q": "对对",
+          "prior": "你今天休息吗？"
+        }
+      ]
+    },
+    {
+      "hanzi": "为什么？",
+      "pinyin": "Wèishénme?",
+      "ru": "Почему?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "我不想休息",
+          "prior": null
+        },
+        {
+          "q": "我觉得中文不难",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你觉得什么最难？",
+      "pinyin": "Nǐ juéde shénme zuì nán?",
+      "ru": "Что тебе кажется самым трудным?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "我觉得中文很难",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你想学什么？",
+      "pinyin": "Nǐ xiǎng xué shénme?",
+      "ru": "Что ты хочешь изучать?",
+      "src": "./assets/panda-voice-clips-v365/p012.mp3",
+      "source": "user-luvvoice-nov14-cut",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "我觉得中文很简单",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我觉得中文很有意思。",
+      "pinyin": "Wǒ juéde Zhōngwén hěn yǒu yìsi.",
+      "ru": "Мне кажется, что китайский очень интересный.",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "你觉得中文怎么样",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你为什么想学中文？",
+      "pinyin": "Nǐ wèishénme xiǎng xué Zhōngwén?",
+      "ru": "Почему ты хочешь учить китайский?",
+      "src": "./assets/hsk2-lesson7-voice/l7_26.mp3",
+      "source": "panda-approved-luvvoice:hsk2-20261122",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "虽然中文很难但是我每天学中文",
+          "prior": null
+        },
+        {
+          "q": "我想学中文",
+          "prior": null
+        },
+        {
+          "q": "对对",
+          "prior": "你想学中文吗？"
+        }
+      ]
+    },
+    {
+      "hanzi": "你经常这样做吗？",
+      "pinyin": "Nǐ jīngcháng zhèyàng zuò ma?",
+      "ru": "Ты часто так делаешь?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "我一边喝茶一边看书",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "然后呢？",
+      "pinyin": "Ránhòu ne?",
+      "ru": "А дальше?",
+      "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-01.mp3",
+      "source": "panda-user-upload:batch01-v563",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "我先刷牙再吃早饭",
+          "prior": null
+        },
+        {
+          "q": "我一回家就吃饭",
+          "prior": null
+        },
+        {
+          "q": "对对",
+          "prior": "你想跑步吗？"
+        }
+      ]
+    },
+    {
+      "hanzi": "你能多说一点吗？",
+      "pinyin": "Nǐ néng duō shuō yìdiǎn ma?",
+      "ru": "Можешь рассказать чуть подробнее?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "我会游泳",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你喜欢喝什么茶？",
+      "pinyin": "Nǐ xǐhuan hē shénme chá?",
+      "ru": "Какой чай ты любишь пить?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "我想喝茶",
+          "prior": null
+        },
+        {
+          "q": "对对",
+          "prior": "你想喝茶吗？"
+        }
+      ]
+    },
+    {
+      "hanzi": "你每天喝咖啡吗？",
+      "pinyin": "Nǐ měitiān hē kāfēi ma?",
+      "ru": "Ты пьёшь кофе каждый день?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "我想喝咖啡",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你打算什么时候去？",
+      "pinyin": "Nǐ dǎsuàn shénme shíhou qù?",
+      "ru": "Когда ты собираешься пойти?",
+      "src": "./assets/panda-ai-voice-v557/PA-V556-052.mp3",
+      "source": "panda-xiaoxiao:user-upload-v557",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "我想去公园",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你接下来想做什么？",
+      "pinyin": "Nǐ jiēxiàlai xiǎng zuò shénme?",
+      "ru": "Что ты хочешь делать дальше?",
+      "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-02.mp3",
+      "source": "panda-user-upload:batch01-v563",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "我想看书",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我在和你聊天。",
+      "pinyin": "Wǒ zài hé nǐ liáotiān.",
+      "ru": "Я разговариваю с тобой.",
+      "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-06.mp3",
+      "source": "panda-user-upload:batch01-v563",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "你现在做什么",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我今天和你练习中文。",
+      "pinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+      "ru": "Сегодня я практикую с тобой китайский.",
+      "src": "./assets/panda-ai-voice-batch01-v563/PA-V563-07.mp3",
+      "source": "panda-user-upload:batch01-v563",
+      "decision": "reuse-existing-registry",
+      "examples": [
+        {
+          "q": "你今天想做什么",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "你想问什么？",
+      "pinyin": "Nǐ xiǎng wèn shénme?",
+      "ru": "Что ты хочешь спросить?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "你呢",
+          "prior": null
+        },
+        {
+          "q": "对对",
+          "prior": null
+        },
+        {
+          "q": "对对",
+          "prior": "你不会游泳吗？"
+        },
+        {
+          "q": "不是",
+          "prior": "你不会游泳吗？"
+        }
+      ]
+    },
+    {
+      "hanzi": "我可以帮你学中文。",
+      "pinyin": "Wǒ kěyǐ bāng nǐ xué Zhōngwén.",
+      "ru": "Я могу помочь тебе учить китайский.",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "你想学中文吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我不用休息，我们可以聊天。",
+      "pinyin": "Wǒ bú yòng xiūxi, wǒmen kěyǐ liáotiān.",
+      "ru": "Мне не нужно отдыхать, мы можем поговорить.",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "你想休息吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的喝茶。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de hē chá.",
+      "ru": "Я виртуальная панда и не могу на самом деле пить чай.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想喝茶吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的喝咖啡。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de hē kāfēi.",
+      "ru": "Я виртуальная панда и не могу на самом деле пить кофе.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想喝咖啡吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的游泳。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de yóuyǒng.",
+      "ru": "Я виртуальная панда и не могу на самом деле плавать.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想游泳吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的跑步。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de pǎobù.",
+      "ru": "Я виртуальная панда и не могу на самом деле бегать.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想跑步吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的做饭。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de zuòfàn.",
+      "ru": "Я виртуальная панда и не могу на самом деле готовить.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想做饭吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的吃饭。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de chīfàn.",
+      "ru": "Я виртуальная панда и не могу на самом деле есть.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想吃饭吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的吃早饭。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de chī zǎofàn.",
+      "ru": "Я виртуальная панда и не могу на самом деле завтракать.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想吃早饭吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的去公园。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de qù gōngyuán.",
+      "ru": "Я виртуальная панда и не могу на самом деле ходить в парк.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想去公园吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "我是虚拟熊猫，不能真的睡觉。",
+      "pinyin": "Wǒ shì xūnǐ xióngmāo, bù néng zhēn de shuìjiào.",
+      "ru": "Я виртуальная панда и не могу на самом деле спать.",
+      "src": null,
+      "source": null,
+      "decision": "review-natural-reply-before-recording",
+      "examples": [
+        {
+          "q": "你想睡觉吗",
+          "prior": null
+        }
+      ]
+    },
+    {
+      "hanzi": "那你想做什么？",
+      "pinyin": "Nà nǐ xiǎng zuò shénme?",
+      "ru": "А что ты хочешь делать?",
+      "src": null,
+      "source": null,
+      "decision": "candidate-for-native-review",
+      "examples": [
+        {
+          "q": "不是",
+          "prior": "你今天休息吗？"
+        },
+        {
+          "q": "不是",
+          "prior": "你想喝茶吗？"
+        },
+        {
+          "q": "不是",
+          "prior": "你想学中文吗？"
+        },
+        {
+          "q": "不是",
+          "prior": "你想跑步吗？"
+        }
+      ]
+    }
+  ],
+  "baseline": "be22a5ecaa2c2b64d0d49d8c3e604cd2747945b0",
+  "scope": "Selected planner cases, exact registry lookup, not decoded audio or exhaustive coverage."
+}
