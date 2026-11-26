@@ -262,3 +262,21 @@ test('reviewed grammar correction keeps the conversation going without pretendin
  assert.equal(make('你为什么想学中文？').plan('我想中文学',{mode:'free-chat'}),null);
  assert.equal(make().plan('我想中文学',{mode:'graded'}),null);
 });
+
+
+test('phone-reported travel paraphrase restores the pending question and accepts full answers',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata});
+ const turn=(p,raw,want)=>{
+  const x=p.plan(raw,{mode:'free-chat'});assert.equal(x?.line.hanzi,want,raw);
+  assert.equal(x.voiceStatus,'registered-exact');assert(x.spoken.translation);assert.equal(x.toneVerified,false);
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});return x;
+ };
+ for(const q of ['什么时候去中国','什么时候去'])for(const answer of ['明天','我明天去中国','我下个月去中国','下个月我想去中国','我下个月想去中国']){
+  const p=make();turn(p,'我想学中文','你为什么想学中文？');turn(p,'因为我想去中国','你打算什么时候去？');
+  turn(p,'什么意思','你打算什么时候去？');
+  assert.equal(turn(p,q,'你打算什么时候去？').kind,'explain-exact');
+  turn(p,answer,'你打算怎么去？');turn(p,'我打算坐飞机','祝你旅途愉快！');
+ }
+ for(const q of ['什么时候去中国','你什么时候去中国','你打算什么时候去中国'])turn(make(),q,'我是虚拟熊猫，没有实际的旅行经历。');
+ const p=make();turn(p,'我想学中文','你为什么想学中文？');turn(p,'因为我想去中国','你打算什么时候去？');turn(p,'我还没想好','好的。我们聊点别的吧！');
+});

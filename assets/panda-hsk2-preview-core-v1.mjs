@@ -107,17 +107,23 @@ function play(entry=null,retry=0){
   if(state.mode==='nonstop'&&state.followup){state.pendingAudioReply=replyKey;clearTimeout(followupTimer);}
   note(message);
  };
+ const retryExact=()=>{
+  if(!valid()||!semanticFreeChat()||retry!==0||document.hidden)return false;
+  // One fresh attempt at the identical approved clip. No new voice.
+  stopAudio();try{a.removeAttribute('src');a.load()}catch{}
+  note('Повторная загрузка аудио…');play(entry,1);return true;
+ };
  a.onerror=()=>{
-  if(!valid())return;
-  // A transient media error in experimental free chat gets exactly one
-  // fresh attempt at the identical approved MP3, never another voice.
-  if(semanticFreeChat()&&retry===0&&!document.hidden){
-   stopAudio();try{a.removeAttribute('src');a.load()}catch{}
-   note('Повторная загрузка аудио…');play(entry,1);return;
-  }
+  if(!valid()||retryExact())return;
   failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
  };
- a.play().catch(()=>{if(valid()){blockedPlayback=entry||currentLine;failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.')}});
+ a.play().catch(error=>{
+  if(!valid())return;
+  const mediaFailure=['NotSupportedError','NetworkError','EncodingError'].includes(error?.name);
+  if(mediaFailure&&retryExact())return;
+  if(mediaFailure){failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');return}
+  blockedPlayback=entry||currentLine;failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.');
+ });
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null;state.pendingAudioReply=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.pendingAudioReply)return;if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}

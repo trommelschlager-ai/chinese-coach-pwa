@@ -38,9 +38,30 @@ try{
    assert.equal(corrected.history.at(-2).analysis.correction.inlineConversation,true);
    assert.equal(corrected.history.at(-1).analysis.toneVerified,false);
    await page.waitForFunction(()=>document.querySelector('#pg346-feedback')?.textContent.includes('我想学中文'));
-   for(const [q,want] of [['因为我想去中国','你打算什么时候去？'],['什么意思','你打算什么时候去？'],['明天','你打算怎么去？'],['坐飞机','祝你旅途愉快！'],['聊聊我的一天吧','你早上吃早饭吗？'],['我吃早饭早上','你晚上几点睡觉？'],['聊聊工作吧','你今天忙吗？'],['聊聊我的一天吧','你晚上几点睡觉？'],['我睡觉晚上十点','你接下来想做什么？']]){
+   for(const [q,want] of [['因为我想去中国','你打算什么时候去？'],['什么意思','你打算什么时候去？'],['什么时候去中国','你打算什么时候去？'],['我下个月去中国','你打算怎么去？'],['我打算坐飞机','祝你旅途愉快！'],['聊聊我的一天吧','你早上吃早饭吗？'],['我吃早饭早上','你晚上几点睡觉？'],['聊聊工作吧','你今天忙吗？'],['聊聊我的一天吧','你晚上几点睡觉？'],['我睡觉晚上十点','你接下来想做什么？']]){
     const x=await send(q);assert.equal(x.history.at(-1).hanzi,want,q);assert.equal(x.history.at(-1).analysis.semanticPilot,true,q);
    }
+   // Simulate a transient error on the exact recorded travel question.
+   // Use native Audio for the second attempt and assert actual playback.
+   await page.evaluate(()=>{
+    const NativeAudio=window.Audio;window.__travelRetry=[];
+    window.Audio=function(src){
+     const a=new NativeAudio(src);
+     if(String(src).includes('PA-V556-052.mp3')){
+      window.__travelRetry.push(String(src));
+      if(window.__travelRetry.length===1){
+       a.play=()=>{queueMicrotask(()=>a.onerror?.(new Event('error')));return Promise.resolve();};
+      }
+     }
+     return a;
+    };
+    window.Audio.prototype=NativeAudio.prototype;
+    window.__pilotPlaying=[];
+   });
+   await send('我想学中文');await send('因为我想去中国');
+   await page.waitForFunction(()=>window.__travelRetry.length===2&&window.__pilotPlaying.some(src=>src.includes('PA-V556-052.mp3')));
+   assert.equal(await page.evaluate(()=>new Set(window.__travelRetry).size),1);
+   console.log('PASS one exact audio retry after injected media error');
    const spokenCorrection=await speak('我想中文学',.93);
    assert.equal(spokenCorrection.history.at(-1).hanzi,'你为什么想学中文？');
    assert.equal(spokenCorrection.history.at(-2).analysis.correction.inlineConversation,true);
