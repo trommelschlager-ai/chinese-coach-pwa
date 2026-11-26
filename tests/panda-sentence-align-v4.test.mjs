@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice,compareContextualPitch} from '../assets/panda-sentence-align-v4.mjs';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice,compareContextualPitch,sentencePitchWindowSize} from '../assets/panda-sentence-align-v4.mjs';
 
 const rate=12000;
 const bounds=[0.10,0.42,0.81,1.17,1.52,1.95];
@@ -207,4 +207,14 @@ test('real-audio F0 fixtures with altered pitch do not overrule weak references'
   const out=compareContextualPitch({surfaceTone:c.tone,evidence,referenceEvidence,verified:true});
   assert.equal(out.kind,c.want);assert.equal(out.isToneGrade,false);
  }
+});
+
+test('phrase pitch window is rate-normalized and respects minimum and recording length',()=>{
+ for(const [rate,count,want] of [[24000,100000,1560],[44100,100000,2867],[48000,100000,3120],[16000,100000,1040],[8000,100000,1024],[48000,700,700],[0,100,0]])
+  assert.equal(sentencePitchWindowSize(rate,count),want);
+});
+test('phrase pilot uses rate-normalized pitch window for decoded audio',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const page=readFileSync(new URL('../panda-hsk2-tone-sentence-pilot.html',import.meta.url),'utf8');
+ assert(page.includes('win=sentencePitchWindowSize(rate,d.length)'));
 });
