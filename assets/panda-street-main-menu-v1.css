@@ -1,0 +1,34 @@
+/* Panda Street entries sit in the open water area below the two original level cards. */
+#pg130 .pg-photo1-home .pg-street-level-list{
+ position:absolute;z-index:4;top:76.8%;left:6%;width:88%;height:10.7%;
+ display:grid;grid-template-columns:1fr 1fr;gap:2.2%;margin:0;padding:0;
+ border:0;background:transparent;box-shadow:none;pointer-events:none;
+}
+#pg130 .pg-photo1-home .pg-street-level{
+ box-sizing:border-box;min-width:0;min-height:0;display:grid;
+ grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(4px,1.2cqw,9px);
+ padding:clamp(5px,1.5cqw,11px);border:1px solid #ffd780;border-bottom:3px solid #9b39a7;
+ border-radius:clamp(12px,3cqw,21px);color:#fff;text-decoration:none;
+ background:linear-gradient(135deg,#13152bf2,#351348f5 58%,#751a86f2);
+ box-shadow:0 0 12px #ed73e788,0 4px 8px #28133d80,inset 0 1px 2px #ffffff75;
+ pointer-events:auto;-webkit-tap-highlight-color:transparent;
+}
+#pg130 .pg-photo1-home .pg-street-level-live:active{transform:translateY(2px);filter:brightness(1.16)}
+#pg130 .pg-photo1-home .pg-street-level-live:focus-visible{outline:3px solid #fff9ab;outline-offset:2px}
+#pg130 .pg-photo1-home .pg-street-paw{
+ display:grid;place-items:center;width:clamp(25px,7cqw,38px);height:clamp(25px,7cqw,38px);
+ border-radius:50%;background:linear-gradient(145deg,#ffd776,#f276d7 65%,#8136c6);
+ font-size:clamp(15px,4cqw,22px);box-shadow:0 0 8px #ee82ed;
+}
+#pg130 .pg-photo1-home .pg-street-label{display:grid;gap:2px;min-width:0}
+#pg130 .pg-photo1-home .pg-street-label small{font-size:clamp(7px,1.9cqw,10px);font-weight:900;letter-spacing:.07em;color:#ffd780;white-space:nowrap}
+#pg130 .pg-photo1-home .pg-street-label strong{font-size:clamp(13px,3.5cqw,18px);line-height:1;color:#fff;text-shadow:0 1px 4px #c14dcc}
+#pg130 .pg-photo1-home .pg-street-open{font-size:clamp(14px,3.6cqw,20px);font-weight:900;color:#ffd780;white-space:nowrap}
+#pg130 .pg-photo1-home .pg-street-level-soon{opacity:.88;border-color:#b78cae;background:linear-gradient(135deg,#1e2032ed,#403149ed 60%,#5a3c60ed);box-shadow:0 3px 8px #28133d70,inset 0 1px 2px #ffffff55}
+#pg130 .pg-photo1-home .pg-street-level-soon .pg-street-paw{filter:saturate(.6);opacity:.85}
+@media(max-width:360px){
+ #pg130 .pg-photo1-home .pg-street-level-list{left:5%;width:90%;gap:1.8%;height:10.2%}
+ #pg130 .pg-photo1-home .pg-street-level{gap:4px;padding:4px;border-radius:12px}
+ #pg130 .pg-photo1-home .pg-street-label small{font-size:7px;letter-spacing:.04em}
+ #pg130 .pg-photo1-home .pg-street-open{font-size:11px}
+}
