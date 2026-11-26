@@ -380,6 +380,16 @@ let friendlyStage=null;
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
+ // A standalone 什么 / 什么意思 / 请再说一遍 is a contextual clarification in free chat.
+ // Preserve graded lesson flows and never reinterpret a longer question as repetition.
+ if(!state.dayMode&&((hsk2&&(hsk2.openChat||(entry.beginnerGreeting&&hsk2.id===101))))&&/^(?:什么|什么意思|请再说一遍|再说一遍|你说什么|没听懂|我没听懂)$/.test(normalize(input))){
+  const expressions={'什么':['Shénme?','Что?'],'什么意思':['Shénme yìsi?','Что это значит?'],'请再说一遍':['Qǐng zài shuō yí biàn.','Повтори, пожалуйста.'],'再说一遍':['Zài shuō yí biàn.','Повтори ещё раз.'],'你说什么':['Nǐ shuō shénme?','Что ты сказал(а)?'],'没听懂':['Méi tīng dǒng.','Не понял(а).'],'我没听懂':['Wǒ méi tīng dǒng.','Я не понял(а).']};
+  const previous=[...state.history].reverse().find(t=>t.who==='panda'&&t.hanzi&&t.pinyin&&t.ru);
+  const [pinyin,translation]=expressions[normalize(input)];
+  learner(input,{known:true,pinyin,translation,toneVerified:false});
+  const reply=previous?{hanzi:previous.hanzi,pinyin:previous.pinyin,ru:previous.ru}:{hanzi:'你想问什么？',pinyin:'Nǐ xiǎng wèn shénme?',ru:'Что ты хочешь спросить?'};
+  say(reply,!!lookupPandaVoiceClip(reply.hanzi));note('Панда повторила предыдущую реплику. Перевод и пиньинь показаны. Тоны не оценивались.');return;
+ }
  // Recognize voluntary Chinese name introductions in free HSK1 conversation.
  const standaloneName=state.mode==='nonstop'&&!hsk2&&!state.dayMode&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(input));
  const alreadyIntroduced=state.history.some(turn=>turn.who==='you'&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(turn.hanzi)));

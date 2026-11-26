@@ -376,6 +376,9 @@ function courseConversation563(raw,s){
 }
 export function respondToNaturalStatement(raw,{awaiting=null,introduced=false}={}){
  const s=norm(raw);if(!s)return null;
+ // Live Android report: accept complete health/mood variants, not just one memorized phrase.
+ const wellbeing=[["你的健康怎么样","Nǐ de jiànkāng zěnmeyàng?","Как твоё здоровье?","health"],["你健康怎么样","Nǐ jiànkāng zěnmeyàng?","Как твоё здоровье?","health"],["你的身体怎么样","Nǐ de shēntǐ zěnmeyàng?","Как твоё самочувствие?","health"],["你身体怎么样","Nǐ shēntǐ zěnmeyàng?","Как твоё самочувствие?","health"],["你身体还好吗","Nǐ shēntǐ hái hǎo ma?","Ты хорошо себя чувствуешь?","health"],["你最近身体怎么样","Nǐ zuìjìn shēntǐ zěnmeyàng?","Как ты себя чувствуешь в последнее время?","health"],["你的心情怎么样","Nǐ de xīnqíng zěnmeyàng?","Как твоё настроение?","mood"],["你心情怎么样","Nǐ xīnqíng zěnmeyàng?","Как твоё настроение?","mood"],["你今天心情怎么样","Nǐ jīntiān xīnqíng zěnmeyàng?","Как у тебя сегодня настроение?","mood"],["你今天的心情怎么样","Nǐ jīntiān de xīnqíng zěnmeyàng?","Как у тебя сегодня настроение?","mood"],["你现在心情怎么样","Nǐ xiànzài xīnqíng zěnmeyàng?","Какое у тебя сейчас настроение?","mood"],["你心情好吗","Nǐ xīnqíng hǎo ma?","У тебя хорошее настроение?","mood"]].find(x=>x[0]===s);
+ if(wellbeing){const reply=wellbeing[3]==='health'?['我身体很好。','Wǒ shēntǐ hěn hǎo.','У меня хорошее самочувствие.']:['我很开心。','Wǒ hěn kāixīn.','У меня хорошее настроение.'];return {...result(raw,wellbeing[1],wellbeing[2],reply,null,1),kind:'question',domain:'everyday'};}
  const work=workConversation(raw,s,awaiting);if(work)return work;
  const intro=introductionConversation(raw,s,awaiting);if(intro)return intro;
  const family=familyConversation(raw,s,awaiting);if(family)return family;
