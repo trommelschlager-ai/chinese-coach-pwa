@@ -135,6 +135,22 @@ try{
  await street.locator('#nonstop').click();
  await street.locator('#entry').fill('我觉得中文很难');await street.locator('#submit').click();await street.waitForFunction(()=>document.querySelector('#live-panda')?.textContent.includes('你想练习什么'));
  await street.locator('#send').click();await street.locator('#entry').fill('我想练习声调');await street.locator('#submit').click();await street.waitForFunction(()=>document.querySelector('#live-panda')?.textContent.includes('没关系，我们慢慢来'));await street.waitForFunction(()=>window.__streetAudio.some(s=>s.includes('/panda-street-voice-v20261125/27.mp3')));
+ // Owner-approved repeat-and-resume dialogue must work in Street as well.
+ for(const [q,expected] of [
+  ['我想学中文','你为什么想学中文？'],
+  ['我没听清楚。','你为什么想学中文？'],
+  ['因为我想去中国。','你打算什么时候去？']
+ ]){
+  await street.locator('#send').click();await street.locator('#entry').fill(q);await street.locator('#submit').click();
+  await street.waitForFunction(({q,expected})=>{
+   const last=JSON.parse(sessionStorage.getItem('panda-street-v7-log')||'[]').at(-1);
+   return last?.user===q&&last?.panda?.zh===expected&&!!last.userInfo?.py&&!!last.userInfo?.ru&&document.querySelector('#live-panda .zh')?.textContent===expected;
+  },{q,expected});
+  const clip=await street.evaluate(expected=>window.PandaStreetVoiceV20261125.lookup(expected,'male'),expected);
+  // Missing approved male voice is text-only, never a female or synthesized substitute.
+  if(!clip)console.log('STREET_MISSING_MALE_MP3',expected);
+ }
+ console.log('PASS Street repeat previous question and resume the China travel chain');
  assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await street.close();
  console.log('PASS Street shared semantic context and exact male-only playback; explicit rollback, short and graded preserved');
 }finally{await browser.close();}
