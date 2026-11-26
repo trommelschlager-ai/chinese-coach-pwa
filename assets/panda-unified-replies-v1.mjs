@@ -19,8 +19,12 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
   return line('好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Давай поговорим о другом!','reply');
  }
  if(intent==='answer-open-reviewed'){
-  if(semantic.slot==='hobby')return line('你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?','follow-up');
-  if(semantic.slot==='food')return line('还要别的吗？','Hái yào bié de ma?','Хочешь что-нибудь ещё?','follow-up');
+  if(semantic.slot==='hobby')return line('你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?','follow-up',true);
+  if(semantic.slot==='hobby-frequency')return line('你周末喜欢做什么？','Nǐ zhōumò xǐhuan zuò shénme?','Что ты любишь делать по выходным?','follow-up',true);
+  if(semantic.slot==='food')return line('还要别的吗？','Hái yào bié de ma?','Хочешь что-нибудь ещё?','follow-up',true);
+  if(semantic.slot==='food-more'&&semantic.value==='yes')return line('你还喜欢吃什么？','Nǐ hái xǐhuan chī shénme?','Что ещё ты любишь есть?','follow-up',true);
+  if(['hobby-weekend','food-more','food-preference'].includes(semantic.slot))return line('你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?','follow-up',true);
+  if(semantic.slot==='next-action')return semantic.value==='rest'?rest():semantic.value==='study'?line('你为什么想学中文？','Nǐ wèishénme xiǎng xué Zhōngwén?','Почему ты хочешь учить китайский?','follow-up',true):null;
   if(semantic.slot==='study-reason'&&semantic.value==='china-trip')return line('你打算什么时候去？','Nǐ dǎsuàn shénme shíhou qù?','Когда ты собираешься поехать?','follow-up',true);
   if(semantic.slot==='travel-time')return line('你打算怎么去？','Nǐ dǎsuàn zěnme qù?','Как ты собираешься добраться?','follow-up',true);
   if(semantic.slot==='travel-method')return line('祝你旅途愉快！','Zhù nǐ lǚtú yúkuài!','Желаю приятного путешествия!','reply');

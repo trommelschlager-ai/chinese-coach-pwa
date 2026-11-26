@@ -35,6 +35,48 @@ const OPEN_ANSWERS=Object.freeze({
   '饺子':['Jiǎozi.','Пельмени.','饺子'],
   '我想吃饺子':['Wǒ xiǎng chī jiǎozi.','Я хочу поесть пельменей.','饺子']
  },
+ 'hobby-frequency':{
+  '经常':['Jīngcháng.','Часто.','often'],
+  '不经常':['Bù jīngcháng.','Не часто.','rarely'],
+  '每天':['Měitiān.','Каждый день.','daily'],
+  '有时候':['Yǒu shíhou.','Иногда.','sometimes'],
+  '是的':['Shì de.','Да.','often'],
+  '对':['Duì.','Да, верно.','often']
+ },
+ 'hobby-weekend':{
+  '跑步':['Pǎobù.','Бегать.','跑步'],
+  '看书':['Kàn shū.','Читать книги.','看书'],
+  '听音乐':['Tīng yīnyuè.','Слушать музыку.','听音乐'],
+  '游泳':['Yóuyǒng.','Плавать.','游泳'],
+  '我周末常常跑步':['Wǒ zhōumò chángcháng pǎobù.','По выходным я часто бегаю.','跑步'],
+  '我周末喜欢看书':['Wǒ zhōumò xǐhuan kàn shū.','По выходным я люблю читать.','看书'],
+  '我周末喜欢游泳':['Wǒ zhōumò xǐhuan yóuyǒng.','По выходным я люблю плавать.','游泳'],
+  '休息':['Xiūxi.','Отдыхать.','休息']
+ },
+ 'food-more':{
+  '不要了':['Bú yào le.','Больше не нужно.','no'],
+  '不用了':['Bú yòng le.','Больше не нужно.','no'],
+  '没有了':['Méiyǒu le.','Больше ничего.','no'],
+  '还要':['Hái yào.','Хочу ещё.','yes'],
+  '还要米饭':['Hái yào mǐfàn.','Ещё риса.','米饭'],
+  '还要面条':['Hái yào miàntiáo.','Ещё лапши.','面条'],
+  '还要饺子':['Hái yào jiǎozi.','Ещё пельменей.','饺子']
+ },
+ 'food-preference':{
+  '米饭':['Mǐfàn.','Рис.','米饭'],
+  '面条':['Miàntiáo.','Лапшу.','面条'],
+  '饺子':['Jiǎozi.','Пельмени.','饺子'],
+  '我喜欢吃米饭':['Wǒ xǐhuan chī mǐfàn.','Я люблю есть рис.','米饭'],
+  '我喜欢吃面条':['Wǒ xǐhuan chī miàntiáo.','Я люблю есть лапшу.','面条'],
+  '我喜欢吃饺子':['Wǒ xǐhuan chī jiǎozi.','Я люблю есть пельмени.','饺子']
+ },
+ 'next-action':{
+  '休息':['Xiūxi.','Отдыхать.','rest'],
+  '我想休息':['Wǒ xiǎng xiūxi.','Я хочу отдохнуть.','rest'],
+  '学习中文':['Xuéxí Zhōngwén.','Изучать китайский.','study'],
+  '我想学中文':['Wǒ xiǎng xué Zhōngwén.','Я хочу учить китайский.','study'],
+  '学中文':['Xué Zhōngwén.','Учить китайский.','study']
+ },
  'travel-method':{
   '坐飞机':['Zuò fēijī.','На самолёте.','坐飞机'],
   '坐火车':['Zuò huǒchē.','На поезде.','坐火车'],
@@ -47,7 +89,7 @@ function interpretOpenAnswer(raw,context){
  const answers=OPEN_ANSWERS[pending.slot],key=cleanOpen(raw);
  if(!Object.hasOwn(answers,key))return null;
  const [pinyin,translation,value]=answers[key];
- return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot==='hobby'?'leisure':pending.slot==='food'?'food':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
+ return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'?'daily':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
 function reviewedOpenQuestion(hanzi,previous,linked){
  const s=cleanOpen(hanzi);
@@ -57,6 +99,13 @@ function reviewedOpenQuestion(hanzi,previous,linked){
  else if(s==='你想吃什么')slot='food';
  else if(linked&&previous?.intent==='answer-open-reviewed'&&previous.slot==='study-reason'&&previous.value==='china-trip'&&s==='你打算什么时候去')slot='travel-time';
  else if(linked&&previous?.intent==='answer-open-reviewed'&&previous.slot==='travel-time'&&s==='你打算怎么去')slot='travel-method';
+ else if(linked&&previous?.intent==='answer-open-reviewed'){
+  if(previous.slot==='hobby'&&s==='你经常做这件事吗')slot='hobby-frequency';
+  else if(previous.slot==='hobby-frequency'&&s==='你周末喜欢做什么')slot='hobby-weekend';
+  else if(previous.slot==='food'&&s==='还要别的吗')slot='food-more';
+  else if(previous.slot==='food-more'&&previous.value==='yes'&&s==='你还喜欢吃什么')slot='food-preference';
+  else if(['hobby-weekend','food-more','food-preference'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
+ }
  return slot?{intent:'ask-open-reviewed',subject:'你',slot,raw:hanzi}:null;
 }
 
@@ -81,7 +130,7 @@ function dispatchSemantic(raw,context={},parsers){
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return parsers.contextual(source,context)||interpretTopicRequest(source)||interpretOpenAnswer(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretOpenAnswer(source,context)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){
