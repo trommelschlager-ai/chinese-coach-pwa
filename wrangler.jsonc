@@ -1,0 +1,12 @@
+{
+  "name": "chinese-coach-pwa",
+  "compatibility_date": "2026-11-26",
+  "main": "cloudflare/panda-worker.mjs",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./.cloudflare-dist",
+    "html_handling": "none",
+    "binding": "ASSETS"
+  }
+}

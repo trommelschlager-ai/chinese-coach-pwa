@@ -21,3 +21,7 @@ secrets.*.json
 
 # Do not publish unreviewed AI-generated Mandarin voices.
 .voice-staging/
+
+# Cloudflare static test output
+.cloudflare-dist/
+.wrangler/
