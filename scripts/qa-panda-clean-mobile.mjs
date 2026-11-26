@@ -22,7 +22,20 @@ export async function verifyCleanMobile(browser,base,dir){
   assert(await photo.isVisible());
   assert.equal(await mascot.evaluate(el=>getComputedStyle(el).animationName),'none');
   assert.equal(await mascot.evaluate(el=>getComputedStyle(el).transform),'none');
-  assert.equal(await page.locator('.pg353-face-canvas').isVisible(),false);
+  // The approved portrait remains the sizing reference. The visible face
+  // canvas replaces its pixels only after successful initialization.
+  await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.faceReady==='true');
+  const face=await page.locator('.pg353-face-canvas').evaluate(cv=>{
+   const img=cv.parentElement.querySelector('.pg346-panda');
+   const style=getComputedStyle(cv),p=getComputedStyle(img);
+   const a=cv.getBoundingClientRect(),b=img.getBoundingClientRect();
+   const pixels=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;
+   let opaque=0;for(let i=3;i<pixels.length;i+=4)if(pixels[i]>100)opaque++;
+   return {visible:style.display!=='none'&&style.visibility==='visible'&&Number(style.opacity)===1,
+    originalLoaded:img.complete&&img.naturalWidth>0,originalOpacity:p.opacity,opaque,
+    aligned:['x','y','width','height'].every(k=>Math.abs(a[k]-b[k])<1.5)};
+  });
+  assert(face.visible&&face.originalLoaded&&face.originalOpacity==='0'&&face.opaque>200&&face.aligned,JSON.stringify(face));
   assert.match(await page.locator('.pg500-landscape').evaluate(el=>getComputedStyle(el).backgroundImage),/panda-landscape-v350/);
   assert.match(await page.locator('.pg346-scene').evaluate(el=>getComputedStyle(el,'::before').backgroundImage),/panda-exact-stone-v361/);
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false);

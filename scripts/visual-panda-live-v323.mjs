@@ -27,7 +27,20 @@ try{
   assert.equal(await page.locator('#pg346-topics').isVisible(),false);
   const panda=page.locator('.pg352-mascot .pg346-panda');
   assert(await panda.isVisible());
-  assert(await panda.evaluate(el=>el.complete&&el.naturalWidth>0&&Number(getComputedStyle(el).opacity)>0));
+  // The approved portrait remains the sizing reference. The visible face
+  // canvas replaces its pixels only after successful initialization.
+  await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.faceReady==='true');
+  const face=await page.locator('.pg353-face-canvas').evaluate(cv=>{
+   const img=cv.parentElement.querySelector('.pg346-panda');
+   const style=getComputedStyle(cv),p=getComputedStyle(img);
+   const a=cv.getBoundingClientRect(),b=img.getBoundingClientRect();
+   const pixels=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;
+   let opaque=0;for(let i=3;i<pixels.length;i+=4)if(pixels[i]>100)opaque++;
+   return {visible:style.display!=='none'&&style.visibility==='visible'&&Number(style.opacity)===1,
+    originalLoaded:img.complete&&img.naturalWidth>0,originalOpacity:p.opacity,opaque,
+    aligned:['x','y','width','height'].every(k=>Math.abs(a[k]-b[k])<1.5)};
+  });
+  assert(face.visible&&face.originalLoaded&&face.originalOpacity==='0'&&face.opaque>200&&face.aligned,JSON.stringify(face));
   assert.equal(await page.locator('.pg352-rocks').isVisible(),false);
   const dims=await page.evaluate(()=>{
    const rect=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom}};
