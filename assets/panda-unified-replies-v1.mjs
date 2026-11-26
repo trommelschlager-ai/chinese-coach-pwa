@@ -21,7 +21,25 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
  const workTime=()=>line('你几点去上班？','Nǐ jǐ diǎn qù shàngbān?','Во сколько ты идёшь на работу?','follow-up',true);
  const study=()=>line('你为什么想学中文？','Nǐ wèishénme xiǎng xué Zhōngwén?','Почему ты хочешь учить китайский?','follow-up',true);
  const next=()=>line('你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?','follow-up',true);
+ const siblings=()=>line('你有兄弟姐妹吗？','Nǐ yǒu xiōngdì jiěmèi ma?','У тебя есть братья или сёстры?','follow-up',true);
+ const familySize=()=>line('明白了。你家有几口人？','Míngbai le. Nǐ jiā yǒu jǐ kǒu rén?','Понятно. Сколько человек в твоей семье?','follow-up',true);
+ const change=()=>line('好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Давай поговорим о другом!','reply');
  if(intent==='request-topic-change'){
+  if(semantic.value==='family'){
+   if(fact('family-siblings')?.value==='skip'||fact('family-size')?.value==='skip')return change();
+   return !fact('family-siblings')?siblings():!fact('family-size')?familySize():next();
+  }
+  if(semantic.value==='auto'){
+   // Choose an unanswered non-family topic; never initiate personal family questions.
+   const h=prior?.hobbyMemory;
+   if(!h?.hobby||prior.turn-h.at>24)return line('你有什么爱好？','Nǐ yǒu shénme àihào?','Какие у тебя увлечения?','follow-up');
+   if(!fact('daily-breakfast'))return breakfast();
+   if(!fact('daily-sleep'))return sleep();
+   if(!fact('study-reason'))return study();
+   if(!fact('work-busy'))return busy();
+   if(!fact('work-time'))return workTime();
+   return next();
+  }
   if(semantic.value==='daily')return !fact('daily-breakfast')?breakfast():!fact('daily-sleep')?sleep():next();
   if(semantic.value==='work')return !fact('work-busy')?busy():!fact('work-time')?workTime():next();
   if(semantic.value==='study')return !fact('study-reason')?study():next();
@@ -38,6 +56,8 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
   return line('好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Давай поговорим о другом!','reply');
  }
  if(intent==='answer-open-reviewed'){
+  if(semantic.slot==='family-siblings')return semantic.value==='skip'?change():fact('family-size')?next():familySize();
+  if(semantic.slot==='family-size')return semantic.value==='skip'?change():next();
   if(semantic.slot==='daily-breakfast')return fact('daily-sleep')?next():sleep();
   if(semantic.slot==='daily-sleep')return next();
   if(semantic.slot==='work-busy')return fact('work-time')?next():workTime();

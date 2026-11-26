@@ -10,6 +10,8 @@ const OPEN_ANSWERS=Object.freeze({
  "daily-sleep":{"九点":["Jiǔ diǎn.","В девять вечера.","21"],"十点":["Shí diǎn.","В десять вечера.","22"],"十一点":["Shíyī diǎn.","В одиннадцать вечера.","23"],"十二点":["Shí'èr diǎn.","В полночь.","00"],"我晚上十点睡觉":["Wǒ wǎnshang shí diǎn shuìjiào.","Я ложусь спать в десять вечера.","22"]},
  "work-busy":{"忙":["Máng.","Занят(а).","yes"],"很忙":["Hěn máng.","Очень занят(а).","yes"],"我今天很忙":["Wǒ jīntiān hěn máng.","Я сегодня очень занят(а).","yes"],"不忙":["Bù máng.","Не занят(а).","no"]},
  "work-time":{"八点":["Bā diǎn.","В восемь.","8"],"九点":["Jiǔ diǎn.","В девять.","9"],"十点":["Shí diǎn.","В десять.","10"],"我不上班":["Wǒ bú shàngbān.","Я не хожу на работу.","none"]},
+ "family-siblings":{"有":["Yǒu.","Есть.","yes"],"没有":["Méiyǒu.","Нет.","no"],"我没有兄弟姐妹":["Wǒ méiyǒu xiōngdì jiěmèi.","У меня нет братьев и сестёр.","no"],"我有一个哥哥":["Wǒ yǒu yí ge gēge.","У меня есть старший брат.","older-brother"],"我有一个姐姐":["Wǒ yǒu yí ge jiějie.","У меня есть старшая сестра.","older-sister"],"我有一个弟弟":["Wǒ yǒu yí ge dìdi.","У меня есть младший брат.","younger-brother"],"我有一个妹妹":["Wǒ yǒu yí ge mèimei.","У меня есть младшая сестра.","younger-sister"],"不想说":["Bù xiǎng shuō.","Не хочу говорить.","skip"],"我不想说":["Wǒ bù xiǎng shuō.","Я не хочу говорить.","skip"]},
+ "family-size":{"两口人":["Liǎng kǒu rén.","Два человека.","2"],"三口人":["Sān kǒu rén.","Три человека.","3"],"四口人":["Sì kǒu rén.","Четыре человека.","4"],"五口人":["Wǔ kǒu rén.","Пять человек.","5"],"我家有三口人":["Wǒ jiā yǒu sān kǒu rén.","В моей семье три человека.","3"],"我家有四口人":["Wǒ jiā yǒu sì kǒu rén.","В моей семье четыре человека.","4"],"不想说":["Bù xiǎng shuō.","Не хочу говорить.","skip"],"我不想说":["Wǒ bù xiǎng shuō.","Я не хочу говорить.","skip"]},
  'study-reason':{
   '因为我想去中国':['Yīnwèi wǒ xiǎng qù Zhōngguó.','Потому что я хочу поехать в Китай.','china-trip'],
   '我想去中国':['Wǒ xiǎng qù Zhōngguó.','Я хочу поехать в Китай.','china-trip'],
@@ -105,7 +107,7 @@ function interpretOpenAnswer(raw,context){
  const answers=OPEN_ANSWERS[pending.slot],key=cleanOpen(raw);
  if(!Object.hasOwn(answers,key))return null;
  const [pinyin,translation,value]=answers[key];
- return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot==='study-reason'?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
+ return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot.startsWith('family')?'family':pending.slot==='study-reason'?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
 function reviewedOpenQuestion(hanzi,previous,linked,memory){
  const s=cleanOpen(hanzi);
@@ -117,7 +119,9 @@ function reviewedOpenQuestion(hanzi,previous,linked,memory){
  else if(s==='你今天忙吗')slot='work-busy';
  else if(s==='你晚上几点睡觉')slot='daily-sleep';
  else if(s==='你几点去上班')slot='work-time';
- else if(linked&&previous?.intent==='request-topic-change'&&['daily','work','study'].includes(previous.value)&&s==='你接下来想做什么')slot='next-action';
+ else if(s==='你有兄弟姐妹吗')slot='family-siblings';
+ else if(s==='明白了你家有几口人')slot='family-size';
+ else if(linked&&previous?.intent==='request-topic-change'&&['daily','work','study','family','auto'].includes(previous.value)&&s==='你接下来想做什么')slot='next-action';
  else if(linked&&previous?.intent==='request-topic-change'&&previous.value==='hobby'&&memory?.hobby){
   if(s==='你周末喜欢做什么'&&!memory.weekend)slot='hobby-weekend';
   else if(s==='你周末有什么计划'&&memory.weekend&&!memory.plan)slot='hobby-plan';
@@ -130,7 +134,7 @@ function reviewedOpenQuestion(hanzi,previous,linked,memory){
   else if(previous.slot==='hobby-frequency'&&s==='你周末喜欢做什么')slot='hobby-weekend';
   else if(previous.slot==='food'&&s==='还要别的吗')slot='food-more';
   else if(previous.slot==='food-more'&&previous.value==='yes'&&s==='你还喜欢吃什么')slot='food-preference';
-  else if(['hobby-weekend','hobby-plan','food-more','food-preference','daily-sleep','daily-breakfast','work-busy','work-time','study-reason'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
+  else if(['hobby-weekend','hobby-plan','food-more','food-preference','daily-sleep','daily-breakfast','work-busy','work-time','study-reason','family-siblings','family-size'].includes(previous.slot)&&s==='你接下来想做什么')slot='next-action';
  }
  return slot?{intent:'ask-open-reviewed',subject:'你',slot,raw:hanzi}:null;
 }
@@ -143,6 +147,9 @@ const TOPIC_REQUESTS=Object.freeze({
  '我们聊聊爱好吧':['Wǒmen liáoliao àihào ba.','Давай поговорим об увлечениях.','hobby'],
  '聊聊我的一天吧':['Liáoliao wǒ de yì tiān ba.','Давай поговорим о моём дне.','daily'],
  '聊聊工作吧':['Liáoliao gōngzuò ba.','Давай поговорим о работе.','work'],
+ '聊聊家庭吧':['Liáoliao jiātíng ba.','Давай поговорим о семье.','family'],
+ '你来选话题吧':['Nǐ lái xuǎn huàtí ba.','Выбери тему разговора.','auto'],
+ '你选吧':['Nǐ xuǎn ba.','Выбирай ты.','auto'],
  '聊聊学习中文吧':['Liáoliao xuéxí Zhōngwén ba.','Давай поговорим об изучении китайского.','study'],
  '聊聊吃的吧':['Liáoliao chī de ba.','Давай поговорим о еде.','food'],
  '我们聊聊吃的吧':['Wǒmen liáoliao chī de ba.','Давай поговорим о еде.','food']
@@ -181,7 +188,7 @@ function updateHobbyMemory(state,semantic){
 }
 
 // Separate, short-lived, reviewed session facts. No persistence.
-const TOPIC_FACTS=['daily-breakfast','daily-sleep','work-busy','work-time','study-reason'];
+const TOPIC_FACTS=['daily-breakfast','daily-sleep','work-busy','work-time','study-reason','family-siblings','family-size'];
 function recentTopicMemory(state){
  const entries=state?.topicMemory||{};
  return Object.fromEntries(TOPIC_FACTS.filter(k=>entries[k]&&Number.isFinite(entries[k].at)&&state.turn-entries[k].at<=24).map(k=>[k,entries[k]]));
