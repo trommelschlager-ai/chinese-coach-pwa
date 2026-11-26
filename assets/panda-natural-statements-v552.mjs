@@ -374,6 +374,59 @@ function courseConversation563(raw,s){
  }
  return null;
 }
+function contextualFragments568(raw,previousPanda){
+ const input=String(raw??'').normalize('NFC').trim();
+ const q=input.replace(/[。！？?!]+$/u,'').replace(/\s+/gu,'');
+ const prior=norm(previousPanda);
+ if(!prior)return null; // only called from observed conversational history
+ const locations={中国:['Zhōngguó','в Китай'],北京:['Běijīng','в Пекин'],上海:['Shànghǎi','в Шанхай'],广州:['Guǎngzhōu','в Гуанчжоу'],深圳:['Shēnzhèn','в Шэньчжэнь'],俄罗斯:['Éluósī','в Россию'],公园:['gōngyuán','в парк'],学校:['xuéxiào','в школу'],商店:['shāngdiàn','в магазин'],超市:['chāoshì','в супермаркет'],医院:['yīyuàn','в больницу']};
+ const times={'':['',''],今天:['jīntiān','сегодня'],明天:['míngtiān','завтра'],后天:['hòutiān','послезавтра'],下周:['xià zhōu','на следующей неделе'],下个月:['xià ge yuè','в следующем месяце'],周末:['zhōumò','в выходные']};
+ const askTime=['你打算什么时候去？','Nǐ dǎsuàn shénme shíhou qù?','Когда ты планируешь поехать или пойти?'];
+ const goodTrip=['祝你旅途愉快！','Zhù nǐ lǚtú yúkuài!','Желаю приятного путешествия!'];
+ const next=['然后呢？','Ránhòu ne?','А дальше?'];
+ const follow=['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что хочешь делать дальше?'];
+ const build=(py,ru,reply,nextContext=null)=>({...result(raw,py,ru,reply,nextContext,1),domain:'everyday'});
+ const travel=/^(我)?(今天|明天|后天|下周|下个月|周末)?(想|打算|准备|要)?去(.+)$/u.exec(q);
+ if(travel&&Object.hasOwn(locations,travel[4])){
+  const [,subject,time='',modal='',place]=travel;
+  const [py,ru]=locations[place];
+  const mod={'':['',''],想:['xiǎng','хочу'],打算:['dǎsuàn','планирую'],准备:['zhǔnbèi','собираюсь'],要:['yào','собираюсь']}[modal];
+  const pinyin=[subject?'Wǒ':'',times[time][0],mod[0],'qù',py].filter(Boolean).join(' ');
+  const translation=[subject?'Я':'',times[time][1],mod[1],subject&&!modal?'еду':!subject&&!modal?'поехать':'поехать',ru].filter(Boolean).join(' ');
+  const trip=['中国','北京','上海','广州','深圳','俄罗斯'].includes(place);
+  return build(pinyin,translation.charAt(0).toUpperCase()+translation.slice(1)+'.',time?(trip?goodTrip:next):askTime,time?null:'travel-time');
+ }
+ // A bare date answers a when-to-go question only, never becomes a travel plan globally.
+ if(prior==='你打算什么时候去'&&q&&Object.hasOwn(times,q))return build(times[q][0],times[q][1]+'.',next);
+ // Bare place only after a destination question. No assumption that a place name is a trip.
+ if(/^你(?:想|打算|准备|要)?去(?:哪儿|哪里|哪个城市)$/u.test(prior)&&Object.hasOwn(locations,q)){
+  const [py,ru]=locations[q];return build(py,ru,askTime,'travel-time');
+ }
+ const activities={
+  跑步:['pǎobù','бегать',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']],
+  游泳:['yóuyǒng','плавать',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']],
+  看书:['kàn shū','читать книги',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']],
+  看电影:['kàn diànyǐng','смотреть фильмы',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']],
+  听音乐:['tīng yīnyuè','слушать музыку',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']],
+  学中文:['xué Zhōngwén','учить китайский',['你学中文多久了？','Nǐ xué Zhōngwén duōjiǔ le?','Как давно ты учишь китайский?']],
+  学习中文:['xuéxí Zhōngwén','изучать китайский',['你学中文多久了？','Nǐ xué Zhōngwén duōjiǔ le?','Как давно ты учишь китайский?']],
+  喝茶:['hē chá','пить чай',['你喜欢喝什么？','Nǐ xǐhuan hē shénme?','Что любишь пить?']],
+  喝咖啡:['hē kāfēi','пить кофе',['你喜欢喝什么？','Nǐ xǐhuan hē shénme?','Что любишь пить?']],
+  工作:['gōngzuò','работать',['你今天忙吗？','Nǐ jīntiān máng ma?','Ты сегодня занят(а)?']],
+  上班:['shàngbān','идти на работу',['你今天忙吗？','Nǐ jīntiān máng ma?','Ты сегодня занят(а)?']],
+  回家:['huí jiā','возвращаться домой',next],
+  吃早饭:['chī zǎofàn','завтракать',['你早上吃什么？','Nǐ zǎoshang chī shénme?','Что ты ешь утром?']],
+  做饭:['zuòfàn','готовить еду',['你想吃什么？','Nǐ xiǎng chī shénme?','Что хочешь съесть?']],
+  散步:['sànbù','гулять',['你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?']]
+ };
+ if(Object.hasOwn(activities,q)){
+  const [py,ru,reply]=activities[q];
+  // When asked what to drink, acknowledge the choice instead of asking it again.
+  return build(py,ru,/^你(?:想|喜欢)喝什么$/u.test(prior)&&/^喝/.test(q)?follow:reply);
+ }
+ return null;
+}
+
 export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,previousPanda=null}={}){
  const s=norm(raw);if(!s)return null;
  // Live Android report: accept complete health/mood variants, not just one memorized phrase.
@@ -587,5 +640,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||contextualFragments568(raw,previousPanda);
 }

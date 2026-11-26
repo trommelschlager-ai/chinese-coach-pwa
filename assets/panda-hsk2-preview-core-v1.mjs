@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=567';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=568';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -390,7 +390,7 @@ function submitHSK2(input){
 let friendlyStage=null;
 function meaningExplanation(line){
  const key=normalize(line?.hanzi||'');
- const breakdown={'我想学中文':'我 — я; 想 — хотеть; 学中文 — учить китайский.','我在和你聊天':'我 — я; 在 — действие сейчас; 和你 — с тобой; 聊天 — разговаривать.','然后呢':'然后 — затем; 呢 — вопрос о продолжении.'};
+ const breakdown={'你能说得简单一点吗':'你 — ты; 能 — мочь; 说得 — говорить определённым образом; 简单一点 — немного проще; 吗 — вопросительная частица.','你打算什么时候去':'打算 — планировать; 什么时候 — когда; 去 — идти или ехать.','我想学中文':'我 — я; 想 — хотеть; 学中文 — учить китайский.','我在和你聊天':'我 — я; 在 — действие сейчас; 和你 — с тобой; 聊天 — разговаривать.','然后呢':'然后 — затем; 呢 — вопрос о продолжении.'};
  return 'Значение: '+(line?.ru||'')+(breakdown[key]?' '+breakdown[key]:'');
 }
 function submit(raw){
