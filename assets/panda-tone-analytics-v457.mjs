@@ -167,6 +167,13 @@ export function analyseContour(frames){
   const nearby=cleaned.slice(Math.max(0,i-1),Math.min(cleaned.length,i+2)).map(x=>x.hz);
   return {t:p.t,hz:median(nearby)};
  });
+ // Missing F0 is not a measured pitch transition. Refuse directional
+ // coaching on an internally interrupted long contour, rather than
+ // interpolating across it or treating the absence as a learner mistake.
+ const gapCount=smooth.slice(1).filter((p,i)=>p.t-smooth[i].t>.085||p.t<=smooth[i].t).length;
+ if(gapCount)return {kind:"uncertain",label:"Измерение высоты прерывается",
+  reason:"В записи есть пропуски измерений. Нельзя уверенно сравнить движение тона; это не означает ошибку произношения.",
+  points:[],stats:{duration:+(smooth.at(-1).t-smooth[0].t).toFixed(2),voicedFrames:smooth.length,gapCount},isToneGrade:false};
  const values=smooth.map(p=>semitones(p.hz,medHz));
  const N=values.length,part=Math.max(3,Math.floor(N*0.24));
  const first=median(values.slice(0,part)),mid=median(values.slice(Math.floor(N*.38),Math.ceil(N*.62))),last=median(values.slice(-part));
