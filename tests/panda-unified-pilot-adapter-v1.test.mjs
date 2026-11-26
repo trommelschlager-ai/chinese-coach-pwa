@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createSemanticPilot} from '../assets/panda-unified-pilot-adapter-v1.mjs';
 import {lookupApprovedPandaVoice} from '../assets/panda-approved-voice-registry-v516.mjs';
+import {correctPandaGrammarV2} from '../assets/panda-grammar-hsk12-v2.mjs';
 import {pilotLearnerMetadata} from '../assets/panda-unified-pilot-metadata-v1.mjs';
 const api={createSemanticPilot},registry={lookupApprovedPandaVoice};
 test("disabled does not override",()=>assert.equal((()=>api.createSemanticPilot({lookupExact:registry.lookupApprovedPandaVoice}).plan("我想休息",{mode:"free-chat"})===null)(),true));
@@ -230,4 +231,34 @@ test('family context respects explicit refusal and auto-topic choice avoids answ
   turn(p,pick,'你接下来想做什么？');
  }
  for(const raw of ['有','没有','三口人'])assert.equal(make().plan(raw,{mode:'free-chat'}),null,raw);
+});
+
+
+test('reviewed grammar correction keeps the conversation going without pretending to assess tones',()=>{
+ const make=(missing=null)=>createSemanticPilot({enabled:true,lookupExact:q=>q===missing?null:lookupApprovedPandaVoice(q),correctGrammar:correctPandaGrammarV2,metadata:pilotLearnerMetadata});
+ const send=(p,raw,want,confidence=null,corrected=null)=>{
+  const x=p.plan(raw,{mode:'free-chat',confidence});
+  assert.equal(x?.line.hanzi,want,raw);assert.equal(x.voiceStatus,'registered-exact',raw);
+  assert(x.spoken,raw);assert.equal(x.toneVerified,false);
+  assert.equal(x.inlineCorrection,!!corrected,raw);
+  if(corrected){assert.equal(x.spoken.correction.hanzi,corrected);assert.equal(x.spoken.correction.inlineConversation,true);assert.equal(x.spoken.known,false);assert.equal(x.spoken.hanzi,raw);}
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+ };
+ for(const confidence of [null,.85,.93]){
+  const p=make();send(p,'我想中文学','你为什么想学中文？',confidence,'我想学中文。');
+  send(p,'因为我想去中国','你打算什么时候去？');send(p,'明天','你打算怎么去？');send(p,'坐飞机','祝你旅途愉快！');
+ }
+ for(const confidence of [null,.93]){
+  const p=make();send(p,'聊聊我的一天吧','你早上吃早饭吗？');
+  send(p,'我吃早饭早上','你晚上几点睡觉？',confidence,'我早上吃早饭。');
+  send(p,'我睡觉晚上十点','你接下来想做什么？',confidence,'我晚上十点睡觉。');send(p,'休息','那你休息一下吧。');
+ }
+ for(const n of ['八','九','十']){
+  const p=make();send(p,'聊聊工作吧','你今天忙吗？');send(p,'忙','你几点去上班？');
+  send(p,'我去上班'+n+'点','你接下来想做什么？',null,'我'+n+'点去上班。');
+ }
+ for(const confidence of [.4,.72,.84])assert.equal(make().plan('我想中文学',{mode:'free-chat',confidence}),null);
+ for(const raw of ['我想火星','我比你很高'])assert.equal(make().plan(raw,{mode:'free-chat'}),null,raw);
+ assert.equal(make('你为什么想学中文？').plan('我想中文学',{mode:'free-chat'}),null);
+ assert.equal(make().plan('我想中文学',{mode:'graded'}),null);
 });
