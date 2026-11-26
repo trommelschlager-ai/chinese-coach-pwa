@@ -49,6 +49,21 @@ try{
    });
    assert.equal(clips.length,5);assert(clips.every(c=>c.duration>0));
    console.log('PASS fresh-chat transport plan and five decoded travel/clarification clips');
+   // Every formerly silent learner line must have an enabled button and exact playback.
+   const learnerAudio=async(raw,id)=>{
+    await send(raw);
+    const row=page.locator('#pg346-rows .pg346-row').filter({has:page.locator('.pg346-zh',{hasText:raw})}).last();
+    const button=row.locator('.pg346-row-audio');await button.waitFor({state:'visible'});assert(await button.isEnabled(),raw);
+    await page.evaluate(()=>{window.__pilotPlaying=[];});await button.click();
+    await page.waitForFunction(id=>window.__pilotPlaying.some(src=>src.includes(id+'.mp3')),id);
+   };
+   await learnerAudio('你来选话题吧','PA-TRAVEL-01');
+   await send('我想学中文');await send('因为我想去中国');
+   await learnerAudio('什么意思','PA-TRAVEL-02');
+   await learnerAudio('什么时候去中国','PA-TRAVEL-03');
+   await learnerAudio('我下个月去中国','PA-TRAVEL-04');
+   await learnerAudio('我打算坐飞机','PA-TRAVEL-05');
+   console.log('PASS all five formerly silent learner reply buttons play exact uploaded MP3');
    const corrected=await send('我想中文学');
    assert.equal(corrected.history.at(-1).hanzi,'你为什么想学中文？');
    assert.equal(corrected.history.at(-2).analysis.correction.hanzi,'我想学中文。');

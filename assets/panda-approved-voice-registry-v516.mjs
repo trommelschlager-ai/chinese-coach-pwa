@@ -779,8 +779,58 @@ export const PANDA_USER_V563_BATCH=Object.freeze([
   }
 ]);
 const USER_V563_BY_ZH=new Map(PANDA_USER_V563_BATCH.map(e=>[voiceNorm(e.zh),e]));
+// User-supplied November 26 recordings, one exact phrase per MP3.
+export const PANDA_TRAVEL_VOICE_20261126=Object.freeze([
+  {
+    "id": "PA-TRAVEL-01",
+    "zh": "你来选话题吧。",
+    "pinyin": "Nǐ lái xuǎn huàtí ba.",
+    "ru": "Выбери тему разговора.",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-01.mp3",
+    "bytes": 10604,
+    "sha256": "b4280febc96118bd5acd6adf79190f69eecec015bf0919e963879c1f5c67463f"
+  },
+  {
+    "id": "PA-TRAVEL-02",
+    "zh": "什么意思？",
+    "pinyin": "Shénme yìsi?",
+    "ru": "Что это значит?",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-02.mp3",
+    "bytes": 8444,
+    "sha256": "55309e82daa0b3e5f6aee91b849a544ce0307f7d8bc8ddf746ee69622c6acfbc"
+  },
+  {
+    "id": "PA-TRAVEL-03",
+    "zh": "什么时候去中国？",
+    "pinyin": "Shénme shíhou qù Zhōngguó?",
+    "ru": "Когда ехать в Китай?",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-03.mp3",
+    "bytes": 12188,
+    "sha256": "97b96195d62320c3e44441914fe9ef67c2de02f27c3e8930a3d4f03f56711a79"
+  },
+  {
+    "id": "PA-TRAVEL-04",
+    "zh": "我下个月去中国。",
+    "pinyin": "Wǒ xià ge yuè qù Zhōngguó.",
+    "ru": "Я поеду в Китай в следующем месяце.",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-04.mp3",
+    "bytes": 12044,
+    "sha256": "9907b264544294d3da374f1cc45c008a9087cc90d8b2b4871c038fb419e06b1a"
+  },
+  {
+    "id": "PA-TRAVEL-05",
+    "zh": "我打算坐飞机。",
+    "pinyin": "Wǒ dǎsuàn zuò fēijī.",
+    "ru": "Я собираюсь лететь на самолёте.",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-05.mp3",
+    "bytes": 11756,
+    "sha256": "caf4f3d16f3fcb8eec9078402e21095b2f6144b3c35e7d5dfc75a9b0a78497b2"
+  }
+]);
+const TRAVEL_VOICE_BY_ZH=new Map(PANDA_TRAVEL_VOICE_20261126.map(e=>[voiceNorm(e.zh),e]));
 export function lookupApprovedPandaVoice(text){
  const key=voiceNorm(text);if(!key)return null;
+ const travel=TRAVEL_VOICE_BY_ZH.get(key);if(travel)return {src:travel.src,start:0,end:null,source:'panda-user-upload:travel-20261126'};
  const v557=XIAOXIAO_V557_BY_ZH.get(key);if(v557)return {src:v557.src,start:0,end:null,source:'panda-xiaoxiao:user-upload-v557'};
  const approvedNatural=NATURAL_V546_BY_ZH.get(key);if(approvedNatural)return {src:approvedNatural.src,start:0,end:null,source:'panda-approved-luvvoice:natural-v546'};
  const latest=NEW_XIAOXIAO_REPLIES_BY_ZH.get(key);if(latest)return {src:latest.src,start:0,end:null,source:'panda-xiaoxiao:user-upload-v520'};

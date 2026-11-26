@@ -1,6 +1,6 @@
 {
-  "version": 563,
-  "bytes": 94667664,
+  "version": 569,
+  "bytes": 94722700,
   "files": [
     "./assets/panda-ai-approved-layout-v547.css?v=547&rev=565",
     "./assets/panda-natural-statements-v552.mjs?v=563&rev=568",
@@ -3677,6 +3677,11 @@
     "./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3",
     "./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3",
-    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3"
+    "./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3",
+    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-01.mp3",
+    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-02.mp3",
+    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-03.mp3",
+    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-04.mp3",
+    "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-05.mp3"
   ]
 }

@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createSemanticPilot} from '../assets/panda-unified-pilot-adapter-v1.mjs';
-import {lookupApprovedPandaVoice} from '../assets/panda-approved-voice-registry-v516.mjs';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {lookupApprovedPandaVoice,PANDA_TRAVEL_VOICE_20261126} from '../assets/panda-approved-voice-registry-v516.mjs';
 import {correctPandaGrammarV2} from '../assets/panda-grammar-hsk12-v2.mjs';
 import {pilotLearnerMetadata} from '../assets/panda-unified-pilot-metadata-v1.mjs';
 const api={createSemanticPilot},registry={lookupApprovedPandaVoice};
@@ -300,4 +302,17 @@ test('full transport plans work in a fresh conversation, while unrelated fragmen
 test('reviewed fallback uses exact recorded clarification, not the unrecorded paraphrase',()=>{
  assert.equal(lookupApprovedPandaVoice('你可以用简单一点的中文说吗？')?.src,'./assets/panda-clarification-voice-20261122/clarify07.mp3');
  assert.equal(lookupApprovedPandaVoice('你还想聊什么？')?.src,'./assets/panda-clarification-voice-20261122/clarify10.mp3');
+});
+
+
+test('all five uploaded learner travel recordings resolve exactly and match verified audio hashes',()=>{
+ const clips=PANDA_TRAVEL_VOICE_20261126;assert.equal(clips.length,5);
+ const pack=JSON.parse(readFileSync(new URL('../assets/offline-pack.json',import.meta.url),'utf8'));
+ for(const c of clips){
+  const actual=lookupApprovedPandaVoice(c.zh);assert.equal(actual?.src,c.src,c.zh);
+  assert.equal(lookupApprovedPandaVoice(c.zh.replace(/[。？！]/g,''))?.src,c.src);
+  const data=readFileSync(new URL('../'+c.src.slice(2),import.meta.url));assert.equal(data.length,c.bytes);assert.equal(createHash('sha256').update(data).digest('hex'),c.sha256);
+  assert(pack.files.includes(c.src),c.src);
+ }
+ assert.equal(lookupApprovedPandaVoice('我打算坐飞机去北京'),null);
 });
