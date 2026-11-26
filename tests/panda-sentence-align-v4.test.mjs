@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice} from '../assets/panda-sentence-align-v4.mjs';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice,compareContextualPitch} from '../assets/panda-sentence-align-v4.mjs';
 
 const rate=12000;
 const bounds=[0.10,0.42,0.81,1.17,1.52,1.95];
@@ -165,4 +165,26 @@ test('five selectable phrases use explicit surface tones and exact reference pat
  assert(page.includes("if(!reference?.valid)return 'Нет проверяемого образца"));
  assert(page.includes("$('listen').disabled=!source;"));
  assert(page.includes("$('phrase-select').disabled=true;"));
+});
+
+test('personalized guidance requires reliable reference and learner evidence',()=>{
+ const make=(from,to)=>Array.from({length:12},(_,i)=>({t:.025*i,hz:from+(to-from)*i/11,method:'yin'}));
+ const rising=make(100,145),falling=make(145,100),level=make(120,120),bs=[0,.30];
+ const q=frames=>intervalPitchEvidence(frames,bs,0);
+ const weak=q(rising.map((p,i)=>({...p,method:i<6?'autocorrelation':'yin'})));
+ const gap=q(rising.filter((_,i)=>i<3||i>7));
+ const octave=q(rising.map((p,i)=>({...p,hz:i>5?p.hz*2:p.hz})));
+ const cases=[
+ [2,q(rising),q(rising),true,'similar'],[2,q(falling),q(rising),true,'contrast'],
+ [4,q(rising),q(falling),true,'contrast'],[4,q(falling),q(falling),true,'similar'],
+ [1,q(level),q(level),true,'similar'],[1,q(rising),q(level),true,'review'],
+ [2,q(level),q(rising),true,'review'],[2,q(falling),weak,true,'reference-uncertain'],
+ [2,q(falling),q(falling),true,'reference-uncertain'],[2,weak,q(rising),true,'uncertain'],
+ [2,gap,q(rising),true,'uncertain'],[2,octave,q(rising),true,'uncertain'],
+ [2,q(falling),q(rising),false,'unverified'],[0,q(falling),weak,true,'neutral'],
+ [3,q(falling),weak,true,'fall']];
+ for(const [surfaceTone,evidence,referenceEvidence,verified,want] of cases){
+  const out=compareContextualPitch({surfaceTone,evidence,referenceEvidence,verified});
+  assert.equal(out.kind,want);assert.equal(out.isToneGrade,false);
+ }
 });
