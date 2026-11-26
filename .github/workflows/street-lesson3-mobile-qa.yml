@@ -5,6 +5,8 @@ on:
       - 'panda-street-slang-lesson3-preview.html'
       - 'panda-street-hsk1-map.html'
       - 'assets/panda-street-*'
+      - 'sw.js'
+      - 'assets/offline-pack.json'
       - 'scripts/qa-street-lesson3.mjs'
       - '.github/workflows/street-lesson3-mobile-qa.yml'
   workflow_dispatch:
