@@ -45,12 +45,12 @@
 .whole-duration{padding:6px 8px;border-radius:10px;background:#f2e7f8;font-size:12px;font-weight:750;color:#705184;font-variant-numeric:tabular-nums}
 .whole-duration.user{background:#ede1fd;color:#60409a}
 </style></head><body><main>
-<span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
+<span class="kicker">🐼 PANDA GO · HSK 1–2 · ТОНЫ В РЕЧИ</span>
 <h1>🎙️ Проверь произношение</h1>
 <p class="lead">Пилот: измерение высоты голоса на каждом слоге предложения. Границы слогов определяются <b>приблизительно</b>, без оценки «правильно/неправильно».</p>
 <section class="panel" aria-label="Фраза из урока">
-<div class="phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin">Wǒ zǎoshang xǐliǎn.</div>
-<div class="translation">Я утром умываюсь.</div>
+<label for="phrase-select" class="small">Выбери фразу</label><select id="phrase-select" style="width:100%;min-height:42px;font:inherit;border-radius:12px;margin-bottom:8px;color:inherit;background:#fff;border:1px solid #d9bbeb"><option value="daily">我早上洗脸。</option><option value="hello">你好</option><option value="good">很好</option><option value="not">不是 · без образца</option><option value="day">一天 · без образца</option></select><div class="phrase" id="target-phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin" id="target-pinyin">Wǒ zǎoshang xǐliǎn.</div>
+<div class="translation" id="target-translation">Я утром умываюсь.</div><p id="phrase-rule" class="small"></p>
 <div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец урока</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
 <div class="rms"><div id="level"></div></div>
 <p id="status" class="status" role="status" aria-live="polite">Загружаю эталонную запись из действующего урока…</p>
@@ -84,7 +84,7 @@
 </section>
 <section class="panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
-<div class="syllables" id="syllables" role="group" aria-label="Пять слогов предложения"></div>
+<div class="syllables" id="syllables" role="group" aria-label="Слоги выбранной фразы"></div>
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
 <div class="actions" style="margin:8px 0"><button type="button" class="action alt" id="review-ref" disabled>🔊 Участок образца</button><button type="button" class="action alt" id="review-mine" disabled>🔊 Мой участок</button></div><p class="small" id="review-status" aria-live="polite">Прослушай выбранный участок и проверь, соответствует ли он иероглифу. Границы предварительные.</p><details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><label id="boundary-verified-row" class="boundary-hint" hidden><input id="boundary-verified" type="checkbox"> Я прослушал обе записи и проверил границы слогов в образце и своей записи.</label><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
@@ -97,15 +97,28 @@ import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
 import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice} from './assets/panda-sentence-align-v4.mjs?v=5';
 const $=id=>document.getElementById(id);
-const tokens=[
+const phraseOptions=[
+ {id:'daily',zh:'我早上洗脸。',py:'Wǒ zǎoshang xǐliǎn.',ru:'Утром я умываюсь.',rule:'我早: wó zǎo при слитной речи; 洗脸: xí liǎn.',weights:[1,1.15,.65,1,1.2],tokens:[
  {zh:'我',py:'wǒ',surfaceTone:2,tone:'3-й → обычно 2-й перед zǎo при слитном произнесении (wó)'},
  {zh:'早',py:'zǎo',surfaceTone:3,tone:'3-й · обычно низкий перед нейтральным слогом'},
  {zh:'上',py:'shang',surfaceTone:0,tone:'нейтральный · короткий, зависит от предыдущего тона'},
  {zh:'洗',py:'xǐ',surfaceTone:2,tone:'3-й → 2-й перед liǎn (xí)'},
- {zh:'脸',py:'liǎn',surfaceTone:3,tone:'3-й · низкий или с подъёмом в конце фразы'}
+ {zh:'脸',py:'liǎn',surfaceTone:3,tone:'3-й · низкий или с подъёмом в конце фразы'}]},
+ {id:'hello',zh:'你好',py:'ní hǎo',ru:'Привет!',rule:'3 + 3 → 2 + 3 при слитном произнесении.',src:'./assets/panda-live-voice-v2/hello.mp3',weights:[1,1.2],tokens:[{zh:'你',py:'nǐ',surfaceTone:2,tone:'3-й → 2-й (ní)'},{zh:'好',py:'hǎo',surfaceTone:3,tone:'3-й · низкий или с подъёмом'}]},
+ {id:'good',zh:'很好',py:'hén hǎo',ru:'Очень хорошо.',rule:'3 + 3 → 2 + 3 при слитном произнесении.',src:'./assets/panda-live-voice-v2/good.mp3',weights:[1,1.2],tokens:[{zh:'很',py:'hěn',surfaceTone:2,tone:'3-й → 2-й (hén)'},{zh:'好',py:'hǎo',surfaceTone:3,tone:'3-й · низкий или с подъёмом'}]},
+ {id:'not',zh:'不是',py:'bú shì',ru:'Не является / нет.',rule:'不 перед 4-м тоном обычно становится 2-м.',src:null,weights:[1,1],tokens:[{zh:'不',py:'bù',surfaceTone:2,tone:'4-й → 2-й (bú)'},{zh:'是',py:'shì',surfaceTone:4,tone:'4-й · нисходящий'}]},
+ {id:'day',zh:'一天',py:'yì tiān',ru:'Один день.',rule:'一 перед 1-м тоном обычно становится 4-м.',src:null,weights:[1,1.1],tokens:[{zh:'一',py:'yī',surfaceTone:4,tone:'1-й → 4-й (yì)'},{zh:'天',py:'tiān',surfaceTone:1,tone:'1-й · ровный'}]}
 ];
-const weights=[1.0,1.15,.65,1,1.2];
-const source=window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。'];
+const requested=new URLSearchParams(location.search).get('phrase');
+const phrase=phraseOptions.find(p=>p.id===requested)||phraseOptions[0];
+const {tokens,weights}=phrase;
+const source=phrase.id==='daily'?window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。']:phrase.src;
+$('phrase-select').value=phrase.id;
+$('target-phrase').textContent=phrase.zh;$('target-pinyin').textContent=phrase.py;$('target-translation').textContent=phrase.ru;
+$('phrase-rule').textContent=phrase.rule;
+$('syllables').style.gridTemplateColumns='repeat('+tokens.length+',minmax(0,1fr))';
+$('listen').disabled=!source;
+$('phrase-select').addEventListener('change',()=>{const next=new URL(location.href);next.searchParams.set('phrase',$('phrase-select').value);location.assign(next.href);});
 let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
 function say(msg){$('status').textContent=msg;}
 function median(xs){if(!xs.length)return 0;const a=xs.slice().sort((x,y)=>x-y),m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
@@ -133,7 +146,7 @@ function analyze(buffer){
  const active=arr.filter(x=>x.en>gate);
  if(active.length<6)return {valid:false,reason:'Недостаточно звукового сигнала',frames:[],bounds:[]};
  let begin=active[0].t,end=active[active.length-1].t;
- if(end-begin<weights.length*.075)return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
+ if(end-begin<Math.max(.15,weights.length*.075))return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
  // Estimate syllable positions from their approximate durations; snap to nearby RMS valleys.
  // This is not forced alignment, and is intentionally never used as a correctness score.
  const bounds=estimateBounds(arr,begin,end,peak);
@@ -168,6 +181,7 @@ function syllableQuality(i){
 function describeMovement(i){
  if(!learner?.valid)return '';
  if(!$('boundary-verified').checked)return 'Границы пока не проверены на слух: отдельный контур не связываем с конкретным иероглифом.';
+ if(!reference?.valid)return 'Нет проверяемого образца: доступен только график своей записи.';
  return contextualPitchAdvice({surfaceTone:tokens[i].surfaceTone,evidence:syllableQuality(i),verified:true}).text;
 }
 function adjustControls(){
@@ -410,7 +424,7 @@ function updateWhole(){
   $('whole-cursor').style.display='none';
   $('whole-info').textContent=alignmentStatus|| (learner?.valid
    ?'Обе записи показаны на общей временной шкале в настоящих секундах, без растягивания. По высоте нормализованы, границы слогов предварительные. Оценки тонов нет.'
-   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.');
+   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':source?'Данные эталона ещё не готовы.':'Для этой фразы пока нет подтверждённой записи образца.');
  }
 }
 function stopLive(){
@@ -468,7 +482,7 @@ async function startLive(s){
 
 function stopStream(){stopLive();if(micTimer){clearTimeout(micTimer);micTimer=null;}stream?.getTracks().forEach(x=>x.stop());stream=null;$('level').style.width='0%';}
 async function load(){
- if(!source){say('Не найдена точная запись фразы в аудиокарте урока.');return;}
+ if(!source){say('Нет подтверждённой записи образца. Можно записать и прослушать себя; сопоставление и персональные подсказки по слогам недоступны.');return;}
  try{decodedReference=await decode(source);reference=analyze(decodedReference);refAutoBounds=reference.bounds?.slice()||null;referenceSliders();wholeGuides();say(reference.valid?'Образец загружен. Послушай запись и нажми «Записать себя».':'Образец загружен, но данных F0 недостаточно для тоновой кривой.');render();updateWhole();}
  catch(e){say('Не удалось прочитать образец: '+(e?.message||'ошибка'));}
 }
@@ -476,22 +490,24 @@ $('listen').addEventListener('click',()=>playFull(source));
 $('record').addEventListener('click',async()=>{
  if(recorder||!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('Для записи открой страницу в Chrome через HTTPS и разреши микрофон.');return;}
  try{
+  $('record').disabled=true;$('phrase-select').disabled=true;
   stopReview();
   if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
   learner=null;autoBounds=null;decodedLearner=null;alignmentStatus='';$('guided-align').disabled=true;chunks=[];$('replay').disabled=true;adjustControls();render();updateWhole();
   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
   recorder=new MediaRecorder(stream);recorder.addEventListener('dataavailable',e=>{if(e.data.size)chunks.push(e.data);});
   recorder.addEventListener('stop',async()=>{
-   const mime=recorder?.mimeType||'audio/webm';recorder=null;stopStream();$('record').disabled=false;$('stop').disabled=true;
-   if(!chunks.length){say('Запись пустая. Попробуй снова.');return;}
+   const mime=recorder?.mimeType||'audio/webm';recorder=null;stopStream();$('record').disabled=true;$('stop').disabled=true;
+   if(!chunks.length){$('record').disabled=false;$('phrase-select').disabled=false;say('Запись пустая. Попробуй снова.');return;}
    recorded=new Blob(chunks,{type:mime});recordedUrl=URL.createObjectURL(recorded);$('replay').disabled=false;
    say('Анализирую короткую запись…');
    try{decodedLearner=await decode(recordedUrl);learner=analyze(decodedLearner);autoBounds=learner?.bounds?.slice()||null;adjustControls();$('guided-align').disabled=!(learner?.valid&&reference?.valid&&decodedReference);if(!($('guided-align').disabled))guidedAlign();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
    catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
+   finally{$('record').disabled=false;$('phrase-select').disabled=false;}
   },{once:true});
-  recorder.start();$('review-ref').disabled=true;$('review-mine').disabled=true;updateWhole();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «我早上洗脸» естественным голосом. Остановка автоматически через 6 секунд.');
+  recorder.start();$('review-ref').disabled=true;$('review-mine').disabled=true;updateWhole();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «'+phrase.zh+'» естественным голосом. Остановка автоматически через 6 секунд.');
   micTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop();},6000);
- }catch(e){stopStream();recorder=null;$('record').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
+ }catch(e){stopStream();recorder=null;$('record').disabled=false;$('phrase-select').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
 });
 $('stop').addEventListener('click',()=>{if(recorder?.state==='recording')recorder.stop();});
 $('replay').addEventListener('click',()=>playFull(recordedUrl));
