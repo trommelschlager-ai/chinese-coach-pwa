@@ -28,6 +28,10 @@ try{
    await page.screenshot({path:dir+'/'+width+'-catalog.png',animations:'disabled'});
    await home.click();
    await page.waitForURL(/index\.html#panda\/home/);
+   await page.locator('.pg-photo1-home .pg-photo1-image').waitFor({state:'visible'});
+   await page.waitForFunction(()=>{const img=document.querySelector('.pg-photo1-home .pg-photo1-image');return img?.complete&&img.naturalWidth>0;});
+   await page.locator('.pg-photo1-hit-1').waitFor({state:'visible'});
+   await page.locator('.pg-photo1-hit-2').waitFor({state:'visible'});
    await page.screenshot({path:dir+'/'+width+'-home.png',animations:'disabled'});
    await page.goto(base+'/hsk2-lesson1.html?step=2',{waitUntil:'domcontentloaded'});
    await page.locator('#app[data-view="2"] .word-row').first().waitFor({state:'visible'});
@@ -49,6 +53,18 @@ try{
    assert(layout.every((r,i)=>Math.abs(r.x-layout[0].x)<2&&r.w>width*.8&&r.audio&&r.py&&r.ru&&(!i||r.y>=layout[i-1].y+layout[i-1].h-1)),JSON.stringify(layout));
    await visibleInViewport(page.locator('#next'));
    await page.screenshot({path:dir+'/'+width+'-future-words.png',animations:'disabled'});
+   const collisions=await cards.evaluateAll(els=>els.flatMap((card,i)=>{
+    const parts=[...card.querySelectorAll(':scope > .l7-horizontal-art,:scope > .l7-horizontal-hanzi,:scope > .l7-horizontal-translation,:scope > button.orb')];
+    const rects=parts.map(el=>el.getBoundingClientRect());const result=[];
+    if(parts.length!==4)result.push('missing components '+i);
+    for(let j=1;j<rects.length;j++)if(rects[j].left<rects[j-1].right-1)result.push('column collision '+i+':'+j);
+    for(const selectors of [['.cn','.tone-strokes'],['.py','.ru']]){
+     const a=card.querySelector(selectors[0])?.getBoundingClientRect(),b=card.querySelector(selectors[1])?.getBoundingClientRect();
+     if(!a||!b||a.bottom>b.top+1)result.push('text overlap '+i+':'+selectors.join('/'));
+    }
+    return result;
+   }));
+   assert.deepEqual(collisions,[],'Vocabulary components must not overlap');
    await cards.last().scrollIntoViewIfNeeded();
    await visibleInViewport(cards.last());
    await visibleInViewport(page.locator('#next'));
