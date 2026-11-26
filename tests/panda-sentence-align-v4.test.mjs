@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice,compareContextualPitch,sentencePitchWindowSize} from '../assets/panda-sentence-align-v4.mjs';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,contextualPitchAdvice,compareContextualPitch,sentencePitchWindowSize,sentenceLivePitchFrame,sentencePitchPen,SENTENCE_LIVE_POLL_MS} from '../assets/panda-sentence-align-v4.mjs';
 
 const rate=12000;
 const bounds=[0.10,0.42,0.81,1.17,1.52,1.95];
@@ -217,4 +217,25 @@ test('phrase pilot uses rate-normalized pitch window for decoded audio',async()=
  const {readFileSync}=await import('node:fs');
  const page=readFileSync(new URL('../panda-hsk2-tone-sentence-pilot.html',import.meta.url),'utf8');
  assert(page.includes('win=sentencePitchWindowSize(rate,d.length)'));
+});
+
+test('live pitch frames use the newest rate-normalized samples and do not bridge gaps',()=>{
+ const frame=Float32Array.from({length:4096},(_,i)=>i);
+ const tail=sentenceLivePitchFrame(frame,48000);
+ assert.equal(tail.length,3120);
+ assert.equal(tail[0],976);
+ assert.equal(tail.at(-1),4095);
+ assert.equal(sentenceLivePitchFrame(new Float32Array(500),48000),null);
+ assert.equal(SENTENCE_LIVE_POLL_MS,40);
+ const a={t:0,hz:100};
+ for(const [b,want] of [[{t:.04,hz:110},'L'],[{t:.08,hz:110},'L'],[{t:.11,hz:110},'M'],[{t:.04,hz:200},'M'],[{t:0,hz:110},'M'],[{t:-.04,hz:110},'M']])
+  assert.equal(sentencePitchPen(a,b),want);
+});
+test('live pilot uses shared timing and checks session epoch before starting',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const page=readFileSync(new URL('../panda-hsk2-tone-sentence-pilot.html',import.meta.url),'utf8');
+ assert(page.includes('},SENTENCE_LIVE_POLL_MS)'));
+ assert(page.includes('epoch!==liveEpoch||!stream||stream!==s||!recorder||document.hidden'));
+ assert(page.includes('sentenceLivePitchFrame(liveFrame,context.sampleRate)'));
+ assert(page.includes('sentencePitchPen(prev,p)'));
 });
