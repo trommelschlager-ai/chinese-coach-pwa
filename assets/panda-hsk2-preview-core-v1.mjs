@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=565';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=567';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -388,18 +388,24 @@ function submitHSK2(input){
  hsk2.done=true;say(hsk2Line(['很好！','Hěn hǎo!','Раунд завершён. Точных ответов: '+hsk2.exact+'. Вариантов по смыслу: '+hsk2.similar+'. Не распознано: '+hsk2.unknown+'. Тоны не оценивались.']));
 }
 let friendlyStage=null;
+function meaningExplanation(line){
+ const key=normalize(line?.hanzi||'');
+ const breakdown={'我想学中文':'我 — я; 想 — хотеть; 学中文 — учить китайский.','我在和你聊天':'我 — я; 在 — действие сейчас; 和你 — с тобой; 聊天 — разговаривать.','然后呢':'然后 — затем; 呢 — вопрос о продолжении.'};
+ return 'Значение: '+(line?.ru||'')+(breakdown[key]?' '+breakdown[key]:'');
+}
 function submit(raw){
  const input=String(raw||'').trim();if(!input){note('Скажи или напиши фразу на китайском.');return}
  cancelFollowup();stopRecognition();stopAudio();state.dayResumeStep=null;$('message').value='';
  // Experimental route takes only explicitly reviewed learner metadata and exact existing audio.
  // All other input follows the established engine below, including corrections.
- if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.85)){
+ // ASR already asks confirmation below .65. A known transcript is not a tone score.
+ if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.65)){
   const planned=semanticPilot.plan(input,{mode:'free-chat'});
   const spoken=planned&&semanticMetadata(input,planned.semantic);
   if(spoken){
    friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
    learner(input,spoken);semanticContinues=planned.continuesLearnerTurn===true;
-   say(planned.line,true,{semanticPilot:true,kind:planned.kind,toneVerified:false});
+   say(planned.line,true,{semanticPilot:true,kind:planned.kind,toneVerified:false,...(planned.kind==='explain-exact'?{explanation:meaningExplanation(planned.line)}:{})});
    note(planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл реплики. Тоны по тексту не оценивались.');
    return;
   }
@@ -420,7 +426,8 @@ function submit(raw){
   const [pinyin,translation]=expressions[normalize(input)];
   learner(input,{known:true,pinyin,translation,toneVerified:false});
   const reply=previous?{hanzi:previous.hanzi,pinyin:previous.pinyin,ru:previous.ru}:{hanzi:'你想问什么？',pinyin:'Nǐ xiǎng wèn shénme?',ru:'Что ты хочешь спросить?'};
-  say(reply,!!lookupPandaVoiceClip(reply.hanzi));note('Панда повторила предыдущую реплику. Перевод и пиньинь показаны. Тоны не оценивались.');return;
+  const meaning=normalize(input)==='什么意思'&&!!previous;
+  say(reply,!!lookupPandaVoiceClip(reply.hanzi),meaning?{kind:'explain-exact',explanation:meaningExplanation(reply),toneVerified:false}:null);note(meaning?'Панда объяснила значение предыдущей реплики. Тоны не оценивались.':'Панда повторила предыдущую реплику. Перевод и пиньинь показаны. Тоны не оценивались.');return;
  }
  // Recognize voluntary Chinese name introductions in free HSK1 conversation.
  const standaloneName=state.mode==='nonstop'&&!hsk2&&!state.dayMode&&/^我叫[\p{Script=Han}]{1,12}$/u.test(normalize(input));
@@ -490,7 +497,7 @@ function submit(raw){
   // Keep HSK1 Non-Stop family answer validation and recorded follow-ups intact.
   // v552 family facts are for the free HSK2 chat route; new 有没有 questions work in both.
   const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
-  const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+  const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting,previousPanda:state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null});
   if(natural&&!(!hsk2&&state.mode==='nonstop'&&(natural.domain==='identity'||(natural.domain==='everyday'&&/^(你好吗|今天天气怎么样|你几点起床|你几点睡觉)$/.test(normalize(input)))||(natural.domain==='family'&&(/^你有(?:哥哥|姐姐|弟弟|妹妹|妈妈|爸爸)吗$|^你家有几口人$/.test(normalize(input))))))){
    state.naturalAwaiting=natural.next;
    learner(input,natural.spoken);
