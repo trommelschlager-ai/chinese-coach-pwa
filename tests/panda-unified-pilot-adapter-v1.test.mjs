@@ -55,3 +55,46 @@ test('open answers cannot be attached to unrelated questions or stale context',(
   assert.equal(p.plan('明天',{mode:'free-chat'}),null,end);
  }
 });
+
+
+test('clarification replays exact question without losing its pending answer; topic switch clears travel context',()=>{
+ const make=()=>createSemanticPilot({enabled:true,lookupExact:lookupApprovedPandaVoice});
+ const turn=(p,raw,want)=>{
+  const x=p.plan(raw,{mode:'free-chat'});
+  assert.equal(x?.line.hanzi,want,raw);
+  assert.equal(x.voiceStatus,'registered-exact');
+  assert.equal(x.toneVerified,false);
+  assert(pilotLearnerMetadata(raw,x.semantic)?.translation,raw);
+  p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+  return x;
+ };
+ const travel=p=>{turn(p,'我想学中文','你为什么想学中文？');turn(p,'因为我想去中国','你打算什么时候去？');};
+ for(const ask of ['什么','什么意思','请再说一遍','我没听懂'])for(const stage of [0,1,2]){
+  const p=make();turn(p,'我想学中文','你为什么想学中文？');
+  if(stage===0)turn(p,ask,'你为什么想学中文？');
+  turn(p,'因为我想去中国','你打算什么时候去？');
+  if(stage===1)turn(p,ask,'你打算什么时候去？');
+  turn(p,'明天','你打算怎么去？');
+  if(stage===2)turn(p,ask,'你打算怎么去？');
+  turn(p,'坐飞机','祝你旅途愉快！');
+ }
+ for(const [request,answers,question,follow] of [
+  ['聊聊爱好吧',['跑步','我喜欢看书','听音乐','游泳'],'你有什么爱好？','你经常做这件事吗？'],
+  ['我们聊聊吃的吧',['面条','我想吃米饭','饺子'],'你想吃什么？','还要别的吗？']
+ ])for(const answer of answers){
+  const p=make();travel(p);turn(p,request,question);turn(p,answer,follow);
+  assert.equal(p.plan('明天',{mode:'free-chat'}),null);
+ }
+ for(const change of ['换个话题吧','我们聊点别的吧']){
+  const p=make();travel(p);turn(p,change,'好的。我们聊点别的吧！');
+  assert.equal(p.plan('明天',{mode:'free-chat'}),null);
+ }
+ for(const alt of ['reset','unrelated','unknown']){
+  const p=make();travel(p);const x=p.plan('什么意思',{mode:'free-chat'});assert(x);
+  if(alt==='reset')p.reset();
+  if(alt==='unrelated')p.observePanda({hanzi:'你好。'});
+  if(alt==='unknown')p.plan('火星',{mode:'free-chat'});
+  p.observePanda(x.line);
+  assert.equal(p.plan('明天',{mode:'free-chat'}),null,alt);
+ }
+});
