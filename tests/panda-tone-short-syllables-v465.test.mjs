@@ -139,3 +139,25 @@ test('free phrase graph prefers decoded PCM and ignores stale recording callback
  assert(page.includes('Участки не равны слогам'));
  assert(page.includes('render(s.points)'));
 });
+
+test('quiet free phrase receives bounded gain without joining separate intervals or grading',async()=>{
+ const {analysePhraseBuffer}=await import('../assets/panda-tone-recording-analysis-v465.mjs');
+ const samples=new Float32Array(rate*2);let phase=0;
+ for(let i=0;i<samples.length;i++){
+  const t=i/rate;
+  if((t>=.2&&t<.6)||(t>=1.2&&t<1.6)){
+   phase+=2*Math.PI*(160+20*t)/rate;
+   samples[i]=.008*Math.sin(phase);
+  }
+ }
+ const buffer={sampleRate:rate,length:samples.length,numberOfChannels:1,getChannelData:()=>samples};
+ const out=analysePhraseBuffer(buffer,{estimatePitch});
+ assert(out.frames.length>=20);
+ assert.equal(out.runs.length,2);
+ assert.equal(out.isToneGrade,false);
+ let seed=123;
+ for(const amp of [0,.001,.01,.05]){
+  for(let i=0;i<samples.length;i++){seed=(1664525*seed+1013904223)>>>0;samples[i]=amp*(2*seed/2**32-1)}
+  assert.equal(analysePhraseBuffer(buffer,{estimatePitch}).frames.length,0);
+ }
+});
