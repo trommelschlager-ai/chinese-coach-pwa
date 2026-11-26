@@ -37,3 +37,6 @@ Created separate draft branch from v565 main e1bd42bad83a1d8a0f7e85ef82e836d963e
 
 ## Second experimental CI attempt
 Existing regression workflows passed again. Dedicated browser job failed before Chromium launch: ubuntu-latest changed to Ubuntu 26.04, unsupported by pinned Playwright 1.56.1. Existing passing mobile job confirmed Ubuntu 24.04. Pin dedicated runner to 24.04, retain actual browser gate, add checks for real `playing` event on the expected exact MP3 and decoding three registered MP3 files. These audio/browser checks are authored, not yet passed. No changes to production assets or audio files.
+
+## Stage 2 compositional grammar prototype
+Added isolated parser for interest, alternatives, experiential 过, spatial 从…到…. Direct checks: 9 examples, 11 rejected inputs, 96 interest combinations. Preserve subject, choice options, negation and aspect. No temporal inference from route or physical experience claims. Not integrated into dispatcher or reply selection; no release changes. Native review and broader tests pending.
