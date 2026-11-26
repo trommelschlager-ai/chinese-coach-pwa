@@ -561,3 +561,36 @@
  #app[data-stage="phrase"] .example-row .example-py,#app[data-stage="phrase"] .example-row .example-ru{font-size:clamp(15px,4.3vw,19px)}
  #app[data-stage="phrase"] .example-row{padding:10px 7px}
 }
+
+/* v587 — reading-first paired vocabulary and enlarged grammar, both lessons.
+   No mascot artwork on either side of vocabulary cards. Covers and navigation untouched. */
+#app[data-stage="phrase"] .word-stack{flex:1 1 auto;min-height:0;gap:10px}
+#app[data-stage="phrase"] .pair-word{flex:1 1 0;min-height:0;justify-content:center;align-items:center;gap:clamp(7px,1.3dvh,13px);padding:clamp(12px,2dvh,22px) 9px;overflow:visible}
+#app[data-stage="phrase"] .pair-word>.pair-zh{width:100%;font-size:clamp(34px,11vw,49px);line-height:1.13;padding:0 40px;overflow-wrap:anywhere;word-break:normal;margin:0}
+#app[data-stage="phrase"] .pair-word>.pair-py{font-size:clamp(21px,6.5vw,29px);line-height:1.16;padding:5px 9px;max-width:100%;text-align:center}
+#app[data-stage="phrase"] .pair-word>.pair-ru{font-size:clamp(20px,6vw,27px);line-height:1.22;font-weight:650;max-width:100%;padding:0 4px;overflow-wrap:anywhere}
+#app[data-stage="phrase"] .pair-word>.audio.redplay{top:7px;right:5px}
+#app[data-stage="phrase"] .pair-word>.pair-number{top:8px;left:8px}
+#app[data-stage="grammar"]>.content>.grammar-card{flex:0 0 auto;min-height:min-content;gap:9px;padding:9px}
+#app[data-stage="grammar"] .grammar-card .rule{grid-template-columns:minmax(43px,16%) minmax(0,1fr) 44px;gap:6px;padding:9px 4px 9px 6px}
+#app[data-stage="grammar"] .grammar-card .rule-char{font-size:clamp(27px,8.2vw,37px);min-height:55px;overflow-wrap:anywhere;word-break:break-all}
+#app[data-stage="grammar"] .grammar-card .rule-py{font-size:clamp(16px,4.7vw,21px);line-height:1.18}
+#app[data-stage="grammar"] .grammar-card .rule p{font-size:clamp(16px,4.5vw,20px);line-height:1.22;margin:3px 0}
+#app[data-stage="grammar"] .grammar-card .rule p[lang="zh-Hans"]{font-size:clamp(19px,5.6vw,25px);font-weight:750}
+#app[data-stage="grammar"] .grammar-card .rule .py{font-size:clamp(15px,4.4vw,19px);line-height:1.2}
+#app[data-stage="grammar"] .grammar-card .note{font-size:clamp(14px,4.2vw,18px);line-height:1.28;padding:9px}
+@media(max-height:740px){
+ #app[data-stage="phrase"] .word-stack{gap:6px}
+ #app[data-stage="phrase"] .pair-word{padding:9px 6px;gap:5px}
+ #app[data-stage="phrase"] .pair-word>.pair-zh{font-size:clamp(30px,9vw,39px);padding:0 43px}
+ #app[data-stage="phrase"] .pair-word>.pair-py{font-size:clamp(18px,5.5vw,23px);padding:3px 7px}
+ #app[data-stage="phrase"] .pair-word>.pair-ru{font-size:clamp(17px,5vw,22px)}
+ #app[data-stage="grammar"]>.content>.grammar-card{padding:5px;gap:5px}
+ #app[data-stage="grammar"] .grammar-card .rule{padding:5px 3px;gap:4px;grid-template-columns:minmax(36px,14%) minmax(0,1fr) 44px}
+ #app[data-stage="grammar"] .grammar-card .rule-char{font-size:25px;min-height:42px}
+ #app[data-stage="grammar"] .grammar-card .rule-py{font-size:15px}
+ #app[data-stage="grammar"] .grammar-card .rule p{font-size:14px;line-height:1.17;margin:2px 0}
+ #app[data-stage="grammar"] .grammar-card .rule p[lang="zh-Hans"]{font-size:17px}
+ #app[data-stage="grammar"] .grammar-card .rule .py{font-size:13px}
+ #app[data-stage="grammar"] .grammar-card .note{font-size:12px;padding:5px}
+}
