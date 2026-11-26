@@ -1,0 +1,2 @@
+# Android 26 Nov, 09:37–09:41
+Four screenshot failures: 非常好，你呢？; 很不错 after 你今天做什么？; 睡觉 after 你喜欢做什么？; 吃饭 after generic clarification. Recognized text is valid, not evidence of tone errors. Natural layer missing the bare variants, reciprocal table omitted subjectless 非常好. New limited handlers and contextual evaluation, exact voice registry confirmed: PA-V563-12, day05, PA-V563-02/09, me-too-thanks.mp3. Direct source assertions passed, actual browser tests pending. No design change. Cache rev567 for core/natural, no new install entries.

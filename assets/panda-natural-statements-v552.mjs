@@ -374,14 +374,33 @@ function courseConversation563(raw,s){
  }
  return null;
 }
-export function respondToNaturalStatement(raw,{awaiting=null,introduced=false}={}){
+export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,previousPanda=null}={}){
  const s=norm(raw);if(!s)return null;
  // Live Android report: accept complete health/mood variants, not just one memorized phrase.
  const wellbeing=[["你的健康怎么样","Nǐ de jiànkāng zěnmeyàng?","Как твоё здоровье?","health"],["你健康怎么样","Nǐ jiànkāng zěnmeyàng?","Как твоё здоровье?","health"],["你的身体怎么样","Nǐ de shēntǐ zěnmeyàng?","Как твоё самочувствие?","health"],["你身体怎么样","Nǐ shēntǐ zěnmeyàng?","Как твоё самочувствие?","health"],["你身体还好吗","Nǐ shēntǐ hái hǎo ma?","Ты хорошо себя чувствуешь?","health"],["你最近身体怎么样","Nǐ zuìjìn shēntǐ zěnmeyàng?","Как ты себя чувствуешь в последнее время?","health"],["你的心情怎么样","Nǐ de xīnqíng zěnmeyàng?","Как твоё настроение?","mood"],["你心情怎么样","Nǐ xīnqíng zěnmeyàng?","Как твоё настроение?","mood"],["你今天心情怎么样","Nǐ jīntiān xīnqíng zěnmeyàng?","Как у тебя сегодня настроение?","mood"],["你今天的心情怎么样","Nǐ jīntiān de xīnqíng zěnmeyàng?","Как у тебя сегодня настроение?","mood"],["你现在心情怎么样","Nǐ xiànzài xīnqíng zěnmeyàng?","Какое у тебя сейчас настроение?","mood"],["你心情好吗","Nǐ xīnqíng hǎo ma?","У тебя хорошее настроение?","mood"]].find(x=>x[0]===s);
  if(wellbeing){const reply=wellbeing[3]==='health'?['我身体很好。','Wǒ shēntǐ hěn hǎo.','У меня хорошее самочувствие.']:['我很开心。','Wǒ hěn kāixīn.','У меня хорошее настроение.'];return {...result(raw,wellbeing[1],wellbeing[2],reply,null,1),kind:'question',domain:'everyday'};}
  // Answer the explicit reciprocal question before context-specific drills.
- const reciprocal565=[["我很好你呢","Wǒ hěn hǎo, nǐ ne?","У меня всё хорошо, а у тебя?"],["很好你呢","Hěn hǎo, nǐ ne?","Хорошо, а у тебя?"],["我很好谢谢你呢","Wǒ hěn hǎo, xièxie, nǐ ne?","У меня всё хорошо, спасибо, а у тебя?"],["我也很好你呢","Wǒ yě hěn hǎo, nǐ ne?","У меня тоже всё хорошо, а у тебя?"],["我很不错你呢","Wǒ hěn búcuò, nǐ ne?","У меня всё довольно хорошо, а у тебя?"],["很不错你呢","Hěn búcuò, nǐ ne?","Довольно хорошо, а у тебя?"],["我非常好你呢","Wǒ fēicháng hǎo, nǐ ne?","У меня всё отлично, а у тебя?"],["我还好你呢","Wǒ hái hǎo, nǐ ne?","У меня нормально, а у тебя?"]].find(x=>x[0]===s);
+ const reciprocal565=[["我很好你呢","Wǒ hěn hǎo, nǐ ne?","У меня всё хорошо, а у тебя?"],["很好你呢","Hěn hǎo, nǐ ne?","Хорошо, а у тебя?"],["我很好谢谢你呢","Wǒ hěn hǎo, xièxie, nǐ ne?","У меня всё хорошо, спасибо, а у тебя?"],["我也很好你呢","Wǒ yě hěn hǎo, nǐ ne?","У меня тоже всё хорошо, а у тебя?"],["我很不错你呢","Wǒ hěn búcuò, nǐ ne?","У меня всё довольно хорошо, а у тебя?"],["很不错你呢","Hěn búcuò, nǐ ne?","Довольно хорошо, а у тебя?"],["我非常好你呢","Wǒ fēicháng hǎo, nǐ ne?","У меня всё отлично, а у тебя?"],["非常好你呢","Fēicháng hǎo, nǐ ne?","Отлично, а у тебя?"],["不错你呢","Búcuò, nǐ ne?","Неплохо, а у тебя?"],["还好你呢","Hái hǎo, nǐ ne?","Нормально, а у тебя?"],["我还好你呢","Wǒ hái hǎo, nǐ ne?","У меня нормально, а у тебя?"]].find(x=>x[0]===s);
  if(reciprocal565)return {...result(raw,reciprocal565[1],reciprocal565[2],['我也很好，谢谢！','Wǒ yě hěn hǎo, xièxie!','У меня тоже всё хорошо, спасибо!'],null,1),kind:'question',domain:'everyday'};
+
+ // 26 Nov Android replay: bare action and evaluative fragments are legitimate
+ // conversation turns. Use the preceding question only when its meaning is known.
+ // No claim that the learner is doing an action now or has a particular schedule.
+ const actionFragments567={
+  '吃饭':['chīfàn','есть',['你想吃什么？','Nǐ xiǎng chī shénme?','Что хочешь съесть?']],
+  '睡觉':['shuìjiào','спать, ложиться спать',['你晚上几点睡觉？','Nǐ wǎnshang jǐ diǎn shuìjiào?','Во сколько ты ложишься спать вечером?']]
+ };
+ if(Object.hasOwn(actionFragments567,s)){
+  const [py,ru,reply]=actionFragments567[s];
+  return {...result(raw,py,ru,reply,null,1),domain:'everyday'};
+ }
+ const reactions567={'很不错':['Hěn búcuò.','Довольно хорошо.'],'不错':['Búcuò.','Неплохо.'],'非常好':['Fēicháng hǎo.','Отлично.'],'我非常好':['Wǒ fēicháng hǎo.','У меня всё отлично.'],'我很不错':['Wǒ hěn búcuò.','У меня всё довольно хорошо.']};
+ if(Object.hasOwn(reactions567,s)){
+  const [py,ru]=reactions567[s],prior=norm(previousPanda);
+  const actionQuestion=/^你(?:今天|现在|明天|周末)?(?:想|要|喜欢)?做什么$/u.test(prior);
+  const reply=actionQuestion?['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?']:['你今天忙吗？','Nǐ jīntiān máng ma?','Ты сегодня занят(а)?'];
+  return {...result(raw,py,ru,reply,null,1),domain:'everyday',message:actionQuestion?'Панда поняла оценку, но это не ответ о действии. Уточняет, что ты хочешь делать. Тоны не оценивались.':'Панда поняла смысл. Тоны по тексту не оценивались.'};
+ }
  const live565=[["身体不好","Shēntǐ bù hǎo.","Самочувствие плохое.","rest"],["我的身体不好","Wǒ de shēntǐ bù hǎo.","У меня плохое здоровье.","rest"],["我身体不好","Wǒ shēntǐ bù hǎo.","У меня плохое самочувствие.","rest"],["我今天身体不好","Wǒ jīntiān shēntǐ bù hǎo.","Сегодня я плохо себя чувствую.","rest"],["我身体不太好","Wǒ shēntǐ bú tài hǎo.","Я не очень хорошо себя чувствую.","rest"],["我觉得不好","Wǒ juéde bù hǎo.","Мне кажется, что это плохо.","ask"],["我觉得不太好","Wǒ juéde bú tài hǎo.","Мне кажется, что не очень хорошо.","ask"],["我感觉不好","Wǒ gǎnjué bù hǎo.","Я чувствую себя нехорошо.","ask"],["我感觉不舒服","Wǒ gǎnjué bù shūfu.","Я чувствую себя нехорошо.","rest"],["我头痛","Wǒ tóutòng.","У меня болит голова.","rest"],["我头疼","Wǒ tóuténg.","У меня болит голова.","care"],["今天我头痛","Jīntiān wǒ tóutòng.","Сегодня у меня болит голова.","rest"],["今天我头疼","Jīntiān wǒ tóuténg.","Сегодня у меня болит голова.","rest"],["我今天头痛","Wǒ jīntiān tóutòng.","Сегодня у меня болит голова.","rest"],["我今天头疼","Wǒ jīntiān tóuténg.","Сегодня у меня болит голова.","rest"],["今天我要头痛","Jīntiān wǒ yào tóutòng.","Распознано буквально: сегодня я собираюсь испытывать головную боль.","correction"],["你什么时候","Nǐ shénme shíhou…?","Ты когда…?","when"],["什么时候","Shénme shíhou?","Когда?","when"]].find(x=>x[0]===s);
  if(live565){const kind=live565[3];const reply=kind==='care'?everydayReplies556.care:kind==='ask'?['怎么了？你想说说吗？','Zěnme le? Nǐ xiǎng shuōshuo ma?','Что случилось? Хочешь рассказать?']:kind==='when'?['你想问我什么时候做什么？','Nǐ xiǎng wèn wǒ shénme shíhou zuò shénme?','Ты хочешь спросить, когда я что-то делаю? Уточни действие.']:['你应该多休息。','Nǐ yīnggāi duō xiūxi.','Тебе стоит больше отдыхать.'];const x={...result(raw,live565[1],live565[2],reply,kind==='care'?'health-followup':null,1),domain:'everyday',kind:kind==='when'?'question':'statement'};if(kind==='correction')x.message='Распознано 今天我要头痛. Если речь о головной боли сегодня, естественно: 今天我头痛。 Jīntiān wǒ tóutòng. 要 не нужно. Причина ошибки и тоны по тексту не определяются.';if(kind==='when')x.message='Вопрос не закончен без контекста. Уточни действие: например, 你什么时候起床？';return x;}
  const work=workConversation(raw,s,awaiting);if(work)return work;

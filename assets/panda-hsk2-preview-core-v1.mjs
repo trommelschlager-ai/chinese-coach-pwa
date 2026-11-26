@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=565';
+import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=567';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -490,7 +490,7 @@ function submit(raw){
   // Keep HSK1 Non-Stop family answer validation and recorded follow-ups intact.
   // v552 family facts are for the free HSK2 chat route; new 有没有 questions work in both.
   const legacyFamilyAnswer=!hsk2&&state.mode==='nonstop'&&/^(?:我(?:有一个|有|没有)(?:哥哥|姐姐|弟弟|妹妹)|我(?:的)?(?:哥哥|姐姐|弟弟|妹妹)[一二三四五六七八九十]岁)$/u.test(normalize(input));
-  const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting});
+  const natural=legacyFamilyAnswer?null:respondToNaturalStatement(input,{awaiting:state.naturalAwaiting,previousPanda:state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null});
   if(natural&&!(!hsk2&&state.mode==='nonstop'&&(natural.domain==='identity'||(natural.domain==='everyday'&&/^(你好吗|今天天气怎么样|你几点起床|你几点睡觉)$/.test(normalize(input)))||(natural.domain==='family'&&(/^你有(?:哥哥|姐姐|弟弟|妹妹|妈妈|爸爸)吗$|^你家有几口人$/.test(normalize(input))))))){
    state.naturalAwaiting=natural.next;
    learner(input,natural.spoken);
