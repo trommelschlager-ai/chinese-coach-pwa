@@ -42,6 +42,7 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 .result{font-size:13px;color:#715384;line-height:1.5;min-height:26px}
 #graph{display:block;width:100%;height:auto;border-radius:14px;border:1px solid #ecdcf3;background:linear-gradient(#fff,#fdf9ff)}
 .template{fill:none;stroke:#c0abd3;stroke-width:5;stroke-linecap:round;stroke-dasharray:9 8}
+.reference-audio{fill:none;stroke:#168765;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
 .observed{fill:none;stroke:#7851bd;stroke-width:5;stroke-linecap:round}
 .gridline{stroke:#eadff1;stroke-dasharray:5 6}
 .legend{font-size:11px;color:#826a91;margin:6px 0 0}
@@ -82,17 +83,71 @@ h1{font-size:25px;line-height:1.15;margin:11px 0 6px;color:#672e8d}
 <text x="151" y="137" fill="#987ca4" font-size="10">0,5</text>
 <text x="278" y="137" fill="#987ca4" font-size="10">1 с</text>
 <path id="ref-path" class="template" d="M30 62H332"/>
+<path id="reference-audio-path" class="reference-audio" d=""/>
 <path id="your-path" class="observed" d=""/>
 <text x="8" y="18" fill="#8c739f" font-size="11">Выше ↑</text><text x="8" y="132" fill="#8c739f" font-size="11">Ниже ↓</text>
 </svg>
-<p class="legend">Пунктир — условный образец; сплошная линия — измеренный голос в масштабе времени (0–1,2 с)</p>
+<p class="legend">Серый пунктир — схема; зелёная линия — запись урока; фиолетовая — твой голос. Время 0–1,2 с; высота относительно медианы каждого голоса, не абсолютная частота.</p>
+<p id="reference-audio-status" class="legend" role="status" aria-live="polite">График записи урока появится после «Слушать образец», если хватает чистого голоса.</p>
 <p id="segment-info" class="legend" role="status" aria-live="polite">Новая попытка ещё не записана.</p>
-<p id="result" class="result" aria-live="polite">После произношения здесь появится результат наблюдения.</p>
+<p id="result" class="result" aria-live="polite">После произношения здесь появится наблюдение и подсказка, как изменить движение голоса.</p>
 <button id="next" class="action next" type="button">Следующий тон →</button>
 </section>
 <p class="tip"><b>Важно:</b> это анализ высоты голоса, а не распознавание китайских слов. Нет оценок «верно/неверно» — по одному графику нельзя достоверно проверить китайский тон. Третий тон в речи часто произносится низко, без подъёма.</p>
 <p class="warning">🎧 Лучше пользоваться в тихом месте. Говори обычным голосом. Не нужно кричать или специально растягивать слог; программа анализирует короткую запись после остановки. Твой голос временно записывается в памяти браузера для воспроизведения, не отправляется на сервер и удаляется при новой записи, смене тона или закрытии тренажёра.</p>
 </main>
 <script type="module" src="./assets/panda-tone-ma-pilot-v463.mjs?v=468"></script>
+
+<script type="module">
+import {estimatePitch,analyseContour} from './assets/panda-tone-analytics-v457.mjs?v=468';
+import {analyseRecordedBlob,referenceContourPath} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
+const choices=[...document.querySelectorAll('[data-tone]')];
+const activeTone=()=>Number(choices.find(b=>b.getAttribute('aria-pressed')==='true')?.dataset.tone);
+const line=document.getElementById('reference-audio-path'),status=document.getElementById('reference-audio-status');
+let selection=activeTone(),request=0,closed=false,controller=null;
+const cache=new Map();
+function reset(){
+ const n=activeTone();
+ if(n===selection)return;
+ selection=n;request++;controller?.abort();
+ line.setAttribute('d','');
+ status.textContent='Нажми «Слушать образец» для графика записи урока.';
+}
+const observer=new MutationObserver(reset);
+choices.forEach(b=>observer.observe(b,{attributes:true,attributeFilter:['aria-pressed']}));
+document.getElementById('listen').addEventListener('click',async()=>{
+ reset();
+ const n=activeTone();
+ if(![1,2,3,4].includes(n)||closed)return;
+ const ticket=++request;
+ controller?.abort();controller=new AbortController();
+ const signal=controller.signal;
+ line.setAttribute('d','');
+ status.textContent='Измеряю высоту в записи урока…';
+ try{
+  let d=cache.get(n);
+  if(!d){
+   // GET only the fixed lesson MP3 on this origin. Never transmit learner audio.
+   const url=new URL('./assets/lesson1-xiaoxiao-v260/ma'+n+'.mp3',location.href);
+   if(url.origin!==location.origin)throw Error('Unexpected origin');
+   const response=await fetch(url,{method:'GET',mode:'same-origin',signal,redirect:'error'});
+   if(!response.ok)throw Error('Reference unavailable');
+   const blob=await response.blob();
+   const analysis=await analyseRecordedBlob(blob,{estimatePitch,analyseContour,AudioContextClass:window.AudioContext||window.webkitAudioContext});
+   d=referenceContourPath(analysis);
+   if(d)cache.set(n,d);
+  }
+  if(closed||ticket!==request||n!==activeTone())return;
+  line.setAttribute('d',d);
+  status.textContent=d?'Зелёная линия — измеренная высота записи урока. Сравни направление, не абсолютную высоту.':'Недостаточно устойчивых точек в образце: оставлена только учебная схема.';
+ }catch{
+  if(closed||ticket!==request||n!==activeTone())return;
+  status.textContent='График записи урока недоступен. Можно пользоваться учебной схемой.';
+ }
+});
+function shutdown(){closed=true;request++;controller?.abort();observer.disconnect();cache.clear();}
+window.addEventListener('pagehide',shutdown,{once:true});
+window.addEventListener('message',e=>{if(e.origin===location.origin&&e.data==='panda-tone-modal-close')shutdown();});
+</script>
 </body>
 </html>
