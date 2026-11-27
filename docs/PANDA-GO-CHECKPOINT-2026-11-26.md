@@ -93,3 +93,6 @@ All 58 female clips and 2 Street male clips are present in chat/container and de
 
 ## 17. Import of verified November 27 audio bytes
 58 female Panda AI and 2 male Street clips imported from SHA-256 pinned archive; original clips preserved, exact phrase lookup only, offline pack v571. Native listening and physical Android review pending. No main merge or production publication.
+
+## 18. Release reconciliation, 27 November 2026
+Owner explicitly requested publication of the site. Merge current main c248f8e77a38e5b481eba57200b3f39fa6c6054c into the feature branch only; preserve the new approved four-level home art, current home implementation and latest visual regression tests. Retain all v571 exact voice entries and offline assets, add new home artwork and Street map to offline pack. Require a new full CI pass on the combined head before publication; browser decode and playback tests cover all 60 new recordings (physical Android and native acoustic review remain separate). No Vercel, Supabase, TinyFish or HeyGen.

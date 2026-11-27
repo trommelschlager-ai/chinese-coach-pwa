@@ -10,21 +10,15 @@ const js=read('assets/panda-v130.js'),css=read('assets/panda-home-photo1-v319.cs
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
 const currentHomeScript=index.match(/panda-v130\.js\?v=\d+/)?.[0];assert(currentHomeScript,'Updated home JS must load');
 assert(index.includes('panda-home-photo1-v319.css?v=319'),'Exact image cover CSS must load');
-const start=js.indexOf('function home(){'),end=js.indexOf('\nfunction learn(){',start);
+const hasFour=js.includes('function homeLegacy(){');
+const start=js.indexOf(hasFour?'function homeLegacy(){':'function home(){'),end=js.indexOf('\nfunction learn(){',start);
 assert(start>=0&&end>start,'Home function not found');
 const frames=[];
-// home() now installs the Street overlay stylesheet on the real document.
-// Supply the same DOM capabilities as a browser, rather than skipping that code.
-const dom=new JSDOM('<main id="pg130"></main>');
-const document=dom.window.document;
-vm.runInNewContext(js.slice(start,end)+'\nhome();\nhome();',{document,frame:(html,cls)=>frames.push({html,cls}),esc:s=>String(s)});
-assert.equal(frames.length,2,'Each home render must produce one frame');
-assert.deepEqual(frames[0],frames[1],'Returning home must render the same approved menu');
+vm.runInNewContext(js.slice(start,end)+(hasFour?'\nhomeLegacy();':'\nhome();'),{frame:(html,cls)=>frames.push({html,cls}),esc:s=>String(s)});
+assert.equal(frames.length,1);
 assert(frames[0].cls.includes('pg-photo1-home'),'Photo1 visual screen not active');
-const styles=document.querySelectorAll('head style#pg-street-home-style');
-assert.equal(styles.length,1,'Street stylesheet must install once, including on repeated navigation');
-assert(styles[0].textContent.includes('.pg-street-entry-2'),'Street layout stylesheet missing');
-document.querySelector('#pg130').innerHTML=frames[0].html;
+const dom=new JSDOM('<main id="pg130">'+frames[0].html+'</main>');
+const document=dom.window.document;
 const image=document.querySelector('.pg-photo1-image');
 assert.equal(image?.getAttribute('src'),'./assets/panda-home-approved-photo1-v319.jpg','Only exact original image can appear');
 assert.equal(image.getAttribute('width'),'864');assert.equal(image.getAttribute('height'),'1536');
@@ -33,14 +27,6 @@ assert.equal(buttons.length,2,'Only two working hotspots');
 assert.deepEqual(buttons.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome']);
 assert.deepEqual(buttons.map(x=>x.querySelector('strong')?.textContent),['Начальный уровень','Продолжающий уровень']);
 assert(buttons.every(x=>x.getAttribute('aria-label')?.includes('Открыть уровень')),'Buttons must remain accessible and functional');
-const street=[...document.querySelectorAll('nav.pg-hsk-level-list > .pg-street-entry')];
-assert.equal(street.length,2,'Both approved Street level cards must render');
-assert.equal(street[0].tagName,'A');
-assert.equal(street[0].getAttribute('href'),'./panda-street-hsk1-map.html');
-assert(fs.existsSync('panda-street-hsk1-map.html'),'Street HSK1 destination missing');
-assert.equal(street[1].getAttribute('aria-disabled'),'true','Unfinished Street HSK2 must remain disabled');
-assert.equal(street[1].getAttribute('href'),null,'Unfinished Street HSK2 must not navigate');
-
 assert(!document.querySelector('.pg-hsk-bridge'),'No separate blurry bridge may overlay the original landscape');
 assert(!document.querySelector('.pg-hsk-choice-art'),'No redrawn graphic may replace the approved screenshot');
 for(const key of ['object-fit:contain','image-rendering:auto','filter:none!important','pg-photo1-hit-1{top:45.7%}','pg-photo1-hit-2{top:59.9%}','pointer-events:auto','clip-path:inset(50%)'])assert(css.includes(key),'Exact artboard or interactive overlay missing: '+key);
@@ -63,3 +49,35 @@ for(const file of ['./assets/'+currentHomeScript,'./assets/panda-home-photo1-v31
 assert(shell.length<=200,'Approved two-course shell must stay reasonably bounded');
 dom.window.close();
 console.log('PASS v319: original photo1 verified SHA-256, lossless background, two functional level links, aspect preserved, falling petals and existing HSK1+HSK2.');
+
+if(hasFour){
+ const png=fs.readFileSync('assets/panda-home-approved-four-levels.png');
+ assert.equal(crypto.createHash('sha1').update('blob '+png.length+'\0').update(png).digest('hex'),'c435d52d7a1f36fa04ce9c03f75bf132b9a80527','Approved PNG must not be modified');
+ assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1536);
+ const active=new JSDOM('<main id="pg130"></main>');
+ const document=active.window.document,root=document.querySelector('#pg130');
+ let pending;
+ class FakeImage{constructor(){pending=this}}
+ const vmContext={document,root,Image:FakeImage,current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
+ const from=js.indexOf('const homeFourArt=');
+ assert(from>=0&&from<start);
+ vm.runInNewContext(js.slice(from,end)+'\nhome();',vmContext);
+ assert(root.querySelector('.pg-photo1-image'),'Legacy fallback remains until new art loads');
+ assert.equal(pending.src,'./assets/panda-home-approved-four-levels.png');
+ pending.onload();
+ assert(root.classList.contains('pg-four-approved'));
+ const art=root.querySelector('.pg-four-art');
+ assert.equal(art.getAttribute('src'),pending.src);
+ assert.equal(art.getAttribute('width'),'1024');assert.equal(art.getAttribute('height'),'1536');
+ const hits=[...root.querySelectorAll('nav .pg-four-hit')];
+ assert.equal(hits.length,4);
+ assert.deepEqual(hits.slice(0,3).map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html']);
+ assert(hits.every(x=>x.getAttribute('aria-label')));
+ assert.equal(hits[3].tagName,'BUTTON');
+ const note=root.querySelector('.pg-four-note');assert(note.hidden);hits[3].click();assert(!note.hidden);assert.match(note.textContent,/в разработке/);
+ for(const p of ['hsk1-map.html','hsk2-life-course.html','panda-street-hsk1-map.html'])assert(fs.existsSync(p));
+ const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
+ assert(course.includes('./assets/panda-home-approved-four-levels.png'));assert(course.includes('./panda-street-hsk1-map.html'));
+ active.window.close();
+ console.log('PASS home261: immutable four-level PNG, loading fallback, three routes and fourth-level notice.');
+}

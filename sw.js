@@ -368,7 +368,7 @@ const INSTALL_SHELL=[
  "./panda-voice-pilot.html",
 ];
 // The explicit course download also saves the additional route and Street assets.
-const COURSE_SHELL=CORE.filter(path=>!/.\.(?:mp3|ogg)(?:\?|$)/i.test(path)&&(!/.\.(?:png|jpe?g|webp)(?:\?|$)/i.test(path)||CORE_ART.has(path))).concat(STREET_SHELL, PANDA_CHAT_SHELL);
+const COURSE_SHELL=CORE.filter(path=>!/.\.(?:mp3|ogg)(?:\?|$)/i.test(path)&&(!/.\.(?:png|jpe?g|webp)(?:\?|$)/i.test(path)||CORE_ART.has(path))).concat(STREET_SHELL, PANDA_CHAT_SHELL, ['./assets/panda-home-approved-four-levels.png','./panda-street-hsk1-map.html']);
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(INSTALL_SHELL.map(path=>new Request(path,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{
  // Claim new pages immediately. Keep older audio caches intact; copying

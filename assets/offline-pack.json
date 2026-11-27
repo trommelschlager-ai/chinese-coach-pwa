@@ -1,6 +1,6 @@
 {
   "version": 571,
-  "bytes": 95504140,
+  "bytes": 98505718,
   "files": [
     "./assets/panda-ai-approved-layout-v547.css?v=547&rev=565",
     "./assets/panda-natural-statements-v552.mjs?v=563&rev=568",
@@ -3747,6 +3747,8 @@
     "./assets/panda-ai-voice-20261127/PA-B06-09.mp3",
     "./assets/panda-ai-voice-20261127/PA-B06-10.mp3",
     "./assets/panda-street-voice-v20261125/54.mp3",
-    "./assets/panda-street-voice-v20261125/55.mp3"
+    "./assets/panda-street-voice-v20261125/55.mp3",
+    "./assets/panda-home-approved-four-levels.png",
+    "./panda-street-hsk1-map.html"
   ]
 }

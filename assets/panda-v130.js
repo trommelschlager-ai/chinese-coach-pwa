@@ -89,9 +89,38 @@ function settingsView(){
  '</div>');
  if(nativeSettings){nativeSettings.open=false;root.querySelector('.pg393-old-settings').append(nativeSettings)}
 }
+// Four-level menu: approved art is kept intact; the existing petalMarkup/frame stays in use.
+const homeFourArt='./assets/panda-home-approved-four-levels.png';
+let homeFourReady=false,homeFourLoading=false;
 function home(){
- // Preserve the approved artwork and both original HSK hotspots.
- if(!document.getElementById('pg-street-home-style')){const style=document.createElement('style');style.id='pg-street-home-style';style.textContent="\n#pg130 .pg-photo1-home .pg-photo1-stage{width:56.25dvh;height:100dvh}\n@supports(width:1cqh){#pg130 .pg-photo1-home .pg-photo1-stage{width:56.25cqh;height:100cqh}}\n#pg130 .pg-photo1-home .pg-street-entry{position:absolute;z-index:3;left:3%;right:3%;top:74%;height:11.5%;display:grid;grid-template-columns:29% minmax(0,1fr) 13%;align-items:center;gap:1.6%;padding:0 2.2% 0 0;overflow:hidden;box-sizing:border-box;border:2px solid #fff4c4;border-radius:clamp(20px,7cqw,38px);text-decoration:none;color:#35105b;box-shadow:0 0 0 2px #fbc97a,0 0 12px 3px #f8a6ff,inset 0 0 12px #fff9;pointer-events:auto;background:radial-gradient(ellipse at 68% 12%,#fff5ffb0,transparent 58%),linear-gradient(125deg,#ffc6f0,#f6a0e8 65%,#f7d8ff);text-align:left;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}\n@supports(width:1cqw){#pg130 .pg-photo1-home .pg-street-entry{left:max(3%,calc((100% - 100cqw)/2 + 3px));right:max(3%,calc((100% - 100cqw)/2 + 3px))}}\n#pg130 .pg-photo1-home .pg-street-entry-2{top:86.2%;background:radial-gradient(ellipse at 65% 12%,#fff7ffb0,transparent 58%),linear-gradient(125deg,#ffc6f0,#cdf1ff 65%,#7fd6fa)}\n#pg130 .pg-photo1-home .pg-street-art{height:100%;width:100%;background-image:url('./assets/panda-home-approved-photo1-v319.jpg');background-size:345% auto;background-position:left 53%;background-repeat:no-repeat;mask-image:linear-gradient(to right,#000 76%,transparent 100%);-webkit-mask-image:linear-gradient(to right,#000 76%,transparent 100%);pointer-events:none}\n#pg130 .pg-photo1-home .pg-street-entry-2 .pg-street-art{background-position:left 69%}\n#pg130 .pg-photo1-home .pg-street-copy{min-width:0;display:block}\n#pg130 .pg-photo1-home .pg-street-copy strong{display:block;color:#35105b;font-weight:900;font-size:clamp(13px,4.45cqw,21px);line-height:1.04;letter-spacing:-.045em;overflow-wrap:normal}\n#pg130 .pg-photo1-home .pg-street-copy small{display:block;color:#542272;font-weight:650;font-size:clamp(10px,2.7cqw,13px);line-height:1.15;margin-top:3px}\n#pg130 .pg-photo1-home .pg-street-arrow{aspect-ratio:1;display:grid;place-items:center;width:100%;border:2px solid #fff1ff;border-radius:50%;background:linear-gradient(#ef50f4,#970bdc 68%,#7813ba);box-shadow:0 2px 6px #6c168c88,inset 0 2px 5px #fff9;color:white;font-size:clamp(20px,8cqw,40px);font-weight:900;line-height:1}\n#pg130 .pg-photo1-home .pg-street-entry:focus-visible{outline:3px solid white;outline-offset:-5px}\n#pg130 .pg-photo1-home .pg-street-entry[aria-disabled=true]{cursor:default}\n#pg130 .pg-photo1-home .pg-street-entry[aria-disabled=true] .pg-street-arrow{font-size:clamp(14px,4cqw,22px)}\n";document.head.append(style);}
+ if(!homeFourReady){
+  homeLegacy();
+  if(!homeFourLoading){
+   homeFourLoading=true;
+   const candidate=new Image();
+   candidate.onload=()=>{homeFourReady=true;if(current==='home'&&!root.hidden)home()};
+   candidate.onerror=()=>{homeFourLoading=false};
+   candidate.src=homeFourArt;
+  }
+  return;
+ }
+ if(!document.getElementById('pg-four-approved-style')){
+  const style=document.createElement('style');style.id='pg-four-approved-style';style.textContent="#pg130 .pg-screen.pg-four-approved{background:#62369d;isolation:isolate;overflow:hidden}\n#pg130 .pg-four-approved::before{content:'';position:absolute;inset:-20px;background:center/cover url('./assets/panda-home-approved-four-levels.png');filter:blur(22px) brightness(.65);z-index:-1;pointer-events:none}\n#pg130 .pg-four-approved .pg-four-stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100%,66.6667dvh);aspect-ratio:2/3;margin:0;padding:0;isolation:isolate}\n#pg130 .pg-four-stage .pg-four-art{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;pointer-events:none;user-select:none}\n#pg130 .pg-four-stage .pg-four-hit{position:absolute;z-index:2;left:4%;width:92%;display:block;min-height:0;margin:0;padding:0;border:0;border-radius:100px;background:transparent!important;box-shadow:none!important;text-decoration:none;cursor:pointer;touch-action:manipulation}\n#pg130 .pg-four-stage .pg-four-hit:focus-visible{outline:3px solid white;outline-offset:-4px}\n#pg130 .pg-four-stage .pg-four-hit:active{background:#fff3!important}\n#pg130 .pg-four-hit-1{top:34.8%;height:12%}\n#pg130 .pg-four-hit-2{top:47.7%;height:12%}\n#pg130 .pg-four-hit-3{top:62.1%;height:12.1%}\n#pg130 .pg-four-hit-4{top:74.7%;height:11.9%}\n#pg130 .pg-four-approved .pg-four-note{position:absolute;bottom:12px;left:10%;width:80%;background:#291346ee;color:white;border:1px solid #fff9;padding:12px;border-radius:12px;text-align:center;font:600 14px system-ui;z-index:12}\n#pg130 .pg-four-approved .pg-four-note[hidden]{display:none}\n";document.head.append(style);
+ }
+ frame('<div class="pg-four-stage"><img class="pg-four-art" src="'+homeFourArt+'" width="1024" height="1536" alt="Panda Go — четыре уровня" draggable="false">'+
+ '<h1 class="pg-hsk-accessible">Panda Go — выбери уровень</h1>'+
+ '<nav aria-label="Выбор уровня китайского языка">'+
+ '<a class="pg-four-hit pg-four-hit-1" href="./hsk1-map.html" aria-label="Начальный уровень HSK 1"></a>'+
+ '<a class="pg-four-hit pg-four-hit-2" href="./hsk2-life-course.html?view=welcome" aria-label="Продолжающий уровень HSK 2"></a>'+
+ '<a class="pg-four-hit pg-four-hit-3" href="./panda-street-hsk1-map.html" aria-label="Начальный разговорный уровень, Panda Street HSK 1"></a>'+
+ '<button type="button" class="pg-four-hit pg-four-hit-4" aria-label="Продолжающий разговорный уровень, Panda Street HSK 2, скоро"></button>'+
+ '</nav></div><div class="pg-four-note" role="status" hidden>Разговорный HSK 2 пока в разработке.</div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
+ 'pg-home pg-hsk-page pg-photo1-home pg-four-approved');
+ const note=root.querySelector('.pg-four-note');
+ root.querySelector('.pg-four-hit-4').onclick=()=>{note.hidden=false;setTimeout(()=>{note.hidden=true},3500)};
+}
+function homeLegacy(){
+ // v319: the approved original is shown unchanged; links are HTML hotspots.
  const levels=[
  {n:1,name:'Начальный уровень',description:'HSK 1 · Китайский с нуля',url:'./hsk1-map.html'},
  {n:2,name:'Продолжающий уровень',description:'HSK 2 · Знакомство и разговор',url:'./hsk2-life-course.html?view=welcome'}
@@ -101,9 +130,7 @@ function home(){
  '</div>';
  const choices=levels.map(({n,name,description,url})=>'<a class="pg-hsk-level pg-hsk-choice pg-photo1-hit pg-photo1-hit-'+n+'" href="'+url+'" aria-label="'+esc(name)+'. '+esc(description)+'. Открыть уровень">'+
  '<strong class="pg-photo1-sr">'+esc(name)+'</strong><small class="pg-photo1-sr">'+esc(description)+'</small></a>').join('');
- const street='<a class="pg-street-entry pg-street-entry-1" href="./panda-street-hsk1-map.html" aria-label="Начальный разговорный уровень, Panda Street HSK 1"><span class="pg-street-art" aria-hidden="true"></span><span class="pg-street-copy"><strong>Начальный<br>разговорный уровень</strong><small>HSK 1 · Panda Street</small></span><span class="pg-street-arrow" aria-hidden="true">›</span></a>'+
- '<div class="pg-street-entry pg-street-entry-2" role="link" aria-disabled="true" aria-label="Продолжающий разговорный уровень, Panda Street HSK 2, скоро"><span class="pg-street-art" aria-hidden="true"></span><span class="pg-street-copy"><strong>Продолжающий<br>разговорный уровень</strong><small>HSK 2 · Скоро</small></span><span class="pg-street-arrow" aria-hidden="true">🔒</span></div>';
- frame(artwork+'<h1 class="pg-hsk-accessible">Panda Go — выбери уровень</h1><nav class="pg-hsk-level-list" aria-label="Выбор уровня китайского языка">'+choices+street+'</nav></div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
+ frame(artwork+'<h1 class="pg-hsk-accessible">Panda Go — выбери уровень</h1><nav class="pg-hsk-level-list" aria-label="Выбор уровня китайского языка">'+choices+'</nav></div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
  'pg-home pg-hsk-page pg-photo1-home');
 }
 function learn(){frame(heading('Учиться','book','home','Основы китайского шаг за шагом')+`<nav class="pg-menu">${card('Звуки и тоны','Произношение и правила чтения','headphones','tones')}${card('Базовые слова','Самые нужные слова','books','words')}${card('Иероглифы','Письмо и порядок черт','brush','hanzi')}${card('Диалоги','Готовые фразы для общения','chat','dialogues')}</nav><div class="pg-approved-go-footer">${primary('Дальше Go →','learn-go')}</div>`)}

@@ -141,16 +141,26 @@ try{
   ['我没听清楚。','你为什么想学中文？'],
   ['因为我想去中国。','你打算什么时候去？']
  ]){
+  await street.evaluate(()=>{window.__streetAudio=[];});
   await street.locator('#send').click();await street.locator('#entry').fill(q);await street.locator('#submit').click();
   await street.waitForFunction(({q,expected})=>{
    const last=JSON.parse(sessionStorage.getItem('panda-street-v7-log')||'[]').at(-1);
    return last?.user===q&&last?.panda?.zh===expected&&!!last.userInfo?.py&&!!last.userInfo?.ru&&document.querySelector('#live-panda .zh')?.textContent===expected;
   },{q,expected});
   const clip=await street.evaluate(expected=>window.PandaStreetVoiceV20261125.lookup(expected,'male'),expected);
-  // Missing approved male voice is text-only, never a female or synthesized substitute.
-  if(!clip)console.log('STREET_MISSING_MALE_MP3',expected);
+  const expectedFile=expected==='你为什么想学中文？'?'54.mp3':'55.mp3';
+  assert.equal(clip?.src,'./assets/panda-street-voice-v20261125/'+expectedFile);
+  await street.waitForFunction(file=>window.__streetAudio.some(s=>s.endsWith('/'+file)),expectedFile);
  }
  console.log('PASS Street repeat previous question and resume the China travel chain');
+ const newAudio=await street.evaluate(async()=>{
+  const manifest=await fetch('./assets/panda-ai-voice-20261127/manifest.json').then(r=>r.json());
+  const paths=[...manifest.clips.map(x=>x.src),'./assets/panda-street-voice-v20261125/54.mp3','./assets/panda-street-voice-v20261125/55.mp3'];
+  const ctx=new AudioContext(),durations=[];
+  try{for(const path of paths){const r=await fetch(path);if(!r.ok)throw Error(path+' HTTP '+r.status);const b=await ctx.decodeAudioData(await r.arrayBuffer());durations.push(b.duration);}return durations;}finally{await ctx.close();}
+ });
+ assert.equal(newAudio.length,60);assert(newAudio.every(x=>Number.isFinite(x)&&x>0));
+ console.log('PASS decoded every newly imported MP3 in Chromium');
  assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await street.close();
  console.log('PASS Street shared semantic context and exact male-only playback; explicit rollback, short and graded preserved');
 }finally{await browser.close();}
