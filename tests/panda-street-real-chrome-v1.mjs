@@ -21,7 +21,7 @@ try{
       window.__streetAudio=[];
       const NativeAudio=window.Audio;
       window.Audio=function(src){
-        const a=new NativeAudio(src);
+        const a=new NativeAudio(src);window.__streetActiveAudio=a;
         const entry={src:new URL(src,location.href).pathname,played:false,error:false};
         window.__streetAudio.push(entry);
         a.addEventListener('playing',()=>{entry.played=true});
@@ -103,6 +103,11 @@ try{
           if(i===0){
             await page.waitForFunction(()=>document.getElementById('street-face-motion-layer').dataset.motionState==='talking'&&window.__streetChanged(window.__jawBefore,window.__streetSample(286,604,168,80))>12,null,{timeout:8000});
             assert.equal(await page.evaluate(()=>window.__streetChanged(window.__staticBefore,window.__streetSample(25,300,50,50))),0,'Unanimated background patch must remain stationary during speech');
+            assert.equal(await page.locator('#street-face-motion-layer').getAttribute('data-speech-envelope'),'ready','Jaw must use the decoded recording rather than synthetic movement');
+            await page.evaluate(()=>window.__streetActiveAudio.pause());
+            await page.waitForFunction(()=>{const d=document.getElementById('street-face-motion-layer').dataset;return d.motionState==='idle'&&Number(d.jawLevel)===0&&window.__streetChanged(window.__jawBefore,window.__streetSample(286,604,168,80))===0;},null,{timeout:4000});
+            await page.waitForTimeout(200);
+            assert.equal(Number(await page.locator('#street-face-motion-layer').getAttribute('data-jaw-level')),0,'Paused recording must not move the jaw');
           }
           const played=await page.evaluate(()=>window.__streetAudio.at(-1));
           assert.equal(played.error,false,'Browser reported MP3 playback error: '+clip);
