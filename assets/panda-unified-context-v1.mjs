@@ -135,6 +135,51 @@ function composeClockAnswer(slot,key){
 }
 function composeReviewedAnswer(slot,key){
  const clock=composeClockAnswer(slot,key);if(clock)return clock;
+ if(slot==='work-busy'||slot==='work-time'){
+  const off=/^(我)?(今天)?(不上班|休息|不用上班)$/u.exec(key);
+  if(off){
+   const [,subject,day,action]=off;
+   const a={不上班:['bú shàngbān','не работаю'],休息:['xiūxi','отдыхаю'],不用上班:['bú yòng shàngbān','не нужно идти на работу']}[action];
+   // Without a day marker, only an explicit work-time answer is safe.
+   if(day||slot==='work-time')return [reviewedSentence([subject?'wǒ':'',day?'jīntiān':'',a[0]]),(action==='不用上班'?'Мне ':'Я ')+(day?'сегодня ':'')+a[1]+'.',slot==='work-busy'?'off':'none'];
+  }
+  if(slot==='work-time'&&['我没有工作','没有工作','我现在没有工作','现在没有工作'].includes(key)){
+   return [reviewedSentence([key.startsWith('我')?'wǒ':'',key.includes('现在')?'xiànzài':'','méiyǒu gōngzuò']),'У меня '+(key.includes('现在')?'сейчас ':'')+'нет работы.','none'];
+  }
+ }
+ if(slot==='study-reason'){
+  const m=/^(因为)?(我)?(想在中国工作|想去中国旅游|想在中国学习|想和中国人聊天|想和朋友说中文|想看懂中文|喜欢中国文化|喜欢中文|对中国文化感兴趣|工作需要)$/u.exec(key);
+  if(m){
+   const [,cause,subject,reason]=m;
+   const reasons={
+    想在中国工作:['xiǎng zài Zhōngguó gōngzuò','хочу работать в Китае','work'],
+    想去中国旅游:['xiǎng qù Zhōngguó lǚyóu','хочу путешествовать по Китаю','china-trip'],
+    想在中国学习:['xiǎng zài Zhōngguó xuéxí','хочу учиться в Китае','study'],
+    想和中国人聊天:['xiǎng hé Zhōngguó rén liáotiān','хочу общаться с китайцами','communication'],
+    想和朋友说中文:['xiǎng hé péngyou shuō Zhōngwén','хочу говорить по-китайски с друзьями','friends'],
+    想看懂中文:['xiǎng kàndǒng Zhōngwén','хочу понимать китайский текст','reading'],
+    喜欢中国文化:['xǐhuan Zhōngguó wénhuà','люблю китайскую культуру','culture'],
+    喜欢中文:['xǐhuan Zhōngwén','люблю китайский язык','interest'],
+    对中国文化感兴趣:['duì Zhōngguó wénhuà gǎn xìngqù','интересуюсь китайской культурой','culture'],
+    工作需要:['gōngzuò xūyào','мне это нужно для работы','work']
+   };
+   if(subject&&reason==='工作需要')return null;
+   const [py,ru,value]=reasons[reason];
+   const sentence=(cause?'Потому что ':'')+(reason==='工作需要'?'':'я ')+ru;
+   return [reviewedSentence([cause?'yīnwèi':'',subject?'wǒ':'',py]),sentence.charAt(0).toUpperCase()+sentence.slice(1)+'.',value];
+  }
+ }
+ if(slot==='study-practice'){
+  const m=/^(我)?想(练习|学|学习|提高)(声调|发音|语法|汉字|听力|口语|中文|汉语)$/u.exec(key);
+  if(m){
+   const [,subject,verb,target]=m;
+   if(verb==='提高'&&!['听力','口语','中文','汉语'].includes(target))return null;
+   const v={练习:['liànxí','практиковать'],学:['xué','изучать'],学习:['xuéxí','изучать'],提高:['tígāo','улучшить']}[verb];
+   const t={声调:['shēngdiào','тоны'],发音:['fāyīn','произношение'],语法:['yǔfǎ','грамматику'],汉字:['Hànzì','иероглифы'],听力:['tīnglì','понимание на слух'],口语:['kǒuyǔ','разговорную речь'],中文:['Zhōngwén','китайский язык'],汉语:['Hànyǔ','китайский язык']}[target];
+   if(verb==='提高'&&['中文','汉语'].includes(target))return null;
+   return [reviewedSentence([subject?'wǒ':'','xiǎng',v[0],t[0]]),'Я хочу '+v[1]+' '+t[1]+'.',target];
+  }
+ }
  if(slot==='family-siblings'){
   // Specific relatives are not equivalent to having no siblings at all.
   const positive=/^(我)?有(一个|两个|三个|四个)?(哥哥|姐姐|弟弟|妹妹)$/u.exec(key);
@@ -197,6 +242,8 @@ function composeReviewedAnswer(slot,key){
 function interpretOpenAnswer(raw,context){
  const pending=context.pendingQuestion;
  if(pending?.intent!=='ask-open-reviewed'||!Object.hasOwn(OPEN_ANSWERS,pending.slot))return null;
+ // A learner question must not be interpreted as a statement, even if its punctuation is stripped.
+ if(/[？?]/u.test(String(raw)))return null;
  const answers=OPEN_ANSWERS[pending.slot],key=cleanOpen(raw);
  // Keep exact reviewed translations first. Reject internal sentence/question punctuation for composed answers.
  const item=Object.hasOwn(answers,key)?answers[key]:/[？?！!。；;，,]/u.test(String(raw).trim().replace(/[。！!]$/u,''))?null:composeReviewedAnswer(pending.slot,key);
