@@ -94,7 +94,7 @@ try{
    // Replay the actual Android screenshots, including ASR's invitation ending in 吗.
    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));
    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
-   for(const [q,want] of [['聊聊工作吧','你今天忙吗？'],['我今天休息','你接下来想做什么？'],['聊聊工作吧','你接下来想做什么？'],['聊聊中文吗','你为什么想学中文？'],['我想在中国工作','你接下来想做什么？'],['我觉得声调很难','你想练习什么？'],['我想提高口语','没关系，我们慢慢来。']]){
+   for(const [q,want] of [['聊聊工作吧','你今天忙吗？'],['我今天休息','你接下来想做什么？'],['聊聊工作吧','你想做什么工作？'],['聊聊中文吗','你为什么想学中文？'],['我想在中国工作','你接下来想做什么？'],['我觉得声调很难','你想练习什么？'],['我想提高口语','没关系，我们慢慢来。']]){
     const x=await speak(q,.93);
     assert.equal(x.history.at(-2).hanzi,q);
     assert.equal(x.history.at(-1).hanzi,want,q);
