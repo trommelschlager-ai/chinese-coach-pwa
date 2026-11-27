@@ -1047,6 +1047,183 @@ export function respondToCourseFoodShopQuestion(raw){
  return out;
 }
 
+// v572: bounded wellbeing paraphrases. Never infer a diagnosis or grade tones from text.
+const wellbeingAliases572=Object.freeze({
+ "你今天感觉好吗": [
+  "Nǐ jīntiān gǎnjué hǎo ma?",
+  "Ты сегодня хорошо себя чувствуешь?",
+  [
+   "我很好，谢谢！你呢？",
+   "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+   "Хорошо, спасибо! А ты?"
+  ]
+ ],
+ "你现在感觉怎么样": [
+  "Nǐ xiànzài gǎnjué zěnmeyàng?",
+  "Как ты сейчас себя чувствуешь?",
+  [
+   "我很好，谢谢！你呢？",
+   "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+   "Хорошо, спасибо! А ты?"
+  ]
+ ],
+ "你最近感觉怎么样": [
+  "Nǐ zuìjìn gǎnjué zěnmeyàng?",
+  "Как ты себя чувствуешь в последнее время?",
+  [
+   "我很好，谢谢！你呢？",
+   "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+   "Хорошо, спасибо! А ты?"
+  ]
+ ],
+ "你今天身体好吗": [
+  "Nǐ jīntiān shēntǐ hǎo ma?",
+  "Как твоё здоровье сегодня?",
+  [
+   "我很好，谢谢！你呢？",
+   "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+   "Хорошо, спасибо! А ты?"
+  ]
+ ],
+ "你身体好不好": [
+  "Nǐ shēntǐ hǎo bu hǎo?",
+  "У тебя хорошее самочувствие?",
+  [
+   "我很好，谢谢！你呢？",
+   "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+   "Хорошо, спасибо! А ты?"
+  ]
+ ],
+ "你最近身体还好吗": [
+  "Nǐ zuìjìn shēntǐ hái hǎo ma?",
+  "Ты хорошо себя чувствуешь в последнее время?",
+  [
+   "我很好，谢谢！你呢？",
+   "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+   "Хорошо, спасибо! А ты?"
+  ]
+ ],
+ "你生病了没有": [
+  "Nǐ shēngbìng le méiyǒu?",
+  "Ты заболел(а)?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ]
+ ],
+ "你有没有生病": [
+  "Nǐ yǒu méiyǒu shēngbìng?",
+  "Ты заболел(а)?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ]
+ ],
+ "你是不是生病了": [
+  "Nǐ shì bu shì shēngbìng le?",
+  "Ты случайно не заболел(а)?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ]
+ ],
+ "你今天生病了吗": [
+  "Nǐ jīntiān shēngbìng le ma?",
+  "Ты сегодня заболел(а)?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ]
+ ],
+ "你今天累吗": [
+  "Nǐ jīntiān lèi ma?",
+  "Ты сегодня устал(а)?",
+  [
+   "不累。你呢？",
+   "Bú lèi. Nǐ ne?",
+   "Не устала. А ты?"
+  ]
+ ],
+ "你现在累吗": [
+  "Nǐ xiànzài lèi ma?",
+  "Ты сейчас устал(а)?",
+  [
+   "不累。你呢？",
+   "Bú lèi. Nǐ ne?",
+   "Не устала. А ты?"
+  ]
+ ],
+ "你今天累不累": [
+  "Nǐ jīntiān lèi bu lèi?",
+  "Ты сегодня устал(а)?",
+  [
+   "不累。你呢？",
+   "Bú lèi. Nǐ ne?",
+   "Не устала. А ты?"
+  ]
+ ],
+ "你现在累不累": [
+  "Nǐ xiànzài lèi bu lèi?",
+  "Ты сейчас устал(а)?",
+  [
+   "不累。你呢？",
+   "Bú lèi. Nǐ ne?",
+   "Не устала. А ты?"
+  ]
+ ]
+});
+const wellbeingStatements572=Object.freeze({
+ "我身体不舒服": [
+  "Wǒ shēntǐ bù shūfu.",
+  "Я плохо себя чувствую."
+ ],
+ "我感觉不舒服": [
+  "Wǒ gǎnjué bù shūfu.",
+  "Я плохо себя чувствую."
+ ],
+ "我今天感觉不舒服": [
+  "Wǒ jīntiān gǎnjué bù shūfu.",
+  "Я сегодня плохо себя чувствую."
+ ],
+ "我有点儿不舒服": [
+  "Wǒ yǒudiǎnr bù shūfu.",
+  "Я немного плохо себя чувствую."
+ ],
+ "我心情不好": [
+  "Wǒ xīnqíng bù hǎo.",
+  "У меня плохое настроение."
+ ],
+ "我今天心情不好": [
+  "Wǒ jīntiān xīnqíng bù hǎo.",
+  "У меня сегодня плохое настроение."
+ ],
+ "我今天不太开心": [
+  "Wǒ jīntiān bú tài kāixīn.",
+  "Я сегодня не очень рад(а)."
+ ],
+ "我有点儿难过": [
+  "Wǒ yǒudiǎnr nánguò.",
+  "Мне немного грустно."
+ ]
+});
+export function respondToCourseWellbeing(raw){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ if(Object.hasOwn(wellbeingAliases572,s)){
+  const [py,ru,a]=wellbeingAliases572[s];
+  return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,1),kind:'question',domain:'course-wellbeing'};
+ }
+ if(!polite&&Object.hasOwn(wellbeingStatements572,s)){
+  const [py,ru]=wellbeingStatements572[s];
+  return {...result(raw,py,ru,["怎么了？你想说说吗？","Zěnme le? Nǐ xiǎng shuōshuo ma?","Что случилось? Хочешь рассказать?"],'health-symptom',1),domain:'course-wellbeing',message:'Панда поняла сообщение о самочувствии или настроении. Это языковая практика, не медицинская оценка. Тоны по тексту не оценивались.'};
+ }
+ return null;
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -1338,5 +1515,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||respondToCourseFoodShopQuestion(raw)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||respondToCourseFoodShopQuestion(raw)||respondToCourseWellbeing(raw)||contextualFragments568(raw,previousPanda);
 }
