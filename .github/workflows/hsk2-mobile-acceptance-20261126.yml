@@ -1,0 +1,41 @@
+name: HSK2 reported mobile regressions
+on:
+  pull_request:
+    paths:
+      - 'hsk2-life-course.html'
+      - 'hsk2-lesson*.html'
+      - 'assets/hsk2-*.js'
+      - 'assets/hsk2-*.css'
+      - 'scripts/qa-hsk2-mobile-acceptance-20261126.mjs'
+      - '.github/workflows/hsk2-mobile-acceptance-20261126.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile-acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --no-package-lock playwright@1.56.1
+      - run: npx playwright install --with-deps chromium
+      - name: Run targeted mobile browser checks
+        run: |
+          npm run dev -- --port 4173 > /tmp/panda-qa-server.log 2>&1 &
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/index.html >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4173/index.html >/dev/null
+          node scripts/qa-hsk2-mobile-acceptance-20261126.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hsk2-mobile-acceptance-screenshots
+          path: qa/hsk2-mobile-acceptance/
+          if-no-files-found: warn
