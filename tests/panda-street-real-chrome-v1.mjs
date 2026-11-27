@@ -64,6 +64,18 @@ try{
       assert(state.stageWidth<=state.viewportWidth+2,'Street is wider than the Android viewport');
       assert.notEqual(state.activeTheme,'day','Fresh profile should start with approved night view');
 
+      const streetUrl=page.url();
+      await page.locator('#topics').click();
+      assert.equal(await page.locator('#title').innerText(),'Все темы');
+      assert.equal(await page.locator('[data-topic]').count(),3);
+      await page.locator('[data-topic="2"]').click();
+      assert.equal(await page.locator('[data-topic-phrase]').count(),2);
+      await page.locator('#street-topics-back').click();
+      await page.locator('[data-topic="0"]').click();
+      await page.locator('[data-topic-phrase="3"]').click();
+      assert.equal(await page.locator('#title').innerText(),'Практика фразы');
+      await page.locator('#close').click();
+      assert.equal(page.url(),streetUrl,'Topic selection must remain inside Street');
       if(viewport.width===393){
         const files=['21.mp3','22.mp3','23.mp3','24.mp3','25.mp3','26.mp3'];
         const packageFiles=Array.from({length:53},(_,i)=>String(i+1).padStart(2,'0')+'.mp3');
