@@ -135,6 +135,33 @@ function composeClockAnswer(slot,key){
 }
 function composeReviewedAnswer(slot,key){
  const clock=composeClockAnswer(slot,key);if(clock)return clock;
+ if(slot==='family-siblings'){
+  // Specific relatives are not equivalent to having no siblings at all.
+  const positive=/^(我)?有(一个|两个|三个|四个)?(哥哥|姐姐|弟弟|妹妹)$/u.exec(key);
+  if(positive){
+   const [,subject,count='',relative]=positive;
+   const numbers={'':['',''],一个:['yí ge','1'],两个:['liǎng ge','2'],三个:['sān ge','3'],四个:['sì ge','4']};
+   const relatives={哥哥:['gēge','старший брат','старших брата','older-brother'],姐姐:['jiějie','старшая сестра','старшие сестры','older-sister'],弟弟:['dìdi','младший брат','младших брата','younger-brother'],妹妹:['mèimei','младшая сестра','младшие сестры','younger-sister']};
+   const [npy,n]=numbers[count],[rpy,singular,plural,value]=relatives[relative];
+   return [reviewedSentence([subject?'wǒ':'','yǒu',npy,rpy]),'У меня есть '+(n&&n!=='1'?n+' '+plural:singular)+'.',value];
+  }
+  if(['没有兄弟姐妹','我没有哥哥姐姐弟弟妹妹','没有哥哥姐姐弟弟妹妹','我没有兄弟和姐妹','没有兄弟和姐妹'].includes(key)){
+   const subject=key.startsWith('我'),phrase=key.includes('哥哥')?'gēge jiějie dìdi mèimei':key.includes('和')?'xiōngdì hé jiěmèi':'xiōngdì jiěmèi';
+   return [reviewedSentence([subject?'wǒ':'','méiyǒu',phrase]),'У меня нет братьев и сестёр.','no'];
+  }
+ }
+ if(slot==='family-size'){
+  const m=/^(我家有|我们家有|家里有|我家里有)?(一|两|二|三|四|五|六|七|八|九|十)口人$/u.exec(key);
+  if(m){
+   const [,prefix='',number]=m;
+   const n={一:[1,'yì'],两:[2,'liǎng'],二:[2,'èr'],三:[3,'sān'],四:[4,'sì'],五:[5,'wǔ'],六:[6,'liù'],七:[7,'qī'],八:[8,'bā'],九:[9,'jiǔ'],十:[10,'shí']}[number];
+   // In this classifier construction 两口人 is the idiomatic form.
+   if(number==='二')return null;
+   const p={'':'',我家有:'wǒ jiā yǒu',我们家有:'wǒmen jiā yǒu',家里有:'jiā lǐ yǒu',我家里有:'wǒ jiā lǐ yǒu'}[prefix];
+   const ru=n[0]===1?'1 человек':n[0]<=4?n[0]+' человека':n[0]+' человек';
+   return [reviewedSentence([p,n[1],'kǒu rén']),(prefix?'В семье ':'')+ru+'.',String(n[0])];
+  }
+ }
  if(slot==='daily-breakfast'){
   const m=/^(我)?(早上|每天)?(不|一般不|有时候不|有时候|通常|一般|每天|从来不)?吃早饭$/u.exec(key);
   if(m){
