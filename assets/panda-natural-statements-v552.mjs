@@ -420,6 +420,51 @@ export function respondToCourseCityQuestion(raw,previousPanda=null){
  return null;
 }
 
+// Reviewed family paraphrases: reuse the existing character answers and their exact MP3s.
+// Do not change the existing family exercises or invent new biographical facts.
+export function respondToCourseFamilyQuestion(raw,previousPanda=null){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ const answers={
+  children:['我没有孩子。','Wǒ méiyǒu háizi.','У меня нет детей.'],
+  father:['我是虚拟熊猫。你爸爸呢？','Wǒ shì xūnǐ xióngmāo. Nǐ bàba ne?','Я виртуальная панда. А твой папа?'],
+  mother:['我是虚拟熊猫。你妈妈呢？','Wǒ shì xūnǐ xióngmāo. Nǐ māma ne?','Я виртуальная панда. А твоя мама?'],
+  married:['没有，我是虚拟熊猫。','Méiyǒu, wǒ shì xūnǐ xióngmāo.','Нет, я виртуальная панда.'],
+  friends:['有啊，我们可以做朋友。','Yǒu a, wǒmen kěyǐ zuò péngyou.','Да, мы можем дружить.']
+ };
+ const rows={
+  你有孩子吗:['Nǐ yǒu háizi ma?','У тебя есть дети?','children'],
+  你有没有孩子:['Nǐ yǒu méiyǒu háizi?','У тебя есть дети?','children'],
+  你有小孩吗:['Nǐ yǒu xiǎohái ma?','У тебя есть дети?','children'],
+  你有没有小孩:['Nǐ yǒu méiyǒu xiǎohái?','У тебя есть дети?','children'],
+  你有几个孩子:['Nǐ yǒu jǐ ge háizi?','Сколько у тебя детей?','children'],
+  你有几个小孩:['Nǐ yǒu jǐ ge xiǎohái?','Сколько у тебя детей?','children'],
+  你爸爸做什么工作:['Nǐ bàba zuò shénme gōngzuò?','Кем работает твой папа?','father'],
+  你的爸爸做什么工作:['Nǐ de bàba zuò shénme gōngzuò?','Кем работает твой папа?','father'],
+  你爸爸是做什么的:['Nǐ bàba shì zuò shénme de?','Чем занимается твой папа?','father'],
+  你爸爸在哪儿工作:['Nǐ bàba zài nǎr gōngzuò?','Где работает твой папа?','father'],
+  你爸爸在哪里工作:['Nǐ bàba zài nǎlǐ gōngzuò?','Где работает твой папа?','father'],
+  你妈妈多大了:['Nǐ māma duō dà le?','Сколько лет твоей маме?','mother'],
+  你的妈妈多大了:['Nǐ de māma duō dà le?','Сколько лет твоей маме?','mother'],
+  你妈妈今年多大:['Nǐ māma jīnnián duō dà?','Сколько лет твоей маме в этом году?','mother'],
+  你妈妈今年多大了:['Nǐ māma jīnnián duō dà le?','Сколько лет твоей маме в этом году?','mother'],
+  你妈妈几岁:['Nǐ māma jǐ suì?','Сколько лет твоей маме?','mother'],
+  你妈妈多少岁:['Nǐ māma duōshao suì?','Сколько лет твоей маме?','mother'],
+  你结婚了吗:['Nǐ jiéhūn le ma?','Ты в браке?','married'],
+  你结婚了没有:['Nǐ jiéhūn le méiyǒu?','Ты в браке?','married'],
+  你有没有结婚:['Nǐ yǒu méiyǒu jiéhūn?','Ты в браке?','married'],
+  你有朋友吗:['Nǐ yǒu péngyou ma?','У тебя есть друзья?','friends'],
+  你有没有朋友:['Nǐ yǒu méiyǒu péngyou?','У тебя есть друзья?','friends']
+ };
+ let row=Object.hasOwn(rows,s)?rows[s]:null;
+ const prior=norm(previousPanda);
+ if(!row&&prior===norm(answers.father[0])&&/^(那)?你妈妈呢$/.test(s))row=[s.startsWith('那')?'Nà nǐ māma ne?':'Nǐ māma ne?','А твоя мама?','mother'];
+ if(!row&&prior===norm(answers.mother[0])&&/^(那)?你爸爸呢$/.test(s))row=[s.startsWith('那')?'Nà nǐ bàba ne?':'Nǐ bàba ne?','А твой папа?','father'];
+ if(!row)return null;
+ const [py,ru,key]=row;
+ return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,answers[key],null,6),kind:'question',domain:'course-family'};
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -711,5 +756,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||contextualFragments568(raw,previousPanda);
 }
