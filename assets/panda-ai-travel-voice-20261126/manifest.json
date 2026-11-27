@@ -1,0 +1,68 @@
+{
+  "source": "user supplied Luvvoice 2026-11-26",
+  "sample_rate": 24000,
+  "channels": 1,
+  "bitrate_kbps": 48,
+  "clips": [
+    {
+      "id": "PA-TRAVEL-01",
+      "zh": "你来选话题吧。",
+      "pinyin": "Nǐ lái xuǎn huàtí ba.",
+      "ru": "Выбери тему разговора.",
+      "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-01.mp3",
+      "bytes": 10604,
+      "sha256": "b4280febc96118bd5acd6adf79190f69eecec015bf0919e963879c1f5c67463f",
+      "git_sha": "199937e9eb77975007e265173322f2790e0f6a94",
+      "source_start": 0.12,
+      "source_end": 1.79
+    },
+    {
+      "id": "PA-TRAVEL-02",
+      "zh": "什么意思？",
+      "pinyin": "Shénme yìsi?",
+      "ru": "Что это значит?",
+      "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-02.mp3",
+      "bytes": 8444,
+      "sha256": "55309e82daa0b3e5f6aee91b849a544ce0307f7d8bc8ddf746ee69622c6acfbc",
+      "git_sha": "527af934a796d1556d08a5d5baeb40b8b28d3158",
+      "source_start": 2.25,
+      "source_end": 3.55
+    },
+    {
+      "id": "PA-TRAVEL-03",
+      "zh": "什么时候去中国？",
+      "pinyin": "Shénme shíhou qù Zhōngguó?",
+      "ru": "Когда ехать в Китай?",
+      "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-03.mp3",
+      "bytes": 12188,
+      "sha256": "97b96195d62320c3e44441914fe9ef67c2de02f27c3e8930a3d4f03f56711a79",
+      "git_sha": "07189b1c32c6afb1cb155f232a2e3d1e70fb3c15",
+      "source_start": 4,
+      "source_end": 5.93
+    },
+    {
+      "id": "PA-TRAVEL-04",
+      "zh": "我下个月去中国。",
+      "pinyin": "Wǒ xià ge yuè qù Zhōngguó.",
+      "ru": "Я поеду в Китай в следующем месяце.",
+      "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-04.mp3",
+      "bytes": 12044,
+      "sha256": "9907b264544294d3da374f1cc45c008a9087cc90d8b2b4871c038fb419e06b1a",
+      "git_sha": "679a2adc46032827ff958e3819cde445560a1072",
+      "source_start": 6.37,
+      "source_end": 8.29
+    },
+    {
+      "id": "PA-TRAVEL-05",
+      "zh": "我打算坐飞机。",
+      "pinyin": "Wǒ dǎsuàn zuò fēijī.",
+      "ru": "Я собираюсь лететь на самолёте.",
+      "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-05.mp3",
+      "bytes": 11756,
+      "sha256": "caf4f3d16f3fcb8eec9078402e21095b2f6144b3c35e7d5dfc75a9b0a78497b2",
+      "git_sha": "078586a376d7e1741eb8517443b550e15cc29a27",
+      "source_start": 8.73,
+      "source_end": 10.59
+    }
+  ]
+}

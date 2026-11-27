@@ -381,7 +381,8 @@ function createStreetOfflineBrain(){
 }
 let streetOfflineMode=false;
 const makeStreetBrain=m=>m.createStreetBrain({storage:(()=>{try{return localStorage}catch{return null}})(),
- curriculum:window.PANDA_HSK1_FOUNDATIONS||[]});
+ curriculum:window.PANDA_HSK1_FOUNDATIONS||[],unified:new URLSearchParams(location.search).get('semantic')!=='0',
+ lookupMale:text=>globalThis.PandaStreetVoiceV20261125?.lookup(text,'male')||null});
 const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=3')
  .catch(firstError=>{
   console.warn('Street brain first load failed; retrying:',firstError);

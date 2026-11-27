@@ -10,6 +10,8 @@ import {accessibleLessons} from './panda-nonstop-v267.mjs?v=270';
 import {answerCurriculumQuestion} from './panda-curriculum-tutor.mjs';
 import {mergePandaFacts435} from './panda-natural-memory-v435.mjs?v=435';
 import {readSharedPandaProfile,saveSharedPandaProfile} from './panda-cross-character-memory-v1.mjs';
+import {createSemanticPilot} from './panda-unified-pilot-adapter-v1.mjs';
+import {pilotLearnerMetadata} from './panda-unified-pilot-metadata-v1.mjs';
 
 const clean=s=>String(s??'').normalize('NFC').replace(/[\s，。？！?!、,.]/g,'');
 const line=(zh,py,ru)=>({zh,py,ru});
@@ -17,9 +19,11 @@ const normalizeLine=r=>r?line(r.hanzi||r.panda||r.zh||'',r.pinyin||r.py||'',r.ru
 const STREET_FIRST=line('哈喽！最近怎么样？','Hālou! Zuìjìn zěnmeyàng?','Привет! Как дела?');
 const STREET_NEXT=line('你呢？','Nǐ ne?','А ты?');
 
-export function createStreetBrain({storage=(()=>{try{return globalThis.localStorage}catch{return null}})(),curriculum=[]}={}){
+export function createStreetBrain({storage=(()=>{try{return globalThis.localStorage}catch{return null}})(),curriculum=[],unified=false,lookupMale=null}={}){
  const state={turn:0,mode:'nonstop',prompt:null,pending:null,topic:1,
   questions:[],profile:{...readSharedPandaProfile(storage),recentQuestions:[]},recent:[]};
+ const semantic=createSemanticPilot({enabled:unified,lookupExact:typeof lookupMale==='function'?lookupMale:null,metadata:pilotLearnerMetadata,allowTextOnly:true});
+ const observe=(p,linked=false)=>{if(unified&&state.mode==='nonstop'&&p?.zh)semantic.observePanda({hanzi:p.zh,pinyin:p.py,ru:p.ru},{continuesLearnerTurn:linked});};
  const allowed=()=>{try{return accessibleLessons(storage,1)}catch{return [1]}};
  const remember=(input,result)=>{
    if(!result?.spoken?.known||result.spoken.correction)return;
@@ -32,13 +36,14 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    state.prompt={hanzi:STREET_FIRST.zh,lesson:1,instruction:'Ответь, как у тебя дела.'};
    state.pending=null;state.topic=1;
    state.questions.push(STREET_FIRST.zh);
+   semantic.reset();observe(STREET_FIRST);
    return STREET_FIRST;
  }
  function setPrompt(prompt){
    const p=normalizeLine(prompt);
    if(p?.zh){
      state.prompt={hanzi:p.zh,lesson:prompt.lesson||1,instruction:'Ответь на вопрос Панды.'};
-     state.questions.push(p.zh);
+     state.questions.push(p.zh);observe(p);
    }
  }
  function nextQuestion(){
@@ -58,6 +63,20 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    state.turn++;
    state.mode=mode==='short'?'short':'nonstop';
    const learned=allowed();
+   if(state.mode==='short')semantic.reset();
+   // Preserve the established Street greeting and reviewed correction behavior.
+   // Unified responses are limited to reviewed metadata and the common allowlist.
+   if(unified&&state.mode==='nonstop'){
+     const planned=semantic.plan(raw,{mode:'free-chat'});
+     if(planned?.spoken){
+       const p=normalizeLine(planned.line);
+       state.pending=null;state.prompt=null;
+       observe(p,planned.continuesLearnerTurn===true);
+       return {kind:'answer',panda:p,learner:line(raw,planned.spoken.pinyin,planned.spoken.translation),nextQuestion:null,
+         unified:true,voiceStatus:planned.voiceStatus,toneVerified:false,
+         message:planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл. Тоны не оценивались.'};
+     }
+   }
    // A natural, valid statement is a conversation turn, not a grammar explanation.
    // Do not persist temporary busyness in the shared learner profile and never
    // claim acoustic tone assessment for text entry.
@@ -125,6 +144,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
        'Фраза разобрана, но для неё пока нет готового ответа.',nextQuestion:null};
    }
    // Return the real reviewed engine reply; the next question is offered separately.
+   observe(panda);
    return {kind:result.kind,panda,learner,message:result.message||'',
      nextQuestion:state.mode==='nonstop'?normalizeLine(state.pending):null,
      explanation:result.explanation||''};
