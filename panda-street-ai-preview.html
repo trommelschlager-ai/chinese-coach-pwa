@@ -75,22 +75,33 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 #mode-ring{display:none;position:absolute;z-index:3;border:2px solid #eea0ff;border-radius:999px;pointer-events:none;box-shadow:0 0 13px #ca52ff88}
 #mode-ring.show{display:block}
 @media (prefers-reduced-motion:reduce){#toast{transition:none}}
+
+/* V1.2 art has no baked-in UI. Keep existing hit targets as real controls. */
+.street-live-v12 .hit:not(#theme){display:grid;place-items:center;color:#fff;font-size:clamp(9px,2.65vw,14px);line-height:1.05;font-weight:700;background:linear-gradient(145deg,#282445e8,#101327e8);border:1px solid #ba83e1;box-shadow:0 2px 6px #0008;text-align:center;padding:2px;white-space:normal;}
+.street-live-v12 .hit:not(#theme)::before{content:attr(data-visible-label)}
+.street-live-v12 #row1,.street-live-v12 #row2{background:#12162ad9}
+.street-live-v12 #mic{background:radial-gradient(circle,#8958c6,#382060);font-size:clamp(14px,5vw,26px)}
+.street-live-v12 #mic[aria-pressed="true"]{background:#8c2848}
+.street-live-v12 #send{font-size:clamp(13px,4vw,23px)}
+[data-theme="day"] .street-live-v12 .hit:not(#theme){color:#26213e;background:#f7f3ffe8;border-color:#8175ad}
+[data-theme="day"] .street-live-v12 #mic{color:white;background:#6543a1}
+
 </style><script src="./assets/hsk1-foundations-data-v152.js?v=188"></script></head>
 <body><main id="stage" aria-label="Panda Street AI — утверждённый экран">
 <img id="src" alt="" src="./assets/panda-street-day-night/night.webp">
 <img id="day-src" alt="" src="./assets/panda-street-day-night/day.webp?v=2">
 <canvas id="art" aria-hidden="true"></canvas>
 <canvas id="day-art" aria-hidden="true"></canvas>
-<button id="back" class="hit" aria-label="Вернуться в действующую Panda AI"></button>
-<button id="short" class="hit" aria-label="Краткие диалоги"></button>
-<button id="nonstop" class="hit" aria-label="Non-Stop диалоги"></button>
-<button id="history" class="hit" aria-label="История всех реплик"></button>
+<button id="back" class="hit" data-visible-label="‹ Назад" aria-label="Вернуться в действующую Panda AI"></button>
+<button id="short" class="hit" data-visible-label="Краткие диалоги" aria-label="Краткие диалоги"></button>
+<button id="nonstop" class="hit" data-visible-label="Non-Stop" aria-label="Non-Stop диалоги"></button>
+<button id="history" class="hit" data-visible-label="История" aria-label="История всех реплик"></button>
 <button id="theme" class="hit" type="button" aria-label="Дневная тема" aria-pressed="false">☀ День<br>☾ Ночь</button>
-<button id="row1" class="hit" aria-label="Прослушать первую реплику"></button>
-<button id="row2" class="hit" aria-label="Прослушать вторую реплику"></button>
-<button id="game" class="hit" aria-label="Повторить текущую фразу"></button><button id="topics" class="hit" aria-label="Все темы"></button><button id="book" class="hit" aria-label="Подсказка — вариант ответа"></button>
-<button id="send" class="hit" aria-label="Написать по-китайски"></button><button id="mic" class="hit" aria-label="Произнести фразу по-китайски"></button>
-<button id="home" class="hit" aria-label="Главная"></button><button id="lessons" class="hit" aria-label="Уроки"></button><button id="trainer" class="hit" aria-label="Тренажёр"></button><button id="chat" class="hit" aria-label="Panda AI"></button><button id="profile" class="hit" aria-label="Профиль"></button>
+<button id="row1" class="hit" data-visible-label="🔊 Фраза панды" aria-label="Прослушать первую реплику"></button>
+<button id="row2" class="hit" data-visible-label="Твой ответ" aria-label="Прослушать вторую реплику"></button>
+<button id="game" class="hit" data-visible-label="↻ Повторить" aria-label="Повторить текущую фразу"></button><button id="topics" class="hit" data-visible-label="Все темы" aria-label="Все темы"></button><button id="book" class="hit" data-visible-label="Подсказка" aria-label="Подсказка — вариант ответа"></button>
+<button id="send" class="hit" data-visible-label="✎" aria-label="Написать по-китайски"></button><button id="mic" class="hit" data-visible-label="🎙" aria-label="Произнести фразу по-китайски"></button>
+<button id="home" class="hit" data-visible-label="Главная" aria-label="Главная"></button><button id="lessons" class="hit" data-visible-label="Уроки" aria-label="Уроки"></button><button id="trainer" class="hit" data-visible-label="Тренажёр" aria-label="Тренажёр"></button><button id="chat" class="hit" data-visible-label="Panda AI" aria-label="Panda AI"></button><button id="profile" class="hit" data-visible-label="Профиль" aria-label="Профиль"></button>
 <div id="live-panda" class="live" aria-live="polite"></div><div id="live-learner" class="live" aria-live="polite"></div><div id="mode-ring" aria-hidden="true"></div>
 <div id="toast" role="status" aria-live="polite"></div></main>
 <section id="shade" role="dialog" aria-modal="true" aria-labelledby="title"><div id="sheet"><header><h2 id="title">Panda Street AI</h2><button id="close" type="button" aria-label="Закрыть">×</button></header><div id="body"></div></div></section>
@@ -241,12 +252,15 @@ function paintScene(canvas,image,width,height,dpr,fill){
 }
 const daySrc=el('day-src');
 daySrc.addEventListener('load',paint);
-import('./assets/panda-street-face-rig-v1.mjs?v=3').catch(error=>{
+import('./assets/panda-street-live-v12.mjs?v=1').then(module=>module.createStreetLiveV12({stage})).catch(error=>{
+ console.warn('Street V1.2 unavailable; keep existing approved scene:',error);
+ return import('./assets/panda-street-face-rig-v1.mjs?v=3').catch(error=>{
  console.warn('Street face rig first load failed; retrying:',error);
  return import('./assets/panda-street-face-rig-v1.mjs?v=3-retry');
 }).then(module=>{
- streetFaceRig=module.createStreetFaceRig({stage,source:src});paint();
-}).catch(error=>{console.error('Street face animation unavailable:',error);tip('Мимика не загрузилась. Обнови страницу.')});
+ return module.createStreetFaceRig({stage,source:src});
+});
+}).then(rig=>{streetFaceRig=rig;paint();streetFaceRig?.greet?.();}).catch(error=>{console.error('Street face animation unavailable:',error);tip('Мимика не загрузилась. Обнови страницу.')});
 src.addEventListener('load',paint);window.addEventListener('resize',()=>{keepStreetStageSize();paint()});window.visualViewport?.addEventListener('resize',()=>{keepStreetStageSize();paint()});new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
 const esc=str=>String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 let timer;function tip(msg){const t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('show'),2700)}
@@ -273,7 +287,7 @@ const approvedMaleRegistryPromise=import('./assets/panda-street-approved-male-mp
 function playApprovedStreetMaleClip(clip,token){
  if(token!==voiceToken)return;
  // Only possible after a reviewed same-male entry is activated in the registry.
- const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;
+ const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;streetFaceRig?.bindAudio?.(a);
  if('preservesPitch' in a)a.preservesPitch=true;
  const valid=()=>token===voiceToken&&playing===a;
  const reset=()=>{if(valid()){streetFaceRig?.setState('idle');playing=null}};
@@ -450,6 +464,7 @@ async function respond(text,{fromSpeech=false}={}){
  }
  if(!result||result.kind==='empty'||result.kind==='error'){tip(result?.message||'Не удалось разобрать фразу');return}
  if(['correction','clarify','locked','explanation'].includes(result.kind)||!result.panda){
+  if(result.kind==='clarify')streetFaceRig?.confused?.();
   const correction=result.correction;
   streetLastCorrection=result.reviewCorrection||null;streetLastSaved=false;
   if(streetLastCorrection&&streetReviewConsent&&brain.review)streetLastSaved=brain.review.save(streetLastCorrection,true);
@@ -570,6 +585,7 @@ function applyTheme(theme){
  document.documentElement.dataset.theme=theme;
  document.querySelector('meta[name="theme-color"]').content=day?'#e6edf8':'#030513';
  themeButton.setAttribute('aria-pressed',String(day));
+ streetFaceRig?.resize({width:stage.clientWidth,height:stage.clientHeight,scale:s,left:stageX,cutSky:removedSky});
 }
 const dayReady=daySrc.decode().then(()=>{paint();return true},()=>false);
 let themeRequest=0;
