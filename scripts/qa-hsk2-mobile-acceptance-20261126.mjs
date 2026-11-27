@@ -28,10 +28,16 @@ try{
    await page.screenshot({path:dir+'/'+width+'-catalog.png',animations:'disabled'});
    await home.click();
    await page.waitForURL(/index\.html#panda\/home/);
-   await page.locator('.pg-photo1-home .pg-photo1-image').waitFor({state:'visible'});
-   await page.waitForFunction(()=>{const img=document.querySelector('.pg-photo1-home .pg-photo1-image');return img?.complete&&img.naturalWidth>0;});
-   await page.locator('.pg-photo1-hit-1').waitFor({state:'visible'});
-   await page.locator('.pg-photo1-hit-2').waitFor({state:'visible'});
+   // The approved four-level home replaced the retired two-button artwork.
+   const homeArt=page.locator('.pg-four-approved .pg-four-art');
+   await homeArt.waitFor({state:'visible'});
+   await page.waitForFunction(()=>{const img=document.querySelector('.pg-four-approved .pg-four-art');return img?.complete&&img.naturalWidth>0;});
+   assert.equal(await page.locator('.pg-four-approved .pg-four-hit').count(),4);
+   const hsk1=page.locator('.pg-four-hit-1'),hsk2=page.locator('.pg-four-hit-2');
+   await visibleInViewport(hsk1);
+   await visibleInViewport(hsk2);
+   assert.equal(await hsk1.getAttribute('href'),'./hsk1-map.html');
+   assert.equal(await hsk2.getAttribute('href'),'./hsk2-life-course.html?view=welcome');
    await page.screenshot({path:dir+'/'+width+'-home.png',animations:'disabled'});
    await page.goto(base+'/hsk2-lesson1.html?step=2',{waitUntil:'domcontentloaded'});
    await page.locator('#app[data-view="2"] .word-row').first().waitFor({state:'visible'});
