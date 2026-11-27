@@ -9,6 +9,7 @@ on:
       - 'assets/panda-street-face-rig-v1.mjs'
       - 'assets/panda-street-live-*-v12.mjs'
       - 'sw.js'
+      - 'scripts/build-street-motion-demo.mjs'
       - 'assets/panda-street-male-voice-queue-v1.json'
       - 'assets/panda-street-approved-male-mp3-v1.mjs'
       - 'tests/panda-street-approved-male-mp3-v1.test.mjs'
@@ -51,6 +52,9 @@ jobs:
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/panda-street-http.log 2>&1 &
           sleep 2
           node tests/panda-street-real-chrome-v1.mjs
+      - name: Build portable phone motion demo
+        if: always()
+        run: node scripts/build-street-motion-demo.mjs
       - name: Upload Panda Street real-browser review screenshots
         if: always()
         uses: actions/upload-artifact@v4
