@@ -95,6 +95,7 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 <div id="toast" role="status" aria-live="polite"></div></main>
 <section id="shade" role="dialog" aria-modal="true" aria-labelledby="title"><div id="sheet"><header><h2 id="title">Panda Street AI</h2><button id="close" type="button" aria-label="Закрыть">×</button></header><div id="body"></div></div></section>
 <script src="./assets/panda-street-voice-v20261125.js"></script>
+<script src="./assets/panda-street-lesson3.js"></script>
 <script>
 (()=>{'use strict';
 // Stable approved Street scene: Android soft keyboard reduces dvh/innerHeight,
@@ -123,6 +124,8 @@ const boxes={
 };
 let s=1,removedSky=0,removedFloor=0,stageX=0,floorGap=0,mode='nonstop',current=0,history=[];
 let streetFaceRig=null;
+const lesson3=new URLSearchParams(location.search).get('lesson')==='3'?globalThis.PandaStreetLesson3:null;
+const lesson3Cues=lesson3?.words.map(([zh,py,ru])=>({zh,py,ru}));
 const cues=[
  {zh:'我有点忙。',py:'Wǒ yǒudiǎn máng.',ru:'Я немного занят.'},
  {zh:'你晚上有什么计划？',py:'Nǐ wǎnshang yǒu shénme jìhuà?',ru:'Какие у тебя планы на вечер?'},
@@ -131,6 +134,7 @@ const cues=[
  {zh:'你今天怎么样？',py:'Nǐ jīntiān zěnmeyàng?',ru:'Как ты сегодня?'},
  {zh:'你晚上做什么？',py:'Nǐ wǎnshang zuò shénme?',ru:'Что ты делаешь вечером?'}
 ];
+const activeCues=lesson3Cues?lesson3.dialogs.map(dialogue=>lesson3Cues[dialogue[0]]):cues;
 const replies=[
  {match:/你好|您好/,zh:'你今天怎么样？',py:'Nǐ jīntiān zěnmeyàng?',ru:'Как ты сегодня?'},
  {match:/忙/,zh:'没关系，我们慢慢来。',py:'Méi guānxi, wǒmen mànmàn lái.',ru:'Ничего страшного, не будем спешить.'},
@@ -382,11 +386,12 @@ function createStreetOfflineBrain(){
 let streetOfflineMode=false;
 const makeStreetBrain=m=>m.createStreetBrain({storage:(()=>{try{return localStorage}catch{return null}})(),
  curriculum:window.PANDA_HSK1_FOUNDATIONS||[],unified:new URLSearchParams(location.search).get('semantic')!=='0',
+ practiceDialogs:lesson3?.dialogs.map(dialogue=>dialogue.map(i=>lesson3Cues[i]))||[],
  lookupMale:text=>globalThis.PandaStreetVoiceV20261125?.lookup(text,'male')||null});
-const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=3')
+const streetBrainPromise=import('./assets/panda-street-shared-brain-v1.mjs?v=4')
  .catch(firstError=>{
   console.warn('Street brain first load failed; retrying:',firstError);
-  return import('./assets/panda-street-shared-brain-v1.mjs?v=3-retry');
+  return import('./assets/panda-street-shared-brain-v1.mjs?v=4-retry');
  })
  .then(m=>{const brain=makeStreetBrain(m);stage.dataset.brainState='full';return brain})
  .catch(error=>{
@@ -545,7 +550,7 @@ function startStreetRecognition(){
   rec.start();
  }catch(e){stopStreetRecognition();tip('Микрофон недоступен: '+e.message)}
 }
-function phrase(i){current=i;const d=cues[i];popup('Практика фразы',`<div class="hanzi">${esc(d.zh)}</div><div class="py">${esc(d.py)}</div><div class="ru">${esc(d.ru)}</div><div class="actions"><button class="action" id="hear">🔊 Слушать</button><button class="action primary" id="reply">Ответить</button><button class="action" id="other">Следующая →</button></div><p class="hint">Можно произнести или написать ответ. Предыдущие реплики остаются в истории.</p>`);el('hear').onclick=()=>speak(d.zh);el('reply').onclick=composition;el('other').onclick=()=>phrase((i+1)%cues.length)}
+function phrase(i){current=i;const d=activeCues[i];popup('Практика фразы',`<div class="hanzi">${esc(d.zh)}</div><div class="py">${esc(d.py)}</div><div class="ru">${esc(d.ru)}</div><div class="actions"><button class="action" id="hear">🔊 Слушать</button><button class="action primary" id="reply">Ответить</button><button class="action" id="other">Следующая →</button></div><p class="hint">Можно произнести или написать ответ. Предыдущие реплики остаются в истории.</p>`);el('hear').onclick=()=>speak(d.zh);el('reply').onclick=async()=>{if(lesson3){const brain=await streetBrainPromise;brain?.setPrompt?.(d);liveRow('live-panda',d)}composition()};el('other').onclick=()=>phrase((i+1)%activeCues.length)}
 function historyView(){
  const rendered=history.length?history.map(x=>{
   const learner=x.userInfo||recognizedDetail(x.user);
@@ -557,7 +562,7 @@ function historyView(){
  popup('История разговора','<p class="hint">Последние '+history.length+' реплик. Личные разговоры не добавляются в общий словарь.</p><p><a href="./panda-shared-profile-settings.html">🧠 Общая память двух Панд — настройки</a></p><button class="action" id="street-history-review">📚 Мои ошибки</button>'+rendered);
  el('street-history-review').onclick=async()=>streetReviewView(await streetBrainPromise);
 }
-function shortMode(){mode='short';paint();popup('Краткие диалоги',cues.map((d,i)=>`<button class="example" data-i="${i}">${esc(d.zh)} — ${esc(d.ru)}</button>`).join('')+'<p class="hint">Выбери фразу для тренировки.</p>');body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>phrase(Number(b.dataset.i)))}
+function shortMode(){mode='short';paint();popup('Краткие диалоги',activeCues.map((d,i)=>`<button class="example" data-i="${i}">${esc(d.zh)} — ${esc(d.ru)}</button>`).join('')+'<p class="hint">Выбери фразу для тренировки.</p>');body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>phrase(Number(b.dataset.i)))}
 el('row1').onclick=()=>history.length?speak(history.at(-1).panda.zh):phrase(0);
 el('row2').onclick=()=>history.length?composition():phrase(1);
 el('short').onclick=shortMode;el('nonstop').onclick=async()=>{mode='nonstop';paint();const b=await streetBrainPromise;if(b){const start=b.start('nonstop');liveRow('live-panda',start);speak(start.zh)}composition()};
@@ -588,7 +593,7 @@ themeButton.onclick=async()=>{
  try{localStorage.setItem(themeKey,theme)}catch{}
 };
 const base='https://trommelschlager-ai.github.io/chinese-coach-pwa/';
-el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'panda-street-hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:cues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>location.assign('./panda-shared-profile-settings.html');
+el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'panda-street-hsk1-map.html');el('game').onclick=()=>speak(history.length?history.at(-1).panda.zh:activeCues[current].zh);el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>location.assign('./panda-shared-profile-settings.html');
 if('serviceWorker' in navigator&&location.protocol==='https:'){
  navigator.serviceWorker.register('./sw.js').catch(error=>console.warn('Panda Street offline cache:',error));
 }
