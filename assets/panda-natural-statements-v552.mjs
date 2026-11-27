@@ -362,6 +362,64 @@ function linkedCourseTurn564(s){
  for(const [re,prefix,connector,ruPrefix,ruConnector,grammar] of forms){const match=re.exec(s);if(!match||!clauses[match[1]]||!clauses[match[2]])continue;const a=clauses[match[1]],b=clauses[match[2]];const py=[prefix,a[0]+',',connector,b[0]].filter(Boolean).join(' ');const ru=[ruPrefix,a[1]+',',ruConnector,b[1]].filter(Boolean).join(' ');const reply=match[2].endsWith('休息')?['那你休息一下吧。','Nà nǐ xiūxi yíxià ba.','Тогда немного отдохни.']:match[2].includes('中文')||match[2].includes('学习')?['你学中文多久了？','Nǐ xué Zhōngwén duōjiǔ le?','Как давно учишь китайский?']:match[2].includes('公园')?['你喜欢去公园吗？','Nǐ xǐhuan qù gōngyuán ma?','Ты любишь ходить в парк?']:['你接下来想做什么？','Nǐ jiēxiàlái xiǎng zuò shénme?','Что хочешь делать дальше?'];return {pinyin:py[0].toUpperCase()+py.slice(1)+'.',translation:ru[0].toUpperCase()+ru.slice(1)+'.',reply,grammar};}
  return null;
 }
+// v572: bounded city/transport meaning, using the existing fictional course scene.
+// Never claim real-world directions, distances, or location from a transcript.
+export function respondToCourseCityQuestion(raw,previousPanda=null){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ const city={
+  银行:{py:'yínháng',ru:'банк',near:'学校',nearPy:'xuéxiào',nearRu:'школы'},
+  公园:{py:'gōngyuán',ru:'парк',near:'医院',nearPy:'yīyuàn',nearRu:'больницы'}
+ };
+ const scene=key=>courseScenes563.find(x=>x.question[0]===key)?.answer;
+ const answerFor=place=>scene(place+'在哪儿？');
+ const cap=x=>x[0].toUpperCase()+x.slice(1);
+ const reply=(py,ru,a,kind='location',extra='')=>{
+  if(!a)return null;
+  return {...result(raw,polite?'Qǐngwèn, '+py:cap(py),polite?'Извините, '+ru:cap(ru),a,null,1),
+   kind:'question',domain:'course-city',grammar:kind,
+   message:'Учебная ситуация, не реальные адреса или маршрут. '+extra+' Тоны по тексту не оценивались.'};
+ };
+ const where={哪儿:'nǎr',哪里:'nǎlǐ',哪:'nǎ'};
+ let m=/^(银行|公园)在(哪儿|哪里|哪)$/.exec(s);
+ if(m)return reply(city[m[1]].py+' zài '+where[m[2]]+'?','где находится '+city[m[1]].ru+'?',answerFor(m[1]));
+ m=/^(哪儿|哪里|哪)(有)(银行|公园)$/.exec(s);
+ if(m)return reply(where[m[1]]+' yǒu '+city[m[3]].py+'?','где есть '+city[m[3]].ru+'?',answerFor(m[3]));
+ m=/^(这附近|附近|这里|这儿)有(银行|公园)吗$/.exec(s);
+ const areas={这附近:'zhè fùjìn',附近:'fùjìn',这里:'zhèlǐ',这儿:'zhèr'};
+ // 'Here' is an unspecified position even inside the example: don't claim it is nearby.
+ const unknown=['我不知道你在哪儿。','Wǒ bù zhīdào nǐ zài nǎr.','Я не знаю, где ты находишься.'];
+ if(m)return reply(areas[m[1]]+' yǒu '+city[m[2]].py+' ma?','есть ли здесь '+city[m[2]].ru+'?',answerFor(m[2]),'existence','Указан ориентир; близость к ученику неизвестна.');
+ m=/^(怎么去)(银行|公园)$/.exec(s);
+ if(m)return reply('zěnme qù '+city[m[2]].py+'?','как добраться до '+(m[2]==='银行'?'банка':'парка')+'?',answerFor(m[2]),'directions','Указан ориентир, точный маршрут не задан.');
+ m=/^(银行|公园)怎么走$/.exec(s);
+ if(m)return reply(city[m[1]].py+' zěnme zǒu?','как пройти до '+(m[1]==='银行'?'банка':'парка')+'?',answerFor(m[1]),'directions','Указан ориентир, точный маршрут не задан.');
+ m=/^(银行|公园)离(这儿|这里|学校|医院)远吗$/.exec(s);
+ if(m){
+  const origin={这儿:['zhèr','отсюда'],这里:['zhèlǐ','отсюда'],学校:['xuéxiào','от школы'],医院:['yīyuàn','от больницы']}[m[2]];
+  const near=city[m[1]].near===m[2];
+  return reply(city[m[1]].py+' lí '+origin[0]+' yuǎn ma?',city[m[1]].ru+' далеко '+origin[1]+'?',near?scene('你家离学校远吗？'):m[2]==='这儿'||m[2]==='这里'?unknown:['我不知道。','Wǒ bù zhīdào.','Я не знаю.'],'distance');
+ }
+ const prior=norm(previousPanda);
+ const place=Object.keys(city).find(k=>norm(answerFor(k)?.[0])===prior);
+ if(place){
+  m=/^(那)?(银行|公园)呢$/.exec(s);
+  if(m)return reply((m[1]?'nà ':'')+city[m[2]].py+' ne?','а '+city[m[2]].ru+'?',answerFor(m[2]),'context-location');
+  if(s==='离这儿远吗'||s==='离这里远吗')return reply('lí '+(s.includes('这儿')?'zhèr':'zhèlǐ')+' yuǎn ma?','далеко отсюда?',unknown,'context-distance');
+  if(s==='怎么走'||s==='怎么去')return reply(s==='怎么走'?'zěnme zǒu?':'zěnme qù?','как туда добраться?',answerFor(place),'context-directions','Указан ориентир, точный маршрут не задан.');
+ }
+ const transport={
+  你怎么上班:['nǐ zěnme shàngbān?','как ты добираешься до работы?','你怎么去上班？'],
+  你坐什么车去上班:['nǐ zuò shénme chē qù shàngbān?','на чём ты ездишь на работу?','你怎么去上班？'],
+  你怎么从家到公司:['nǐ zěnme cóng jiā dào gōngsī?','как ты добираешься от дома до компании?','你从家到公司怎么去？'],
+  去机场要多久:['qù jīchǎng yào duōjiǔ?','сколько времени нужно до аэропорта?','到机场需要多久？'],
+  到机场要多长时间:['dào jīchǎng yào duō cháng shíjiān?','сколько времени нужно до аэропорта?','到机场需要多久？'],
+  去机场需要多长时间:['qù jīchǎng xūyào duō cháng shíjiān?','сколько времени нужно до аэропорта?','到机场需要多久？']
+ };
+ if(Object.hasOwn(transport,s)){const [py,ru,key]=transport[s];return reply(py,ru,scene(key),'transport');}
+ return null;
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -653,5 +711,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||contextualFragments568(raw,previousPanda);
 }
