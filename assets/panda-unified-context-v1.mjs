@@ -423,7 +423,7 @@ function interpretIndependentStudyGoal(raw){
  const key=cleanOpen(s);
  if(!key.startsWith('我想'))return null;
  const practice=composeReviewedAnswer('study-practice',key);
- if(practice)return {raw:String(raw),intent:'express-study-goal',topic:'study',value:practice[2],pinyin:practice[0],translation:practice[1],toneVerified:false};
+ if(practice&&!['中文','汉语'].includes(practice[2]))return {raw:String(raw),intent:'express-study-goal',topic:'study',value:practice[2],pinyin:practice[0],translation:practice[1],toneVerified:false};
  if(key==='我想在中国工作')return {raw:String(raw),intent:'express-work-goal',topic:'work',value:'china-work',pinyin:'Wǒ xiǎng zài Zhōngguó gōngzuò.',translation:'Я хочу работать в Китае.',toneVerified:false};
  return null;
 }
