@@ -319,6 +319,24 @@
       "hanzi": "你真棒！",
       "role": "male",
       "gitBlobSha": "a6e6f49aca9df3b156903137806156bf38179c34"
+    },
+    {
+      "file": "54.mp3",
+      "hanzi": "你为什么想学中文？",
+      "role": "male",
+      "gitBlobSha": "178a5968f872a8f1589227fa3f1705ea9e7201ee",
+      "sha256": "dd526edf34034b00348a1021e58954f055853044909d130146f57341c4514fdd",
+      "bytes": 16416,
+      "nativeToneReview": "pending"
+    },
+    {
+      "file": "55.mp3",
+      "hanzi": "你打算什么时候去？",
+      "role": "male",
+      "gitBlobSha": "9503e62e9d77c0f5ef8d95cfb13b28cc2b18b02e",
+      "sha256": "bd2450fbf9a89d868007ad1936c9f97a21946d80155070fa0a86cc0052d665c8",
+      "bytes": 15840,
+      "nativeToneReview": "pending"
     }
   ]
 }

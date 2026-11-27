@@ -157,3 +157,13 @@ test('face motion is opt-in to actual voice, not a body or image deformation',()
  assert.match(source,/paintScene\(canvas,src/);
  assert.doesNotMatch(source,/speechSynthesis|SpeechSynthesisUtterance/);
 });
+
+
+test('Street opt-in shared conversation preserves male boundary and reviewed text-only context',()=>{
+ const male=q=>q==='没关系，我们慢慢来。'?{src:'./assets/panda-street-voice-v20261125/27.mp3'}:null;
+ const brain=createStreetBrain({storage:storage(),unified:true,lookupMale:male});brain.start('nonstop');
+ let a=brain.answer('我觉得中文很难');assert.equal(a.panda.zh,'你想练习什么？');assert.equal(a.voiceStatus,'text-only');assert.equal(a.toneVerified,false);
+ a=brain.answer('我想练习声调');assert.equal(a.panda.zh,'没关系，我们慢慢来。');assert.equal(a.voiceStatus,'registered-exact');assert.equal(a.nextQuestion,null);
+ a=brain.answer('我打算坐飞机');assert.equal(a.panda.zh,'祝你旅途愉快！');assert.equal(a.voiceStatus,'text-only');
+ assert.match(source,/lookupMale:text=>globalThis\.PandaStreetVoiceV20261125\?\.lookup\(text,'male'\)/);
+});
