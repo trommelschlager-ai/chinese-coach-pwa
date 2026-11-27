@@ -1224,6 +1224,353 @@ export function respondToCourseWellbeing(raw){
  return null;
 }
 
+// v572: reviewed social and travel aliases. Meeting dialogue is fictional practice, not a real appointment.
+const socialTravelAliases572=Object.freeze({
+ "我们可以做朋友吗": [
+  "Wǒmen kěyǐ zuò péngyou ma?",
+  "Мы можем подружиться?",
+  [
+   "有啊，我们可以做朋友。",
+   "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+   "Да, мы можем дружить."
+  ],
+  "relationships",
+  false
+ ],
+ "你愿意和我做朋友吗": [
+  "Nǐ yuànyì hé wǒ zuò péngyou ma?",
+  "Ты хочешь со мной дружить?",
+  [
+   "有啊，我们可以做朋友。",
+   "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+   "Да, мы можем дружить."
+  ],
+  "relationships",
+  false
+ ],
+ "我可以和你做朋友吗": [
+  "Wǒ kěyǐ hé nǐ zuò péngyou ma?",
+  "Можно с тобой подружиться?",
+  [
+   "有啊，我们可以做朋友。",
+   "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+   "Да, мы можем дружить."
+  ],
+  "relationships",
+  false
+ ],
+ "你有男朋友吗": [
+  "Nǐ yǒu nánpéngyou ma?",
+  "У тебя есть парень?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ],
+  "relationships",
+  false
+ ],
+ "你有没有男朋友": [
+  "Nǐ yǒu méiyǒu nánpéngyou?",
+  "У тебя есть парень?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ],
+  "relationships",
+  false
+ ],
+ "你有女朋友吗": [
+  "Nǐ yǒu nǚpéngyou ma?",
+  "У тебя есть девушка?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ],
+  "relationships",
+  false
+ ],
+ "你有没有女朋友": [
+  "Nǐ yǒu méiyǒu nǚpéngyou?",
+  "У тебя есть девушка?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ],
+  "relationships",
+  false
+ ],
+ "你有对象吗": [
+  "Nǐ yǒu duìxiàng ma?",
+  "У тебя есть партнёр?",
+  [
+   "没有，我是虚拟熊猫。",
+   "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+   "Нет, я виртуальная панда."
+  ],
+  "relationships",
+  false
+ ],
+ "你星期六有没有空": [
+  "Nǐ xīngqīliù yǒu méiyǒu kòng?",
+  "Ты свободен в субботу?",
+  [
+   "有空，我们见面吧。",
+   "Yǒu kòng, wǒmen jiànmiàn ba.",
+   "Есть время, давай встретимся."
+  ],
+  "relationships",
+  true
+ ],
+ "星期六你有时间吗": [
+  "Xīngqīliù nǐ yǒu shíjiān ma?",
+  "У тебя есть время в субботу?",
+  [
+   "有空，我们见面吧。",
+   "Yǒu kòng, wǒmen jiànmiàn ba.",
+   "Есть время, давай встретимся."
+  ],
+  "relationships",
+  true
+ ],
+ "你周六有空吗": [
+  "Nǐ zhōuliù yǒu kòng ma?",
+  "Ты свободен в субботу?",
+  [
+   "有空，我们见面吧。",
+   "Yǒu kòng, wǒmen jiànmiàn ba.",
+   "Есть время, давай встретимся."
+  ],
+  "relationships",
+  true
+ ],
+ "我们什么时候碰面": [
+  "Wǒmen shénme shíhou pèngmiàn?",
+  "Когда мы встретимся?",
+  [
+   "星期六下午三点。",
+   "Xīngqīliù xiàwǔ sān diǎn.",
+   "В субботу в три часа дня."
+  ],
+  "relationships",
+  true
+ ],
+ "我们约几点见面": [
+  "Wǒmen yuē jǐ diǎn jiànmiàn?",
+  "На какое время договоримся о встрече?",
+  [
+   "星期六下午三点。",
+   "Xīngqīliù xiàwǔ sān diǎn.",
+   "В субботу в три часа дня."
+  ],
+  "relationships",
+  true
+ ],
+ "我们什么时间见面": [
+  "Wǒmen shénme shíjiān jiànmiàn?",
+  "Когда мы встретимся?",
+  [
+   "星期六下午三点。",
+   "Xīngqīliù xiàwǔ sān diǎn.",
+   "В субботу в три часа дня."
+  ],
+  "relationships",
+  true
+ ],
+ "我们一起去公园好吗": [
+  "Wǒmen yìqǐ qù gōngyuán hǎo ma?",
+  "Давай вместе пойдём в парк?",
+  [
+   "好，我们一起去吧。",
+   "Hǎo, wǒmen yìqǐ qù ba.",
+   "Хорошо, пойдём вместе."
+  ],
+  "relationships",
+  true
+ ],
+ "你愿意跟我一起去公园吗": [
+  "Nǐ yuànyì gēn wǒ yìqǐ qù gōngyuán ma?",
+  "Хочешь пойти со мной в парк?",
+  [
+   "好，我们一起去吧。",
+   "Hǎo, wǒmen yìqǐ qù ba.",
+   "Хорошо, пойдём вместе."
+  ],
+  "relationships",
+  true
+ ],
+ "你想不想一起去公园": [
+  "Nǐ xiǎng bu xiǎng yìqǐ qù gōngyuán?",
+  "Хочешь вместе пойти в парк?",
+  [
+   "好，我们一起去吧。",
+   "Hǎo, wǒmen yìqǐ qù ba.",
+   "Хорошо, пойдём вместе."
+  ],
+  "relationships",
+  true
+ ],
+ "你喜欢旅游吗": [
+  "Nǐ xǐhuan lǚyóu ma?",
+  "Ты любишь путешествовать?",
+  [
+   "我是虚拟熊猫，没有实际的旅行经历。",
+   "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+   "Я виртуальная панда, у меня нет реального опыта путешествий."
+  ],
+  "travel",
+  false
+ ],
+ "你喜不喜欢旅行": [
+  "Nǐ xǐ bu xǐhuan lǚxíng?",
+  "Ты любишь путешествовать?",
+  [
+   "我是虚拟熊猫，没有实际的旅行经历。",
+   "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+   "Я виртуальная панда, у меня нет реального опыта путешествий."
+  ],
+  "travel",
+  false
+ ],
+ "你经常旅行吗": [
+  "Nǐ jīngcháng lǚxíng ma?",
+  "Ты часто путешествуешь?",
+  [
+   "我是虚拟熊猫，没有实际的旅行经历。",
+   "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+   "Я виртуальная панда, у меня нет реального опыта путешествий."
+  ],
+  "travel",
+  false
+ ],
+ "你以前去过北京吗": [
+  "Nǐ yǐqián qùguo Běijīng ma?",
+  "Ты раньше бывал в Пекине?",
+  [
+   "我是虚拟熊猫，没有实际的旅行经历。",
+   "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+   "Я виртуальная панда, у меня нет реального опыта путешествий."
+  ],
+  "travel",
+  false
+ ],
+ "你去过上海没有": [
+  "Nǐ qùguo Shànghǎi méiyǒu?",
+  "Ты бывал в Шанхае?",
+  [
+   "我是虚拟熊猫，没有实际的旅行经历。",
+   "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+   "Я виртуальная панда, у меня нет реального опыта путешествий."
+  ],
+  "travel",
+  false
+ ],
+ "你有没有去过中国": [
+  "Nǐ yǒu méiyǒu qùguo Zhōngguó?",
+  "Ты бывал в Китае?",
+  [
+   "我是虚拟熊猫，没有实际的旅行经历。",
+   "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+   "Я виртуальная панда, у меня нет реального опыта путешествий."
+  ],
+  "travel",
+  false
+ ],
+ "你打算什么时候去北京": [
+  "Nǐ dǎsuàn shénme shíhou qù Běijīng?",
+  "Когда ты собираешься поехать в Пекин?",
+  [
+   "我还没有计划。",
+   "Wǒ hái méiyǒu jìhuà.",
+   "У меня пока нет планов."
+  ],
+  "travel",
+  false
+ ],
+ "你准备什么时候去北京": [
+  "Nǐ zhǔnbèi shénme shíhou qù Běijīng?",
+  "Когда ты планируешь поехать в Пекин?",
+  [
+   "我还没有计划。",
+   "Wǒ hái méiyǒu jìhuà.",
+   "У меня пока нет планов."
+  ],
+  "travel",
+  false
+ ],
+ "你最近有什么旅行计划": [
+  "Nǐ zuìjìn yǒu shénme lǚxíng jìhuà?",
+  "Какие у тебя планы на путешествия в ближайшее время?",
+  [
+   "我还没有计划。",
+   "Wǒ hái méiyǒu jìhuà.",
+   "У меня пока нет планов."
+  ],
+  "travel",
+  false
+ ],
+ "你要坐飞机吗": [
+  "Nǐ yào zuò fēijī ma?",
+  "Ты собираешься лететь на самолёте?",
+  [
+   "我是虚拟熊猫，不会真的坐飞机。",
+   "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+   "Я виртуальная панда и не летаю по-настоящему."
+  ],
+  "travel",
+  false
+ ],
+ "你打算坐飞机吗": [
+  "Nǐ dǎsuàn zuò fēijī ma?",
+  "Ты планируешь лететь на самолёте?",
+  [
+   "我是虚拟熊猫，不会真的坐飞机。",
+   "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+   "Я виртуальная панда и не летаю по-настоящему."
+  ],
+  "travel",
+  false
+ ],
+ "你以前坐过飞机吗": [
+  "Nǐ yǐqián zuòguo fēijī ma?",
+  "Ты раньше летал на самолёте?",
+  [
+   "我是虚拟熊猫，不会真的坐飞机。",
+   "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+   "Я виртуальная панда и не летаю по-настоящему."
+  ],
+  "travel",
+  false
+ ],
+ "你坐没坐过飞机": [
+  "Nǐ zuò méi zuòguo fēijī?",
+  "Ты когда-нибудь летал на самолёте?",
+  [
+   "我是虚拟熊猫，不会真的坐飞机。",
+   "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+   "Я виртуальная панда и не летаю по-настоящему."
+  ],
+  "travel",
+  false
+ ]
+});
+export function respondToCourseSocialTravel(raw,previousPanda=null){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ let row=Object.hasOwn(socialTravelAliases572,s)?socialTravelAliases572[s]:null;
+ if(!row&&!polite&&norm(previousPanda)===norm('有空，我们见面吧。')){
+  if(s==='几点呢'||s==='什么时候呢')row=[s==='几点呢'?'Jǐ diǎn ne?':'Shénme shíhou ne?',s==='几点呢'?'А во сколько?':'А когда?',['星期六下午三点。','Xīngqīliù xiàwǔ sān diǎn.','В субботу в три часа дня.'],'relationships',true];
+ }
+ if(!row)return null;
+ const [py,ru,a,domain,scene]=row;
+ const out={...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,domain==='relationships'?6:4),kind:'question',domain:'course-'+domain};
+ if(scene)out.message='Учебная ролевая ситуация. Это не настоящая встреча или обещание встречи. Тоны по тексту не оценивались.';
+ return out;
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -1515,5 +1862,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||respondToCourseFoodShopQuestion(raw)||respondToCourseWellbeing(raw)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||respondToCourseFoodShopQuestion(raw)||respondToCourseWellbeing(raw)||respondToCourseSocialTravel(raw,previousPanda)||contextualFragments568(raw,previousPanda);
 }
