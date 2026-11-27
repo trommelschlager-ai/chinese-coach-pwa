@@ -86,6 +86,16 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 [data-theme="day"] .street-live-v12 .hit:not(#theme){color:#26213e;background:#f7f3ffe8;border-color:#8175ad}
 [data-theme="day"] .street-live-v12 #mic{color:white;background:#6543a1}
 
+/* Explicit opt-in QA mode: same animation and audio engine, no dialogue prerequisites. */
+#street-qa{display:none}
+.street-qa-mode #street-qa{display:grid;position:absolute;z-index:10;top:8px;left:8px;right:8px;gap:5px;padding:8px;border:1px solid #b6a0e3;border-radius:16px;background:#15142aee;color:#fff;box-shadow:0 3px 12px #0007}
+.street-qa-mode :is(#back,#short,#nonstop,#history,#theme,#row1,#row2,#live-panda,#live-learner,#mode-ring,#game,#topics,#book,#send,#mic,#home,#lessons,#trainer,#chat,#profile){visibility:hidden!important}
+#street-qa .qa-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+#street-qa button,#street-qa a{display:grid;place-items:center;min-height:40px;padding:4px;border:1px solid #b6a0e3;border-radius:9px;background:#30234d;color:#fff;font:600 12px/1.1 system-ui,sans-serif;text-decoration:none;text-align:center;touch-action:manipulation}
+#street-qa button:active{background:#7956ac}
+#street-qa button:disabled{opacity:.55}
+#street-qa .qa-main{background:#7144a0}
+#street-qa-status{font:12px/1.2 system-ui,sans-serif;text-align:center;min-height:15px}
 </style><script src="./assets/hsk1-foundations-data-v152.js?v=188"></script></head>
 <body><main id="stage" aria-label="Panda Street AI — утверждённый экран">
 <img id="src" alt="" src="./assets/panda-street-day-night/night.webp">
@@ -103,7 +113,13 @@ html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;backgrou
 <button id="send" class="hit" data-visible-label="✎" aria-label="Написать по-китайски"></button><button id="mic" class="hit" data-visible-label="🎙" aria-label="Произнести фразу по-китайски"></button>
 <button id="home" class="hit" data-visible-label="Главная" aria-label="Главная"></button><button id="lessons" class="hit" data-visible-label="Уроки" aria-label="Уроки"></button><button id="trainer" class="hit" data-visible-label="Тренажёр" aria-label="Тренажёр"></button><button id="chat" class="hit" data-visible-label="Panda AI" aria-label="Panda AI"></button><button id="profile" class="hit" data-visible-label="Профиль" aria-label="Профиль"></button>
 <div id="live-panda" class="live" aria-live="polite"></div><div id="live-learner" class="live" aria-live="polite"></div><div id="mode-ring" aria-hidden="true"></div>
-<div id="toast" role="status" aria-live="polite"></div></main>
+<section id="street-qa" aria-label="Проверка анимации">
+<div class="qa-grid">
+<button type="button" class="qa-main" id="qa-auto" disabled>▶ Автотест</button><button type="button" id="qa-speech" disabled>🔊 Речь</button><button type="button" id="qa-theme">☀ День / Ночь</button>
+<button type="button" id="qa-greet" disabled>Приветствие</button><button type="button" id="qa-listen" disabled>Слушает</button><button type="button" id="qa-correct" disabled>Улыбка</button>
+<button type="button" id="qa-confused" disabled>Не понял</button><button type="button" id="qa-stop">Стоп</button><a id="qa-exit" href="?">Обычный экран</a>
+</div><div id="street-qa-status" role="status" aria-live="polite">Загрузка анимации…</div>
+</section><div id="toast" role="status" aria-live="polite"></div></main>
 <section id="shade" role="dialog" aria-modal="true" aria-labelledby="title"><div id="sheet"><header><h2 id="title">Panda Street AI</h2><button id="close" type="button" aria-label="Закрыть">×</button></header><div id="body"></div></div></section>
 <script src="./assets/panda-street-voice-v20261125.js"></script>
 <script src="./assets/panda-street-lesson3.js"></script>
@@ -135,6 +151,8 @@ const boxes={
 };
 let s=1,removedSky=0,removedFloor=0,stageX=0,floorGap=0,mode='nonstop',current=0,history=[];
 let streetFaceRig=null,shownPanda=null;
+const qaMode=new URLSearchParams(location.search).get('qa')==='1';
+if(qaMode)stage.classList.add('street-qa-mode');
 const lesson3=new URLSearchParams(location.search).get('lesson')==='3'?globalThis.PandaStreetLesson3:null;
 const lesson3Cues=lesson3?.words.map(([zh,py,ru])=>({zh,py,ru}));
 const cues=[
@@ -626,7 +644,39 @@ themeButton.onclick=async()=>{
 };
 const base=new URL('./',location.href).href;
 el('back').onclick=()=>location.assign(base+'panda-voice-pilot.html');el('home').onclick=()=>location.assign(base+'index.html');el('lessons').onclick=()=>location.assign(base+'panda-street-hsk1-map.html');el('game').onclick=()=>speak(shownPanda?.zh||(history.length?history.at(-1).panda.zh:activeCues[current].zh));el('trainer').onclick=()=>location.assign(base+'game.html');el('chat').onclick=composition;el('profile').onclick=()=>location.assign('./panda-shared-profile-settings.html');
-if('serviceWorker' in navigator&&location.protocol==='https:'){
+if(qaMode){
+ const status=el('street-qa-status'),sayStatus=text=>{status.textContent=text};
+ let qaToken=0,qaIndex=0;
+ const qaIds=['qa-auto','qa-speech','qa-greet','qa-listen','qa-correct','qa-confused'];
+ const qaReady=()=>{const ready=stage.classList.contains('street-live-v12')&&!!streetFaceRig;qaIds.forEach(id=>el(id).disabled=!ready);return ready};
+ const observer=new MutationObserver(()=>{if(qaReady()){sayStatus('Готово · выбери реакцию');observer.disconnect()}});
+ observer.observe(stage,{attributes:true,attributeFilter:['class']});
+ // The V1.2 layer appears before its async controller is assigned.
+ const qaInit=setInterval(()=>{if(qaReady()){clearInterval(qaInit);observer.disconnect();sayStatus('Готово · выбери реакцию')}},200);
+ setTimeout(()=>{clearInterval(qaInit);if(!qaReady()){observer.disconnect();sayStatus('V1.2 не загрузилась · обнови страницу')}},20000);
+ function qaStop(){++qaToken;voiceToken++;if(playing){playing.pause();playing=null}streetFaceRig?.setState('idle')}
+ function qaReaction(name){if(!qaReady())return;qaStop();sayStatus(name);if(name==='Приветствие')streetFaceRig.greet();if(name==='Слушает')streetFaceRig.setState('listening');if(name==='Улыбка')streetFaceRig.acknowledge();if(name==='Не понял')streetFaceRig.confused()}
+ function qaSpeech(){if(!qaReady())return null;qaStop();const phrases=activeCues.filter(d=>globalThis.PandaStreetVoiceV20261125?.lookup(d.zh,'male'));if(!phrases.length){sayStatus('Мужская запись не найдена');return null}const d=phrases[qaIndex++%phrases.length];sayStatus(d.zh+' · '+d.ru);return speak(d.zh)?playing:null}
+ el('qa-theme').onclick=async()=>{await themeButton.onclick();sayStatus(document.documentElement.dataset.theme==='day'?'Дневная сцена':'Ночная сцена')};
+ el('qa-speech').onclick=qaSpeech;
+ el('qa-greet').onclick=()=>qaReaction('Приветствие');
+ el('qa-listen').onclick=()=>qaReaction('Слушает');
+ el('qa-correct').onclick=()=>qaReaction('Улыбка');
+ el('qa-confused').onclick=()=>qaReaction('Не понял');
+ el('qa-stop').onclick=()=>{qaStop();sayStatus('Ожидание')};
+ const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+ el('qa-auto').onclick=async()=>{
+  if(!qaReady())return;
+  const audio=qaSpeech(),token=qaToken;if(!audio)return;
+  await new Promise(resolve=>{let timer;const done=()=>{clearTimeout(timer);audio.removeEventListener('ended',done);audio.removeEventListener('error',done);audio.removeEventListener('pause',done);resolve()};audio.addEventListener('ended',done,{once:true});audio.addEventListener('error',done,{once:true});audio.addEventListener('pause',done,{once:true});timer=setTimeout(done,15000)});
+  if(token!==qaToken)return;
+  const steps=[['Приветствие',()=>streetFaceRig.greet(),1750],['Слушает',()=>streetFaceRig.setState('listening'),2100],['Улыбка',()=>streetFaceRig.acknowledge(),1750],['Не понял',()=>streetFaceRig.confused(),1750]];
+  for(const [label,action,ms] of steps){if(token!==qaToken)return;streetFaceRig.setState('idle');sayStatus(label);action();await sleep(ms)}
+  if(token===qaToken){streetFaceRig.setState('idle');sayStatus('Демонстрация завершена · оцени движения')}
+ };
+ const exit=new URL(location.href);exit.searchParams.delete('qa');el('qa-exit').href=exit.href;
+}
+if(!qaMode&&'serviceWorker' in navigator&&location.protocol==='https:'){
  navigator.serviceWorker.register('./sw.js').catch(error=>console.warn('Panda Street offline cache:',error));
 }
 if(history.length){let x=history.at(-1);liveRow('live-panda',x.panda);liveRow('live-learner',x.userInfo||recognizedDetail(x.user))}
