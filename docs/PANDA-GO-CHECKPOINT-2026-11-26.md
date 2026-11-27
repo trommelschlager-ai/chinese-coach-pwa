@@ -90,3 +90,6 @@ HEAD 4819b27e34f020d23729c48e05980838d1cefa08: 19 success, 4 skipped, 1 failure,
 
 ## 16. Voice transfer preparation
 All 58 female clips and 2 Street male clips are present in chat/container and decode successfully; SHA-256 checked against manifests. One ZIP prepared, SHA-256 17e5412e1dd90adf994475b29d832c5f560a72becf029332cdfa0dd4c3e4373b. Direct binary GitHub transfer unavailable (DNS); owner uploads the single archive to the existing feature branch root. Import workflow validates the exact archive, refuses overwrite, checks 58 audited missing phrases, adds only real audio, verifies hashes and offline inventory before feature-branch commit. Full release CI, native listening, physical Android review still required. No runtime audio changes until import succeeds. No Vercel, Supabase, TinyFish, HeyGen.
+
+## 17. Import of verified November 27 audio bytes
+58 female Panda AI and 2 male Street clips imported from SHA-256 pinned archive; original clips preserved, exact phrase lookup only, offline pack v571. Native listening and physical Android review pending. No main merge or production publication.
