@@ -43,3 +43,49 @@ test('family size accepts reviewed numbers and keeps the answer scoped to the di
  assert.notEqual(plan('你家有三口人吗？',s).semantic?.slot,'family-size');
  assert.equal(plan('我不想说',s).reply.line.hanzi,'好的。我们聊点别的吧！');
 });
+
+test('days off do not trigger work-start questions and remain respected on topic return',()=>{
+ const s=prior(initial(),'你今天忙吗？');
+ for(const subject of ['','我'])for(const action of ['不上班','休息','不用上班']){
+  const q=subject+'今天'+action,x=plan(q,s);
+  assert.equal(x.semantic?.value,'off',q);
+  assert.equal(x.reply?.line.hanzi,'你接下来想做什么？',q);
+  const resumed=plan('聊聊工作吧',prior(x.state,x.reply.line.hanzi,x.reply.line.pinyin,x.reply.line.ru,true));
+  assert.equal(resumed.reply?.line.hanzi,'你接下来想做什么？',q);
+ }
+ const w=prior(initial(),'你几点去上班？');
+ for(const q of ['今天不上班','我今天休息','我不用上班','我没有工作','我现在没有工作']){
+  assert.equal(plan(q,w).semantic?.value,'none',q);
+  assert.equal(plan(q,w).reply?.line.hanzi,'你接下来想做什么？',q);
+ }
+ assert.equal(plan('我今天不用上班',s).semantic.pinyin,'Wǒ jīntiān bú yòng shàngbān.');
+ assert.notEqual(plan('我今天不上班？',s).semantic?.slot,'work-busy');
+ assert.notEqual(plan('忙？',s).semantic?.slot,'work-busy');
+});
+test('study motivation recognizes different reviewed reasons and keeps travel distinct from work',()=>{
+ const s=prior(initial(),'你为什么想学中文？');
+ for(const [reason,value] of [['想在中国工作','work'],['想去中国旅游','china-trip'],['想在中国学习','study'],['想和中国人聊天','communication'],['想和朋友说中文','friends'],['想看懂中文','reading'],['喜欢中国文化','culture'],['喜欢中文','interest'],['对中国文化感兴趣','culture']]){
+  for(const prefix of ['','我','因为','因为我']){
+   const q=prefix+reason,x=plan(q,s);
+   assert.equal(x.semantic?.slot,'study-reason',q);
+   assert.equal(x.semantic.value,value,q);
+   assert.equal(x.reply?.line.hanzi,value==='china-trip'?'你打算什么时候去？':'你接下来想做什么？',q);
+   assert.equal(x.reply.toneVerified,false);
+  }
+ }
+ for(const q of ['工作需要','因为工作需要'])assert.equal(plan(q,s).semantic?.value,'work',q);
+ assert.equal(plan('因为我想和中国人聊天',s).semantic.pinyin,'Yīnwèi wǒ xiǎng hé Zhōngguó rén liáotiān.');
+ for(const q of ['因为我喜欢中文？','你想在中国工作吗？','他喜欢中文'])assert.notEqual(plan(q,s).semantic?.slot,'study-reason',q);
+});
+test('practice goals accept natural learning variants, with no claimed audio tone verification',()=>{
+ const s=prior(initial(),'你想练习什么？');
+ for(const subject of ['','我'])for(const verb of ['练习','学','学习'])for(const target of ['声调','发音','语法','汉字','听力','口语','中文','汉语']){
+  const q=subject+'想'+verb+target,x=plan(q,s);
+  assert.equal(x.semantic?.value,target,q);
+  assert.equal(x.reply?.line.hanzi,'没关系，我们慢慢来。',q);
+  assert.equal(x.reply.toneVerified,false,q);
+ }
+ for(const q of ['我想提高口语','想提高听力'])assert.equal(plan(q,s).semantic?.slot,'study-practice',q);
+ assert.equal(plan('我想提高口语',s).semantic.pinyin,'Wǒ xiǎng tígāo kǒuyǔ.');
+ assert.notEqual(plan('我想练习声调？',s).semantic?.slot,'study-practice');
+});
