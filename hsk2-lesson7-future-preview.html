@@ -2172,6 +2172,34 @@ html.course-layout #app[data-view] #pg433 :is(.quiz-hero,.tones-hero)>svg.about-
 <script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="7"></script>
 <link rel="stylesheet" href="./assets/hsk2-speech-v559.css">
 <script src="./assets/hsk2-speech-v559.js"></script>
+<style id="l7-horizontal-mobile-20261126">
+/* Same horizontal vocabulary structure as lesson 2; retain all eight items and native audio. */
+html.course-layout #app[data-view="2"] #pg433 .pg433-content{display:block!important;min-height:0!important;flex:1 1 0%!important;height:auto!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important;padding:8px 10px 12px!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-vocab{width:100%;display:flex;flex-direction:column;gap:6px;min-width:0}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-vocab .pill-title{margin:2px auto 5px!important}
+html.course-layout #app[data-view="2"] #pg433 .word-list.l7-horizontal-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:none!important;grid-auto-rows:auto!important;gap:6px!important;height:auto!important;max-height:none!important;margin:0!important;padding:0!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card{display:grid!important;grid-template-columns:20% minmax(0,1fr) minmax(0,1.35fr) 40px!important;grid-template-rows:auto!important;align-items:center!important;gap:5px!important;padding:4px 5px!important;height:auto!important;min-height:57px!important;max-height:none!important;width:100%!important;border:1px solid #dcb4e4!important;border-radius:17px!important;background:#fff8fd!important;box-shadow:0 3px 0 #c88bd7!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .l7-horizontal-art{width:100%!important;height:clamp(43px,7dvh,62px)!important;max-height:none!important;border-radius:10px!important;display:block!important;grid-area:auto!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-hanzi,html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-translation{display:flex;flex-direction:column;gap:2px;min-width:0;justify-content:center}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .cn{font-size:clamp(17px,5vw,22px)!important;line-height:1.13!important;white-space:nowrap!important;color:#54216a!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card :is(.py,.ru){display:block;font-size:clamp(12px,3.55vw,15px)!important;font-weight:500!important;line-height:1.2!important;white-space:normal!important;overflow-wrap:anywhere!important;color:#653b72!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .tone-strokes{display:flex!important;justify-content:flex-start!important;gap:1px!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .tone-strokes svg{width:13px!important;height:15px!important;flex:none!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .orb{width:38px!important;height:38px!important;min-width:38px!important;justify-self:end}
+html.course-layout #app[data-view="2"] #pg433 .pg433-footer{flex:0 0 auto!important;position:relative!important;bottom:auto!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-vocab .audio-note{margin:4px 0!important;font-size:12px!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-vocab #feedback:empty{display:none!important}
+
+/* Explicit placement; isolate from the older lesson-7 tile rules. */
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card{grid-template-columns:20% minmax(0,1fr) minmax(0,1.35fr) 40px!important;grid-template-rows:auto!important;box-sizing:border-box!important;min-height:57px!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card > .l7-horizontal-art{grid-column:1!important;grid-row:1!important;align-self:center!important;object-fit:cover!important;position:static!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card > .l7-horizontal-hanzi{grid-column:2!important;grid-row:1!important;align-self:center!important;position:static!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card > .l7-horizontal-translation{grid-column:3!important;grid-row:1!important;align-self:center!important;position:static!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card > button.orb{grid-column:4!important;grid-row:1!important;align-self:center!important;position:static!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card :is(.cn,.py,.ru){position:static!important;inset:auto!important;margin:0!important;transform:none!important;max-width:100%!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .cn{font-size:clamp(16px,4.7vw,21px)!important;white-space:normal!important;overflow-wrap:anywhere!important}
+html.course-layout #app[data-view="2"] #pg433 .l7-horizontal-card .tone-strokes{position:static!important;min-width:0!important;flex-wrap:wrap!important}
+</style>
 </head>
 <body>
 <div class="app" id="app">
@@ -2674,15 +2702,18 @@ function intro() {
     '</div></section>';
 }
 function newWords() {
-  return '<section class="lesson7-vocab-screen" aria-label="Новые слова урока 7">' +
-    '<h1 class="pill-title lesson7-vocab-heading">Новые слова</h1>' +
-    '<div class="word-list about-myday-wordlist lesson7-vocab-list">' +
-    words.map((word,i) => '<article class="word-row about-myday-word lesson7-vocab-card" aria-label="' +
+  const count = state.heardWords.length;
+  return '<section class="l7-horizontal-vocab" aria-label="Новые слова урока 7">' +
+    '<h1 class="pill-title">Новые слова</h1>' +
+    '<div class="word-list l7-horizontal-list">' +
+    words.map((word,i) => '<article class="l7-horizontal-card" aria-label="' +
       escape(word.zh + ', ' + word.py + ', ' + word.ru) + '">' +
-      vocabImage(i,'about-illustration about-myday-art lesson7-vocab-art') +
-      '<div class="lesson7-vocab-details">' + hanzi(word.zh) + '<span class="py">' + word.py + '</span>' +
-      '<div class="lesson7-vocab-tones">' + toneStrokes(word.tones) + '</div>' +
-      audioButton(word.zh,playIcon) + '</div><span class="ru">' + word.ru + '</span></article>').join('') + '</div>' +
+      vocabImage(i,'l7-horizontal-art') +
+      '<div class="l7-horizontal-hanzi">' + hanzi(word.zh) + toneStrokes(word.tones) + '</div>' +
+      '<div class="l7-horizontal-translation">' + translate([word.zh,word.py,word.ru]) + '</div>' +
+      audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
+    '<p class="hint audio-note" aria-live="polite">🔊 Прослушано ' + count + ' из ' + words.length +
+      (count === words.length ? ' слов. Можно продолжать.' : ' слов. Прослушай все записи, чтобы продолжить.') + '</p>' +
     safeStatus() + '</section>';
 }
 
