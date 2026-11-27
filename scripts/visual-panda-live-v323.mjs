@@ -9,34 +9,36 @@ fs.mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
 const summary={screens:[],results:[],errors:[]};
 try{
- for(const [width,height] of [[360,640],[390,720],[412,915]]){
+ for(const [width,height] of [[360,640],[360,800],[390,720],[393,852],[412,915]]){
   const ctx=await browser.newContext({viewport:{width,height},isMobile:true,hasTouch:true,deviceScaleFactor:1,reducedMotion:'reduce'});
   const page=await ctx.newPage();
   page.on('pageerror',error=>summary.errors.push({width,message:error.message}));
   let res=await page.goto(base+'/index.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg130:not([hidden])').waitFor();
-  const home=page.locator('#pg130 .pg-four-approved');
+  const home=page.locator('#pg130 .pg-six-approved');
   await home.waitFor({state:'visible'});
-  await page.waitForFunction(()=>{const img=document.querySelector('#pg130 .pg-four-art');return img?.complete&&img.naturalWidth===1024&&img.naturalHeight===1536});
-  const hits=home.locator('.pg-four-hit');
-  assert.equal(await hits.count(),4,'Four approved home hotspots');
-  assert.deepEqual(await hits.evaluateAll(els=>els.slice(0,3).map(e=>e.getAttribute('href'))),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html']);
+  await page.waitForFunction(async()=>{const image=new Image();image.src='./assets/panda-home-approved-six-20261127.png';try{await image.decode();return image.naturalWidth===1024&&image.naturalHeight===1536}catch{return false}});
+  const hits=home.locator('.pg-six-hit');
+  assert.equal(await hits.count(),6,'Six approved home hotspots');
+  assert.deepEqual(await hits.evaluateAll(els=>els.map(e=>e.getAttribute('href'))),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html',null,'./panda-voice-pilot.html','./panda-street-ai-preview.html']);
   const layout=await home.evaluate(el=>{
-   const art=el.querySelector('.pg-four-art').getBoundingClientRect();
-   const targets=[...el.querySelectorAll('.pg-four-hit')].map(e=>{
+   const art=el.querySelector('.pg-six-stage').getBoundingClientRect();
+   const footer=el.querySelector('.pg-six-footer').getBoundingClientRect();
+   const images=[...el.querySelectorAll('svg image')];
+   const targets=[...el.querySelectorAll('.pg-six-hit')].map(e=>{
     const r=e.getBoundingClientRect();
     const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
     return {fits:r.left>=art.left-1&&r.right<=art.right+1&&r.top>=art.top-1&&r.bottom<=art.bottom+1,clickable:e===top||e.contains(top),width:r.width,height:r.height};
    });
-   return {artFits:art.left>=-1&&art.top>=-1&&art.right<=innerWidth+1&&art.bottom<=innerHeight+1,targets,petals:document.querySelectorAll('#pg130 .pg-sakura-petal').length};
+   return {artFits:art.left>=-1&&art.top>=-1&&art.right<=innerWidth+1&&art.bottom<=innerHeight+1,fullHeight:Math.abs(art.height-innerHeight)<=2,footerFits:Math.abs(footer.bottom-art.bottom)<=2,noScroll:el.scrollHeight<=el.clientHeight+2&&document.documentElement.scrollWidth<=innerWidth+2,originalArtwork:images.length===8&&images.every(i=>i.getAttribute('href')==='./assets/panda-home-approved-six-20261127.png'),targets,petals:document.querySelectorAll('#pg130 .pg-sakura-petal').length};
   });
-  assert(layout.artFits&&layout.targets.every(x=>x.fits&&x.clickable&&x.width>44&&x.height>44),JSON.stringify(layout));
+  assert(layout.artFits&&layout.fullHeight&&layout.footerFits&&layout.noScroll&&layout.originalArtwork&&layout.targets.every(x=>x.fits&&x.clickable&&x.width>44&&x.height>44),JSON.stringify(layout));
   assert.equal(layout.petals,18,'Existing falling petals retained');
+  await page.screenshot({path:out+'/approved-six-home-'+width+'.png',animations:'disabled'});
   await hits.nth(3).click();
-  assert(await home.locator('.pg-four-note').isVisible(),'Fourth level notice must be visible after tap');
-  await page.screenshot({path:out+'/approved-four-home-'+width+'.png',animations:'disabled'});
-  for(const [i,destination] of ['hsk1-map.html','hsk2-life-course.html','panda-street-hsk1-map.html'].entries()){
+  assert(await home.locator('.pg-six-note').isVisible(),'Fourth level notice must be visible after tap');
+  for(const [i,destination] of [[0,'hsk1-map.html'],[1,'hsk2-life-course.html'],[2,'panda-street-hsk1-map.html'],[4,'panda-voice-pilot.html'],[5,'panda-street-ai-preview.html']]){
    if(i>0){await page.goto(base+'/index.html',{waitUntil:'load'});await home.waitFor();}
    await Promise.all([page.waitForURL(u=>u.pathname.endsWith('/'+destination)),hits.nth(i).click()]);
   }
@@ -110,6 +112,6 @@ try{
  }
  assert.deepEqual(summary.errors,[],'No browser runtime errors');
  summary.result='passed';
- console.log('PASS Panda v352: approved scene, closed menu, Chinese dialog, seven topics, history, rocks and responsive 360/390/412px mobile layouts.');
+ console.log('PASS Panda v352: approved scene, closed menu, Chinese dialog, seven topics, history, rocks and responsive 360/390/393/412px mobile layouts.');
 }catch(error){summary.result='failed';summary.failure=String(error.stack||error);throw error}
 finally{fs.writeFileSync(out+'/report.json',JSON.stringify(summary,null,2));await browser.close()}
