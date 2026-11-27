@@ -241,11 +241,10 @@ function paintScene(canvas,image,width,height,dpr,fill){
 }
 const daySrc=el('day-src');
 daySrc.addEventListener('load',paint);
-import('./assets/panda-street-face-rig-v1.mjs?v=3').catch(error=>{
- console.warn('Street face rig first load failed; retrying:',error);
- return import('./assets/panda-street-face-rig-v1.mjs?v=3-retry');
-}).then(module=>{
- streetFaceRig=module.createStreetFaceRig({stage,source:src});paint();
+import('./assets/panda-street-live-personality-v12.mjs').then(module=>module.createStreetFaceRig({stage,source:src})).catch(async error=>{
+ console.warn('Street Live V1.2 unavailable; using approved original:',error);
+ const module=await import('./assets/panda-street-face-rig-v1.mjs?v=3');return module.createStreetFaceRig({stage,source:src});
+}).then(rig=>{streetFaceRig=rig;paint();if(playing&&!playing.paused&&!playing.ended){rig.bindAudio?.(playing);rig.setState('talking');}else if(streetRecognition)rig.setState('listening');
 }).catch(error=>{console.error('Street face animation unavailable:',error);tip('Мимика не загрузилась. Обнови страницу.')});
 src.addEventListener('load',paint);window.addEventListener('resize',()=>{keepStreetStageSize();paint()});window.visualViewport?.addEventListener('resize',()=>{keepStreetStageSize();paint()});new ResizeObserver(paint).observe(stage);if(src.complete&&src.naturalWidth)paint();
 const esc=str=>String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -273,7 +272,7 @@ const approvedMaleRegistryPromise=import('./assets/panda-street-approved-male-mp
 function playApprovedStreetMaleClip(clip,token){
  if(token!==voiceToken)return;
  // Only possible after a reviewed same-male entry is activated in the registry.
- const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;
+ const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;streetFaceRig?.bindAudio?.(a);
  if('preservesPitch' in a)a.preservesPitch=true;
  const valid=()=>token===voiceToken&&playing===a;
  const reset=()=>{if(valid()){streetFaceRig?.setState('idle');playing=null}};
@@ -449,6 +448,7 @@ async function respond(text,{fromSpeech=false}={}){
  }
  if(!result||result.kind==='empty'||result.kind==='error'){tip(result?.message||'Не удалось разобрать фразу');return}
  if(['correction','clarify','locked','explanation'].includes(result.kind)||!result.panda){
+  if(result.kind==='clarify')streetFaceRig?.react?.('confused');
   const correction=result.correction;
   streetLastCorrection=result.reviewCorrection||null;streetLastSaved=false;
   if(streetLastCorrection&&streetReviewConsent&&brain.review)streetLastSaved=brain.review.save(streetLastCorrection,true);
@@ -463,6 +463,7 @@ async function respond(text,{fromSpeech=false}={}){
  history.push(item);history=history.slice(-100);persist();
  liveRow('live-panda',panda);liveRow('live-learner',learner);
  closePopup();if(result.message)tip(result.message);speak(panda.zh);
+ if(result.kind==='answer'&&/^Ответ (?:по смыслу )?(?:подходит|верный|правильный)/u.test(result.message||''))streetFaceRig?.react?.('correct');
  if(mode==='nonstop'&&result.nextQuestion){
    // Keep a conversational turn: acknowledge first, then let Panda ask the next reviewed question.
    setTimeout(()=>{
@@ -528,7 +529,7 @@ function startStreetRecognition(){
   };
   rec.onerror=e=>{
    if(streetRecognition!==rec)return;
-   const reason=e.error||'unknown';stopStreetRecognition();
+   const reason=e.error||'unknown';stopStreetRecognition();if(reason==='no-speech')streetFaceRig?.react?.('confused');
    const help=reason==='not-allowed'?'Разреши микрофон в настройках Chrome.':
     reason==='no-speech'?'Не услышал речь. Нажми микрофон и повтори.':
     reason==='network'?'Браузер не смог распознать речь без сети. Используй текстовый ввод.':
