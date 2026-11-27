@@ -171,7 +171,6 @@ CORE.push('./assets/panda-hsk2-preview-core-v1.mjs?v=563');
 CORE.push(...["./assets/panda-ai-voice-batch01-v563/PA-V563-01.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-02.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-03.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-04.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-05.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-06.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-07.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-08.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-09.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-10.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-11.mp3","./assets/panda-ai-voice-batch01-v563/PA-V563-12.mp3"]);
 // Install only the home, HSK1 entry, writing and current Panda AI shell.
 const INSTALL_SHELL=[
- "./assets/panda-home-approved-six-20261127.png",
  "./assets/approved-lesson-design.css?v=56",
  "./assets/approved-lesson-design.js?v=112",
  "./assets/approved-mobile-v112.css?v=119",
@@ -373,7 +372,7 @@ const INSTALL_SHELL=[
  "./panda-voice-pilot.html",
 ];
 // The explicit course download also saves the additional route and Street assets.
-const COURSE_SHELL=CORE.filter(path=>!/.\.(?:mp3|ogg)(?:\?|$)/i.test(path)&&(!/.\.(?:png|jpe?g|webp)(?:\?|$)/i.test(path)||CORE_ART.has(path))).concat(STREET_SHELL, PANDA_CHAT_SHELL, ['./assets/panda-home-approved-four-levels.png','./panda-street-hsk1-map.html']).concat(["./panda-hsk2-tone-sentence-pilot.html","./panda-hsk2-tone-sentence-pilot.html?v=6","./assets/hsk2-tone-sentence-entry-v1.js?v=559","./assets/panda-tone-analytics-v457.mjs?v=468","./assets/panda-tone-recording-analysis-v465.mjs?v=467","./assets/panda-sentence-align-v4.mjs?v=4","./assets/hsk2-lesson1-voice-v459.js?v=459"]);
+const COURSE_SHELL=CORE.filter(path=>!/.\.(?:mp3|ogg)(?:\?|$)/i.test(path)&&(!/.\.(?:png|jpe?g|webp)(?:\?|$)/i.test(path)||CORE_ART.has(path))).concat(STREET_SHELL, PANDA_CHAT_SHELL, ['./assets/panda-home-approved-four-levels.png','./assets/panda-home-approved-six-20261127.png','./panda-street-hsk1-map.html']).concat(["./panda-hsk2-tone-sentence-pilot.html","./panda-hsk2-tone-sentence-pilot.html?v=6","./assets/hsk2-tone-sentence-entry-v1.js?v=559","./assets/panda-tone-analytics-v457.mjs?v=468","./assets/panda-tone-recording-analysis-v465.mjs?v=467","./assets/panda-sentence-align-v4.mjs?v=4","./assets/hsk2-lesson1-voice-v459.js?v=459"]);
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(INSTALL_SHELL.map(path=>new Request(path,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{
  // Claim new pages immediately. Keep older audio caches intact; copying
