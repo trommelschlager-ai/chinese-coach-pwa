@@ -7,6 +7,8 @@ on:
       - 'panda-shared-profile-settings.html'
       - 'assets/panda-street-shared-brain-v1.mjs'
       - 'assets/panda-street-face-rig-v1.mjs'
+      - 'assets/panda-street-live-*-v12.mjs'
+      - 'sw.js'
       - 'assets/panda-street-male-voice-queue-v1.json'
       - 'assets/panda-street-approved-male-mp3-v1.mjs'
       - 'tests/panda-street-approved-male-mp3-v1.test.mjs'
@@ -38,6 +40,11 @@ jobs:
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
           npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Install Chinese glyphs for accurate mobile screenshots
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends fonts-noto-cjk
+          fc-match :lang=zh-cn
       - name: "Android-size real Chrome - approved MP3 playback and day-night"
         run: |
           set -euo pipefail
