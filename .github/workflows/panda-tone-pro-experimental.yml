@@ -4,6 +4,8 @@ on:
     paths:
       - 'assets/panda-tone-pro-v1.mjs'
       - 'scripts/test-panda-tone-pro.mjs'
+      - 'scripts/evaluate-panda-tone-pro.mjs'
+      - 'scripts/test-panda-tone-pro-evaluation.mjs'
       - '.github/workflows/panda-tone-pro-experimental.yml'
 jobs:
   synthetic:
@@ -14,3 +16,4 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/test-panda-tone-pro.mjs
+      - run: node scripts/test-panda-tone-pro-evaluation.mjs
