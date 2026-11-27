@@ -620,7 +620,7 @@
  #app[data-stage="dialogue"] .dialogue-card:not(:has(.dialogue-line:nth-child(3))) .ru{font-size:clamp(17px,4.8vw,22px)}
  #app[data-stage="phrase"] .example-stack{flex:1 0 auto;gap:7px;min-height:0}
  #app[data-stage="phrase"] .example-sheet{flex:1 0 auto;gap:5px;padding:6px}
- #app[data-stage="phrase"] .example-row{flex:1 0 auto;padding:8px 6px;align-items:center}
+ #app[data-stage="phrase"] .example-row{flex:1 0 auto;padding:6px 6px;align-items:center}
  #app[data-stage="phrase"] .example-row strong{font-size:clamp(20px,5.5vw,25px)}
  #app[data-stage="phrase"] .example-row .example-py,#app[data-stage="phrase"] .example-row .example-ru{font-size:clamp(15px,4.2vw,19px);line-height:1.18}
  #app[data-stage="phrase"] .example-end{flex:0 0 auto;margin:0;padding:0}
