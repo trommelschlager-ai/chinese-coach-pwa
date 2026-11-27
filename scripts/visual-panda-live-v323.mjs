@@ -9,7 +9,7 @@ fs.mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
 const summary={screens:[],results:[],errors:[]};
 try{
- for(const [width,height] of [[360,640],[390,720],[412,915]]){
+ for(const [width,height] of [[360,640],[390,720],[412,915],[393,850]]){
   const ctx=await browser.newContext({viewport:{width,height},isMobile:true,hasTouch:true,deviceScaleFactor:1,reducedMotion:'reduce'});
   const page=await ctx.newPage();
   page.on('pageerror',error=>summary.errors.push({width,message:error.message}));
@@ -18,7 +18,7 @@ try{
   await page.locator('#pg130:not([hidden])').waitFor();
   const home=page.locator('#pg130 .pg-four-approved');
   await home.waitFor({state:'visible'});
-  await page.waitForFunction(()=>{const img=document.querySelector('#pg130 .pg-four-art');return img?.complete&&img.naturalWidth===1024&&img.naturalHeight===1536});
+  await page.waitForFunction(()=>{const img=document.querySelector('#pg130 .pg-four-art');return img?.complete&&img.naturalWidth===941&&img.naturalHeight===1572});
   const hits=home.locator('.pg-four-hit');
   assert.equal(await hits.count(),4,'Four approved home hotspots');
   assert.deepEqual(await hits.evaluateAll(els=>els.slice(0,3).map(e=>e.getAttribute('href'))),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html']);
@@ -29,9 +29,12 @@ try{
     const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
     return {fits:r.left>=art.left-1&&r.right<=art.right+1&&r.top>=art.top-1&&r.bottom<=art.bottom+1,clickable:e===top||e.contains(top),width:r.width,height:r.height};
    });
-   return {artFits:art.left>=-1&&art.top>=-1&&art.right<=innerWidth+1&&art.bottom<=innerHeight+1,targets,petals:document.querySelectorAll('#pg130 .pg-sakura-petal').length};
+   const fill=el.querySelector('.pg-four-fill'), parts=[...fill.children].map(e=>e.getBoundingClientRect());
+   const frame=el.getBoundingClientRect();
+   const filled=Math.abs(parts[0].top-frame.top)<2&&Math.abs(parts[2].bottom-frame.bottom)<2&&Math.abs(parts[0].bottom-parts[1].top)<2&&Math.abs(parts[1].bottom-parts[2].top)<2&&[fill.firstElementChild,fill.lastElementChild].every(e=>getComputedStyle(e).backgroundImage.includes('panda-home-fullscreen-v262.png'));
+   return {filled,artFits:art.left>=-1&&art.top>=-1&&art.right<=innerWidth+1&&art.bottom<=innerHeight+1,targets,petals:document.querySelectorAll('#pg130 .pg-sakura-petal').length};
   });
-  assert(layout.artFits&&layout.targets.every(x=>x.fits&&x.clickable&&x.width>44&&x.height>44),JSON.stringify(layout));
+  assert(layout.filled&&layout.artFits&&layout.targets.every(x=>x.fits&&x.clickable&&x.width>44&&x.height>44),JSON.stringify(layout));
   assert.equal(layout.petals,18,'Existing falling petals retained');
   await hits.nth(3).click();
   assert(await home.locator('.pg-four-note').isVisible(),'Fourth level notice must be visible after tap');
