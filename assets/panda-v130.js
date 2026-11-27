@@ -90,9 +90,67 @@ function settingsView(){
  if(nativeSettings){nativeSettings.open=false;root.querySelector('.pg393-old-settings').append(nativeSettings)}
 }
 // Four-level menu: approved art is kept intact; the existing petalMarkup/frame stays in use.
+/* Approved 27 November 2026: original full-resolution artwork, six real controls.
+   SVG clips preserve image proportions; only landscape space flexes on taller screens. */
+const homeSixArt='./assets/panda-home-approved-six-20261127.png';
+let homeSixReady=false,homeSixLoading=false;
+function home(){
+ if(homeSixReady){homeSix();return}
+ homeFour();
+ if(homeSixLoading)return;
+ homeSixLoading=true;
+ const candidate=new Image();
+ candidate.onload=()=>{homeSixReady=true;homeSixLoading=false;if(current==='home'&&!root.hidden)homeSix()};
+ candidate.onerror=()=>{homeSixLoading=false};
+ candidate.src=homeSixArt;
+}
+function homeSix(){
+ if(!document.getElementById('pg-six-approved-style')){
+  const style=document.createElement('style');style.id='pg-six-approved-style';
+  style.textContent=`
+#pg130 .pg-screen.pg-six-approved{position:relative;display:block;width:min(100%,470px);height:100dvh;min-height:0;max-height:none;overflow:hidden;padding:0;margin:0;border:0;border-radius:0;isolation:isolate;background:#5d8dd5}
+#pg130 .pg-six-approved .pg-six-fill{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+#pg130 .pg-six-approved .pg-six-stage{position:relative;z-index:1;display:flex;flex-direction:column;width:min(100%,66.6667dvh);height:100%;margin:0 auto;padding:0;overflow:hidden}
+#pg130 .pg-six-stage svg{display:block;width:100%;height:100%;pointer-events:none;user-select:none;overflow:hidden}
+#pg130 .pg-six-logo{flex:0 0 auto;aspect-ratio:1024/232}
+#pg130 .pg-six-scene{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
+#pg130 .pg-six-scene>svg{position:absolute;inset:0}
+#pg130 .pg-six-scene .pg-six-scene-fill{filter:blur(1px)}
+#pg130 .pg-six-menu{position:relative;flex:0 0 auto;aspect-ratio:1024/860}
+#pg130 .pg-six-footer{flex:0 0 auto;aspect-ratio:1024/86}
+#pg130 .pg-six-menu nav{position:absolute;inset:0;pointer-events:none}
+#pg130 .pg-six-menu .pg-six-hit{position:absolute;display:block;min-height:0;min-width:0;margin:0;padding:0;border:0;border-radius:100px;background:transparent!important;box-shadow:none!important;text-decoration:none;cursor:pointer;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#pg130 .pg-six-hit:focus-visible{outline:3px solid white;outline-offset:-4px}
+#pg130 .pg-six-hit:active{background:#ffffff24!important}
+#pg130 .pg-six-approved .pg-six-note{position:absolute;bottom:2%;left:10%;width:80%;background:#291346ee;color:white;border:1px solid #fff9;padding:12px;border-radius:12px;text-align:center;font:600 14px system-ui;z-index:12}
+#pg130 .pg-six-approved .pg-six-note[hidden]{display:none}
+`;document.head.append(style);
+ }
+ const clip=(view,fit='xMidYMid meet',cls='')=>'<svg class="'+cls+'" viewBox="'+view+'" preserveAspectRatio="'+fit+'" aria-hidden="true" focusable="false"><image href="'+homeSixArt+'" width="1024" height="1536"/></svg>';
+ const hit=(x,y,w,h,body)=>body.replace('@@','left:'+(100*x/1024)+'%;top:'+(100*(y-590)/860)+'%;width:'+(100*w/1024)+'%;height:'+(100*h/860)+'%');
+ const link=(url,label)=>'<a class="pg-six-hit" style="@@" href="'+url+'" aria-label="'+label+'"></a>';
+ const routes=[
+ hit(18,590,988,164,link('./hsk1-map.html','Начальный уровень HSK 1')),
+ hit(18,758,988,161,link('./hsk2-life-course.html?view=welcome','Продолжающий уровень HSK 2')),
+ hit(18,925,988,150,link('./panda-street-hsk1-map.html','Начальный разговорный уровень HSK 1')),
+ hit(18,1080,988,154,'<button type="button" class="pg-six-hit pg-six-hsk2-street" style="@@" aria-label="Продолжающий разговорный уровень HSK 2 — в разработке"></button>'),
+ hit(18,1270,486,171,link('./panda-voice-pilot.html','Панда ИИ — Диалоги и практика')),
+ hit(516,1270,490,171,link('./panda-street-ai-preview.html','Панда Street — живой китайский'))
+ ].join('');
+ frame(clip('0 232 400 358','xMidYMid slice','pg-six-fill')+
+ '<div class="pg-six-stage"><div class="pg-six-logo">'+clip('0 0 1024 232')+'</div>'+
+ '<div class="pg-six-scene">'+clip('0 232 400 358','xMidYMid slice','pg-six-scene-fill')+clip('0 232 1024 358','xMidYMax meet')+'</div>'+
+ '<div class="pg-six-menu">'+clip('0 590 1024 860')+'<nav aria-label="Главное меню Panda Go">'+routes+'</nav></div>'+
+ '<div class="pg-six-footer">'+clip('0 1450 1024 86')+'</div></div>'+
+ '<div class="pg-six-note" role="status" hidden>Разговорный HSK 2 пока в разработке.</div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
+ 'pg-home pg-hsk-page pg-photo1-home pg-six-approved');
+ const note=root.querySelector('.pg-six-note');
+ root.querySelector('.pg-six-hsk2-street').onclick=()=>{note.hidden=false;setTimeout(()=>{note.hidden=true},3500)};
+}
+
 const homeFourArt='./assets/panda-home-approved-four-levels.png';
 let homeFourReady=false,homeFourLoading=false;
-function home(){
+function homeFour(){
  if(!homeFourReady){
   homeLegacy();
   if(!homeFourLoading){
