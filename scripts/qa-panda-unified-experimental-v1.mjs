@@ -30,6 +30,12 @@ try{
    }
    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
   }
+  if(flag){
+   for(const [q,a] of [['请问，你的职业是什么？','我是老师。'],['你在什么地方工作？','我在这里陪你练习中文。'],['你工作忙不忙？','我现在有空，可以陪你练习。'],['你一般几点下班？','我没有固定的下班时间。'],['你会不会说俄语？','我可以用俄语解释中文。'],['你会不会用电脑？','会，我会用电脑。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
   const travel=await send('去中国');assert.equal(travel.history.at(-1).hanzi,'你打算什么时候去？');assert.equal(travel.audioAvailable,true);assert(travel.history.at(-2).pinyin&&travel.history.at(-2).ru);const time=await send('明天');assert.equal(time.history.at(-1).hanzi,'然后呢？');
   for(const q of ['我先刷牙然后吃早饭','我先刷牙再吃早饭']){const x=await send(q);assert.equal(x.history.at(-1).hanzi,'你早上吃什么？',q);assert.equal(x.audioAvailable,true,q);}
   if(flag){

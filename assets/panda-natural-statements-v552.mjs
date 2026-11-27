@@ -465,6 +465,158 @@ export function respondToCourseFamilyQuestion(raw,previousPanda=null){
  return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,answers[key],null,6),kind:'question',domain:'course-family'};
 }
 
+// v572: reviewed work and study paraphrases, not a generic keyword matcher.
+const workStudyAliases572=Object.freeze({
+ "你是做什么工作的": [
+  "Nǐ shì zuò shénme gōngzuò de?",
+  "Кем ты работаешь?",
+  "你做什么工作",
+  false
+ ],
+ "你做什么的": [
+  "Nǐ zuò shénme de?",
+  "Чем ты занимаешься?",
+  "你做什么工作",
+  false
+ ],
+ "你的职业是什么": [
+  "Nǐ de zhíyè shì shénme?",
+  "Какая у тебя профессия?",
+  "你做什么工作",
+  false
+ ],
+ "你现在做什么工作": [
+  "Nǐ xiànzài zuò shénme gōngzuò?",
+  "Кем ты сейчас работаешь?",
+  "你做什么工作",
+  false
+ ],
+ "你在什么地方工作": [
+  "Nǐ zài shénme dìfang gōngzuò?",
+  "Где ты работаешь?",
+  "你在哪儿工作",
+  false
+ ],
+ "你工作的地方在哪儿": [
+  "Nǐ gōngzuò de dìfang zài nǎr?",
+  "Где находится место твоей работы?",
+  "你在哪儿工作",
+  false
+ ],
+ "你现在在哪儿工作": [
+  "Nǐ xiànzài zài nǎr gōngzuò?",
+  "Где ты сейчас работаешь?",
+  "你在哪儿工作",
+  false
+ ],
+ "你现在在哪里工作": [
+  "Nǐ xiànzài zài nǎlǐ gōngzuò?",
+  "Где ты сейчас работаешь?",
+  "你在哪儿工作",
+  false
+ ],
+ "你喜欢自己的工作吗": [
+  "Nǐ xǐhuan zìjǐ de gōngzuò ma?",
+  "Тебе нравится твоя работа?",
+  "你喜欢你的工作吗",
+  false
+ ],
+ "你喜不喜欢你的工作": [
+  "Nǐ xǐ bu xǐhuan nǐ de gōngzuò?",
+  "Тебе нравится твоя работа?",
+  "你喜欢你的工作吗",
+  false
+ ],
+ "你的工作你喜欢吗": [
+  "Nǐ de gōngzuò nǐ xǐhuan ma?",
+  "Тебе нравится твоя работа?",
+  "你喜欢你的工作吗",
+  false
+ ],
+ "你的工作忙吗": [
+  "Nǐ de gōngzuò máng ma?",
+  "У тебя много работы?",
+  "你工作忙吗",
+  false
+ ],
+ "你工作忙不忙": [
+  "Nǐ gōngzuò máng bu máng?",
+  "У тебя много работы?",
+  "你工作忙吗",
+  false
+ ],
+ "你今天工作忙吗": [
+  "Nǐ jīntiān gōngzuò máng ma?",
+  "У тебя сегодня много работы?",
+  "你工作忙吗",
+  false
+ ],
+ "你几点下班": [
+  "Nǐ jǐ diǎn xiàbān?",
+  "Во сколько ты заканчиваешь работу?",
+  "你每天几点下班",
+  false
+ ],
+ "你一般几点下班": [
+  "Nǐ yìbān jǐ diǎn xiàbān?",
+  "Во сколько обычно заканчиваешь работу?",
+  "你每天几点下班",
+  false
+ ],
+ "你通常几点下班": [
+  "Nǐ tōngcháng jǐ diǎn xiàbān?",
+  "Во сколько обычно заканчиваешь работу?",
+  "你每天几点下班",
+  false
+ ],
+ "你工作多长时间了": [
+  "Nǐ gōngzuò duō cháng shíjiān le?",
+  "Как давно ты работаешь?",
+  "你工作多久了",
+  false
+ ],
+ "你工作几年了": [
+  "Nǐ gōngzuò jǐ nián le?",
+  "Сколько лет ты работаешь?",
+  "你工作多久了",
+  false
+ ],
+ "你会不会说俄语": [
+  "Nǐ huì bu huì shuō Éyǔ?",
+  "Ты умеешь говорить по-русски?",
+  "你会说俄语吗",
+  true
+ ],
+ "你能说俄语吗": [
+  "Nǐ néng shuō Éyǔ ma?",
+  "Ты можешь говорить по-русски?",
+  "你会说俄语吗",
+  true
+ ],
+ "你会不会用电脑": [
+  "Nǐ huì bu huì yòng diànnǎo?",
+  "Ты умеешь пользоваться компьютером?",
+  "你会用电脑吗",
+  true
+ ],
+ "你能用电脑吗": [
+  "Nǐ néng yòng diànnǎo ma?",
+  "Ты можешь пользоваться компьютером?",
+  "你会用电脑吗",
+  true
+ ]
+});
+export function respondToCourseWorkStudyQuestion(raw){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ if(!Object.hasOwn(workStudyAliases572,s))return null;
+ const [py,ru,canonical,course]=workStudyAliases572[s];
+ const base=course?courseConversation563(canonical,canonical):workConversation(canonical,canonical,null);
+ if(!base?.reply?.hanzi)return null;
+ const a=[base.reply.hanzi,base.reply.pinyin,base.reply.ru];
+ return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,3),kind:'question',domain:'course-work-study'};
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -756,5 +908,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||contextualFragments568(raw,previousPanda);
 }
