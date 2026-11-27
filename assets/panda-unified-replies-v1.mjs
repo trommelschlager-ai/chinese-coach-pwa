@@ -46,7 +46,7 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
    return next();
   }
   if(semantic.value==='daily')return !fact('daily-breakfast')?breakfast():!fact('daily-sleep')?sleep():next();
-  if(semantic.value==='work')return !fact('work-busy')?busy():fact('work-busy')?.value!=='off'&&!fact('work-time')?workTime():next();
+  if(semantic.value==='work')return !fact('work-busy')?busy():fact('work-busy')?.value==='off'?line('你想做什么工作？','Nǐ xiǎng zuò shénme gōngzuò?','Кем ты хочешь работать?','follow-up',true):!fact('work-time')?workTime():next();
   if(semantic.value==='study')return !fact('study-reason')?study():next();
   if(semantic.value==='hobby'){
    const m=prior?.hobbyMemory;
