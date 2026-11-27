@@ -103,7 +103,7 @@ if(js.includes('const homeSixArt=')){
  const hits=[...root.querySelectorAll('.pg-six-hit')];assert.equal(hits.length,6);
  assert.deepEqual(hits.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html',null,'./panda-voice-pilot.html','./panda-street-ai-preview.html']);
  assert(hits.every(x=>x.getAttribute('aria-label')));
- const images=[...root.querySelectorAll('svg image')];assert.equal(images.length,8);assert(images.every(x=>x.getAttribute('href')===latest.src));
+ const art=root.querySelector('.pg-six-art');assert(art);assert.equal(root.querySelectorAll('.pg-six-art').length,1);assert.equal(art.getAttribute('src'),latest.src);assert.equal(art.getAttribute('width'),'1024');assert.equal(art.getAttribute('height'),'1536');assert(!root.querySelector('.pg-six-row,.pg-six-scene'));assert.equal(root.querySelectorAll('.pg-six-extension').length,2);
  const note=root.querySelector('.pg-six-note');assert(note.hidden);hits[3].click();assert(!note.hidden);
  const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
  assert(course.includes(latest.src));assert(pack.files.some(x=>x.split('?')[0]===latest.src));
