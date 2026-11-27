@@ -31,10 +31,12 @@ export async function createStreetFaceRig({stage,source}={}){
   cache.set(url,p);if(cache.size>12)cache.delete(cache.keys().next().value);return p;
  }
  function bindAudio(a){audio=a;envelope=null;fallback=0;if(!a?.src)return;
-  decodeEnvelope(a.src).then(e=>{if(audio===a)envelope=e;});}
+  screen.dataset.speechEnvelope='loading';
+  decodeEnvelope(a.src).then(e=>{if(audio===a){envelope=e;screen.dataset.speechEnvelope=e?'ready':'unavailable';}});}
  function speechLevel(){
   if(!audio||audio.paused||audio.ended)return 0;
-  if(!envelope)return clamp(fallback,0,1)*.65;
+  // Never invent mouth movement in a silent gap or while the recording is decoding.
+  if(!envelope)return 0;
   const pos=audio.currentTime/envelope.step,i=Math.floor(pos),f=pos-i,v=envelope.values;
   const rms=(v[i]||0)*(1-f)+(v[i+1]||0)*f;
   return rms<.025?0:clamp((rms-.022)*6.8,0,1);
@@ -45,7 +47,7 @@ function paint(){if(!ready)return;const t=logical/1000,d=logical-actStart;let cu
 if(ambient&&!reduce){if(theme==='day'){ctx.save();ctx.globalAlpha=.22;draw('day-leaves',Math.sin(t*.8)*1.5,Math.sin(t*.61)*.8);ctx.restore();glow(785,84,100,.045+.022*Math.sin(t*.7),'255,244,179');}else{const stars=[[295,25],[275,84],[359,69],[388,142],[389,281],[504,256],[609,155],[589,220],[465,39]];stars.forEach(([x,y],i)=>{let a=.08+.15*(.5+.5*Math.sin(t*(.65+i*.07)+i*2.7));glow(x,y,i%3===0?10:6,a,'189,214,255')});}}
 // Breathing layer is inside the shirt, independent of surroundings and seated silhouette.
 let breathing=reduce?0:Math.sin(t*2*Math.PI/6)*.004;ctx.save();ctx.translate(404,792);ctx.scale(1+breathing,1+breathing*1.5);draw(theme+'-chest',-89,-105);ctx.restore();
-let angle=0,sy=1,dy=0,mouth=0,smile=false;const u=clamp(d/(durations[current]||1),0,1),p=pulse(u);if(current==='hello'){dy=1.0*p;sy=1-.005*p;angle=.0025*p;}if(current==='listen'){angle=-.038*p;dy=1.2*p;}if(current==='correct'){angle=.004*p;dy=.9*p;sy=1-.004*p;smile=p>.14;}if(current==='confused'){angle=.045*p;dy=-.8*p;}if(current==='ack'){angle=.006*p;dy=2*p;}if(current==='speak'){let target=audioPlaying?speechLevel():0;amplitude+=(target-amplitude)*(target>amplitude?.42:.28);mouth=clamp(amplitude*12,0,12);}else amplitude=0;
+let angle=0,sy=1,dy=0,mouth=0,smile=false;const u=clamp(d/(durations[current]||1),0,1),p=pulse(u);if(current==='hello'){dy=1.0*p;sy=1-.005*p;angle=.0025*p;}if(current==='listen'){angle=-.038*p;dy=1.2*p;}if(current==='correct'){angle=.004*p;dy=.9*p;sy=1-.004*p;smile=p>.14;}if(current==='confused'){angle=.045*p;dy=-.8*p;}if(current==='ack'){angle=.006*p;dy=2*p;}if(current==='speak'){let target=audioPlaying?speechLevel():0;amplitude=audioPlaying?amplitude+(target-amplitude)*(target>amplitude?.58:.45):0;if(target===0&&amplitude<.035)amplitude=0;mouth=clamp(amplitude*12,0,12);}else amplitude=0;screen.dataset.jawLevel=String(mouth.toFixed(2));
 // Head is a separate alpha sprite. The stationary backing is only drawn when needed.
 const moving=Math.abs(angle)>.0005||Math.abs(dy)>.05||Math.abs(sy-1)>.0005||smile;
 if(moving){draw(theme+'-under',190,420);ctx.save();ctx.translate(370,678+dy);ctx.rotate(angle);ctx.scale(1,sy);draw(smile?theme+'-smile':theme+'-head-0',-180,-258);ctx.restore();}
