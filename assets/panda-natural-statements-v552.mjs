@@ -817,6 +817,236 @@ export function respondToCourseRoutineQuestion(raw){
  return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,1),kind:'question',domain:'course-routine'};
 }
 
+// v572: restaurant and shop paraphrases use the reviewed dialogue audio.
+// Prices and payment availability are examples, not claims about a real merchant.
+const foodShopAliases572=Object.freeze({
+ "你想吃点什么": [
+  "Nǐ xiǎng chī diǎn shénme?",
+  "Что ты хочешь съесть?",
+  [
+   "我想吃竹子。",
+   "Wǒ xiǎng chī zhúzi.",
+   "Я хочу бамбук."
+  ]
+ ],
+ "你想要吃什么": [
+  "Nǐ xiǎng yào chī shénme?",
+  "Что ты хочешь съесть?",
+  [
+   "我想吃竹子。",
+   "Wǒ xiǎng chī zhúzi.",
+   "Я хочу бамбук."
+  ]
+ ],
+ "你要吃什么": [
+  "Nǐ yào chī shénme?",
+  "Что будешь есть?",
+  [
+   "我想吃竹子。",
+   "Wǒ xiǎng chī zhúzi.",
+   "Я хочу бамбук."
+  ]
+ ],
+ "你现在饿吗": [
+  "Nǐ xiànzài è ma?",
+  "Ты сейчас голоден?",
+  [
+   "不饿。你呢？",
+   "Bú è. Nǐ ne?",
+   "Не голодна. А ты?"
+  ]
+ ],
+ "你饿不饿": [
+  "Nǐ è bu è?",
+  "Ты голоден?",
+  [
+   "不饿。你呢？",
+   "Bú è. Nǐ ne?",
+   "Не голодна. А ты?"
+  ]
+ ],
+ "你现在饿不饿": [
+  "Nǐ xiànzài è bu è?",
+  "Ты сейчас голоден?",
+  [
+   "不饿。你呢？",
+   "Bú è. Nǐ ne?",
+   "Не голодна. А ты?"
+  ]
+ ],
+ "你还要什么": [
+  "Nǐ hái yào shénme?",
+  "Что ещё хочешь?",
+  [
+   "我还要一碗汤。",
+   "Wǒ hái yào yì wǎn tāng.",
+   "Я хочу ещё миску супа."
+  ]
+ ],
+ "你还想要什么": [
+  "Nǐ hái xiǎng yào shénme?",
+  "Что ещё хочешь?",
+  [
+   "我还要一碗汤。",
+   "Wǒ hái yào yì wǎn tāng.",
+   "Я хочу ещё миску супа."
+  ]
+ ],
+ "你还想吃什么": [
+  "Nǐ hái xiǎng chī shénme?",
+  "Что ещё хочешь съесть?",
+  [
+   "我还要一碗汤。",
+   "Wǒ hái yào yì wǎn tāng.",
+   "Я хочу ещё миску супа."
+  ]
+ ],
+ "你最喜欢什么颜色": [
+  "Nǐ zuì xǐhuan shénme yánsè?",
+  "Какой цвет тебе нравится больше всего?",
+  [
+   "我喜欢紫色。",
+   "Wǒ xǐhuan zǐsè.",
+   "Я люблю фиолетовый цвет."
+  ]
+ ],
+ "你喜欢哪种颜色": [
+  "Nǐ xǐhuan nǎ zhǒng yánsè?",
+  "Какой цвет ты любишь?",
+  [
+   "我喜欢紫色。",
+   "Wǒ xǐhuan zǐsè.",
+   "Я люблю фиолетовый цвет."
+  ]
+ ],
+ "你喜欢哪个颜色": [
+  "Nǐ xǐhuan nǎ ge yánsè?",
+  "Какой цвет ты любишь?",
+  [
+   "我喜欢紫色。",
+   "Wǒ xǐhuan zǐsè.",
+   "Я люблю фиолетовый цвет."
+  ]
+ ],
+ "你喜不喜欢这件衣服": [
+  "Nǐ xǐ bu xǐhuan zhè jiàn yīfu?",
+  "Тебе нравится эта вещь?",
+  [
+   "喜欢，但是太贵了。",
+   "Xǐhuan, dànshì tài guì le.",
+   "Нравится, но слишком дорого."
+  ]
+ ],
+ "这件衣服你喜欢吗": [
+  "Zhè jiàn yīfu nǐ xǐhuan ma?",
+  "Тебе нравится эта вещь?",
+  [
+   "喜欢，但是太贵了。",
+   "Xǐhuan, dànshì tài guì le.",
+   "Нравится, но слишком дорого."
+  ]
+ ],
+ "你喜欢不喜欢这件衣服": [
+  "Nǐ xǐhuan bu xǐhuan zhè jiàn yīfu?",
+  "Тебе нравится эта вещь?",
+  [
+   "喜欢，但是太贵了。",
+   "Xǐhuan, dànshì tài guì le.",
+   "Нравится, но слишком дорого."
+  ]
+ ],
+ "哪一个更便宜": [
+  "Nǎ yí ge gèng piányi?",
+  "Какой из них дешевле?",
+  [
+   "这个比那个便宜。",
+   "Zhège bǐ nàge piányi.",
+   "Этот дешевле того."
+  ]
+ ],
+ "哪个比较便宜": [
+  "Nǎ ge bǐjiào piányi?",
+  "Какой из них дешевле?",
+  [
+   "这个比那个便宜。",
+   "Zhège bǐ nàge piányi.",
+   "Этот дешевле того."
+  ]
+ ],
+ "这两个哪个更便宜": [
+  "Zhè liǎng ge nǎ ge gèng piányi?",
+  "Какой из этих двух дешевле?",
+  [
+   "这个比那个便宜。",
+   "Zhège bǐ nàge piányi.",
+   "Этот дешевле того."
+  ]
+ ],
+ "能便宜一点吗": [
+  "Néng piányi yìdiǎn ma?",
+  "Можно немного дешевле?",
+  [
+   "练习对话：四十块钱，可以吗？",
+   "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+   "Учебный диалог: сорок юаней, подойдёт?"
+  ]
+ ],
+ "能不能便宜一点": [
+  "Néng bu néng piányi yìdiǎn?",
+  "Можно немного дешевле?",
+  [
+   "练习对话：四十块钱，可以吗？",
+   "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+   "Учебный диалог: сорок юаней, подойдёт?"
+  ]
+ ],
+ "可以再便宜一点吗": [
+  "Kěyǐ zài piányi yìdiǎn ma?",
+  "Можно ещё немного дешевле?",
+  [
+   "练习对话：四十块钱，可以吗？",
+   "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+   "Учебный диалог: сорок юаней, подойдёт?"
+  ]
+ ],
+ "能刷卡吗": [
+  "Néng shuākǎ ma?",
+  "Можно оплатить картой?",
+  [
+   "练习对话：可以刷卡。",
+   "Liànxí duìhuà: kěyǐ shuākǎ.",
+   "Учебный диалог: можно оплатить картой."
+  ]
+ ],
+ "能不能刷卡": [
+  "Néng bu néng shuākǎ?",
+  "Можно оплатить картой?",
+  [
+   "练习对话：可以刷卡。",
+   "Liànxí duìhuà: kěyǐ shuākǎ.",
+   "Учебный диалог: можно оплатить картой."
+  ]
+ ],
+ "可以用银行卡付款吗": [
+  "Kěyǐ yòng yínhángkǎ fùkuǎn ma?",
+  "Можно оплатить банковской картой?",
+  [
+   "练习对话：可以刷卡。",
+   "Liànxí duìhuà: kěyǐ shuākǎ.",
+   "Учебный диалог: можно оплатить картой."
+  ]
+ ]
+});
+export function respondToCourseFoodShopQuestion(raw){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ if(!Object.hasOwn(foodShopAliases572,s))return null;
+ const [py,ru,a]=foodShopAliases572[s];
+ const out={...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,4),kind:'question',domain:'course-food-shop'};
+ out.message='Учебный разговор в ресторане или магазине. Тоны по тексту не оценивались.';
+ return out;
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -1108,5 +1338,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||respondToCourseFoodShopQuestion(raw)||contextualFragments568(raw,previousPanda);
 }

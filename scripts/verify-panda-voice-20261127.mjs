@@ -22,5 +22,8 @@ test('58 female and 2 male exact MP3 and offline integrity, no cross-role substi
   assert(pack.files.includes(src));assert(!lookupApprovedPandaVoice(x.hanzi)?.src.includes('panda-street'));
  }
  assert.equal(lookupApprovedPandaVoice('不存在的测试句子。'),null);
- assert.equal(pack.version,571);
+ const sw=fs.readFileSync('sw.js','utf8');
+ const cacheVersion=Number(sw.match(/^const CACHE='chinese-coach-pwa-v(\d+)-/m)?.[1]);
+ assert(Number.isInteger(pack.version)&&pack.version>=571,'Voice pack release cannot regress below v571');
+ assert.equal(pack.version,cacheVersion,'Active worker and offline manifest must agree');
 });

@@ -42,6 +42,12 @@ try{
    }
    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
   }
+  if(flag){
+   for(const [q,a] of [['请问，你想吃点什么？','我想吃竹子。'],['你饿不饿？','不饿。你呢？'],['你还想要什么？','我还要一碗汤。'],['你喜欢哪种颜色？','我喜欢紫色。'],['哪一个更便宜？','这个比那个便宜。'],['能便宜一点吗？','练习对话：四十块钱，可以吗？'],['能刷卡吗？','练习对话：可以刷卡。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
   const travel=await send('去中国');assert.equal(travel.history.at(-1).hanzi,'你打算什么时候去？');assert.equal(travel.audioAvailable,true);assert(travel.history.at(-2).pinyin&&travel.history.at(-2).ru);const time=await send('明天');assert.equal(time.history.at(-1).hanzi,'然后呢？');
   for(const q of ['我先刷牙然后吃早饭','我先刷牙再吃早饭']){const x=await send(q);assert.equal(x.history.at(-1).hanzi,'你早上吃什么？',q);assert.equal(x.audioAvailable,true,q);}
   if(flag){
