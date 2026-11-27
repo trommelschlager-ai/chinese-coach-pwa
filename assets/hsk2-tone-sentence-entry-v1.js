@@ -34,7 +34,8 @@
  function button(type){const b=document.createElement('button');b.type='button';b.className='pg2-tone-pilot-link'+(type==='tones'?' pg2-tone-speechlink':'');b.textContent='🎙 Panda Tone';b.setAttribute('aria-label','Открыть сравнение интонации слов и фраз, без автоматической оценки');b.setAttribute('data-pg2-tone-pilot','');b.addEventListener('click',open);return b;}
  function mount(){
   const view=app.dataset.view;
-  if(view==='6'){const heading=workspace.querySelector('h1.pill-title');if(heading&&!heading.querySelector('[data-pg2-tone-pilot]')){heading.classList.add('pg2-tone-title');heading.append(button('words'));}}
+  if(view==='6'){const heading=workspace.querySelector('.tones-hero .hero-message');if(heading&&!heading.querySelector('[data-pg2-tone-pilot]')){const old=heading.querySelector('p');if(old){old.replaceChildren(button('words'));}else heading.append(button('words'));}}
+  if(view==='2'){const heading=workspace.querySelector('h1.pill-title');if(heading&&!heading.querySelector('[data-pg2-tone-pilot]')){heading.classList.add('pg2-tone-title');heading.append(button('words'));}}
  }
  const obs=new MutationObserver(mount);obs.observe(workspace,{childList:true,subtree:true});mount();
  window.addEventListener('pagehide',()=>{close();dialog.querySelector('iframe')?.remove();obs.disconnect();});
