@@ -14,8 +14,8 @@ export async function createStreetFaceRig({stage,source}={}){
  let theme='night',act='idle',actStart=0,logical=0,last=0,ambient=true,ready=false,glintStart=-1e9,shootStart=-1e9,nextGlint=180000,nextShoot=360000,raf=0,amplitude=0;
  let audio=null,envelope=null,fallback=0,pending=null,state='idle',disposed=false,lastPaint=-1e9,layout={width:0,height:0};
  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
- const durations={hello:1500,speak:4500,listen:1900,correct:1500,confused:1500};
- function setAct(a){act=a;actStart=logical;amplitude=0;screen.dataset.motionState=a;}
+ const durations={hello:1500,speak:4500,listen:1900,correct:1500,confused:1500,ack:1200};
+ function setAct(a){act=a;actStart=logical;amplitude=0;screen.dataset.motionKind=a;screen.dataset.motionState=a==='speak'?'talking':a==='listen'?'listening':a==='idle'?'idle':'reaction';}
  const cache=new Map();
  function decodeEnvelope(url){
   if(cache.has(url))return cache.get(url);
@@ -45,7 +45,7 @@ function paint(){if(!ready)return;const t=logical/1000,d=logical-actStart;let cu
 if(ambient&&!reduce){if(theme==='day'){ctx.save();ctx.globalAlpha=.22;draw('day-leaves',Math.sin(t*.8)*1.5,Math.sin(t*.61)*.8);ctx.restore();glow(785,84,100,.045+.022*Math.sin(t*.7),'255,244,179');}else{const stars=[[295,25],[275,84],[359,69],[388,142],[389,281],[504,256],[609,155],[589,220],[465,39]];stars.forEach(([x,y],i)=>{let a=.08+.15*(.5+.5*Math.sin(t*(.65+i*.07)+i*2.7));glow(x,y,i%3===0?10:6,a,'189,214,255')});}}
 // Breathing layer is inside the shirt, independent of surroundings and seated silhouette.
 let breathing=reduce?0:Math.sin(t*2*Math.PI/6)*.004;ctx.save();ctx.translate(404,792);ctx.scale(1+breathing,1+breathing*1.5);draw(theme+'-chest',-89,-105);ctx.restore();
-let angle=0,sy=1,dy=0,mouth=0,smile=false;const u=clamp(d/(durations[current]||1),0,1),p=pulse(u);if(current==='hello'){dy=1.0*p;sy=1-.005*p;angle=.0025*p;}if(current==='listen'){angle=-.038*p;dy=1.2*p;}if(current==='correct'){angle=.004*p;dy=.9*p;sy=1-.004*p;smile=p>.14;}if(current==='confused'){angle=.045*p;dy=-.8*p;}if(current==='speak'){let target=audioPlaying?speechLevel():0;amplitude+=(target-amplitude)*(target>amplitude?.42:.28);mouth=clamp(amplitude*12,0,12);}else amplitude=0;
+let angle=0,sy=1,dy=0,mouth=0,smile=false;const u=clamp(d/(durations[current]||1),0,1),p=pulse(u);if(current==='hello'){dy=1.0*p;sy=1-.005*p;angle=.0025*p;}if(current==='listen'){angle=-.038*p;dy=1.2*p;}if(current==='correct'){angle=.004*p;dy=.9*p;sy=1-.004*p;smile=p>.14;}if(current==='confused'){angle=.045*p;dy=-.8*p;}if(current==='ack'){angle=.006*p;dy=2*p;}if(current==='speak'){let target=audioPlaying?speechLevel():0;amplitude+=(target-amplitude)*(target>amplitude?.42:.28);mouth=clamp(amplitude*12,0,12);}else amplitude=0;
 // Head is a separate alpha sprite. The stationary backing is only drawn when needed.
 const moving=Math.abs(angle)>.0005||Math.abs(dy)>.05||Math.abs(sy-1)>.0005||smile;
 if(moving){draw(theme+'-under',190,420);ctx.save();ctx.translate(370,678+dy);ctx.rotate(angle);ctx.scale(1,sy);draw(smile?theme+'-smile':theme+'-head-0',-180,-258);ctx.restore();}
@@ -91,7 +91,7 @@ let sh=(logical-shootStart)/1000;if(theme==='night'&&sh>=0&&sh<=1){const x=560-s
   setAct(next);
  }
  function talk(value){fallback=clamp(Number(value)||0,0,1);}
- function acknowledge(){/* Missing audio is not a correct-answer signal. */}
+ function acknowledge(){/* A silent acknowledgement is neutral, never a correctness judgement. */if(!reduce&&state!=='talking')setAct('ack');}
  function tick(now){if(disposed)return;if(!last)last=now;
   const dt=Math.min(50,now-last);last=now;
   if(!doc.hidden){logical+=dt;if(now-lastPaint>=32){lastPaint=now;
