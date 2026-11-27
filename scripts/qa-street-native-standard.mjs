@@ -1,6 +1,16 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+const voices=JSON.parse(fs.readFileSync('assets/panda-street-voice-v20261125/manifest.json','utf8')).clips;
+assert.equal(voices.length,69);
+assert.equal(new Set(voices.map(v=>v.file)).size,69);
+for(const v of voices){const b=fs.readFileSync('assets/panda-street-voice-v20261125/'+v.file);if(v.sha256)assert.equal(createHash('sha256').update(b).digest('hex'),v.sha256,'Audio hash '+v.file);}
+assert.equal(voices.find(v=>v.file==='54.mp3').hanzi,'你为什么想学中文？');
+assert.equal(voices.find(v=>v.file==='55.mp3').hanzi,'你打算什么时候去？');
+assert.equal(voices.find(v=>v.file==='68.mp3').hanzi,'好久不见！');
+assert.equal(voices.find(v=>v.file==='69.mp3').hanzi,'没啥。');
+
 const base=process.env.QA_BASE||'http://127.0.0.1:4173',out='qa/street-native-standard';fs.mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']});
 const expected=['cover','phrase','phrase','dialogue','tone','phrase','phrase','grammar',...Array(3).fill('build'),'phrase','phrase','dialogue','dialogue',...Array(5).fill('listen'),...Array(3).fill('record'),'finish','ai'];

@@ -1,0 +1,29 @@
+name: Import verified Panda voice pack 20261127
+on:
+  push:
+    branches:
+      - feature/panda-dialogue-context-travel-20261126
+    paths:
+      - panda-voice-upload-20261127.zip
+permissions:
+  contents: write
+jobs:
+  import-verified:
+    if: github.ref == 'refs/heads/feature/panda-dialogue-context-travel-20261126'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate archive and import exact audio
+        run: python3 scripts/import-panda-voice-20261127.py
+      - name: Verify registry, hashes, voice isolation and offline coverage
+        run: |
+          node --test scripts/verify-panda-voice-20261127.mjs tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs
+          node --check sw.js
+          node --check assets/panda-street-voice-v20261125.js
+      - name: Commit only validated changes to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/panda-ai-voice-20261127 assets/panda-street-voice-v20261125 assets/panda-street-voice-v20261125.js assets/panda-approved-voice-registry-v516.mjs assets/offline-pack.json sw.js docs/PANDA-GO-CHECKPOINT-2026-11-26.md
+          git commit -m "Import 58 verified Panda AI and two Street voice clips"
+          git push origin HEAD:refs/heads/feature/panda-dialogue-context-travel-20261126

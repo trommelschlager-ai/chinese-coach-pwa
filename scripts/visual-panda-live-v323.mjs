@@ -16,7 +16,30 @@ try{
   let res=await page.goto(base+'/index.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg130:not([hidden])').waitFor();
-  assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),2,'HSK 1 and HSK 2 on approved home');
+  const home=page.locator('#pg130 .pg-four-approved');
+  await home.waitFor({state:'visible'});
+  await page.waitForFunction(()=>{const img=document.querySelector('#pg130 .pg-four-art');return img?.complete&&img.naturalWidth===1024&&img.naturalHeight===1536});
+  const hits=home.locator('.pg-four-hit');
+  assert.equal(await hits.count(),4,'Four approved home hotspots');
+  assert.deepEqual(await hits.evaluateAll(els=>els.slice(0,3).map(e=>e.getAttribute('href'))),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html']);
+  const layout=await home.evaluate(el=>{
+   const art=el.querySelector('.pg-four-art').getBoundingClientRect();
+   const targets=[...el.querySelectorAll('.pg-four-hit')].map(e=>{
+    const r=e.getBoundingClientRect();
+    const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+    return {fits:r.left>=art.left-1&&r.right<=art.right+1&&r.top>=art.top-1&&r.bottom<=art.bottom+1,clickable:e===top||e.contains(top),width:r.width,height:r.height};
+   });
+   return {artFits:art.left>=-1&&art.top>=-1&&art.right<=innerWidth+1&&art.bottom<=innerHeight+1,targets,petals:document.querySelectorAll('#pg130 .pg-sakura-petal').length};
+  });
+  assert(layout.artFits&&layout.targets.every(x=>x.fits&&x.clickable&&x.width>44&&x.height>44),JSON.stringify(layout));
+  assert.equal(layout.petals,18,'Existing falling petals retained');
+  await hits.nth(3).click();
+  assert(await home.locator('.pg-four-note').isVisible(),'Fourth level notice must be visible after tap');
+  await page.screenshot({path:out+'/approved-four-home-'+width+'.png',animations:'disabled'});
+  for(const [i,destination] of ['hsk1-map.html','hsk2-life-course.html','panda-street-hsk1-map.html'].entries()){
+   if(i>0){await page.goto(base+'/index.html',{waitUntil:'load'});await home.waitFor();}
+   await Promise.all([page.waitForURL(u=>u.pathname.endsWith('/'+destination)),hits.nth(i).click()]);
+  }
   res=await page.goto(base+'/hsk1-map.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   assert.equal(await page.locator('.hotspots a.lesson').count(),7,'Seven approved lesson hotspots');

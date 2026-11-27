@@ -779,8 +779,467 @@ export const PANDA_USER_V563_BATCH=Object.freeze([
   }
 ]);
 const USER_V563_BY_ZH=new Map(PANDA_USER_V563_BATCH.map(e=>[voiceNorm(e.zh),e]));
+// User-supplied November 26 recordings, one exact phrase per MP3.
+export const PANDA_TRAVEL_VOICE_20261126=Object.freeze([
+  {
+    "id": "PA-TRAVEL-01",
+    "zh": "你来选话题吧。",
+    "pinyin": "Nǐ lái xuǎn huàtí ba.",
+    "ru": "Выбери тему разговора.",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-01.mp3",
+    "bytes": 10604,
+    "sha256": "b4280febc96118bd5acd6adf79190f69eecec015bf0919e963879c1f5c67463f"
+  },
+  {
+    "id": "PA-TRAVEL-02",
+    "zh": "什么意思？",
+    "pinyin": "Shénme yìsi?",
+    "ru": "Что это значит?",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-02.mp3",
+    "bytes": 8444,
+    "sha256": "55309e82daa0b3e5f6aee91b849a544ce0307f7d8bc8ddf746ee69622c6acfbc"
+  },
+  {
+    "id": "PA-TRAVEL-03",
+    "zh": "什么时候去中国？",
+    "pinyin": "Shénme shíhou qù Zhōngguó?",
+    "ru": "Когда ехать в Китай?",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-03.mp3",
+    "bytes": 12188,
+    "sha256": "97b96195d62320c3e44441914fe9ef67c2de02f27c3e8930a3d4f03f56711a79"
+  },
+  {
+    "id": "PA-TRAVEL-04",
+    "zh": "我下个月去中国。",
+    "pinyin": "Wǒ xià ge yuè qù Zhōngguó.",
+    "ru": "Я поеду в Китай в следующем месяце.",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-04.mp3",
+    "bytes": 12044,
+    "sha256": "9907b264544294d3da374f1cc45c008a9087cc90d8b2b4871c038fb419e06b1a"
+  },
+  {
+    "id": "PA-TRAVEL-05",
+    "zh": "我打算坐飞机。",
+    "pinyin": "Wǒ dǎsuàn zuò fēijī.",
+    "ru": "Я собираюсь лететь на самолёте.",
+    "src": "./assets/panda-ai-travel-voice-20261126/PA-TRAVEL-05.mp3",
+    "bytes": 11756,
+    "sha256": "caf4f3d16f3fcb8eec9078402e21095b2f6144b3c35e7d5dfc75a9b0a78497b2"
+  }
+]);
+const TRAVEL_VOICE_BY_ZH=new Map(PANDA_TRAVEL_VOICE_20261126.map(e=>[voiceNorm(e.zh),e]));
+export const PANDA_USER_20261127_BATCH=Object.freeze([
+  {
+    "zh": "你最喜欢什么中国菜？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-01.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14636,
+    "sha256": "cee0a43ccc9c5e8070355f6f75ddaa2ce6db14480a64e896d108bfb42e8b305a"
+  },
+  {
+    "zh": "你想喝什么？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-02.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9308,
+    "sha256": "f103a9be358ae4a374def0aaf80249f3482e900249c519b8f0fe4f9037094114"
+  },
+  {
+    "zh": "还要什么？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-03.mp3",
+    "role": "panda-ai-female",
+    "bytes": 7724,
+    "sha256": "82d7133ae8abea8cff0c3693caf27dc40fe3be1e307ad3932e0829e214ffceb4"
+  },
+  {
+    "zh": "你喜欢什么音乐？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-04.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11756,
+    "sha256": "f2c39400c4c3925b4228edfd82085955ddd8ef077dc8a90c510b62cf2505d1ce"
+  },
+  {
+    "zh": "我喜欢轻音乐。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-05.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11180,
+    "sha256": "5adf86e2cc355a2e445f385f96149fbe8acd46416eb3b177060352041db9cd08"
+  },
+  {
+    "zh": "你觉得这个电影怎么样？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-06.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14204,
+    "sha256": "734fb96435dc16f8d002b2edd9e47154bbab276c57e09c32ec72c893bd56fc75"
+  },
+  {
+    "zh": "我觉得很有意思。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-07.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11612,
+    "sha256": "d32bdd3c0e674aa184272572ef3bef20a6ea48ce4eb52662fa1a038568cb6f54"
+  },
+  {
+    "zh": "你晚上常常做什么？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-08.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13628,
+    "sha256": "9c4be7fa0d433fae0844f82c954e713832e47feecb2a4352ec8f873aa89777ab"
+  },
+  {
+    "zh": "我晚上常常看书。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-09.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13196,
+    "sha256": "dafbf01f0d3618c2fd6f61c5dc1136590af19b0adc04f199bf16634eee545f3b"
+  },
+  {
+    "zh": "我今天很忙。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-10.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9884,
+    "sha256": "0cc2c0b3f1cab1dee74028bc73361cb8ae9415257d6e6bbf048a93fdc762e70f"
+  },
+  {
+    "zh": "不累。你呢？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-11.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13772,
+    "sha256": "a1a2f6d652f374885d6c17e65fb38bdfcc1076fc2826972a603ce9b59c545e22"
+  },
+  {
+    "zh": "不用，谢谢你。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B02-12.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12044,
+    "sha256": "f03fbb4197eb56e0738cd661cb9bfa10c003e7b37d5596d283c33c317026ad08"
+  },
+  {
+    "zh": "银行在哪儿？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-01.mp3",
+    "role": "panda-ai-female",
+    "bytes": 8876,
+    "sha256": "2f102a5b66111cabc5851a3d3ad649738ede178eb6cd59fedaf52a6982225dfd"
+  },
+  {
+    "zh": "银行在学校旁边。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-02.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13340,
+    "sha256": "977313cbe05a7293a672b661a96bb35181324d510280a5e4a4f71241e1efaa55"
+  },
+  {
+    "zh": "公园在哪儿？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-03.mp3",
+    "role": "panda-ai-female",
+    "bytes": 8732,
+    "sha256": "fb92db31afb31aded3859415ff49541df438b210bcceddc2d40991568f7319ef"
+  },
+  {
+    "zh": "公园在医院后面。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-04.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13196,
+    "sha256": "07309e9531c32518427ea58fde647267ca632502ebbe6d2489a8ddd1287a4042"
+  },
+  {
+    "zh": "你家离学校远吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-05.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12332,
+    "sha256": "cb5e08a904f25a1552f04bcd04f5dfd673636acd1137870c453a7bb7f4abffa0"
+  },
+  {
+    "zh": "不远，很近。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-06.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11324,
+    "sha256": "7f81844e0f45a7774d63622dbab2bb83a51d3d70b92d4623bce2bee287eff5d0"
+  },
+  {
+    "zh": "你怎么去上班？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-07.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10028,
+    "sha256": "acd6606b0f42f4072f7787607097552b63f0c0a16dd7c239d2b4bd568bbdb224"
+  },
+  {
+    "zh": "你从家到公司怎么去？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-08.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15788,
+    "sha256": "ac3a62a429143480b412b23fb880b6e809b996a2c51e4f07d3fdd0d2877f3a1d"
+  },
+  {
+    "zh": "我坐公交车。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-09.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10028,
+    "sha256": "f7eca511e097a22223ce52146bc39ba142a5b268d13b8bdca8010ce46b7222e9"
+  },
+  {
+    "zh": "到机场需要多久？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-10.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12764,
+    "sha256": "c221e2e85896e41de08cd9af7faa8385cfb60548c2a6f05615c5b83a200286c8"
+  },
+  {
+    "zh": "需要一个小时。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-11.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11324,
+    "sha256": "8b17deeeca0977591e2818f2c5474ce21655345c1145408a629860559aff3a18"
+  },
+  {
+    "zh": "我坐地铁去上班。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B03-12.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12476,
+    "sha256": "c2497da10f18a916eb2bee29cd47a25071bdad48c266f181f0176a19f478cbcf"
+  },
+  {
+    "zh": "你喜欢这件衣服吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-01.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12332,
+    "sha256": "1b75f1fe62a21f55ed1bd0667fa00c4fda400395acb60ea130689fa1fcaeb39d"
+  },
+  {
+    "zh": "喜欢，但是太贵了。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-02.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15068,
+    "sha256": "fcaa9b75f0f524ec97ec916726e1fb99e6da6fa5881f5bfc5aec4f447055eb53"
+  },
+  {
+    "zh": "哪个更便宜？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-03.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9452,
+    "sha256": "4118479c9aaae658b572477deae7ca14c9709586bf36f0895df0279b285d044c"
+  },
+  {
+    "zh": "这个比那个便宜。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-04.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11324,
+    "sha256": "c11cd64bfd9e22ae2ad133cc3104f83149224e9edfd37ec55a37214417e5aa8c"
+  },
+  {
+    "zh": "你星期六有空吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-05.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11756,
+    "sha256": "88d3051eb63fd85bd7f67578b12fd4dcbe6d8d06f9223181b71867b9e0b49697"
+  },
+  {
+    "zh": "有空，我们见面吧。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-06.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13484,
+    "sha256": "a7e30ac6a019a63117cb51aef3d7ab990ec46b4bfa43244dbc37bbb0366e297a"
+  },
+  {
+    "zh": "星期六下午三点。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-07.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13196,
+    "sha256": "bfb42e76d6cdd39f4448b2dfca3da91755babcdd844534b953a54bfc4ccfc285"
+  },
+  {
+    "zh": "你想去公园吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-08.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10316,
+    "sha256": "13088afe1969e84778234c894a4468e2b69f5fba250ea34b3229f8df50c7e1c5"
+  },
+  {
+    "zh": "好，我们一起去吧。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-09.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13196,
+    "sha256": "425f9cbb4638013938a2eefdea7b74d4e427baee43ec0c4db640c70f1198a7b4"
+  },
+  {
+    "zh": "你昨天上班了吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-10.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11036,
+    "sha256": "d7f290de41108656e759944cd0ef15e52915f64422df011947d2cb1a8ef5eca6"
+  },
+  {
+    "zh": "没有，我昨天没有上班。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-11.mp3",
+    "role": "panda-ai-female",
+    "bytes": 16796,
+    "sha256": "a755595e357edd8303aec7e82a1a6967f39827f4470237eee17e3ee9ed594aa2"
+  },
+  {
+    "zh": "你下个月打算做什么？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B04-12.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13916,
+    "sha256": "23c111771a54f8638f27fd70f3d7ad5e774273ebcb0262938a83154f941615f9"
+  },
+  {
+    "zh": "我住在熊猫的世界里。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-01.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14636,
+    "sha256": "2bd6d1f499ea07c72a3ea68c47dc7c44368deda9748c07e8e2a7514645a03cc2"
+  },
+  {
+    "zh": "我可以用俄语解释中文。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-02.mp3",
+    "role": "panda-ai-female",
+    "bytes": 16364,
+    "sha256": "fcbc879c6c4fd5c0db907b5a1a06e7bd4f019a986e665a30a2db93fe9ed6acfd"
+  },
+  {
+    "zh": "我没有孩子。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-03.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9740,
+    "sha256": "41fc8091fd63522bcb7a52c46698c436660a64d2a63db0431f38b3807de1a9a3"
+  },
+  {
+    "zh": "我是虚拟熊猫。你爸爸呢？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-04.mp3",
+    "role": "panda-ai-female",
+    "bytes": 21980,
+    "sha256": "61371dbbe810011766def30552aab496c0d5966409d289482e7b26dbd2305578"
+  },
+  {
+    "zh": "我是虚拟熊猫。你妈妈呢？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-05.mp3",
+    "role": "panda-ai-female",
+    "bytes": 21692,
+    "sha256": "2e9630996b6abc616a6185ca93864098ac8e72a5a8fb1881ed96aa8f23f58067"
+  },
+  {
+    "zh": "没有，我是虚拟熊猫。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-06.mp3",
+    "role": "panda-ai-female",
+    "bytes": 16220,
+    "sha256": "a5b6ca3a7226a84c2bc02d49d062b6236f61227b69330a21fede9f44283b9f2c"
+  },
+  {
+    "zh": "有啊，我们可以做朋友。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-07.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15788,
+    "sha256": "c4bf9b708bbc1b3bf5b05055137b261d4b430f345b0950a81de4739b6bd9fcb0"
+  },
+  {
+    "zh": "我想吃竹子。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-08.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10604,
+    "sha256": "b9dcc6d8771a5cfe160378a4e438cc871f4819bb50911e324726162240ca1b08"
+  },
+  {
+    "zh": "不饿。你呢？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-09.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14492,
+    "sha256": "962505565800f6cdc178e879010115d73b0a853303890a73cfbc42ab5b590a18"
+  },
+  {
+    "zh": "我不会真的做饭，但可以陪你练习。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-10.mp3",
+    "role": "panda-ai-female",
+    "bytes": 23708,
+    "sha256": "c60eb1e4e832dce7fbd28be14d60be452e24e40c2d6c80a4bc9ffd8c7de3952a"
+  },
+  {
+    "zh": "我是虚拟熊猫，不会真的游泳。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-11.mp3",
+    "role": "panda-ai-female",
+    "bytes": 21116,
+    "sha256": "2dfe40ad1a19b2742a0d103f64ac937475a35b0fc0b305ba232c0711cf4f1b96"
+  },
+  {
+    "zh": "我不知道实际天气。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B05-12.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13916,
+    "sha256": "028d57249dbbc785dd1fb785037555bf5de05d1919d697cd3a864ad84a7d7e5d"
+  },
+  {
+    "zh": "我喜欢雪。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-01.mp3",
+    "role": "panda-ai-female",
+    "bytes": 8640,
+    "sha256": "a81333d96194844d7efa0e0071b0cc7b9275579b3aab65122657c8169a0f5d21"
+  },
+  {
+    "zh": "我喜欢紫色。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-02.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9792,
+    "sha256": "4212fa87c16e7ea69cfbd29e09714ec087c922cfa7ed224c55b2d88ef108866b"
+  },
+  {
+    "zh": "我还没有计划。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-03.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9936,
+    "sha256": "dd7507f5c211cc21c40161c644bb1512e2072c8637285f017e0fea79f01673de"
+  },
+  {
+    "zh": "我是虚拟熊猫，不会真的坐飞机。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-04.mp3",
+    "role": "panda-ai-female",
+    "bytes": 21600,
+    "sha256": "1536592306f5e9408180e2346f378a48a2dff8eb520481cddb23a4cc49cdc36a"
+  },
+  {
+    "zh": "你会用电脑吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-05.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10368,
+    "sha256": "30f5687365ab8755e4efb311775bd5f9791c564431cfc4f5eae44a1f20243229"
+  },
+  {
+    "zh": "会，我会用电脑。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-06.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12672,
+    "sha256": "cc0c16659523192ca5337489305e66b22039cf8d67148e613602bef8fd66ef47"
+  },
+  {
+    "zh": "我还要一碗汤。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-07.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9504,
+    "sha256": "5e56614e9ccb027008e891793bfedf2b9f142e26918e7b891d3553a31a273451"
+  },
+  {
+    "zh": "我打算去上海。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-08.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11088,
+    "sha256": "712c7c7de0b698176281a1b1f515d3a1cef032b25d493b790edaf61bcbe47969"
+  },
+  {
+    "zh": "你喜欢去公园吗？",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-09.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11232,
+    "sha256": "61839c1f6dbbc27281f2b05a87d7e732c29dad1575d01dd486a31e5a21c5caa1"
+  },
+  {
+    "zh": "我就去公园。",
+    "src": "./assets/panda-ai-voice-20261127/PA-B06-10.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9072,
+    "sha256": "85328d1a30d1417657371e66846f5cbc24596d459eedbaaef45ac91f9417de8a"
+  }
+]);
+const USER_20261127_BY_ZH=new Map(PANDA_USER_20261127_BATCH.map(e=>[voiceNorm(e.zh),e]));
 export function lookupApprovedPandaVoice(text){
  const key=voiceNorm(text);if(!key)return null;
+ const travel=TRAVEL_VOICE_BY_ZH.get(key);if(travel)return {src:travel.src,start:0,end:null,source:'panda-user-upload:travel-20261126'};
  const v557=XIAOXIAO_V557_BY_ZH.get(key);if(v557)return {src:v557.src,start:0,end:null,source:'panda-xiaoxiao:user-upload-v557'};
  const approvedNatural=NATURAL_V546_BY_ZH.get(key);if(approvedNatural)return {src:approvedNatural.src,start:0,end:null,source:'panda-approved-luvvoice:natural-v546'};
  const latest=NEW_XIAOXIAO_REPLIES_BY_ZH.get(key);if(latest)return {src:latest.src,start:0,end:null,source:'panda-xiaoxiao:user-upload-v520'};
@@ -792,5 +1251,6 @@ export function lookupApprovedPandaVoice(text){
  if(old&&OLD_ALLOWED.test(old.src))return old;
  const courseSrc=Object.hasOwn(APPROVED_HSK2,key)?APPROVED_HSK2[key]:null;
  if(courseSrc)return {src:courseSrc,start:0,end:null,source:'panda-approved-luvvoice:hsk2-20261122'};
- const supplied=USER_V563_BY_ZH.get(key);return supplied?{src:supplied.src,start:0,end:null,source:'panda-user-upload:batch01-v563'}:null;
+ const supplied=USER_V563_BY_ZH.get(key);if(supplied)return {src:supplied.src,start:0,end:null,source:'panda-user-upload:batch01-v563'};
+ const added=USER_20261127_BY_ZH.get(key);return added?{src:added.src,start:0,end:null,source:'panda-user-upload:20261127'}:null;
 }

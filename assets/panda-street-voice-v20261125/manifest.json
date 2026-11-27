@@ -322,29 +322,21 @@
     },
     {
       "file": "54.mp3",
-      "hanzi": "好久不见！",
+      "hanzi": "你为什么想学中文？",
       "role": "male",
-      "source": "luvvoice.com-20261125-f2YYIL.mp3",
-      "sourceStart": 0.145,
-      "sourceEnd": 1.521,
-      "duration": 1.44,
-      "sha256": "497b2fdf98f87f03f08be3c4a0e2da645d68495291f7657832ce0c7b6e3c93f6",
-      "gitBlobSha": "4d10711f81ce391b395881a90c69820c591d4228",
-      "bytes": 11756,
-      "review": "uploaded by course owner; native tone review pending"
+      "gitBlobSha": "178a5968f872a8f1589227fa3f1705ea9e7201ee",
+      "sha256": "dd526edf34034b00348a1021e58954f055853044909d130146f57341c4514fdd",
+      "bytes": 16416,
+      "nativeToneReview": "pending"
     },
     {
       "file": "55.mp3",
-      "hanzi": "没啥。",
+      "hanzi": "你打算什么时候去？",
       "role": "male",
-      "source": "luvvoice.com-20261125-f2YYIL.mp3",
-      "sourceStart": 1.909,
-      "sourceEnd": 2.704,
-      "duration": 0.864,
-      "sha256": "8ed323ea2e9ad31ec752bc857ce02e2506cf85c41081183639979e4da162bceb",
-      "gitBlobSha": "b6c6b6344839d56907304058e31efb531bafca2a",
-      "bytes": 7148,
-      "review": "uploaded by course owner; native tone review pending"
+      "gitBlobSha": "9503e62e9d77c0f5ef8d95cfb13b28cc2b18b02e",
+      "sha256": "bd2450fbf9a89d868007ad1936c9f97a21946d80155070fa0a86cc0052d665c8",
+      "bytes": 15840,
+      "nativeToneReview": "pending"
     },
     {
       "file": "56.mp3",
@@ -501,7 +493,33 @@
       "gitBlobSha": "d4261e0721f647f716ee9c01db1747b37253cec7",
       "bytes": 12524,
       "review": "uploaded by course owner; native tone review pending"
+    },
+    {
+      "file": "68.mp3",
+      "hanzi": "好久不见！",
+      "role": "male",
+      "source": "luvvoice.com-20261125-f2YYIL.mp3",
+      "sourceStart": 0.145,
+      "sourceEnd": 1.521,
+      "duration": 1.44,
+      "sha256": "497b2fdf98f87f03f08be3c4a0e2da645d68495291f7657832ce0c7b6e3c93f6",
+      "gitBlobSha": "4d10711f81ce391b395881a90c69820c591d4228",
+      "bytes": 11756,
+      "review": "uploaded by course owner; native tone review pending"
+    },
+    {
+      "file": "69.mp3",
+      "hanzi": "没啥。",
+      "role": "male",
+      "source": "luvvoice.com-20261125-f2YYIL.mp3",
+      "sourceStart": 1.909,
+      "sourceEnd": 2.704,
+      "duration": 0.864,
+      "sha256": "8ed323ea2e9ad31ec752bc857ce02e2506cf85c41081183639979e4da162bceb",
+      "gitBlobSha": "b6c6b6344839d56907304058e31efb531bafca2a",
+      "bytes": 7148,
+      "review": "uploaded by course owner; native tone review pending"
     }
   ],
-  "newBatchStatus": "14 source clips received, segmented by silence, exact file hashes matched; independent listening and tone review pending"
+  "newBatchStatus": "14 Street lesson clips preserved alongside v570 dialogue clips; independent tone review pending"
 }
