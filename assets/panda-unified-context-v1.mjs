@@ -293,6 +293,9 @@ const TOPIC_REQUESTS=Object.freeze({
  "我们聊聊家庭吧":["Wǒmen liáoliao jiātíng ba.","Давай поговорим о семье.","family"],
  "我们聊聊我的一天吧":["Wǒmen liáoliao wǒ de yì tiān ba.","Давай поговорим о моём дне.","daily"],
  "聊聊中文吧":["Liáoliao Zhōngwén ba.","Давай поговорим о китайском языке.","study"],
+ "聊聊中文吗":["Liáoliao Zhōngwén ma?","Поговорим о китайском языке?","study"],
+ "我们聊聊中文吗":["Wǒmen liáoliao Zhōngwén ma?","Поговорим о китайском языке?","study"],
+ "聊聊工作吗":["Liáoliao gōngzuò ma?","Поговорим о работе?","work"],
  "我们聊聊中文吧":["Wǒmen liáoliao Zhōngwén ba.","Давай поговорим о китайском языке.","study"],
  "聊聊美食吧":["Liáoliao měishí ba.","Давай поговорим о вкусной еде.","food"],
  '换个话题吧':['Huàn ge huàtí ba.','Давай сменим тему.','other'],
@@ -413,12 +416,23 @@ function interpretConversationRepair(raw,context){
  const [pinyin,translation,intent]=CONVERSATION_REPAIR[key];
  return {raw:String(raw),intent,pinyin,translation,reviewedRepair:true,reference:prior.hanzi,needsClarification:false,toneVerified:false};
 }
+// Complete first-person goals are meaningful even without a pending question.
+function interpretIndependentStudyGoal(raw){
+ const s=String(raw).trim();
+ if(/[？?。；;，,]/u.test(s.replace(/。$/u,'')))return null;
+ const key=cleanOpen(s);
+ if(!key.startsWith('我想'))return null;
+ const practice=composeReviewedAnswer('study-practice',key);
+ if(practice&&!['中文','汉语'].includes(practice[2]))return {raw:String(raw),intent:'express-study-goal',topic:'study',value:practice[2],pinyin:practice[0],translation:practice[1],toneVerified:false};
+ if(key==='我想在中国工作')return {raw:String(raw),intent:'express-work-goal',topic:'work',value:'china-work',pinyin:'Wǒ xiǎng zài Zhōngguó gōngzuò.',translation:'Я хочу работать в Китае.',toneVerified:false};
+ return null;
+}
 function dispatchSemantic(raw,context={},parsers){
  const source=String(raw??'').trim();
  if(!source)return null;
  const normalized=source.normalize('NFC').replace(/[\p{P}\s]/gu,'');
  if(!normalized||normalized.length>160)return null;
- return interpretTopicRequest(source)||interpretConversationRepair(source,context)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentTransport(source)||interpretStudyDifficulty(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
+ return interpretTopicRequest(source)||interpretConversationRepair(source,context)||interpretHobbyCorrection(source,context)||interpretTravelQuestion(source,context)||interpretOpenAnswer(source,context)||interpretIndependentStudyGoal(source)||interpretIndependentTransport(source)||interpretStudyDifficulty(source)||parsers.contextual(source,context)||parsers.linked(source)||parsers.opinion(source)||parsers.action(source)||null;
 }
 export const interpretSemanticTurn=(raw,context={})=>dispatchSemantic(raw,context,{contextual:interpretContextualTurn,linked:interpretLinkedTurn,opinion:interpretOpinion,action:interpretAction});
 export function initialSemanticState(){

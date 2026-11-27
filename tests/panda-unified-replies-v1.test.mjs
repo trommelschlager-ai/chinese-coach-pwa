@@ -51,7 +51,7 @@ test('days off do not trigger work-start questions and remain respected on topic
   assert.equal(x.semantic?.value,'off',q);
   assert.equal(x.reply?.line.hanzi,'你接下来想做什么？',q);
   const resumed=plan('聊聊工作吧',prior(x.state,x.reply.line.hanzi,x.reply.line.pinyin,x.reply.line.ru,true));
-  assert.equal(resumed.reply?.line.hanzi,'你接下来想做什么？',q);
+  assert.equal(resumed.reply?.line.hanzi,'你想做什么工作？',q);
  }
  const w=prior(initial(),'你几点去上班？');
  for(const q of ['今天不上班','我今天休息','我不用上班','我没有工作','我现在没有工作']){

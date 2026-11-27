@@ -91,6 +91,27 @@ try{
    }
    await page.waitForFunction(()=>window.__pilotPlaying.some(src=>src.includes('/panda-voice-clips-v365/p127.mp3')));
    console.log('PASS composed daily/work answers and recorded study-difficulty conversation');
+   // Replay the actual Android screenshots, including ASR's invitation ending in 吗.
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+   for(const [q,want] of [['聊聊工作吧','你今天忙吗？'],['我今天休息','你接下来想做什么？'],['聊聊工作吧','你想做什么工作？'],['聊聊中文吗','你为什么想学中文？'],['我想在中国工作','你接下来想做什么？'],['我觉得声调很难','你想练习什么？'],['我想提高口语','没关系，我们慢慢来。']]){
+    const x=await speak(q,.93);
+    assert.equal(x.history.at(-2).hanzi,q);
+    assert.equal(x.history.at(-1).hanzi,want,q);
+    assert.equal(x.history.at(-1).analysis?.semanticPilot,true,q);
+    assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);
+    assert.equal(x.audioAvailable,true,q);
+   }
+   for(const [q,want] of [['我想在中国工作','你想做什么工作？'],['我想提高口语','没关系，我们慢慢来。']]){
+    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));
+    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+    const x=await speak(q,.72);
+    assert.equal(x.history.at(-1).hanzi,want,q);
+    assert.equal(x.history.at(-1).analysis?.semanticPilot,true,q);
+    assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);
+    assert.equal(x.audioAvailable,true,q);
+   }
+   console.log('PASS Android screenshot sequence and independent goals through microphone route');
    // Simulate a transient error on the exact recorded travel question.
    // Use native Audio for the second attempt and assert actual playback.
    await page.evaluate(()=>{
