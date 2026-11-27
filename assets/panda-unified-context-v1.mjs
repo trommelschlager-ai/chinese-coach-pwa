@@ -6,6 +6,9 @@ import {interpretContextualTurn,interpretLinkedTurn,interpretOpinion,interpretAc
 // China-trip chain, never inferred from an unrelated short answer.
 const cleanOpen=s=>String(s??'').normalize('NFC').replace(/[\p{P}\s]/gu,'');
 const OPEN_ANSWERS=Object.freeze({
+ 'shopping-item':{'我想看看':['Wǒ xiǎng kànkan.','Я хочу просто посмотреть.','browse'],'不买':['Bù mǎi.','Не покупаю.','skip'],'我不想买':['Wǒ bù xiǎng mǎi.','Я не хочу покупать.','skip']},
+ 'shopping-color':{'都可以':['Dōu kěyǐ.','Любой подойдёт.','any'],'随便':['Suíbiàn.','Без разницы.','any'],'不知道':['Bù zhīdào.','Не знаю.','any'],'我不想买了':['Wǒ bù xiǎng mǎi le.','Я больше не хочу покупать.','skip']},
+ 'shopping-count':{'不要了':['Bú yào le.','Больше не надо.','skip'],'我不想买了':['Wǒ bù xiǎng mǎi le.','Я больше не хочу покупать.','skip']},
  "daily-breakfast":{"吃":["Chī.","Да, завтракаю.","yes"],"吃早饭":["Chī zǎofàn.","Завтракаю.","yes"],"我吃早饭":["Wǒ chī zǎofàn.","Я завтракаю.","yes"],"我早上吃早饭":["Wǒ zǎoshang chī zǎofàn.","Я завтракаю утром.","yes"],"不吃":["Bù chī.","Нет, не завтракаю.","no"],"我不吃早饭":["Wǒ bù chī zǎofàn.","Я не завтракаю.","no"]},
  "daily-sleep":{"九点":["Jiǔ diǎn.","В девять вечера.","21"],"十点":["Shí diǎn.","В десять вечера.","22"],"十一点":["Shíyī diǎn.","В одиннадцать вечера.","23"],"十二点":["Shí'èr diǎn.","В полночь.","00"],"我晚上十点睡觉":["Wǒ wǎnshang shí diǎn shuìjiào.","Я ложусь спать в десять вечера.","22"]},
  "work-busy":{"忙":["Máng.","Занят(а).","yes"],"很忙":["Hěn máng.","Очень занят(а).","yes"],"我今天很忙":["Wǒ jīntiān hěn máng.","Я сегодня очень занят(а).","yes"],"不忙":["Bù máng.","Не занят(а).","no"]},
@@ -135,6 +138,37 @@ function composeClockAnswer(slot,key){
 }
 function composeReviewedAnswer(slot,key){
  const clock=composeClockAnswer(slot,key);if(clock)return clock;
+ if(slot==='shopping-item'){
+  const m=/^(我)?(想买|要买|买)?(衣服|衬衫|毛衣|外套|T恤)$/u.exec(key);
+  if(m){
+   const [,subject,verb,item]=m;
+   if(subject&&!verb)return null;
+   const v={想买:['xiǎng mǎi','хочу купить'],要买:['yào mǎi','собираюсь купить'],买:['mǎi','куплю']}[verb];
+   const i={衣服:['yīfu','одежду'],衬衫:['chènshān','рубашку'],毛衣:['máoyī','свитер'],外套:['wàitào','куртку'],T恤:['T xù','футболку']}[item];
+   return [reviewedSentence([subject?'wǒ':'',v?.[0],i[0]]),(v?'Я '+v[1]+' ':'')+i[1]+'.',item];
+  }
+ }
+ if(slot==='shopping-color'){
+  const m=/^(我)?(喜欢|想要|要)?(红色|蓝色|白色|黑色|绿色|黄色|紫色|粉色|灰色)(的)?$/u.exec(key);
+  if(m){
+   const [,subject,verb,color,particle]=m;
+   if(subject&&!verb||particle&&verb==='喜欢')return null;
+   const v={喜欢:['xǐhuan','мне нравится'],想要:['xiǎng yào','хочу'],要:['yào','возьму']}[verb];
+   const i={红色:['hóngsè','красный'],蓝色:['lánsè','синий'],白色:['báisè','белый'],黑色:['hēisè','чёрный'],绿色:['lǜsè','зелёный'],黄色:['huángsè','жёлтый'],紫色:['zǐsè','фиолетовый'],粉色:['fěnsè','розовый'],灰色:['huīsè','серый']}[color];
+   const ru=(v?v[1]+' ':'')+i[1]+(particle?' вариант':' цвет');
+   return [reviewedSentence([subject?'wǒ':'',v?.[0],i[0],particle?'de':'']),ru.charAt(0).toUpperCase()+ru.slice(1)+'.',color];
+  }
+ }
+ if(slot==='shopping-count'){
+  const m=/^(我)?(想买|要|买)?(一|两|三|四|五|六|七|八|九|十)件$/u.exec(key);
+  if(m){
+   const [,subject,verb,number]=m;if(subject&&!verb)return null;
+   const n={一:[1,'yí'],两:[2,'liǎng'],三:[3,'sān'],四:[4,'sì'],五:[5,'wǔ'],六:[6,'liù'],七:[7,'qī'],八:[8,'bā'],九:[9,'jiǔ'],十:[10,'shí']}[number];
+   const v={想买:['xiǎng mǎi','хочу купить'],要:['yào','хочу'],买:['mǎi','куплю']}[verb];
+   const ru=(v?'Я '+v[1]+' ':'')+n[0]+(n[0]===1?' вещь':n[0]<=4?' вещи':' вещей')+'.';
+   return [reviewedSentence([subject?'wǒ':'',v?.[0],n[1],'jiàn']),ru,String(n[0])];
+  }
+ }
  if(slot==='work-busy'||slot==='work-time'){
   const off=/^(我)?(今天)?(不上班|休息|不用上班)$/u.exec(key);
   if(off){
@@ -249,7 +283,7 @@ function interpretOpenAnswer(raw,context){
  const item=Object.hasOwn(answers,key)?answers[key]:/[？?！!。；;，,]/u.test(String(raw).trim().replace(/[。！!]$/u,''))?null:composeReviewedAnswer(pending.slot,key);
  if(!item)return null;
  const [pinyin,translation,value]=item;
- return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot.startsWith('family')?'family':pending.slot.startsWith('study')?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
+ return {raw:String(raw),intent:'answer-open-reviewed',construction:'contextual-open-answer',slot:pending.slot,value,topic:pending.slot.startsWith('hobby')?'leisure':pending.slot.startsWith('food')?'food':pending.slot.startsWith('shopping')?'shopping':pending.slot==='next-action'||pending.slot.startsWith('daily')?'daily':pending.slot.startsWith('work')?'work':pending.slot.startsWith('family')?'family':pending.slot.startsWith('study')?'study':'travel',reference:pending.raw,pinyin,translation,toneVerified:false};
 }
 function reviewedOpenQuestion(hanzi,previous,linked,memory){
  const s=cleanOpen(hanzi);
@@ -258,6 +292,9 @@ function reviewedOpenQuestion(hanzi,previous,linked,memory){
  else if(s==='你想练习什么'||s==='你想学什么')slot='study-practice';
  else if(s==='你有什么爱好')slot='hobby';
  else if(s==='你想吃什么')slot='food';
+ else if(linked&&previous?.intent==='request-topic-change'&&previous.value==='shopping'&&s==='你想买什么')slot='shopping-item';
+ else if(linked&&previous?.intent==='answer-open-reviewed'&&previous.slot==='shopping-item'&&s==='你喜欢什么颜色')slot='shopping-color';
+ else if(linked&&previous?.intent==='answer-open-reviewed'&&previous.slot==='shopping-color'&&s==='你想买几件')slot='shopping-count';
  else if(s==='你早上吃早饭吗')slot='daily-breakfast';
  else if(s==='你今天忙吗')slot='work-busy';
  else if(s==='你晚上几点睡觉')slot='daily-sleep';
@@ -306,7 +343,11 @@ const TOPIC_REQUESTS=Object.freeze({
  '你选吧':['Nǐ xuǎn ba.','Выбирай ты.','auto'],
  '聊聊学习中文吧':['Liáoliao xuéxí Zhōngwén ba.','Давай поговорим об изучении китайского.','study'],
  '聊聊吃的吧':['Liáoliao chī de ba.','Давай поговорим о еде.','food'],
- '我们聊聊吃的吧':['Wǒmen liáoliao chī de ba.','Давай поговорим о еде.','food']
+ '我们聊聊吃的吧':['Wǒmen liáoliao chī de ba.','Давай поговорим о еде.','food'],
+ '我们聊聊购物吧':['Wǒmen liáoliao gòuwù ba.','Давай поговорим о покупках.','shopping'],
+ '聊聊购物吧':['Liáoliao gòuwù ba.','Давай поговорим о покупках.','shopping'],
+ '聊聊买衣服吧':['Liáoliao mǎi yīfu ba.','Давай поговорим о покупке одежды.','shopping'],
+ '我们聊聊买衣服吧':['Wǒmen liáoliao mǎi yīfu ba.','Давай поговорим о покупке одежды.','shopping']
 });
 function interpretTopicRequest(raw){
  const key=cleanOpen(raw);
