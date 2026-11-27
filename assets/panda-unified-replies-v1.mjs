@@ -55,10 +55,14 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
    }
    return line('你有什么爱好？','Nǐ yǒu shénme àihào?','Какие у тебя увлечения?','follow-up');
   }
+  if(semantic.value==='shopping')return line('你想买什么？','Nǐ xiǎng mǎi shénme?','Что ты хочешь купить?','follow-up',true);
   if(semantic.value==='food')return line('你想吃什么？','Nǐ xiǎng chī shénme?','Что ты хочешь поесть?','follow-up');
   return line('好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Давай поговорим о другом!','reply');
  }
  if(intent==='answer-open-reviewed'){
+  if(semantic.slot==='shopping-item')return ['skip','browse'].includes(semantic.value)?next():line('你喜欢什么颜色？','Nǐ xǐhuan shénme yánsè?','Какой цвет тебе нравится?','follow-up',true);
+  if(semantic.slot==='shopping-color')return semantic.value==='skip'?change():line('你想买几件？','Nǐ xiǎng mǎi jǐ jiàn?','Сколько вещей ты хочешь купить?','follow-up',true);
+  if(semantic.slot==='shopping-count')return next();
   if(semantic.slot==='study-practice')return semantic.value==='skip'?change():semantic.value==='unknown'?line('你想学什么？','Nǐ xiǎng xué shénme?','Что ты хочешь изучать?','follow-up'):line('没关系，我们慢慢来。','Méi guānxi, wǒmen mànmàn lái.','Ничего страшного, будем двигаться постепенно.');
   if(semantic.slot==='family-siblings')return semantic.value==='skip'?change():fact('family-size')?next():familySize();
   if(semantic.slot==='family-size')return semantic.value==='skip'?change():next();
