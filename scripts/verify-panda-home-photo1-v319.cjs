@@ -51,9 +51,9 @@ dom.window.close();
 console.log('PASS v319: original photo1 verified SHA-256, lossless background, two functional level links, aspect preserved, falling petals and existing HSK1+HSK2.');
 
 if(hasFour){
- const png=fs.readFileSync('assets/panda-home-approved-four-levels.png');
- assert.equal(crypto.createHash('sha1').update('blob '+png.length+'\0').update(png).digest('hex'),'c435d52d7a1f36fa04ce9c03f75bf132b9a80527','Approved PNG must not be modified');
- assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1536);
+ const png=fs.readFileSync('assets/panda-home-fullscreen-v262.png');
+ assert.equal(crypto.createHash('sha1').update('blob '+png.length+'\0').update(png).digest('hex'),'6515aebd558481081330560fef148d556ac44b1c','Approved PNG must not be modified');
+ assert.equal(png.readUInt32BE(16),941);assert.equal(png.readUInt32BE(20),1572);
  const active=new JSDOM('<main id="pg130"></main>');
  const document=active.window.document,root=document.querySelector('#pg130');
  let pending;
@@ -63,12 +63,13 @@ if(hasFour){
  assert(from>=0&&from<start);
  vm.runInNewContext(js.slice(from,end)+'\nhome();',vmContext);
  assert(root.querySelector('.pg-photo1-image'),'Legacy fallback remains until new art loads');
- assert.equal(pending.src,'./assets/panda-home-approved-four-levels.png');
+ assert.equal(pending.src,'./assets/panda-home-fullscreen-v262.png');
  pending.onload();
  assert(root.classList.contains('pg-four-approved'));
  const art=root.querySelector('.pg-four-art');
  assert.equal(art.getAttribute('src'),pending.src);
- assert.equal(art.getAttribute('width'),'1024');assert.equal(art.getAttribute('height'),'1536');
+ assert.equal(art.getAttribute('width'),'941');assert.equal(art.getAttribute('height'),'1572');
+ assert.equal(root.querySelectorAll('.pg-four-extension').length,2,'Scenery fills upper and lower gaps');
  const hits=[...root.querySelectorAll('nav .pg-four-hit')];
  assert.equal(hits.length,4);
  assert.deepEqual(hits.slice(0,3).map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html']);
@@ -77,7 +78,7 @@ if(hasFour){
  const note=root.querySelector('.pg-four-note');assert(note.hidden);hits[3].click();assert(!note.hidden);assert.match(note.textContent,/в разработке/);
  for(const p of ['hsk1-map.html','hsk2-life-course.html','panda-street-hsk1-map.html'])assert(fs.existsSync(p));
  const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
- assert(course.includes('./assets/panda-home-approved-four-levels.png'));assert(course.includes('./panda-street-hsk1-map.html'));
+ assert(course.includes('./assets/panda-home-fullscreen-v262.png'));assert(course.includes('./panda-street-hsk1-map.html'));
  active.window.close();
- console.log('PASS home261: immutable four-level PNG, loading fallback, three routes and fourth-level notice.');
+ console.log('PASS fullscreen home262: immutable four-level PNG, loading fallback, three routes and fourth-level notice.');
 }
