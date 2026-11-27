@@ -86,25 +86,33 @@ if(hasFour){
 }
 
 if(js.includes('const homeSixArt=')){
- const png=fs.readFileSync('assets/panda-home-approved-six-20261127.png');
- assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
- assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1536);
+ const artPath='./assets/panda-home-approved-39982.webp';
+ const image=fs.readFileSync(artPath);
+ assert.equal(crypto.createHash('sha1').update('blob '+image.length+'\0').update(image).digest('hex'),
+  '92513f464b4a7324848c23cdab8678ec824653bd','The approved crop must keep its original pixels');
  const live=new JSDOM('<main id="pg130"></main>');
  const document=live.window.document,root=document.querySelector('#pg130');
  const pending=[];
  class FakeImage{constructor(){pending.push(this)}}
- const context={document,root,Image:FakeImage,current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
+ const context={document,root,navigator:document.defaultView.navigator,Image:FakeImage,petalMarkup:()=>'<div class="pg-sakura"></div>',current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
  const from=js.indexOf('const homeSixArt=');
  vm.runInNewContext(js.slice(from,end)+'\nhome();',context);
  assert(root.querySelector('.pg-photo1-image'));
  assert.equal(pending.length,2);
- const latest=pending.find(i=>i.src==='./assets/panda-home-approved-six-20261127.png');assert(latest);
+ const latest=pending.find(i=>i.src===artPath);assert(latest);
  latest.onload();assert(root.classList.contains('pg-six-approved'));
  const hits=[...root.querySelectorAll('.pg-six-hit')];assert.equal(hits.length,6);
- assert.deepEqual(hits.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html',null,'./panda-voice-pilot.html','./panda-street-ai-preview.html']);
+ assert.deepEqual(hits.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html','./hsk2-life-course.html?view=map','./panda-voice-pilot.html','./panda-street-ai-preview.html']);
  assert(hits.every(x=>x.getAttribute('aria-label')));
- const images=[...root.querySelectorAll('svg image')];assert.equal(images.length,8);assert(images.every(x=>x.getAttribute('href')===latest.src));
- const note=root.querySelector('.pg-six-note');assert(note.hidden);hits[3].click();assert(!note.hidden);
+ const arts=[...root.querySelectorAll('img.pg-six-art')];
+ assert.equal(arts.length,1);
+ assert.equal(arts[0].getAttribute('src'),artPath);
+ assert.equal(arts[0].getAttribute('width'),'694');
+ assert.equal(arts[0].getAttribute('height'),'1332');
+ assert(root.querySelector('.pg-six-stage > .pg-sakura'));
+ const menuCSS='./assets/panda-home-approved-39982.css';
+ assert(shell.includes(menuCSS));
+ assert(pack.files.includes(menuCSS));
  const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
  assert(course.includes(latest.src));assert(pack.files.some(x=>x.split('?')[0]===latest.src));
  live.window.close();console.log('PASS six-level home: approved original, six accessible controls, offline asset and old fallback.');
