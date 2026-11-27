@@ -617,6 +617,206 @@ export function respondToCourseWorkStudyQuestion(raw){
  return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,3),kind:'question',domain:'course-work-study'};
 }
 
+// v572: routine questions in free conversation, using existing recorded virtual-character replies.
+const routineAliases572=Object.freeze({
+ "你早上几点起床": [
+  "Nǐ zǎoshang jǐ diǎn qǐchuáng?",
+  "Во сколько ты встаёшь утром?",
+  [
+   "我没有固定的起床时间。你几点起床？",
+   "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+   "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+  ]
+ ],
+ "你一般几点起床": [
+  "Nǐ yìbān jǐ diǎn qǐchuáng?",
+  "Во сколько ты обычно встаёшь?",
+  [
+   "我没有固定的起床时间。你几点起床？",
+   "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+   "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+  ]
+ ],
+ "你通常几点起床": [
+  "Nǐ tōngcháng jǐ diǎn qǐchuáng?",
+  "Во сколько ты обычно встаёшь?",
+  [
+   "我没有固定的起床时间。你几点起床？",
+   "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+   "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+  ]
+ ],
+ "你什么时候起床": [
+  "Nǐ shénme shíhou qǐchuáng?",
+  "Когда ты встаёшь?",
+  [
+   "我没有固定的起床时间。你几点起床？",
+   "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+   "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+  ]
+ ],
+ "你一般几点睡觉": [
+  "Nǐ yìbān jǐ diǎn shuìjiào?",
+  "Во сколько ты обычно ложишься спать?",
+  [
+   "我没有固定的睡觉时间。你呢？",
+   "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+   "У меня нет фиксированного времени сна. А у тебя?"
+  ]
+ ],
+ "你通常几点睡觉": [
+  "Nǐ tōngcháng jǐ diǎn shuìjiào?",
+  "Во сколько ты обычно ложишься спать?",
+  [
+   "我没有固定的睡觉时间。你呢？",
+   "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+   "У меня нет фиксированного времени сна. А у тебя?"
+  ]
+ ],
+ "你每天几点睡觉": [
+  "Nǐ měitiān jǐ diǎn shuìjiào?",
+  "Во сколько ты каждый день ложишься спать?",
+  [
+   "我没有固定的睡觉时间。你呢？",
+   "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+   "У меня нет фиксированного времени сна. А у тебя?"
+  ]
+ ],
+ "你什么时候睡觉": [
+  "Nǐ shénme shíhou shuìjiào?",
+  "Когда ты ложишься спать?",
+  [
+   "我没有固定的睡觉时间。你呢？",
+   "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+   "У меня нет фиксированного времени сна. А у тебя?"
+  ]
+ ],
+ "你吃早饭了没有": [
+  "Nǐ chī zǎofàn le méiyǒu?",
+  "Ты уже позавтракал(а)?",
+  [
+   "我早上不吃早饭。",
+   "Wǒ zǎoshang bù chī zǎofàn.",
+   "Я не завтракаю утром."
+  ]
+ ],
+ "你吃没吃早饭": [
+  "Nǐ chī méi chī zǎofàn?",
+  "Ты позавтракал(а)?",
+  [
+   "我早上不吃早饭。",
+   "Wǒ zǎoshang bù chī zǎofàn.",
+   "Я не завтракаю утром."
+  ]
+ ],
+ "你今天吃早饭了吗": [
+  "Nǐ jīntiān chī zǎofàn le ma?",
+  "Ты сегодня уже позавтракал(а)?",
+  [
+   "我早上不吃早饭。",
+   "Wǒ zǎoshang bù chī zǎofàn.",
+   "Я не завтракаю утром."
+  ]
+ ],
+ "你吃早餐了吗": [
+  "Nǐ chī zǎocān le ma?",
+  "Ты уже позавтракал(а)?",
+  [
+   "我早上不吃早饭。",
+   "Wǒ zǎoshang bù chī zǎofàn.",
+   "Я не завтракаю утром."
+  ]
+ ],
+ "你今天干了什么": [
+  "Nǐ jīntiān gàn le shénme?",
+  "Что ты сегодня делал(а)?",
+  [
+   "我今天和你练习中文。",
+   "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+   "Сегодня я практикую китайский с тобой."
+  ]
+ ],
+ "你今天都做了些什么": [
+  "Nǐ jīntiān dōu zuò le xiē shénme?",
+  "Что ты сегодня делал(а)?",
+  [
+   "我今天和你练习中文。",
+   "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+   "Сегодня я практикую китайский с тобой."
+  ]
+ ],
+ "今天你做了什么": [
+  "Jīntiān nǐ zuò le shénme?",
+  "Что ты сегодня делал(а)?",
+  [
+   "我今天和你练习中文。",
+   "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+   "Сегодня я практикую китайский с тобой."
+  ]
+ ],
+ "你今天有没有空": [
+  "Nǐ jīntiān yǒu méiyǒu kòng?",
+  "У тебя сегодня есть свободное время?",
+  [
+   "今天我有空，可以聊聊天。",
+   "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+   "Сегодня я свободна, можем поболтать."
+  ]
+ ],
+ "你今天有时间吗": [
+  "Nǐ jīntiān yǒu shíjiān ma?",
+  "У тебя сегодня есть время?",
+  [
+   "今天我有空，可以聊聊天。",
+   "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+   "Сегодня я свободна, можем поболтать."
+  ]
+ ],
+ "今天你忙不忙": [
+  "Jīntiān nǐ máng bu máng?",
+  "Ты сегодня занят(а)?",
+  [
+   "今天我有空，可以聊聊天。",
+   "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+   "Сегодня я свободна, можем поболтать."
+  ]
+ ],
+ "你需要休息一下吗": [
+  "Nǐ xūyào xiūxi yíxià ma?",
+  "Тебе нужно немного отдохнуть?",
+  [
+   "不用，谢谢你。",
+   "Bú yòng, xièxie nǐ.",
+   "Не нужно, спасибо."
+  ]
+ ],
+ "你要不要休息一下": [
+  "Nǐ yào bu yào xiūxi yíxià?",
+  "Тебе не хочется немного отдохнуть?",
+  [
+   "不用，谢谢你。",
+   "Bú yòng, xièxie nǐ.",
+   "Не нужно, спасибо."
+  ]
+ ],
+ "你要休息吗": [
+  "Nǐ yào xiūxi ma?",
+  "Тебе нужно отдохнуть?",
+  [
+   "不用，谢谢你。",
+   "Bú yòng, xièxie nǐ.",
+   "Не нужно, спасибо."
+  ]
+ ]
+});
+export function respondToCourseRoutineQuestion(raw){
+ const full=norm(raw);if(!full)return null;
+ const polite=full.startsWith('请问'),s=polite?full.slice(2):full;
+ if(!Object.hasOwn(routineAliases572,s))return null;
+ const [py,ru,a]=routineAliases572[s];
+ return {...result(raw,polite?'Qǐngwèn, '+py[0].toLowerCase()+py.slice(1):py,polite?'Извините, '+ru[0].toLowerCase()+ru.slice(1):ru,a,null,1),kind:'question',domain:'course-routine'};
+}
+
 function courseConversation563(raw,s){
  const row=courseGapQuestions563.find(x=>x[0]===s);
  if(row)return {...result(raw,row[1],row[2],row.slice(3),null,1),kind:'question',domain:'everyday'};
@@ -908,5 +1108,5 @@ export function respondToNaturalStatement(raw,{awaiting=null,introduced=false,pr
  const name=/^我叫([\p{Script=Han}]{1,6})$/u.exec(s);
  if(name)return result(raw,null,'Меня зовут '+name[1]+'.',
   ['很高兴认识你！你是老师还是学生？','Hěn gāoxìng rènshi nǐ! Nǐ shì lǎoshī háishi xuésheng?','Рад познакомиться! Ты учитель или студент?'],'job-role');
- return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||contextualFragments568(raw,previousPanda);
+ return everydayConversation556(raw,s,awaiting)||courseConversation563(raw,s)||respondToCourseCityQuestion(raw,previousPanda)||respondToCourseFamilyQuestion(raw,previousPanda)||respondToCourseWorkStudyQuestion(raw)||respondToCourseRoutineQuestion(raw)||contextualFragments568(raw,previousPanda);
 }
