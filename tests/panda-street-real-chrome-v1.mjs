@@ -40,9 +40,15 @@ try{
       },null,{timeout:20000});
       assert.equal(await page.locator('#art').count(),1);
       assert.equal(await page.locator('#theme').count(),1);
-      await page.waitForFunction(()=>document.getElementById('street-face-motion-layer'),null,{timeout:20000});
+      await page.waitForFunction(()=>document.querySelector('#stage')?.dataset.streetLiveVersion==='1.2'&&document.getElementById('street-face-motion-layer'),null,{timeout:20000});
       await page.evaluate(()=>{
         window.__streetMotionLog=[];
+        // Sample actual rendered pixels in source-image coordinates, not canvas size or metadata.
+        window.__streetSample=(x,y,w,h)=>{
+          const c=document.getElementById('street-face-motion-layer'),fit=Math.min(c.width/865,c.height/1536),dx=(c.width-865*fit)/2,dy=(c.height-1536*fit)*.2;
+          return Array.from(c.getContext('2d').getImageData(Math.round(dx+x*fit),Math.round(dy+y*fit),Math.max(1,Math.round(w*fit)),Math.max(1,Math.round(h*fit))).data);
+        };
+        window.__streetChanged=(a,b)=>{let n=0;for(let i=0;i<a.length;i+=4)if(Math.abs(a[i]-b[i])+Math.abs(a[i+1]-b[i+1])+Math.abs(a[i+2]-b[i+2])>18)n++;return n;};
         const layer=document.getElementById('street-face-motion-layer');
         new MutationObserver(()=>window.__streetMotionLog.push(layer.getAttribute('data-motion-state')))
           .observe(layer,{attributes:true,attributeFilter:['data-motion-state']});
@@ -84,6 +90,8 @@ try{
           assert(sound.duration>0.3&&sound.duration<20,'Invalid MP3 duration: '+sound.clip);
           assert(sound.channels>=1&&sound.channels<=2,'Unexpected MP3 channel count: '+sound.clip);
         }
+        await page.waitForFunction(()=>document.getElementById('street-face-motion-layer').dataset.motionState==='idle');
+        await page.evaluate(()=>{window.__jawBefore=window.__streetSample(286,604,168,80);window.__staticBefore=window.__streetSample(25,300,50,50);});
         for(let i=0;i<files.length;i++){
           await page.locator('#short').click();
           await page.locator('[data-i="'+i+'"]').click();
@@ -92,6 +100,10 @@ try{
           await page.waitForFunction(filename=>
             window.__streetAudio.some(a=>a.src.endsWith('/'+filename)&&a.played),
             clip,{timeout:10000});
+          if(i===0){
+            await page.waitForFunction(()=>document.getElementById('street-face-motion-layer').dataset.motionState==='talking'&&window.__streetChanged(window.__jawBefore,window.__streetSample(286,604,168,80))>12,null,{timeout:8000});
+            assert.equal(await page.evaluate(()=>window.__streetChanged(window.__staticBefore,window.__streetSample(25,300,50,50))),0,'Unanimated background patch must remain stationary during speech');
+          }
           const played=await page.evaluate(()=>window.__streetAudio.at(-1));
           assert.equal(played.error,false,'Browser reported MP3 playback error: '+clip);
           await page.locator('#close').click();
@@ -103,8 +115,8 @@ try{
           return {width:c.width,height:c.height,cssWidth:c.getBoundingClientRect().width,
                   sourceWidth:document.getElementById('art').width};
         });
-        assert(motionCanvas.width>0&&motionCanvas.width<motionCanvas.sourceWidth,
-          'Only the actual face, never the full approved photo, should animate');
+        assert(motionCanvas.width>0&&motionCanvas.height>0&&motionCanvas.cssWidth>0,
+          'The compositing canvas must be visible; localized motion is verified by actual pixels above');
         assert(await page.evaluate(()=>window.PandaStreetVoiceV20261125.lookup('我叫安娜，你呢？','male')===null),'Female dialogue must never be routed to Street AI');
         assert(await page.evaluate(()=>window.PandaStreetVoiceV20261125.lookup('没有这句话','male')===null),'Unknown phrase must not fabricate a clip');
         reports.push({viewport:name,decoded,played:files,roleBoundary:'passed'});
@@ -190,20 +202,17 @@ try{
     await fallbackPage.route('**/assets/panda-cross-character-memory-v1.mjs*',route=>route.abort('failed'));
     await fallbackPage.goto(base+'/panda-street-ai-preview.html',{waitUntil:'domcontentloaded'});
     await fallbackPage.waitForFunction(()=>document.querySelector('#stage')?.dataset.brainState==='fallback',null,{timeout:15000});
-    await fallbackPage.waitForFunction(()=>document.querySelector('#street-face-motion-layer'),null,{timeout:15000});
+    await fallbackPage.waitForFunction(()=>document.querySelector('#stage')?.dataset.streetLiveVersion==='1.2'&&document.querySelector('#street-face-motion-layer'),null,{timeout:15000});
+    await fallbackPage.waitForFunction(()=>document.querySelector('#street-face-motion-layer').dataset.motionState==='idle');
     await fallbackPage.evaluate(()=>{
       window.__streetFallbackMotions=[];
+      window.__facePixels=()=>{const c=document.getElementById('street-face-motion-layer'),f=Math.min(c.width/865,c.height/1536),x=(c.width-865*f)/2,y=(c.height-1536*f)*.2;return Array.from(c.getContext('2d').getImageData(Math.round(x+190*f),Math.round(y+420*f),Math.round(360*f),Math.round(258*f)).data);};
+      window.__neutralBefore=window.__facePixels();
       const layer=document.getElementById('street-face-motion-layer');
       new MutationObserver(()=>{
         const state=layer.getAttribute('data-motion-state');
         window.__streetFallbackMotions.push(state);
-        if(state==='reaction'){
-          const pixels=layer.getContext('2d').getImageData(0,0,layer.width,layer.height).data;
-          window.__streetMotionActuallyPainted=false;
-          for(let i=3;i<pixels.length;i+=4){
-            if(pixels[i]>60){window.__streetMotionActuallyPainted=true;break}
-          }
-        }
+        // Actual pixel difference is measured after rendering, below.
       }).observe(layer,{attributes:true,attributeFilter:['data-motion-state']});
     });
     await fallbackPage.locator('#send').click();
@@ -215,8 +224,7 @@ try{
       !document.getElementById('shade')?.classList.contains('open'),
       null,{timeout:12000});
     await fallbackPage.waitForFunction(()=>window.__streetFallbackMotions?.includes('reaction'),null,{timeout:6000});
-    assert.equal(await fallbackPage.evaluate(()=>window.__streetMotionActuallyPainted),true,
-      'Visible alpha pixels must be painted, not just a data-motion-state attribute');
+    await fallbackPage.waitForFunction(()=>{const a=window.__neutralBefore,b=window.__facePixels();let n=0;for(let i=0;i<a.length;i+=4){if(Math.abs(a[i]-b[i])+Math.abs(a[i+1]-b[i+1])+Math.abs(a[i+2]-b[i+2])>18&&++n>12)return true;}return false;},null,{timeout:4000});
     assert(!await fallbackPage.locator('#toast').innerText().then(s=>s.includes('Модуль Panda AI недоступен')),
       'Older fatal-error toast must never show');
     await fallbackPage.screenshot({path:output+'/brain-import-failed-graceful.png'});
