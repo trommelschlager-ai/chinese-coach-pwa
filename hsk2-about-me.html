@@ -1288,7 +1288,7 @@ body #app[data-view="5"] #pg433 .approved-story-answer {
 </style>
 <link rel="stylesheet" href="./assets/hsk2-quality-standard-v1.css?v=1">
 <link rel="stylesheet" href="./assets/hsk2-approved-cover.css?v=20261123-single-press-all">
-<script src="./assets/hsk2-approved-cover.js?v=20261123-single-press-all" data-lesson="1"></script>
+<!-- Premium reference cover is rendered by the native lesson controls. -->
 <link rel="stylesheet" href="./assets/hsk2-speech-v559.css">
 <script src="./assets/hsk2-speech-v559.js"></script>
 <style id="panda-premium-pilot">
@@ -1406,6 +1406,62 @@ html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-tra
 html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform p:last-child{border:0}
 html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform b{display:block;color:#17483d;font-size:22px}
 html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform small{font-size:13px;color:#52675d}
+
+</style>
+<style id="premium-reference-v1">
+
+/* premium-reference-v1: source artwork crops, cream/jade layout, real controls. */
+html.course-layout body #app[data-view] #pg433{
+ --pg-paper:#f6ebd6;--pg-jade:#102f26;--pg-gold:#d4ad6d;
+}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-header{
+ background:linear-gradient(90deg,#102f26 0%,#102f26 48%,#102f2699 75%,#102f2644 100%),url('./assets/hsk2-premium/lesson-landscape.webp') right top/auto 96px no-repeat,#102f26!important;
+}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-title strong span{font-size:.77em;color:#e3c18d;font-weight:600;white-space:nowrap}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.panel,.word-row,.test-card,.tone-list,.tone-guide,.day-card,.about-grammar-compact,.about-grammar-example,.approved-story-card,.approved-phrase-row,.pg-standard-speech-row,.pg433-panel,.pg2-own-practice,.pg2-rehearsal,.chat-bubble,.pg433-note,.about-dialogue-head,.panda-ai-shortcut){background:#f6ebd6!important;border-color:#d6bd93!important;color:#16372c!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.soft,.token,.choice,.pg433-option){background:#f6ebd6!important;border-color:#cfb78e!important;color:#16372c!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.choice.correct,.pg433-option.correct,.feedback.good){background:#dce9cf!important;border-color:#7f9d6d!important;color:#184b30!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.choice.wrong,.pg433-option.wrong){background:#f9e7e2!important;border-color:#c88478!important;color:#9c312e!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.word-row .cn,.pg-standard-cn,.quiz-word){font-family:'Noto Serif CJK SC','Songti SC',system-ui,sans-serif!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.section-panel,.results){background:#f6ebd6 url('./assets/hsk2-premium/paper-bamboo.webp') right bottom/100px auto no-repeat!important;padding-bottom:24px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-content .about-dialogue-head svg,
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .panda-ai-shortcut img,
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .panda-ai-shortcut svg{display:none!important}
+html.course-layout body #app[data-view='1']{
+ display:flex!important;flex-direction:column!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;overflow:hidden!important;background:#102f26!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+html.course-layout body #app[data-view='1'] #pg433{display:flex!important;flex-direction:column!important;height:100%!important;min-height:0!important;background:#102f26!important;border:none!important;border-radius:0!important;box-shadow:none!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-header{display:flex!important;flex:0 0 auto!important;flex-direction:column!important;background:#102f26!important;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 8px!important;border:none!important;box-shadow:none!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-topline{display:flex!important;height:42px!important;justify-content:center!important}
+html.course-layout body #app[data-view='1'] #pg433 :is(.pg433-back,.pg433-pill,.pg433-tabs){display:none!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-title{text-align:center!important;flex:1!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-title small{font-size:15px!important;color:#e3c18d!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-title strong{display:none!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-content{display:block!important;flex:1 1 0!important;min-height:0!important;height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;background:#102f26!important;padding:0 12px 12px!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-footer{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr)!important;gap:8px!important;position:relative!important;inset:auto!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px))!important;background:#102f26!important;border-top:1px solid #536c5d!important;box-shadow:none!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-counter{display:none!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-footer button{display:block!important;visibility:visible!important;width:100%!important;height:52px!important;min-height:52px!important;max-height:52px!important;background:#245c49!important;color:#fffefa!important;border:1px solid #d4ad6d!important;border-radius:11px!important;box-shadow:none!important;font-size:15px!important;white-space:normal!important;margin:0!important;padding:6px 9px!important}
+html.course-layout body #app[data-view='1'] #pg433 .pg433-footer #back{background:#102f26!important}
+#app #pg433 .premium-cover{display:block;color:#f6ebd6;background:#102f26;min-width:0}
+#app #pg433 .premium-cover-hero{position:relative;display:flex;align-items:center;min-height:clamp(195px,32dvh,310px);border-radius:14px;overflow:hidden;background:linear-gradient(90deg,#102f26 0%,#102f26 25%,#102f26cc 48%,#102f2600 75%),url('./assets/hsk2-premium/cover-panda.webp') right center/auto 100% no-repeat,url('./assets/hsk2-premium/lesson-landscape.webp') left center/cover no-repeat,#102f26}
+#app #pg433 .premium-cover-copy{position:relative;width:59%;padding:12px 6px 12px 9px;color:#f6ebd6;font-size:13px;line-height:1.45}
+#app #pg433 .premium-level{background:#a83832;color:#fff;font-size:13px;font-weight:800;border-radius:6px;padding:4px 8px;display:inline-block}
+#app #pg433 .premium-cover-copy h1{font-family:Georgia,serif;font-size:clamp(36px,11vw,50px);color:#f6ebd6;line-height:1.1;margin:10px 0 5px}
+#app #pg433 .premium-cover-copy .premium-zh{border-left:3px solid #a83832;padding-left:9px;color:#f6ebd6;font-size:25px;font-weight:700;margin-bottom:12px}
+#app #pg433 .premium-cover-progress{display:grid;grid-template-columns:1fr auto;gap:7px;margin:12px 3px;color:#f6ebd6;font-size:14px}
+#app #pg433 .premium-cover-progress progress{grid-column:1/-1;width:100%;height:8px;accent-color:#d4ad6d}
+#app #pg433 .premium-cover-plan{background:#f6ebd6 url('./assets/hsk2-premium/paper-bamboo.webp') right bottom/110px auto no-repeat;border:1px solid #d4ad6d;border-radius:14px;padding:12px;color:#173b30}
+#app #pg433 .premium-cover-plan h2{color:#173b30;font-size:18px;margin:0 0 6px}
+#app #pg433 .premium-cover-plan ol{list-style:none;padding:0;margin:0;display:grid;gap:0}
+#app #pg433 .premium-cover-plan li{display:flex;align-items:center;gap:10px;min-height:40px;border-bottom:1px solid #d7c6a9;font-size:15px;font-weight:650}
+#app #pg433 .premium-cover-plan li:last-child{border:0}
+#app #pg433 .premium-plan-number{display:grid;place-items:center;width:25px;height:25px;border-radius:6px;color:#f6ebd6;background:#17483d}
+#app #pg433 .premium-plan-check{margin-left:auto;color:#17483d}
+#app #pg433 .premium-final-hero{min-height:clamp(175px,28dvh,270px);background:linear-gradient(90deg,#102f26 0%,#102f26ee 24%,#102f26aa 45%,#102f2600 75%),url('./assets/hsk2-premium/finish-panda.webp') right center/auto 100% no-repeat,#102f26;border-radius:12px;margin:0 0 12px;display:flex;align-items:center}
+#app #pg433 .premium-final-copy{width:63%;padding:12px;color:#f6ebd6}
+#app #pg433 .premium-final-copy h1{color:#f6ebd6!important;font-family:Georgia,serif;font-size:clamp(25px,7vw,34px)!important;margin:8px 0}
+#app #pg433 .premium-final-copy p{color:#f6ebd6;font-size:15px}
+#app #pg433 .premium-final-copy p[lang]{font-size:24px;color:#e3c18d;margin-bottom:7px}
 
 </style>
 </head>
@@ -1594,7 +1650,7 @@ if (courseMode) {
   headBack.textContent = '‹';
   headLabel.className = 'pg433-title';
   headLabel.removeAttribute('id');
-  headLabel.innerHTML = '<small>HSK 2 · Урок 1</small><strong>О себе</strong>';
+  headLabel.innerHTML = '<small>Panda Go PREMIUM · HSK 2</small><strong>О себе <span lang="zh-Hans">自我介绍</span></strong>';
   chapter = document.createElement('span');
   chapter.className = 'pg433-pill';
   chapter.textContent = 'Урок 1 · Знакомство';
@@ -1819,11 +1875,11 @@ function render(resetScroll = false) {
   if (!resetScroll && updatedList && updatedList.getAttribute('aria-label') === listLabel) {
     updatedList.scrollTop = listScroll;
   }
-  back.hidden = step === 1;
+  back.hidden = false;
   const inQuiz = step === 3 && state.quizTest !== null;
   const canExitQuiz = inQuiz || (courseMode && step === 3 && state.courseQuizCursor !== null);
-  back.textContent = canExitQuiz ? '← К тестам' : '← Назад';
-  const backLabel = canExitQuiz ? 'К списку тестов' : 'Предыдущий шаг';
+  back.textContent = step === 1 ? '← Все уроки' : canExitQuiz ? '← К тестам' : '← Назад';
+  const backLabel = step === 1 ? 'К списку уроков HSK 2' : canExitQuiz ? 'К списку тестов' : 'Предыдущий шаг';
   back.setAttribute('aria-label',backLabel);
   headBack.setAttribute('aria-label',backLabel);
   if (courseMode) {
@@ -1834,7 +1890,7 @@ function render(resetScroll = false) {
       ? (!activeQuiz().quiz[current.type][current.index] ? 'Сначала выполни'
         : !following ? (state.courseQuizType === null ? 'К результатам →' : 'К тестам →')
         : following.word !== current.word ? 'Следующее слово →' : 'Дальше →')
-      : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? (coreQuizDone() ? 'К рассказу →' : 'Проверить 6 слов →') : 'Дальше →';
+      : step === 1 ? 'Начать урок →' : step === 8 ? 'К началу ↻' : step === 3 && cursor === null ? (coreQuizDone() ? 'К рассказу →' : 'Проверить 6 слов →') : 'Дальше →';
   } else {
     next.textContent = step === 1 ? 'Начать урок' : step === 8 ? 'К началу ↻' : titles[step] + ' →';
   }
@@ -1843,16 +1899,13 @@ function render(resetScroll = false) {
   if (resetScroll) workspace.scrollTop = 0;
 }
 function intro() {
-  // Match approved HSK2 My Day poster dimensions and responsive rendering.
-  return '<section class="word-flow-cover-shell about-approved-cover-shell" aria-label="Panda Go · HSK 2 · О себе. 3D-обложка по эталону Мой день">' +
-    '<div class="word-flow-cover about-approved-cover">' +
-    '<img class="about-approved-cover-image" src="./assets/hsk2-about-me/cover-about-me-approved-layout-v5.avif?v=20261120v5" ' +
-      'width="905" height="1737" alt="Урок 1 О себе. Панда за учебным столом с ноутбуком и книгами, китайский пейзаж. 自我介绍. 6 новых выражений, 30 мини-тестов, грамматика, рассказ о себе, произношение, диалог с Пандой. Один выученный язык может изменить всю твою жизнь." ' +
-      'fetchpriority="high" decoding="async" draggable="false">' +
-    '<span class="about-approved-cover-number-fix" aria-hidden="true"></span>' +
-    '<a class="about-approved-cover-back" href="./hsk2-life-course.html?view=map" aria-label="К списку уроков HSK 2"></a>' +
-    '<button class="about-approved-cover-start" type="button" data-step="2" aria-label="Начать урок О себе"></button>' +
-    '</div></section>';
+  const count=courseSections.filter((_,i)=>sectionComplete(i)).length;
+  return '<section class="premium-cover" aria-label="HSK 2. Урок 1. О себе">'+
+    '<div class="premium-cover-hero"><div class="premium-cover-copy"><span class="premium-level">HSK 2</span> <span>Урок 1</span><h1>О себе</h1><p class="premium-zh" lang="zh-Hans">自我介绍</p><p>Научись рассказывать о себе на китайском языке.</p></div></div>'+
+    '<div class="premium-cover-progress"><span>Прогресс урока</span><strong>'+Math.round(count*100/courseSections.length)+'%</strong><progress value="'+count+'" max="'+courseSections.length+'"></progress></div>'+
+    '<div class="premium-cover-plan"><h2>Содержание урока</h2><ol>'+
+    ['Новые слова','Грамматика','Студия речи','Проверка знаний','Рассказ и диалог'].map((label,i)=>'<li><span class="premium-plan-number">'+(i+1)+'</span><span>'+label+'</span><span class="premium-plan-check">'+(sectionComplete(i)?'✓':'')+'</span></li>').join('')+
+    '</ol></div></section>';
 }
 function newWords() {
   const canPlay = words.every(word => clips.has(normalize(word.zh)));
@@ -2199,9 +2252,8 @@ function finish() {
     } catch {}
   }
   const result = (label,value,className='') => '<div class="' + className + '"><dt>' + label + '</dt><dd>' + value + '</dd></div>';
-  return '<div class="final-hero panel">' + stageImage('quiz','about-final-photo') + '<div>' +
-    stageImage('quiz','award about-finish-medal') + '<h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
-    '</h1><p class="hint">Урок 1 «О себе»</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
+  return '<div class="premium-final-hero"><div class="premium-final-copy"><span class="premium-level">HSK 2</span><h1>' + (completed ? 'Урок пройден!' : 'Твой прогресс') +
+    '</h1><p lang="zh-Hans">'+(completed?'做得好！':'继续加油！')+'</p><p>Урок 1 · О себе</p></div></div><section class="results panel"><h2>Результаты урока</h2><dl>' +
     result('Изучены выражения',state.heardWords.length + ' / 6') +
     result('Основная проверка',correctCount(0) + ' / 6','all') + result('Дополнительные тесты',(quizCount()-correctCount(0)) + ' / 24') + tests.map((test,i) => result(test,correctCount(i) + ' / 6')).join('') +
     result('Грамматика 现在',state.grammarDone ? '✓ Выполнено' : 'Ожидает проверки') +
@@ -2603,6 +2655,7 @@ app.addEventListener('click',event => {
 });
 
 function previousStep() {
+  if (state.step === 1) { location.href='./hsk2-life-course.html?view=map'; return; }
   if (courseMode && state.step === 3 && state.courseQuizCursor !== null) {
     showCourseTask(-1);
   } else if (state.step === 3 && state.quizTest !== null) {
