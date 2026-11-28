@@ -136,7 +136,7 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[],grammarPage
     {n:4,name:'Моё хобби',cn:'我的爱好',desc:'Расскажи об увлечениях и выходных',href:'./hsk2-lesson4-hobby-preview.html',art:'hobby',done:!!mainProgress[3]},
     {n:5,name:'Друзья и встречи',cn:'朋友与见面',desc:'Приглашай друзей и договаривайся о встрече',href:'./hsk2-lesson5-friends-v2.html?rev=20261121',art:'friends',done:!!mainProgress[4]},
     {n:6,name:'Вчера и мой опыт',cn:'昨天和我的经历',desc:'Расскажи о вчерашнем дне и своём опыте',href:'./hsk2-lesson6-yesterday-preview.html?v=4',art:'yesterday',done:!!mainProgress[5]},
-    {n:7,name:'Мои планы на будущее',cn:'我的未来计划',desc:'Учёба, работа, путешествия и планы',href:'./hsk2-lesson7-future-preview.html?cover=v6&rev=approved7',art:'future',done:!!mainProgress[6]},
+    {n:7,name:'Мои планы на будущее',cn:'我的未来计划',desc:'Учёба, работа, путешествия и планы',href:'./hsk2-lesson7-future-preview.html?cover=v6&rev=mobile-20261126',art:'future',done:!!mainProgress[6]},
     {n:8,name:'В магазине',cn:'在商店',desc:'Покупки, цены и выбор товаров',href:'./hsk2-lesson8-shop-preview.html?rev=shop8-layout-v4',art:'shop',preview:true,done:!!mainProgress[7]},
     {n:9,name:'Здоровье и самочувствие',cn:'健康和身体状况',desc:'Расскажи о здоровье и самочувствии',href:'./hsk2-lesson9-health-preview.html',art:'health',preview:true,done:!!mainProgress[8]},
     {n:10,name:'Любовь и отношения',cn:'恋爱与相处',desc:'Знакомство, чувства и отношения',href:'./hsk2-lesson10-relationships-preview.html',art:'relationships',preview:true,done:!!mainProgress[9]}
@@ -196,9 +196,9 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[],grammarPage
     '</section>';
   }
   return '<section id="pg433" class="pg433-root pg433-map pgc-catalog">'+
-   '<header class="pg433-header"><div class="pg433-topline">'+
+   '<header class="pg433-header"><a class="pgc-main-menu" href="./index.html#panda/home" aria-label="Вернуться в главное меню Panda Go">← Главное меню</a><div class="pg433-topline">'+
      '<div class="pg433-title"><small>PANDA GO · КУРС HSK 2</small><strong>Все уроки</strong></div>'+
-     '<span class="pg433-pill">'+coreLessons.length+' уроков <span aria-hidden="true">✦</span> '+coreLessons.filter(lesson=>!lesson.preview).length+' готовых</span>'+
+     '<span class="pg433-pill">'+coreLessons.length+' уроков <span aria-hidden="true">✦</span> '+coreLessons.filter(lesson=>lesson.preview).length+' демо</span>'+
    '</div></header>'+
    '<main class="pg433-content">'+
      '<div class="pgc-hero"><div class="pgc-hero-copy"><span class="pgc-hero-eyebrow">ТВОЙ ПУТЬ К КИТАЙСКОМУ</span>'+
@@ -206,13 +206,13 @@ function mapView(topics,completed,expandedTopic=null,mainProgress=[],grammarPage
        '<p>Изучай темы по порядку и говори с Пандой 🐼</p></div>'+
        '<span class="pgc-hero-panda" aria-hidden="true"></span></div>'+
      '<div class="pgc-section-head"><span class="pgc-section-emoji" aria-hidden="true">📚</span>'+
-       '<div><h2>Основные уроки</h2><p>От знакомства до планов на будущее</p></div></div>'+
+       '<div><h2>Основные уроки</h2><p>От знакомства до отношений</p></div></div>'+
      '<div class="pgc-feature-list">'+cards+'</div>'+
      '<a class="pgc-grammar-link" href="?view=grammar"><span aria-hidden="true">📖</span> Грамматика HSK 2</a>'+
      (topicsMarkup?'<div class="pgc-topic-list">'+topicsMarkup+'</div>':'')+
      '<p class="pgc-endnote">Твой прогресс сохраняется на этом устройстве ✨</p>'+
    '</main>'+
-   '<footer class="pg433-footer"><button class="pg433-secondary" data-view="welcome">← На главную</button>'+
+   '<footer class="pg433-footer"><a class="pg433-secondary" href="./index.html#panda/home">← Главное меню</a>'+
      '<button class="pg433-primary" data-start="0">Начать урок 1 →</button></footer>'+
   '</section>';
 }

@@ -10,10 +10,11 @@ const js=read('assets/panda-v130.js'),css=read('assets/panda-home-photo1-v319.cs
 const sw=read('sw.js'),pack=JSON.parse(read('assets/offline-pack.json'));
 const currentHomeScript=index.match(/panda-v130\.js\?v=\d+/)?.[0];assert(currentHomeScript,'Updated home JS must load');
 assert(index.includes('panda-home-photo1-v319.css?v=319'),'Exact image cover CSS must load');
-const start=js.indexOf('function home(){'),end=js.indexOf('\nfunction learn(){',start);
+const hasFour=js.includes('function homeLegacy(){');
+const start=js.indexOf(hasFour?'function homeLegacy(){':'function home(){'),end=js.indexOf('\nfunction learn(){',start);
 assert(start>=0&&end>start,'Home function not found');
 const frames=[];
-vm.runInNewContext(js.slice(start,end)+'\nhome();',{frame:(html,cls)=>frames.push({html,cls}),esc:s=>String(s)});
+vm.runInNewContext(js.slice(start,end)+(hasFour?'\nhomeLegacy();':'\nhome();'),{frame:(html,cls)=>frames.push({html,cls}),esc:s=>String(s)});
 assert.equal(frames.length,1);
 assert(frames[0].cls.includes('pg-photo1-home'),'Photo1 visual screen not active');
 const dom=new JSDOM('<main id="pg130">'+frames[0].html+'</main>');
@@ -48,3 +49,71 @@ for(const file of ['./assets/'+currentHomeScript,'./assets/panda-home-photo1-v31
 assert(shell.length<=200,'Approved two-course shell must stay reasonably bounded');
 dom.window.close();
 console.log('PASS v319: original photo1 verified SHA-256, lossless background, two functional level links, aspect preserved, falling petals and existing HSK1+HSK2.');
+
+if(hasFour){
+ const png=fs.readFileSync('assets/panda-home-approved-four-levels.png');
+ assert.equal(crypto.createHash('sha1').update('blob '+png.length+'\0').update(png).digest('hex'),'c435d52d7a1f36fa04ce9c03f75bf132b9a80527','Approved PNG must not be modified');
+ assert.equal(png.readUInt32BE(16),1024);assert.equal(png.readUInt32BE(20),1536);
+ const active=new JSDOM('<main id="pg130"></main>');
+ const document=active.window.document,root=document.querySelector('#pg130');
+ let pending;
+ class FakeImage{constructor(){pending=this}}
+ const vmContext={document,root,Image:FakeImage,current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
+ const from=js.indexOf('const homeFourArt=');
+ const entry=js.includes('function homeFour(){')?'homeFour':'home';
+ assert(from>=0&&from<start);
+ vmContext.home=()=>vm.runInContext(entry+'()',vmContext);
+ vm.createContext(vmContext);
+ vm.runInContext(js.slice(from,end)+'\n'+entry+'();',vmContext);
+ assert(root.querySelector('.pg-photo1-image'),'Legacy fallback remains until new art loads');
+ assert.equal(pending.src,'./assets/panda-home-approved-four-levels.png');
+ pending.onload();
+ assert(root.classList.contains('pg-four-approved'));
+ const art=root.querySelector('.pg-four-art');
+ assert.equal(art.getAttribute('src'),pending.src);
+ assert.equal(art.getAttribute('width'),'1024');assert.equal(art.getAttribute('height'),'1536');
+ const hits=[...root.querySelectorAll('nav .pg-four-hit')];
+ assert.equal(hits.length,4);
+ assert.deepEqual(hits.slice(0,3).map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html']);
+ assert(hits.every(x=>x.getAttribute('aria-label')));
+ assert.equal(hits[3].tagName,'BUTTON');
+ const note=root.querySelector('.pg-four-note');assert(note.hidden);hits[3].click();assert(!note.hidden);assert.match(note.textContent,/в разработке/);
+ for(const p of ['hsk1-map.html','hsk2-life-course.html','panda-street-hsk1-map.html'])assert(fs.existsSync(p));
+ const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
+ assert(course.includes('./assets/panda-home-approved-four-levels.png'));assert(course.includes('./panda-street-hsk1-map.html'));
+ active.window.close();
+ console.log('PASS home261: immutable four-level PNG, loading fallback, three routes and fourth-level notice.');
+}
+
+if(js.includes('const homeSixArt=')){
+ const artPath='./assets/panda-home-approved-39982.webp';
+ const image=fs.readFileSync(artPath);
+ assert.equal(crypto.createHash('sha1').update('blob '+image.length+'\0').update(image).digest('hex'),
+  '92513f464b4a7324848c23cdab8678ec824653bd','The approved crop must keep its original pixels');
+ const live=new JSDOM('<main id="pg130"></main>');
+ const document=live.window.document,root=document.querySelector('#pg130');
+ const pending=[];
+ class FakeImage{constructor(){pending.push(this)}}
+ const context={document,root,navigator:document.defaultView.navigator,Image:FakeImage,petalMarkup:()=>'<div class="pg-sakura"></div>',current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
+ const from=js.indexOf('const homeSixArt=');
+ vm.runInNewContext(js.slice(from,end)+'\nhome();',context);
+ assert(root.querySelector('.pg-photo1-image'));
+ assert.equal(pending.length,2);
+ const latest=pending.find(i=>i.src===artPath);assert(latest);
+ latest.onload();assert(root.classList.contains('pg-six-approved'));
+ const hits=[...root.querySelectorAll('.pg-six-hit')];assert.equal(hits.length,6);
+ assert.deepEqual(hits.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html','./hsk2-life-course.html?view=map','./panda-voice-pilot.html','./panda-street-ai-preview.html']);
+ assert(hits.every(x=>x.getAttribute('aria-label')));
+ const arts=[...root.querySelectorAll('img.pg-six-art')];
+ assert.equal(arts.length,1);
+ assert.equal(arts[0].getAttribute('src'),artPath);
+ assert.equal(arts[0].getAttribute('width'),'694');
+ assert.equal(arts[0].getAttribute('height'),'1332');
+ assert(root.querySelector('.pg-six-stage > .pg-sakura'));
+ const menuCSS='./assets/panda-home-approved-39982.css';
+ assert(shell.includes(menuCSS));
+ assert(pack.files.includes(menuCSS));
+ const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
+ assert(course.includes(latest.src));assert(pack.files.some(x=>x.split('?')[0]===latest.src));
+ live.window.close();console.log('PASS six-level home: approved original, six accessible controls, offline asset and old fallback.');
+}

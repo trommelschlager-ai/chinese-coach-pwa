@@ -6,17 +6,43 @@ import {chromium} from 'playwright';
 const base=process.env.QA_BASE||'http://127.0.0.1:4173';
 const out='qa/panda-live-v323';
 fs.mkdirSync(out,{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE,args:['--no-sandbox']});
 const summary={screens:[],results:[],errors:[]};
 try{
- for(const [width,height] of [[360,640],[390,720],[412,915]]){
+ for(const [width,height] of [[360,640],[360,800],[390,720],[393,852],[412,915]]){
   const ctx=await browser.newContext({viewport:{width,height},isMobile:true,hasTouch:true,deviceScaleFactor:1,reducedMotion:'reduce'});
   const page=await ctx.newPage();
   page.on('pageerror',error=>summary.errors.push({width,message:error.message}));
   let res=await page.goto(base+'/index.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   await page.locator('#pg130:not([hidden])').waitFor();
-  assert.equal(await page.locator('#pg130 .pg-hsk-level').count(),2,'HSK 1 and HSK 2 on approved home');
+  const home=page.locator('#pg130 .pg-six-approved');
+  await home.waitFor({state:'visible'});
+  await page.waitForFunction(()=>{const art=document.querySelector('.pg-six-art');return art?.naturalWidth===694&&art.naturalHeight===1332});
+  const hits=home.locator('.pg-six-hit');
+  assert.equal(await hits.count(),6,'Six approved home hotspots');
+  assert.deepEqual(await hits.evaluateAll(els=>els.map(e=>e.getAttribute('href'))),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html','./hsk2-life-course.html?view=map','./panda-voice-pilot.html','./panda-street-ai-preview.html']);
+  const layout=await home.evaluate(el=>{
+   const art=el.querySelector('.pg-six-stage').getBoundingClientRect();
+   const image=el.querySelector('.pg-six-art');
+   const petals=el.querySelector('.pg-six-stage > .pg-sakura');
+   const targets=[...el.querySelectorAll('.pg-six-hit')].map(e=>{
+    const r=e.getBoundingClientRect();
+    const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+    return {fits:r.left>=art.left-1&&r.right<=art.right+1&&r.top>=art.top-1&&r.bottom<=art.bottom+1,clickable:e===top||e.contains(top),width:r.width,height:r.height};
+   });
+   return {artFits:art.left>=-1&&art.top>=-1&&art.right<=innerWidth+1&&art.bottom<=innerHeight+1,proportional:Math.abs(art.width/694-art.height/1332)<.001,noScroll:el.scrollHeight<=el.clientHeight+2&&document.documentElement.scrollWidth<=innerWidth+2,originalArtwork:image.getAttribute('src')==='./assets/panda-home-approved-39982.webp',targets,petals:petals.childElementCount,petalClip:getComputedStyle(petals).clipPath,oldPetalsHidden:getComputedStyle(document.querySelector('#pg130 > .pg-sakura')).display==='none'};
+  });
+  assert(layout.artFits&&layout.proportional&&layout.noScroll&&layout.originalArtwork&&layout.targets.every(x=>x.fits&&x.clickable&&x.width>44&&x.height>44),JSON.stringify(layout));
+  assert.equal(layout.petals,18,'Existing falling petals retained');
+  assert.equal(layout.petalClip,'inset(92% 0px 0px)');
+  assert(layout.oldPetalsHidden);
+  await page.screenshot({path:out+'/approved-six-home-'+width+'.png',animations:'disabled'});
+  const routes=await hits.evaluateAll(els=>els.map(e=>e.href));
+  for(const [i,destination] of routes.entries()){
+   if(i>0){await page.goto(base+'/index.html',{waitUntil:'load'});await home.waitFor();}
+   await Promise.all([page.waitForURL(destination),hits.nth(i).tap()]);
+  }
   res=await page.goto(base+'/hsk1-map.html',{waitUntil:'load'});
   assert.equal(res?.status(),200);
   assert.equal(await page.locator('.hotspots a.lesson').count(),7,'Seven approved lesson hotspots');
@@ -87,6 +113,6 @@ try{
  }
  assert.deepEqual(summary.errors,[],'No browser runtime errors');
  summary.result='passed';
- console.log('PASS Panda v352: approved scene, closed menu, Chinese dialog, seven topics, history, rocks and responsive 360/390/412px mobile layouts.');
+ console.log('PASS Panda v352: approved scene, closed menu, Chinese dialog, seven topics, history, rocks and responsive 360/390/393/412px mobile layouts.');
 }catch(error){summary.result='failed';summary.failure=String(error.stack||error);throw error}
 finally{fs.writeFileSync(out+'/report.json',JSON.stringify(summary,null,2));await browser.close()}

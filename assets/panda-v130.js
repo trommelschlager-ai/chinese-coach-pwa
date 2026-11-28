@@ -89,7 +89,74 @@ function settingsView(){
  '</div>');
  if(nativeSettings){nativeSettings.open=false;root.querySelector('.pg393-old-settings').append(nativeSettings)}
 }
+const homeSixArt='./assets/panda-home-approved-39982.webp';
+// On first install the image may have loaded before the worker claimed the page.
+navigator.serviceWorker?.addEventListener('controllerchange',()=>{
+ if(current==='home'&&!root.hidden)fetch(homeSixArt).catch(()=>{});
+});
+let homeSixReady=false,homeSixLoading=false;
 function home(){
+ if(homeSixReady){homeSix();return}
+ homeFour();
+ if(homeSixLoading)return;
+ homeSixLoading=true;
+ const candidate=new Image();
+ candidate.onload=()=>{homeSixReady=true;homeSixLoading=false;if(current==='home'&&!root.hidden)homeSix()};
+ candidate.onerror=()=>{homeSixLoading=false};
+ candidate.src=homeSixArt;
+}
+
+function homeSix(){
+ // Tap bounds in pixels on the phone-chrome-free artwork.
+ const links=[
+  ['./hsk1-map.html','Начальный уровень HSK 1',12,568,670,120],
+  ['./hsk2-life-course.html?view=welcome','Продолжающий уровень HSK 2',12,699,670,118],
+  ['./panda-street-hsk1-map.html','Начальный разговорный уровень HSK 1',12,828,670,111],
+  ['./hsk2-life-course.html?view=map','Продолжающий разговорный уровень HSK 2',12,949,670,114],
+  ['./panda-voice-pilot.html','Панда ИИ — Диалоги и практика',16,1097,326,123],
+  ['./panda-street-ai-preview.html','Панда Street — Живой китайский',352,1097,325,123],
+ ];
+ const hits=links.map(([href,label,x,y,w,h])=>
+  `<a class="pg-six-hit" href="${href}" aria-label="${label}" style="--x:${x/694*100}%;--y:${y/1332*100}%;--w:${w/694*100}%;--h:${h/1332*100}%"></a>`
+ ).join('');
+ frame(`<div class="pg-six-stage">
+  <img class="pg-six-art" src="${homeSixArt}" width="694" height="1332" alt="" draggable="false">
+  <h1 class="pg-hsk-accessible">Panda Go — китайский это несложно</h1>
+  <nav class="pg-six-menu" aria-label="Разделы Panda Go">${hits}</nav>
+  ${petalMarkup()}
+ </div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>`,
+ 'pg-home pg-hsk-page pg-six-approved');
+}
+const homeFourArt='./assets/panda-home-approved-four-levels.png';
+let homeFourReady=false,homeFourLoading=false;
+function homeFour(){
+ if(!homeFourReady){
+  homeLegacy();
+  if(!homeFourLoading){
+   homeFourLoading=true;
+   const candidate=new Image();
+   candidate.onload=()=>{homeFourReady=true;if(current==='home'&&!root.hidden)home()};
+   candidate.onerror=()=>{homeFourLoading=false};
+   candidate.src=homeFourArt;
+  }
+  return;
+ }
+ if(!document.getElementById('pg-four-approved-style')){
+  const style=document.createElement('style');style.id='pg-four-approved-style';style.textContent="#pg130 .pg-screen.pg-four-approved{background:#62369d;isolation:isolate;overflow:hidden}\n#pg130 .pg-four-approved::before{content:'';position:absolute;inset:-20px;background:center/cover url('./assets/panda-home-approved-four-levels.png');filter:blur(22px) brightness(.65);z-index:-1;pointer-events:none}\n#pg130 .pg-four-approved .pg-four-stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100%,66.6667dvh);aspect-ratio:2/3;margin:0;padding:0;isolation:isolate}\n#pg130 .pg-four-stage .pg-four-art{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;pointer-events:none;user-select:none}\n#pg130 .pg-four-stage .pg-four-hit{position:absolute;z-index:2;left:4%;width:92%;display:block;min-height:0;margin:0;padding:0;border:0;border-radius:100px;background:transparent!important;box-shadow:none!important;text-decoration:none;cursor:pointer;touch-action:manipulation}\n#pg130 .pg-four-stage .pg-four-hit:focus-visible{outline:3px solid white;outline-offset:-4px}\n#pg130 .pg-four-stage .pg-four-hit:active{background:#fff3!important}\n#pg130 .pg-four-hit-1{top:34.8%;height:12%}\n#pg130 .pg-four-hit-2{top:47.7%;height:12%}\n#pg130 .pg-four-hit-3{top:62.1%;height:12.1%}\n#pg130 .pg-four-hit-4{top:74.7%;height:11.9%}\n#pg130 .pg-four-approved .pg-four-note{position:absolute;bottom:12px;left:10%;width:80%;background:#291346ee;color:white;border:1px solid #fff9;padding:12px;border-radius:12px;text-align:center;font:600 14px system-ui;z-index:12}\n#pg130 .pg-four-approved .pg-four-note[hidden]{display:none}\n";document.head.append(style);
+ }
+ frame('<div class="pg-four-stage"><img class="pg-four-art" src="'+homeFourArt+'" width="1024" height="1536" alt="Panda Go — четыре уровня" draggable="false">'+
+ '<h1 class="pg-hsk-accessible">Panda Go — выбери уровень</h1>'+
+ '<nav aria-label="Выбор уровня китайского языка">'+
+ '<a class="pg-four-hit pg-four-hit-1" href="./hsk1-map.html" aria-label="Начальный уровень HSK 1"></a>'+
+ '<a class="pg-four-hit pg-four-hit-2" href="./hsk2-life-course.html?view=welcome" aria-label="Продолжающий уровень HSK 2"></a>'+
+ '<a class="pg-four-hit pg-four-hit-3" href="./panda-street-hsk1-map.html" aria-label="Начальный разговорный уровень, Panda Street HSK 1"></a>'+
+ '<button type="button" class="pg-four-hit pg-four-hit-4" aria-label="Продолжающий разговорный уровень, Panda Street HSK 2, скоро"></button>'+
+ '</nav></div><div class="pg-four-note" role="status" hidden>Разговорный HSK 2 пока в разработке.</div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>',
+ 'pg-home pg-hsk-page pg-photo1-home pg-four-approved');
+ const note=root.querySelector('.pg-four-note');
+ root.querySelector('.pg-four-hit-4').onclick=()=>{note.hidden=false;setTimeout(()=>{note.hidden=true},3500)};
+}
+function homeLegacy(){
  // v319: the approved original is shown unchanged; links are HTML hotspots.
  const levels=[
  {n:1,name:'Начальный уровень',description:'HSK 1 · Китайский с нуля',url:'./hsk1-map.html'},

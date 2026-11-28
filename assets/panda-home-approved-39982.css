@@ -1,0 +1,70 @@
+#pg130 .pg-screen.pg-six-approved {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: #101a3d;
+  container-type: size;
+}
+
+#pg130 .pg-six-stage {
+  position: relative;
+  isolation: isolate;
+  width: min(100cqw, 100cqh * 694 / 1332);
+  aspect-ratio: 694 / 1332;
+}
+
+#pg130 .pg-six-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+#pg130 .pg-six-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#pg130 .pg-six-hit {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  border-radius: 999px;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#pg130 .pg-six-hit:focus-visible {
+  outline: 3px solid white;
+  outline-offset: -4px;
+}
+
+#pg130 .pg-six-hit:active {
+  background: #fff3;
+}
+
+#pg130 .pg-screen.pg-six-approved > .pg-live-status {
+  position: absolute;
+}
+
+#pg130:has(.pg-six-approved) > .pg-sakura {
+  display: none;
+}
+
+#pg130 .pg-six-stage > .pg-sakura {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  border-radius: 0;
+  /* Only the bridge and water below the button artwork receive petals. */
+  clip-path: inset(92% 0 0);
+}

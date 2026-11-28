@@ -44,21 +44,49 @@
 .whole-durations{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:8px 0 5px}
 .whole-duration{padding:6px 8px;border-radius:10px;background:#f2e7f8;font-size:12px;font-weight:750;color:#705184;font-variant-numeric:tabular-nums}
 .whole-duration.user{background:#ede1fd;color:#60409a}
+
+/* Compact first screen: preserve the complete plot and move advanced controls into details. */
+main{padding:5px 8px 8px}
+.kicker{display:none}
+h1{font-size:16px;margin:0 0 2px;text-align:center}
+.lead{font-size:11px;line-height:1.2;text-align:center;margin:0 0 4px}
+.panel{padding:7px 8px;margin-top:5px;border-radius:14px;box-shadow:none}
+#phrase-select{min-height:36px!important;margin:0 0 3px!important;font-size:13px!important}
+.phrase{font-size:clamp(22px,6.6vw,29px);line-height:1.15;letter-spacing:0}
+.pinyin{font-size:14px;line-height:1.2}
+.translation{font-size:12px;line-height:1.2;margin:2px 0 4px}
+.actions{gap:5px}
+.action{min-height:40px;padding:4px 3px;font-size:12px;line-height:1.2;border-radius:10px}
+.rms{height:3px;margin-top:5px}
+.status{min-height:0;font-size:11px;line-height:1.2;margin:4px 0 0;max-height:2.4em;overflow:auto}
+.whole-head h2{font-size:14px}
+.whole-live{font-size:10px;padding:3px 6px}
+.whole-svg{margin-top:4px;max-height:clamp(112px,calc(100dvh - 340px),240px)}
+.whole-legend{font-size:10px;margin:3px 0;gap:8px}
+.whole-durations{margin:2px 0;gap:4px}
+.whole-duration{font-size:10px;padding:2px 4px}
+#whole-active,#whole-info{font-size:11px;line-height:1.25;margin:4px 0}
+#tone-details{margin-top:6px;border:1px solid #d6b8eb;border-radius:12px;background:#f2e4f6}
+#tone-details>summary{cursor:pointer;min-height:40px;padding:10px;text-align:center;font-size:13px;font-weight:800;color:#663384}
+#tone-details>section{margin:5px}
+#phrase-rule:empty{display:none}
+.syllables{grid-template-columns:repeat(auto-fit,minmax(45px,1fr))}
+@media(max-height:520px){main{padding:3px 6px}h1{font-size:14px}.lead{font-size:10px}.panel{padding:4px 6px;margin-top:3px}.action{min-height:34px}.phrase{font-size:22px}.pinyin{font-size:12px}.translation{font-size:11px}.whole-svg{max-height:clamp(90px,calc(100dvh - 275px),170px)}#tone-details>summary{min-height:34px;padding:7px}}
 </style></head><body><main>
-<span class="kicker">🐼 PANDA GO · HSK 1–2 · ТОНЫ В РЕЧИ</span>
-<h1>🎙️ Проверь произношение</h1>
-<p class="lead">Пилот: измерение высоты голоса на каждом слоге предложения. Границы слогов определяются <b>приблизительно</b>, без оценки «правильно/неправильно».</p>
+<span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
+<h1>Сравни свой голос с образцом</h1>
+<p class="lead">Высота голоса · без автоматической оценки</p>
 <section class="panel" aria-label="Фраза из урока">
-<label for="phrase-select" class="small">Выбери фразу</label><select id="phrase-select" style="width:100%;min-height:42px;font:inherit;border-radius:12px;margin-bottom:8px;color:inherit;background:#fff;border:1px solid #d9bbeb"><option value="daily">我早上洗脸。</option><option value="hello">你好</option><option value="good">很好</option><option value="not">不是</option><option value="day">一天</option></select><div class="phrase" id="target-phrase" lang="zh-Hans">我早上洗脸。</div><div class="pinyin" id="target-pinyin">Wǒ zǎoshang xǐliǎn.</div>
-<div class="translation" id="target-translation">Я утром умываюсь.</div><p id="phrase-rule" class="small"></p>
-<div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец урока</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
+<label for="phrase-select" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Слово или фраза урока</label><select id="phrase-select" style="width:100%;min-height:44px;font:inherit;border:1px solid #d6b8eb;border-radius:12px;background:white;color:inherit;margin:5px 0 10px"></select><div id="target-phrase" class="phrase" lang="zh-Hans">我早上洗脸。</div><div id="target-pinyin" class="pinyin">Wǒ zǎoshang xǐliǎn.</div>
+<div id="target-translation" class="translation">Я утром умываюсь.</div>
+<div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Остановить</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
 <div class="rms"><div id="level"></div></div>
 <p id="status" class="status" role="status" aria-live="polite">Загружаю эталонную запись из действующего урока…</p>
 </section>
 
 <section class="panel" aria-labelledby="whole-title" id="whole-panel">
-<div class="whole-head"><h2 id="whole-title">📈 Всё предложение — одна шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
-<p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи и после записи показывает твой голос целиком. Обе линии построены по настоящему времени в секундах, без растяжения фразы. По вертикали — относительная высота голоса.</p>
+<div class="whole-head"><h2 id="whole-title">Тоновая шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
+
 <svg class="whole-svg" id="whole-chart" viewBox="0 0 560 242" role="img" aria-label="Общий график высоты голоса по настоящему времени в секундах">
  <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
  <g id="whole-uncertainty"></g><rect id="whole-focus" class="whole-focus" x="28" y="22" width="0" height="137"/><g id="whole-dividers"></g><g id="whole-time-ticks"></g><g id="whole-labels"></g>
@@ -70,7 +98,8 @@
 </svg>
 <div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
 <div class="whole-durations"><span class="whole-duration" id="ref-seconds">Образец: измеряется…</span><span class="whole-duration user" id="my-seconds">Твой голос: ещё нет записи</span></div>
-<p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
+</section>
+<details id="tone-details"><summary>Анализ каждого слога ▾</summary><section class="panel"><p id="phrase-rule" class="small"></p><p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
 <div class="align-panel">
  <button type="button" class="align-button" id="guided-align" disabled>🎯 Сопоставить с образцом по звучанию</button>
  <small>Разметка переносится по акустическим признакам записи, не просто по её длительности. Это предварительное выравнивание, <b>не распознавание фонем и не оценка правильности тонов</b>.</small>
@@ -84,40 +113,27 @@
 </section>
 <section class="panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
-<div class="syllables" id="syllables" role="group" aria-label="Слоги выбранной фразы"></div>
+<div class="syllables" id="syllables" role="group" aria-label="Слоги выбранного слова или фразы"></div>
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
 <div class="actions" style="margin:8px 0"><button type="button" class="action alt" id="review-ref" disabled>🔊 Участок образца</button><button type="button" class="action alt" id="review-mine" disabled>🔊 Мой участок</button></div><p class="small" id="review-status" aria-live="polite">Прослушай выбранный участок и проверь, соответствует ли он иероглифу. Границы предварительные.</p><details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><label id="boundary-verified-row" class="boundary-hint" hidden><input id="boundary-verified" type="checkbox"> Я прослушал обе записи и проверил границы слогов в образце и своей записи.</label><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
 </section>
-<section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учебный вариант слитной фразы: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. При паузе после 我 возможен третий тон. Подсказки после проверки границ описывают движение высоты, а не правильность произношения. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
-<footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
+<section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
+<footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer></details>
 </main><script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
 import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch,sentencePitchWindowSize,sentenceLivePitchFrame,sentencePitchPen,SENTENCE_LIVE_POLL_MS} from './assets/panda-sentence-align-v4.mjs?v=8';
 const $=id=>document.getElementById(id);
-const phraseOptions=[
- {id:'daily',zh:'我早上洗脸。',py:'Wǒ zǎoshang xǐliǎn.',ru:'Утром я умываюсь.',rule:'我早: wó zǎo при слитной речи; 洗脸: xí liǎn.',weights:[1,1.15,.65,1,1.2],tokens:[
- {zh:'我',py:'wǒ',surfaceTone:2,tone:'3-й → обычно 2-й перед zǎo при слитном произнесении (wó)'},
- {zh:'早',py:'zǎo',surfaceTone:3,tone:'3-й · обычно низкий перед нейтральным слогом'},
- {zh:'上',py:'shang',surfaceTone:0,tone:'нейтральный · короткий, зависит от предыдущего тона'},
- {zh:'洗',py:'xǐ',surfaceTone:2,tone:'3-й → 2-й перед liǎn (xí)'},
- {zh:'脸',py:'liǎn',surfaceTone:3,tone:'3-й · низкий или с подъёмом в конце фразы'}]},
- {id:'hello',zh:'你好',py:'ní hǎo',ru:'Привет!',rule:'3 + 3 → 2 + 3 при слитном произнесении.',src:'./assets/panda-live-voice-v2/hello.mp3',weights:[1,1.2],tokens:[{zh:'你',py:'nǐ',surfaceTone:2,tone:'3-й → 2-й (ní)'},{zh:'好',py:'hǎo',surfaceTone:3,tone:'3-й · низкий или с подъёмом'}]},
- {id:'good',zh:'很好',py:'hén hǎo',ru:'Очень хорошо.',rule:'3 + 3 → 2 + 3 при слитном произнесении.',src:'./assets/panda-live-voice-v2/good.mp3',weights:[1,1.2],tokens:[{zh:'很',py:'hěn',surfaceTone:2,tone:'3-й → 2-й (hén)'},{zh:'好',py:'hǎo',surfaceTone:3,tone:'3-й · низкий или с подъёмом'}]},
- {id:'not',zh:'不是',py:'bú shì',ru:'Не является / нет.',rule:'不 перед 4-м тоном обычно становится 2-м.',src:'./assets/panda-tone-phrase-ref-v567/bushi.mp3',weights:[1,1],tokens:[{zh:'不',py:'bù',surfaceTone:2,tone:'4-й → 2-й (bú)'},{zh:'是',py:'shì',surfaceTone:4,tone:'4-й · нисходящий'}]},
- {id:'day',zh:'一天',py:'yì tiān',ru:'Один день.',rule:'一 перед 1-м тоном обычно становится 4-м.',src:'./assets/panda-tone-phrase-ref-v567/yitian.mp3',weights:[1,1.1],tokens:[{zh:'一',py:'yī',surfaceTone:4,tone:'1-й → 4-й (yì)'},{zh:'天',py:'tiān',surfaceTone:1,tone:'1-й · ровный'}]}
-];
-const requested=new URLSearchParams(location.search).get('phrase');
-const phrase=phraseOptions.find(p=>p.id===requested)||phraseOptions[0];
+const phraseOptions=[{"id":"daily","zh":"我早上洗脸。","py":"Wǒ zǎoshang xǐliǎn.","ru":"Я утром умываюсь.","rule":"洗脸: 3 + 3 → 2 + 3. 我早上: возможен переход 3 → 2 в связной речи.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"早","py":"zǎo","tone":"3-й словарный тон","surfaceTone":3},{"zh":"上","py":"shang","tone":"нейтральный тон","surfaceTone":0},{"zh":"洗","py":"xǐ","tone":"3-й словарный тон","surfaceTone":2},{"zh":"脸","py":"liǎn","tone":"3-й словарный тон","surfaceTone":3}],"weights":[1,1,0.65,1,1]},{"id":"wake","zh":"起床","py":"qǐchuáng","ru":"Вставать с постели","rule":"","tokens":[{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":3},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1]},{"id":"wash","zh":"洗脸","py":"xǐliǎn","ru":"Умываться","rule":"Два третьих тона: первый обычно звучит как второй (xíliǎn).","tokens":[{"zh":"洗","py":"xǐ","tone":"3-й словарный тон","surfaceTone":2},{"zh":"脸","py":"liǎn","tone":"3-й словарный тон","surfaceTone":3}],"weights":[1,1]},{"id":"brush","zh":"刷牙","py":"shuāyá","ru":"Чистить зубы","rule":"","tokens":[{"zh":"刷","py":"shuā","tone":"1-й словарный тон","surfaceTone":1},{"zh":"牙","py":"yá","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1]},{"id":"breakfast","zh":"吃早饭","py":"chī zǎofàn","ru":"Завтракать","rule":"","tokens":[{"zh":"吃","py":"chī","tone":"1-й словарный тон","surfaceTone":1},{"zh":"早","py":"zǎo","tone":"3-й словарный тон","surfaceTone":3},{"zh":"饭","py":"fàn","tone":"4-й словарный тон","surfaceTone":4}],"weights":[1,1,1]},{"id":"work","zh":"去上班","py":"qù shàngbān","ru":"Идти на работу","rule":"","tokens":[{"zh":"去","py":"qù","tone":"4-й словарный тон","surfaceTone":4},{"zh":"上","py":"shàng","tone":"4-й словарный тон","surfaceTone":4},{"zh":"班","py":"bān","tone":"1-й словарный тон","surfaceTone":1}],"weights":[1,1,1]},{"id":"sleep","zh":"睡觉","py":"shuìjiào","ru":"Ложиться спать","rule":"","tokens":[{"zh":"睡","py":"shuì","tone":"4-й словарный тон","surfaceTone":4},{"zh":"觉","py":"jiào","tone":"4-й словарный тон","surfaceTone":4}],"weights":[1,1]},{"id":"question","zh":"你每天几点起床？","py":"Nǐ měitiān jǐ diǎn qǐchuáng?","ru":"Во сколько ты каждый день встаёшь?","rule":"Цепочки третьих тонов зависят от смысловых групп и темпа речи.","tokens":[{"zh":"你","py":"nǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"每","py":"měi","tone":"3-й словарный тон","surfaceTone":null},{"zh":"天","py":"tiān","tone":"1-й словарный тон","surfaceTone":1},{"zh":"几","py":"jǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"点","py":"diǎn","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]},{"id":"seven","zh":"我每天七点起床。","py":"Wǒ měitiān qī diǎn qǐchuáng.","ru":"Я каждый день встаю в семь часов.","rule":"В соседних третьих тонах возможен переход 3 → 2.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"每","py":"měi","tone":"3-й словарный тон","surfaceTone":null},{"zh":"天","py":"tiān","tone":"1-й словарный тон","surfaceTone":1},{"zh":"七","py":"qī","tone":"1-й словарный тон","surfaceTone":1},{"zh":"点","py":"diǎn","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]},{"id":"eight","zh":"我每天八点起床。","py":"Wǒ měitiān bā diǎn qǐchuáng.","ru":"Я каждый день встаю в восемь часов.","rule":"В соседних третьих тонах возможен переход 3 → 2.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"每","py":"měi","tone":"3-й словарный тон","surfaceTone":null},{"zh":"天","py":"tiān","tone":"1-й словарный тон","surfaceTone":1},{"zh":"八","py":"bā","tone":"1-й словарный тон","surfaceTone":1},{"zh":"点","py":"diǎn","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]},{"id":"after","zh":"我起床以后刷牙。","py":"Wǒ qǐchuáng yǐhòu shuāyá.","ru":"После подъёма я чищу зубы.","rule":"Третий тон перед другим третьим часто переходит во второй.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2},{"zh":"以","py":"yǐ","tone":"3-й словарный тон","surfaceTone":3},{"zh":"后","py":"hòu","tone":"4-й словарный тон","surfaceTone":4},{"zh":"刷","py":"shuā","tone":"1-й словарный тон","surfaceTone":1},{"zh":"牙","py":"yá","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]}];
+const query=new URLSearchParams(location.search);
+const phrase=phraseOptions.find(p=>p.id===query.get('phrase'))||phraseOptions[0];
 const {tokens,weights}=phrase;
-const source=phrase.id==='daily'?window.PandaGoHSK2Lesson1NativeAudioV459?.['我早上洗脸。']:phrase.src;
+const source=window.PandaGoHSK2Lesson1NativeAudioV459?.[phrase.zh];
+$('phrase-select').replaceChildren(...phraseOptions.map(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.zh+' — '+p.ru;return o;}));
 $('phrase-select').value=phrase.id;
-$('target-phrase').textContent=phrase.zh;$('target-pinyin').textContent=phrase.py;$('target-translation').textContent=phrase.ru;
-$('phrase-rule').textContent=phrase.rule;
-$('syllables').style.gridTemplateColumns='repeat('+tokens.length+',minmax(0,1fr))';
-$('listen').disabled=!source;
+$('target-phrase').textContent=phrase.zh;$('target-pinyin').textContent=phrase.py;$('target-translation').textContent=phrase.ru;$('phrase-rule').textContent=phrase.rule;
 $('phrase-select').addEventListener('change',()=>{const next=new URL(location.href);next.searchParams.set('phrase',$('phrase-select').value);location.assign(next.href);});
 let reference=null, learner=null, selected=0, recorder=null, stream=null, recordedUrl=null, chunks=[], recorded=null, micTimer=null, autoBounds=null, firstLiveVoice=null, decodedReference=null, decodedLearner=null, refAutoBounds=null, alignmentStatus='';
 function say(msg){$('status').textContent=msg;}

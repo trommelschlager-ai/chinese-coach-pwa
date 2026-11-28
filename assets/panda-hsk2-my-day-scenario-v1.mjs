@@ -725,34 +725,12 @@ function init(stage){
   if(sentence.includes('睡觉'))return '晚上 = вечером; 睡觉 = ложиться спать.';
   return '每天 = каждый день. Время ставится перед действием.';
  }
- let dayToneDialog=null;
- function openDayTone(){
-  if(dayToneDialog?.open||typeof HTMLDialogElement==='undefined'||typeof HTMLDialogElement.prototype.showModal!=='function')return;
-  stop();stopRecognition();bridge?.pauseForTonePractice?.();
-  if(['story','summary','questions','monologue'].includes(phase)){
-   paused=true;$('day-pause').textContent='▶';$('day-pause').setAttribute('aria-label','Продолжить');$('day-pause').title='Продолжить';
-  }
-  status('Тренировка произношения. Твои ответы сохранены. Продолжи урок после закрытия.');
-  const dialog=document.createElement('dialog');dayToneDialog=dialog;
-  dialog.setAttribute('aria-label','Мой день — Panda Tone');dialog.style.cssText='width:min(96vw,520px);height:min(92dvh,850px);max-height:none;padding:0;border:1px solid #d9c6ea;border-radius:18px;background:#fff8ff;overflow:hidden';
-  const header=document.createElement('div');header.style.cssText='height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 10px;color:#593478;font:700 14px system-ui;box-sizing:border-box';
-  const title=document.createElement('span');title.textContent='Panda Tone · Мой день';
-  const close=document.createElement('button');close.type='button';close.textContent='✕ Закрыть';close.style.cssText='min-height:34px;border:1px solid #d8c4e6;border-radius:10px;background:white;color:#5d3482';
-  const frame=document.createElement('iframe');frame.src='./panda-tone-free-practice.html';frame.title='График свободной фразы';frame.allow='microphone';frame.style.cssText='width:100%;height:calc(100% - 44px);border:0;display:block';
-  const cleanup=()=>{frame.remove();dialog.remove();dayToneDialog=null;$('day-hint').focus({preventScroll:true});};
-  close.onclick=()=>dialog.close();dialog.addEventListener('close',cleanup,{once:true});
-  header.append(title,close);dialog.append(header,frame);document.body.append(dialog);
-  try{dialog.showModal()}catch{cleanup()}
- }
- window.addEventListener('pagehide',()=>{if(dayToneDialog?.open)dayToneDialog.close()},{once:true});
  $('day-hint').onclick=()=>{
   if(phase==='questions'){status('💡 '+Q[i][3]+' Пример: '+Q[i][4]);countdown()}
   else if(phase==='story')status('💡 '+storyHint());
   else if(phase==='summary')status('💡 Повтори свой ответ, следя за порядком слов.');
   else if(phase==='freechat')status('💡 Спроси: 你喜欢什么？ / 你叫什么名字？ / 你在做什么？ / 你喜欢吃什么？');
   else status('💡 起床 → 洗脸 → 刷牙 → 吃早饭 → 去上班 → 睡觉');
-  const toneButton=document.createElement('button');toneButton.type='button';toneButton.textContent='🎙 Panda Tone';toneButton.style.cssText='display:block;margin:4px auto;min-height:32px;border:1px solid #d8c4e6;border-radius:9px;background:#fff8ff;color:#5d3482;font-weight:700';
-  toneButton.onclick=openDayTone;$('day-status').append(toneButton);
  };
  $('day-prev').onclick=()=>seekStory(-1);
  $('day-next').onclick=()=>seekStory(1);

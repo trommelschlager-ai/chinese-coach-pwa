@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=568';
+import {respondToNaturalStatement,respondToCourseCityQuestion,respondToCourseFamilyQuestion,respondToCourseWorkStudyQuestion,respondToCourseRoutineQuestion,respondToCourseFoodShopQuestion,respondToCourseWellbeing,respondToCourseSocialTravel} from './panda-natural-statements-v552.mjs?v=563&rev=568';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -39,12 +39,13 @@ const dayParams=new URLSearchParams(location.search);
 const dayLaunch=dayParams.get('practice')==='day';
 // Online-only experiment. The default route never loads the new modules.
 // No personal profile or microphone data is stored by the semantic pilot.
-const semanticRequested=dayParams.get('semantic')==='1'&&!['practice','scenario','from','topic','lesson'].some(k=>dayParams.has(k));
+// Standard home entry uses reviewed free chat; semantic=0 is an explicit rollback route.
+const semanticRequested=dayParams.get('semantic')!=='0'&&!['practice','scenario','from','topic','lesson'].some(k=>dayParams.has(k));
 let semanticPilot=null,semanticMetadata=null,semanticContinues=false;
 const semanticFreeChat=()=>!!semanticPilot&&!state.dayMode&&entry.beginnerGreeting&&hsk2?.id===101&&hsk2.openChat===true&&state.mode==='nonstop';
 function resetSemanticPilot(){semanticPilot?.reset();semanticContinues=false;}
-function observeSemanticPanda(line){
- if(semanticFreeChat())semanticPilot.observePanda({hanzi:line.hanzi||line.panda,pinyin:line.pinyin,ru:line.ru},{continuesLearnerTurn:semanticContinues});
+function observeSemanticPanda(line,owned=line?.analysis?.semanticPilot===true){
+ if(semanticFreeChat())semanticPilot.observePanda({hanzi:line.hanzi||line.panda,pinyin:line.pinyin,ru:line.ru},{continuesLearnerTurn:semanticContinues,legacyFamily:!owned});
  semanticContinues=false;
 }
 const dayMini=Math.min(2,Math.max(0,Number(dayParams.get('mini'))||0));
@@ -72,7 +73,7 @@ function stopAudio(){const a=audio;audio=null;clearTimeout(audioBufferTimer);can
 function stopRecognition(){clearTimeout(watchdog);clearTimeout(speechEndTimer);clearTimeout(recognitionEndTimer);epoch++;const r=recognition;recognition=null;state.active=false;micActivatedAt=0;if(r){r.onstart=r.onaudiostart=r.onspeechstart=r.onspeechend=r.onresult=r.onerror=r.onend=r.onnomatch=null;try{r.abort()}catch{}}if($('character').dataset.state==='listening')pose('idle');updateMic()}
 function updateMic(){$('mic').setAttribute('aria-pressed',String(state.active));$('mic').textContent=state.active?'■':'🎙';$('mic').setAttribute('aria-label',state.active?'Остановить распознавание':'Ответить Панде голосом')}
 let blockedPlayback=null;
-function play(entry=null){
+function play(entry=null,retry=0){
  blockedPlayback=null;
  const currentLine=entry||current();
  const replyKey=normalize(currentLine?.hanzi||currentLine?.panda||'');
@@ -87,8 +88,8 @@ function play(entry=null){
  // Every indexed phrase is now its own MP3; playback starts at zero.
  a.muted=false;a.volume=1;
  const animate=()=>{if(!valid()||a.paused||a.ended)return;pandaVisualAudioLevel=Math.max(0,Math.min(1,envelope?envelope.levels[Math.floor(a.currentTime/envelope.binSeconds)]||0:.5+.5*Math.sin(a.currentTime*23)));rig.setLevel(pandaVisualAudioLevel);audioFrame=requestAnimationFrame(animate)};
- a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио)/.test($('status').textContent))note('');animate()}};
- const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid())failed('Аудио не загрузилось за 10 секунд. Нажми 🔊 на реплике Панды или проверь интернет.')},10000)};
+ a.onplaying=()=>{if(valid()){clearTimeout(audioBufferTimer);pose('talking');$('hear').classList.add('playing');if(/^(Нажми динамик|Браузер не включил звук|Запись не загрузилась|Не удалось перейти|Загрузка аудио|Повторная загрузка аудио)/.test($('status').textContent))note('');animate()}};
+ const waitForAudio=()=>{if(!valid())return;cancelAnimationFrame(audioFrame);pose('idle');note('Загрузка аудио задерживается…');clearTimeout(audioBufferTimer);audioBufferTimer=setTimeout(()=>{if(valid()&&!retryExact())failed('Аудио не загрузилось за 10 секунд. Нажми 🔊 на реплике Панды или проверь интернет.')},10000)};
  a.onwaiting=waitForAudio;
  a.onstalled=waitForAudio;
  a.onpause=()=>{if(valid()){cancelAnimationFrame(audioFrame);pose('idle')}};
@@ -107,8 +108,23 @@ function play(entry=null){
   if(state.mode==='nonstop'&&state.followup){state.pendingAudioReply=replyKey;clearTimeout(followupTimer);}
   note(message);
  };
- a.onerror=()=>failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
- a.play().catch(()=>{if(valid()){blockedPlayback=entry||currentLine;failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.')}});
+ const retryExact=()=>{
+  if(!valid()||!semanticFreeChat()||retry!==0||document.hidden)return false;
+  // One fresh attempt at the identical approved clip. No new voice.
+  stopAudio();try{a.removeAttribute('src');a.load()}catch{}
+  note('Повторная загрузка аудио…');play(entry,1);return true;
+ };
+ a.onerror=()=>{
+  if(!valid()||retryExact())return;
+  failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');
+ };
+ a.play().catch(error=>{
+  if(!valid())return;
+  const mediaFailure=['NotSupportedError','NetworkError','EncodingError'].includes(error?.name);
+  if(mediaFailure&&retryExact())return;
+  if(mediaFailure){failed('Запись не загрузилась. Нажми 🔊 на реплике Панды, чтобы продолжить.');return}
+  blockedPlayback=entry||currentLine;failed('Браузер не включил звук автоматически. Нажми 🔊 на реплике Панды, чтобы продолжить.');
+ });
 }
 function cancelFollowup(){clearTimeout(followupTimer);state.followup=null;state.pendingAudioReply=null}
 function scheduleFollowup(delay=4500){clearTimeout(followupTimer);if(!state.followup)return;followupTimer=setTimeout(()=>{if(state.pendingAudioReply)return;if(state.mode!=='nonstop'||document.hidden||document.querySelector('dialog[open]')||document.activeElement===$('message')&&$('message').value){scheduleFollowup(1200);return}if(audio){scheduleFollowup(900);return}const prompt=state.followup;state.followup=null;state.prompt={line:prompt};state.awaitQuestion=false;state.topic=prompt.lesson;state.questions.push(prompt.hanzi);if(state.questions.length>50)state.questions.shift();showLearnerFeedback(null);say(prompt);note('Твой ответ? Можно также задать свой вопрос.');},delay)}
@@ -138,7 +154,7 @@ function refreshHistory(){
 }
 function record(who,hanzi,pinyin,ru,analysis=null){state.history.push({who,hanzi,pinyin,ru,analysis,confidence:who==='you'?state.confidence:null});if(state.history.length>100)state.history.shift();refreshHistory()}
 function say(line,autoplay=true,analysis=null){
- state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);observeSemanticPanda(line);
+ state.display=line;render();record('panda',line.hanzi||line.panda,line.pinyin,line.ru,analysis);observeSemanticPanda(line,analysis?.semanticPilot===true);
  // Text-only is a valid learning response, not an audio failure. Show the
  // existing 🔇 caption, but never attempt playback without an exact MP3.
  if(autoplay&&(lookupPandaVoiceClip(line.hanzi||line.panda)||lookupPandaVoiceClip(line.audioKey)))play();
@@ -358,10 +374,16 @@ function submitHSK2(input){
   const spoken=fallback?.spoken?.known?fallback.spoken:known?{known:true,pinyin:known.pinyin||null,translation:known.ru||known.translation||null}:null;
   learner(input,spoken);
   state.turns=(state.turns||0)+1;
-  const reply=fallback?.reply||(['example','variant'].includes(out.kind)?
+  let reply=fallback?.reply||(['example','variant'].includes(out.kind)?
    {hanzi:'我明白了。你还想说什么？',pinyin:'Wǒ míngbai le. Nǐ hái xiǎng shuō shénme?',ru:'Понятно. Что ещё хочешь рассказать?'}:
    out.kind==='unknown'?
     {hanzi:'你能说得简单一点吗？',pinyin:'Nǐ néng shuō de jiǎndān yìdiǎn ma?',ru:'Можешь сказать немного проще?'}:out.line);
+  // In the experimental free-chat route, use an existing exact approved
+  // clarification recording instead of an unrecorded equivalent sentence.
+  if(semanticFreeChat()&&reply&&!lookupPandaVoiceClip(reply.hanzi)){
+   if(normalize(reply.hanzi)==='你能说得简单一点吗')reply=clarificationLine(7);
+   else if(normalize(reply.hanzi)==='我明白了你还想说什么')reply=clarificationLine(10);
+  }
   if(reply)say(reply,!!lookupPandaVoiceClip(reply.hanzi));
   note(out.kind==='unknown'&&!fallback?.reply?
    'Пока нет проверенного ответа на эту формулировку. Попробуй проще или другое выражение. Тоны не проверялись.':
@@ -400,13 +422,26 @@ function submit(raw){
  // All other input follows the established engine below, including corrections.
  // ASR already asks confirmation below .65. A known transcript is not a tone score.
  if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.65)){
-  const planned=semanticPilot.plan(input,{mode:'free-chat'});
-  const spoken=planned&&semanticMetadata(input,planned.semantic);
+  const priorCourseLine=state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null;
+  const city=respondToCourseCityQuestion(input,priorCourseLine)||respondToCourseFamilyQuestion(input,priorCourseLine)||respondToCourseWorkStudyQuestion(input)||respondToCourseRoutineQuestion(input)||respondToCourseFoodShopQuestion(input)||respondToCourseWellbeing(input)||respondToCourseSocialTravel(input,priorCourseLine);
+  if(city){
+   friendlyStage=null;state.naturalAwaiting=city.next??null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
+   learner(input,city.spoken);say(city.reply,!!lookupPandaVoiceClip(city.reply.hanzi));note(city.message);return;
+  }
+  const planned=semanticPilot.plan(input,{mode:'free-chat',confidence:state.confidence});
+  // A specific recorded course follow-up must not be replaced with a generic sequence prompt.
+  const legacySequence=planned?.semantic?.intent==='express-linked-actions'&&planned.semantic.relation==='sequence'?
+   respondToNaturalStatement(input,{awaiting:state.naturalAwaiting,previousPanda:state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null}):null;
+  if(legacySequence?.grammar==='sequence'&&legacySequence.spoken?.known&&legacySequence.reply?.hanzi!=='然后呢？'&&lookupPandaVoiceClip(legacySequence.reply?.hanzi)){
+   friendlyStage=null;state.naturalAwaiting=legacySequence.next;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
+   learner(input,legacySequence.spoken);say(legacySequence.reply,true);note(legacySequence.message);return;
+  }
+  const spoken=planned&&(planned.spoken||semanticMetadata(input,planned.semantic));
   if(spoken){
    friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
-   learner(input,spoken);semanticContinues=planned.continuesLearnerTurn===true;
+   learner(input,spoken);if(planned.inlineCorrection)rememberPersonalCorrection(spoken.correction,state.confidence);semanticContinues=planned.continuesLearnerTurn===true;
    say(planned.line,true,{semanticPilot:true,kind:planned.kind,toneVerified:false,...(planned.kind==='explain-exact'?{explanation:meaningExplanation(planned.line)}:{})});
-   note(planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл реплики. Тоны по тексту не оценивались.');
+   note(planned.inlineCorrection?'Панда поняла смысл и показала исправление. Продолжаем разговор. Тоны не оценивались.':planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл реплики. Тоны по тексту не оценивались.');
    return;
   }
  }else if(semanticPilot)resetSemanticPilot();
@@ -803,7 +838,7 @@ function startRecognition(){
   submit(text);
   // ASR returns text and optional confidence, never a validated acoustic tone score.
   const latestLearner=[...state.history].reverse().find(turn=>turn.who==='you'&&turn.hanzi===text);
-  const correctionHanzi=latestLearner?.analysis?.correction?.hanzi||null;
+  const correctionHanzi=latestLearner?.analysis?.correction?.inlineConversation?null:latestLearner?.analysis?.correction?.hanzi||null;
   const reliable=!selected.recovered&&state.confidence!==null&&state.confidence>=.85;
   const kind=state.confidence!==null&&state.confidence<.65?'uncertain'
     :correctionHanzi&&reliable?'content-error':'text-only';
@@ -961,7 +996,6 @@ window.PandaApprovedBridge337={
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
  setMode:mode=>{if(mode==='short'||mode==='nonstop')setMode(mode)},
- pauseForTonePractice:()=>{cancelFollowup();stopRecognition();stopAudio();},
  send:value=>submit(value),mic:()=>startRecognition(),note:text=>note(text)
 };
 
@@ -993,7 +1027,7 @@ if(entry.kind==='hsk2'){
 // Load only on the explicit experimental URL, fail open to the established brain.
 if(semanticRequested){
  Promise.all([import('./panda-unified-pilot-adapter-v1.mjs'),import('./panda-unified-pilot-metadata-v1.mjs')]).then(([adapter,meta])=>{
-  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip});
+  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip,correctGrammar:correctPandaGrammarV2,metadata:meta.pilotLearnerMetadata});
   if(semanticFreeChat()){const last=state.history.at(-1);if(last?.who==='panda')observeSemanticPanda(last);}
   document.documentElement.dataset.pandaSemanticPilot='ready';
  }).catch(()=>{semanticPilot=null;document.documentElement.dataset.pandaSemanticPilot='unavailable';});
