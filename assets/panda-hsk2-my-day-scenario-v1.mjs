@@ -121,6 +121,7 @@ function personalStoryLines(values){
   else if(Object.hasOwn(PERSONAL_ACTIVITIES,key)&&!['吃早饭','吃早餐'].includes(key)){key='我起床以后'+key;zh=key+'。'}
   if(!key.startsWith('我')&&Object.hasOwn(PERSONAL_BREAKFAST,'我'+key)){key='我'+key;zh=key+'。'}
   const own=Object.hasOwn(PERSONAL_LINES,key)?PERSONAL_LINES[key]:Object.hasOwn(PERSONAL_BREAKFAST,key)?PERSONAL_BREAKFAST[key]:reviewedActivity(key);
+  if(own&&!key.startsWith('我'))zh='我'+zh;
   if(own)return [zh,...own];
   if(!/[，,；;]/u.test(zh)){
    const reviewed=getDayCorrectionLine(zh);
@@ -181,9 +182,30 @@ function init(stage){
  const review=document.createElement('details');review.className='pg-day-chat-log';
  review.innerHTML='<summary id="day-review-label">📚 Мои ошибки</summary><label><input id="day-review-consent" type="checkbox"> Сохранять исправленные фразы в этом браузере</label><p>Не сохраняем голос и исходную переписку. Согласие выключается после перезагрузки.</p><p id="day-review-stats"></p><button id="day-review-start" type="button">Тренировать ошибки</button><form id="day-review-exercise" hidden><p id="day-review-prompt"></p><input id="day-review-answer" maxlength="100" aria-label="Переведи на китайский" placeholder="Ответ на китайском" autocomplete="off"><button type="submit">Проверить</button><p id="day-review-feedback" role="status"></p><button id="day-review-next" type="button" hidden>Следующая карточка</button><button id="day-review-close" type="button">Закончить тренировку</button></form><div id="day-review-cards"></div><p id="day-review-status" role="status"></p><button id="day-review-clear" type="button">Удалить мои карточки</button>';
  panel.append(review);
- const personal=document.createElement('details');personal.className='pg-day-chat-log';personal.hidden=true;
- personal.innerHTML='<summary>📖 Моя китайская история</summary><p id="day-personal-count"></p><p id="day-personal-zh" lang="zh-Hans"></p><p id="day-personal-py"></p><p id="day-personal-ru"></p><div><button id="day-personal-prev" type="button">←</button> <button id="day-personal-next" type="button">→</button> <button id="day-personal-audio" type="button">🔊 Слушать</button></div><p><button id="day-personal-save" type="button">Сохранить на устройстве</button> <button id="day-personal-delete" type="button">Удалить сохранённое</button></p><p id="day-personal-status" role="status"></p>';
- panel.append(personal);
+ const personal=document.createElement('dialog');personal.className='pg-personal-dialog';personal.setAttribute('aria-labelledby','day-personal-title');
+ personal.innerHTML='<header><strong id="day-personal-title">Моя китайская история</strong><button id="day-personal-close" type="button" aria-label="Закрыть рассказ">×</button></header><p id="day-personal-count"></p><p id="day-personal-zh" lang="zh-Hans"></p><p id="day-personal-py"></p><p id="day-personal-ru"></p><div class="pg-personal-actions"><button id="day-personal-prev" type="button">←</button><button id="day-personal-audio" type="button">Слушать</button><button id="day-personal-next" type="button">→</button></div><div class="pg-personal-storage"><button id="day-personal-save" type="button">Сохранить на устройстве</button><button id="day-personal-delete" type="button">Удалить сохранённое</button></div><p id="day-personal-status" role="status"></p>';
+ const personalOpen=document.createElement('button');personalOpen.id='day-personal-open';personalOpen.type='button';personalOpen.textContent='Моя китайская история';personalOpen.hidden=true;personalOpen.setAttribute('aria-haspopup','dialog');
+ panel.querySelector('#day-status').before(personalOpen);
+ const personalStyle=document.createElement('style');
+ personalStyle.textContent=`
+ #pg346 .pg-personal-dialog{box-sizing:border-box;width:min(92vw,440px);max-width:92vw;max-height:88dvh;overflow:auto;margin:auto;padding:16px;border:1px solid #c5af76;border-radius:20px;background:#fcfaf5;color:#202c2b;box-shadow:0 12px 50px #0005;font:inherit;}
+ #pg346 .pg-personal-dialog::backdrop{background:#071822a8;}
+ #pg346 .pg-personal-dialog header{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:17px;}
+ #pg346 .pg-personal-dialog p{margin:8px 0;overflow-wrap:anywhere;line-height:1.35;}
+ #pg346 #day-personal-count,#pg346 #day-personal-status{font-size:12px;color:#52605e;}
+ #pg346 #day-personal-zh{font-size:clamp(23px,6.6vw,32px);font-weight:750;}
+ #pg346 #day-personal-py{color:#22614c;font-size:15px;}
+ #pg346 #day-personal-ru{font-size:15px;}
+ #pg346 .pg-personal-actions{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:7px;margin:12px 0;}
+ #pg346 .pg-personal-storage{display:grid;gap:6px;}
+ #pg346 .pg-personal-dialog button,#pg346 #day-personal-open{box-sizing:border-box;border:1px solid #b9c9bf;background:#e8f0e9;color:#203e31;border-radius:10px;min-height:44px;padding:7px 10px;font:inherit;font-size:14px;cursor:pointer;}
+ #pg346 .pg-personal-dialog button:disabled{opacity:.5;cursor:default;}
+ #pg346 .pg-personal-dialog button[hidden],#pg346 #day-personal-open[hidden]{display:none!important;}
+ #pg346 #day-personal-save{background:#255f49;color:#fff;}
+ #pg346 #day-personal-close{min-width:44px;font-size:24px;padding:0;}
+ #pg346 .pg-personal-dialog button:focus-visible,#pg346 #day-personal-open:focus-visible{outline:2px solid #22614c;outline-offset:2px;}
+ `;
+ stage.append(personalStyle,personal);
  personal.querySelector('#day-personal-prev').setAttribute('aria-label','Предложение назад');
  personal.querySelector('#day-personal-next').setAttribute('aria-label','Следующее предложение');
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
@@ -256,9 +278,8 @@ function init(stage){
   const current=phase==='results'&&personalCurrent.length>0;
   const values=current?personalCurrent:stored;
   const rows=personalStoryLines(values);
-  personal.hidden=!['ready','results'].includes(phase)||!rows.length;
-  if(phase==='results'&&current)personal.open=true;
-  if(personal.hidden){personal.open=false;return}
+  personalOpen.hidden=!['ready','results'].includes(phase)||!rows.length;
+  if(personalOpen.hidden){if(personal.open)personal.close();return}
   personalIndex=Math.max(0,Math.min(personalIndex,rows.length-1));
   const row=rows[personalIndex];
   $('day-personal-count').textContent='我的一天 · '+(personalIndex+1)+' / '+rows.length+' · '+(current?'Твой новый рассказ':'Сохранённый рассказ');
@@ -272,6 +293,15 @@ function init(stage){
   $('day-personal-save').hidden=!current;
   $('day-personal-delete').hidden=!stored.length;
  }
+ function openPersonal(){
+  renderPersonal();
+  if(personalOpen.hidden||personal.open)return;
+  if(typeof personal.showModal==='function')personal.showModal();
+  else status('Для просмотра истории обнови браузер.');
+ }
+ personalOpen.onclick=openPersonal;
+ $('day-personal-close').onclick=()=>personal.close();
+ personal.addEventListener('close',()=>{stop();if(!personalOpen.hidden)personalOpen.focus()});
  $('day-personal-prev').onclick=()=>{personalIndex--;renderPersonal()};
  $('day-personal-next').onclick=()=>{personalIndex++;renderPersonal()};
  $('day-personal-audio').onclick=async()=>{
@@ -720,7 +750,7 @@ function init(stage){
   '\nПроизношение и тоны — не удалось проверить по тексту.\nПовторить завтра — '+(errors.join(' ')||'одну сложную фразу из рассказа.')+
   (missingAudio.size?'\nБез записи утверждённым голосом: '+missingAudio.size+' уникальных фраз (показаны текстом).':'\nГолос: только утверждённые записи LuvVoice.');
   status(report);
-  speak(['做得好！','Zuò de hǎo!','Хорошо получилось!']).then(()=>{if(phase==='results')status(report)});
+  speak(['做得好！','Zuò de hǎo!','Хорошо получилось!']).then(()=>{if(phase==='results'){status(report);if(personalCurrent.length)openPersonal()}});
  }
  function stopRecognition(){if(recognizer){const old=recognizer;recognizer=null;try{old.abort()}catch(_){}}}
  function mic(){
