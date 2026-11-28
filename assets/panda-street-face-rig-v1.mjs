@@ -121,7 +121,7 @@ export function createStreetFaceRig({stage,source}={}){
   if(destroyed)return;
   state=['idle','listening','talking'].includes(next)?next:'idle';
   if(state!=='talking')level=0;
-  if(state!=='idle'&&reactFrame){caf(reactFrame);reactFrame=0;reactUntil=0;expression='neutral';canvas.dataset.expression='neutral'}
+  if(state!=='idle'&&reactFrame){caf(reactFrame);reactFrame=0;reactUntil=0;expression='neutral';canvas.setAttribute('data-expression','neutral')}
   showState(state);
   render();
  }
@@ -134,14 +134,14 @@ export function createStreetFaceRig({stage,source}={}){
   if(destroyed||state==='talking')return;
   const at=now();
   if(at>=reactUntil){
-   reactUntil=0;expression='neutral';canvas.dataset.expression='neutral';showState(state);render(at);return;
+   reactUntil=0;expression='neutral';canvas.setAttribute('data-expression','neutral');showState(state);render(at);return;
   }
   render(at);
   reactFrame=raf(reactionTick);
  }
  function acknowledge(value='neutral'){
   if(destroyed||state!=='idle'||reduced())return;
-  expression=['positive','supportive'].includes(value)?value:'neutral';canvas.dataset.expression=expression;
+  expression=['positive','supportive'].includes(value)?value:'neutral';canvas.setAttribute('data-expression',expression);
   if(reactFrame){caf(reactFrame);reactFrame=0}
   reactStart=now();reactUntil=reactStart+950;
   showState('reaction');

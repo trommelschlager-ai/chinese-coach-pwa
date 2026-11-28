@@ -82,7 +82,7 @@ test('video 38791: 我有点忙 is a valid conversational turn, not an empty exp
   assert.equal(answer.panda.py,'Hǎo, nà nǐ xiān máng ba!',typed);
   assert.equal(answer.nextQuestion,null,typed);
  }
- assert.match(source,/closePopup\(\);if\(result\.message\)tip\(result\.message\);speak\(panda\.zh\)/);
+ assert.match(source,/closePopup\(\);if\(result\.message\)tip\(result\.message\);speak\(panda\.zh,result\.expression\|\|'neutral'\)/);
 });
 
 test('face rig uses the existing approved photo and follows uniform canvas crop',()=>{
@@ -166,4 +166,14 @@ test('Street opt-in shared conversation preserves male boundary and reviewed tex
  a=brain.answer('我想练习声调');assert.equal(a.panda.zh,'没关系，我们慢慢来。');assert.equal(a.voiceStatus,'registered-exact');assert.equal(a.nextQuestion,null);
  a=brain.answer('我打算坐飞机');assert.equal(a.panda.zh,'祝你旅途愉快！');assert.equal(a.voiceStatus,'text-only');
  assert.match(source,/lookupMale:text=>globalThis\.PandaStreetVoiceV20261125\?\.lookup\(text,'male'\)/);
+});
+
+test('Street uncertain speech does not advance adaptive practice or write memory',()=>{
+ const s=storage(),brain=createStreetBrain({storage:s,unified:true});brain.start('nonstop');
+ const x=brain.answer('我们练习对话吧');assert.equal(x.panda.zh,'你喜欢学中文吗？');
+ const uncertain=brain.answer('喜欢',{fromSpeech:true,confidence:.6});
+ assert.equal(uncertain.kind,'uncertain');assert.equal(uncertain.toneVerified,false);
+ assert.equal(brain.answer('喜欢').panda.zh,'你每天学中文吗？');
+ assert.match(source,/respond\(transcript,\{fromSpeech:true,confidence\}\)/);
+ assert.match(source,/confidence<\.85/);
 });
