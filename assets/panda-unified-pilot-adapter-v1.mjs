@@ -222,11 +222,56 @@ function preferenceReply(raw,storage,lookupExact,allowWrite,previous){
  return make(['我记住了。','Wǒ jìzhù le.','Я запомнила.'],hobby?['Wǒ xǐhuan '+py+'.','Я люблю '+ru+'.']:['Wǒ xiǎng liànxí '+py+'.','Я хочу тренировать '+ru+'.'],'remember');
 }
 
+
+/* Adaptive practice is a bounded, opt-in conversational exercise, not an HSK assessment.
+   Progress counts independently understood answers, not tone or speech quality. */
+const adaptiveQs={
+  enjoy:['你喜欢学中文吗？','Nǐ xǐhuan xué Zhōngwén ma?','Тебе нравится учить китайский?'],
+  daily:['你每天学中文吗？','Nǐ měitiān xué Zhōngwén ma?','Ты каждый день учишь китайский?'],
+  reason:['你为什么想学中文？','Nǐ wèishénme xiǎng xué Zhōngwén?','Почему ты хочешь учить китайский?'],
+  practice:['你想练习什么？','Nǐ xiǎng liànxí shénme?','Что ты хочешь потренировать?'],
+  end:['很好！今天先练到这里吧。','Hěn hǎo! Jīntiān xiān liàn dào zhèlǐ ba.','Хорошо! На сегодня закончим тренировку.']
+};
+const adaptiveStart={'我们练习对话吧':['Wǒmen liànxí duìhuà ba.','Давай потренируем диалог.'],'我们练习简单的对话吧':['Wǒmen liànxí jiǎndān de duìhuà ba.','Давай потренируем простой диалог.']};
+const adaptiveHelp={'我不懂':['Wǒ bù dǒng.','Я не понимаю.'],'太难了':['Tài nán le.','Слишком трудно.'],'请说简单一点':['Qǐng shuō jiǎndān yìdiǎn.','Скажи, пожалуйста, попроще.'],'简单一点':['Jiǎndān yìdiǎn.','Попроще.']};
+const adaptiveStop={'不想练习了':['Bù xiǎng liànxí le.','Больше не хочу тренироваться.'],'我不想练习了':['Wǒ bù xiǎng liànxí le.','Больше не хочу тренироваться.']};
+const adaptiveAnswers={
+ enjoy:{'喜欢':['Xǐhuan.','Нравится.'],'我喜欢学中文':['Wǒ xǐhuan xué Zhōngwén.','Мне нравится учить китайский.'],'不喜欢':['Bù xǐhuan.','Не нравится.'],'我不喜欢学中文':['Wǒ bù xǐhuan xué Zhōngwén.','Мне не нравится учить китайский.']},
+ daily:{'每天':['Měitiān.','Каждый день.'],'我每天学中文':['Wǒ měitiān xué Zhōngwén.','Я каждый день учу китайский.'],'不每天':['Bù měitiān.','Не каждый день.'],'我不是每天都学中文':['Wǒ bú shì měitiān dōu xué Zhōngwén.','Я учу китайский не каждый день.'],'不是':['Bú shì.','Нет.']},
+ reason:{'因为我想去中国':['Yīnwèi wǒ xiǎng qù Zhōngguó.','Потому что я хочу поехать в Китай.'],'因为我喜欢中文':['Yīnwèi wǒ xǐhuan Zhōngwén.','Потому что мне нравится китайский.'],'因为工作需要':['Yīnwèi gōngzuò xūyào.','Потому что нужно для работы.'],'我想去中国':['Wǒ xiǎng qù Zhōngguó.','Я хочу поехать в Китай.']},
+ practice:{'声调':['Shēngdiào.','Тоны.'],'发音':['Fāyīn.','Произношение.'],'语法':['Yǔfǎ.','Грамматику.'],'汉字':['Hànzì.','Иероглифы.'],'口语':['Kǒuyǔ.','Разговорную речь.']}
+};
+function adaptiveTurn(raw,session,previous,lookupExact){
+ const key=livingClean(raw);
+ const make=(tuple,spoken,slot,level,next,help=false)=>{
+  const reply=morningLine(tuple,lookupExact,spoken,slot,null);
+  reply.kind='living-adaptive';reply.semantic={intent:'living-adaptive',slot,level,help};return {reply,next};
+ };
+ if(Object.hasOwn(adaptiveStart,key))return make(adaptiveQs.enjoy,adaptiveStart[key],'enjoy','basic',{slot:'enjoy',score:0,helped:false,expected:livingClean(adaptiveQs.enjoy[0])});
+ if(!session||session.expected!==livingClean(previous))return null;
+ if(Object.hasOwn(adaptiveStop,key))return make(['好的，下次再练吧。','Hǎo de, xià cì zài liàn ba.','Хорошо, потренируемся в следующий раз.'],adaptiveStop[key],'stop','basic',null);
+ if(Object.hasOwn(adaptiveHelp,key)){
+  const nextSlot=session.slot==='reason'?'practice':session.slot;
+  return make(adaptiveQs[nextSlot],adaptiveHelp[key],nextSlot,'basic',{slot:nextSlot,score:0,helped:true,expected:livingClean(adaptiveQs[nextSlot][0])},true);
+ }
+ const row=adaptiveAnswers[session.slot]?.[key];
+ if(!row)return null;
+ const score=session.score+1;
+ let nextSlot=session.slot==='enjoy'?'daily':session.slot==='daily'?(score>=2&&!session.helped?'reason':'practice'):session.slot==='reason'?'practice':'end';
+ // Do not assume a desire to study if the learner explicitly says no.
+ if(session.slot==='enjoy'&&key.includes('不喜欢'))nextSlot='practice';
+ const level=nextSlot==='reason'?'extended':'basic';
+ return make(adaptiveQs[nextSlot],row,nextSlot,level,nextSlot==='end'?null:{slot:nextSlot,score,helped:session.helped,expected:livingClean(adaptiveQs[nextSlot][0])});
+}
+
 export function createSemanticPilot({enabled=false,lookupExact=null,correctGrammar=null,metadata=null,allowTextOnly=false,livingConversation=false,storage=null}={}){
- let state=initialSemanticState(),pending=false,recent=[],morning=null,expectedMorning=null;
+ let state=initialSemanticState(),pending=false,recent=[],morning=null,expectedMorning=null,adaptive=null;
  function routeLiving(raw,allowMemoryWrite){
   const previous=state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null;
   const key=livingClean(raw);
+  const exercise=adaptiveTurn(raw,adaptive,previous,lookupExact);
+  if(exercise){adaptive=exercise.next;morning=null;expectedMorning=null;return exercise.reply;}
+  adaptive=null;
   if(Object.hasOwn(morningStart,key)){
    morning={};
    const start=morningLine(['你昨晚睡了几个小时？','Nǐ zuówǎn shuì le jǐ ge xiǎoshí?','Сколько часов ты спал(а) прошлой ночью?'],lookupExact,morningStart[key],'start',null);
@@ -254,8 +299,9 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
   return living;
  }
  return {
-  reset(){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;},
+  reset(){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;adaptive=null;},
   observePanda(line,{continuesLearnerTurn=false,legacyFamily=false}={}){
+   if(adaptive&&livingClean(line?.hanzi)!==adaptive.expected)adaptive=null;
    if(morning&&livingClean(line?.hanzi)!==expectedMorning){morning=null;expectedMorning=null;}
    if(line?.hanzi)recent=[...recent,livingClean(line.hanzi)].slice(-24);
    state=reduceSemanticContext(state,{type:'panda',line,continuesLearnerTurn:pending&&continuesLearnerTurn===true,legacyFamily}).state;pending=false;
@@ -267,8 +313,8 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
    return living;
   },
   plan(raw,{mode='graded',confidence=null,allowMemoryWrite=true}={}){
-   if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;return null;}
-   if(!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){morning=null;expectedMorning=null;}
+   if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;adaptive=null;return null;}
+   if(!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){morning=null;expectedMorning=null;adaptive=null;}
    if(livingConversation&&(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){
     const living=routeLiving(raw,allowMemoryWrite);
     if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;return living;}
@@ -297,6 +343,7 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
    return {...reply,semantic:step.semantic,...(spoken?{spoken:inline?{...spoken,known:false,hanzi:String(raw),probable:inline.ru,correction:{...inline,inlineConversation:true,retry:'Продолжай разговор. Исправленный вариант можно повторить позже.'}}:spoken}:{}),inlineCorrection:!!inline};
   },
   snapshot(){return JSON.parse(JSON.stringify(state));},
-  morningSnapshot(){return morning?{...morning}:null;}
+  morningSnapshot(){return morning?{...morning}:null;},
+  adaptiveSnapshot(){return adaptive?{...adaptive}:null;}
  };
 }

@@ -92,7 +92,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
        observe(p,planned.continuesLearnerTurn===true);
        return {kind:'answer',panda:p,learner:line(raw,planned.spoken.pinyin,planned.spoken.translation),nextQuestion:null,
          unified:true,voiceStatus:planned.voiceStatus,toneVerified:false,
-         message:planned.kind==='living-summary'?'Рассказ только по твоим ответам. Тоны не оценивались.':planned.semantic?.slot==='next'?'Хочешь рассказ о своём дне? Скажи: 说说我的一天。':planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл. Тоны не оценивались.'};
+         message:planned.kind==='living-adaptive'?(planned.semantic.help?'Упростили вопрос. Это не оценка произношения.':planned.semantic.level==='extended'?'Попробуй ответить с 因为.':'Диалог: простой вопрос. Тоны не оценивались.'):planned.kind==='living-summary'?'Рассказ только по твоим ответам. Тоны не оценивались.':planned.semantic?.slot==='next'?'Хочешь рассказ о своём дне? Скажи: 说说我的一天。':planned.kind==='explain-exact'?'Значение предыдущей реплики показано в переводе. Тоны не оценивались.':'Панда поняла смысл. Тоны не оценивались.'};
      }
    }
    // A natural, valid statement is a conversation turn, not a grammar explanation.
