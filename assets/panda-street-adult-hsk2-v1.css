@@ -1,0 +1,49 @@
+/* Panda Street adult lesson system — isolated to lessons 1–3.
+   HSK2-inspired jade, ivory, gold; retain lesson engine, audio and progress. */
+body[data-street-lesson]{--st-ink:#18392f;--st-jade:#17614f;--st-gold:#b68a40;--st-muted:#58675e;--st-border:#d8dfd3;--st-paper:#faf8f1;background:#eaece4!important;color:var(--st-ink)!important}
+body[data-street-lesson] #app{width:100%;max-width:540px;height:100dvh;max-height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--st-paper)!important;box-shadow:none!important;color:var(--st-ink)!important}
+body[data-street-lesson] #app :is(.screenhead,.pg-hsk1-header){flex:0 0 auto;background:#fffdf7!important;color:var(--st-ink)!important;border-bottom:1px solid #d6d9cd!important;box-shadow:none!important;padding:7px 10px!important}
+body[data-street-lesson] #app .screenhead strong{font-size:17px!important;letter-spacing:1.6px;color:var(--st-jade)!important}
+body[data-street-lesson] #app :is(.headrow,.pg-hsk1-brand small,.pg-hsk1-count){color:var(--st-muted)!important}
+body[data-street-lesson] #app :is(.headrow a,.pg-hsk1-back){background:#fff!important;color:var(--st-jade)!important;border:1px solid var(--st-border)!important;border-radius:10px!important;box-shadow:none!important;text-decoration:none}
+body[data-street-lesson] #app .pg-hsk1-brand :is(strong,em){color:var(--st-jade)!important}
+body[data-street-lesson] #app .pg-hsk1-panda{display:none!important}
+body[data-street-lesson] #app .progress{height:5px!important;background:#e3e7dd!important;box-shadow:none!important}
+body[data-street-lesson] #app .progress i{background:var(--st-jade)!important;box-shadow:none!important}
+body[data-street-lesson] #app #pg-content{flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto!important;overflow-x:hidden;overscroll-behavior:contain;background:var(--st-paper)!important;padding:10px!important;justify-content:flex-start!important}
+body[data-street-lesson] #app #pg-content[data-stage=cover]{padding:10px!important}
+body[data-street-lesson] #app[data-stage=cover]>.screenhead{display:block!important}
+body[data-street-lesson] #app :is(.footer,.pg-footer){flex:0 0 auto;background:#fffdf7!important;border-top:1px solid var(--st-border)!important;box-shadow:none!important;padding:8px 10px max(9px,env(safe-area-inset-bottom))!important}
+body[data-street-lesson] #app :is(.footer,.pg-footer) button{min-height:52px!important;border-radius:12px!important;font-weight:750!important;text-shadow:none!important;box-shadow:none!important}
+body[data-street-lesson] #app :is(.footer,.pg-footer) #pg-next:not(:disabled),body[data-street-lesson] #app :is(.check,.validate,.ai-link,.street-pink-link,.street-adult-start){background:var(--st-jade)!important;color:white!important;border:1px solid #104d3f!important;box-shadow:none!important;border-radius:12px!important;text-shadow:none!important}
+body[data-street-lesson] #app :is(.footer,.pg-footer) #pg-back:not(:disabled),body[data-street-lesson] #app .street-gold-link{background:#fffdf7!important;color:var(--st-jade)!important;border:1px solid #bba06c!important;box-shadow:none!important;border-radius:12px!important}
+body[data-street-lesson] #app :is(.sheet,.pair-word,.example-sheet,.example-row,.rule,.bubble,.pg-v414-bubble,.street-standard-avatar,.result div,.street-tones div){background:#fffdf8!important;border:1px solid var(--st-border)!important;color:var(--st-ink)!important;box-shadow:none!important;border-radius:14px!important;text-shadow:none!important}
+body[data-street-lesson] #app :is(.dialogue-line.alt .bubble,.street-standard-line:nth-child(even) .pg-v414-bubble){background:#edf4ee!important}
+body[data-street-lesson] #app :is(.eyebrow,.screen-eyebrow,.pair-swipe-hint,.status,.mini-desc){color:var(--st-muted)!important;text-shadow:none!important}
+body[data-street-lesson] #app :is(#pg-content>h2,.screen-title,.pair-title){color:var(--st-ink)!important;background:none!important;border:0!important;box-shadow:none!important;text-shadow:none!important;padding:3px 0!important;font-weight:750!important;font-size:clamp(20px,5.7vw,27px)!important}
+body[data-street-lesson] #app :is(.hanzi,.pair-zh,.big-hanzi,.pg-v415-phrase,.example-row strong,.rule-char,.street-cover-zh){color:var(--st-ink)!important;text-shadow:none!important}
+body[data-street-lesson] #app :is(.py,.pair-py,.example-py,.pinyin,.pg-v414-py,.rule-py){color:#946220!important;background:none!important;text-shadow:none!important;font-weight:650!important}
+body[data-street-lesson] #app :is(.ru,.pair-ru,.example-ru,.translation){color:#34443a!important;text-shadow:none!important}
+body[data-street-lesson] #app :is(.note,.rule-char,.pair-number,.pair-page-count,.street-tag,.street-feature-row span){background:#f2ecdc!important;color:#6b542b!important;border:1px solid #e3d6b7!important;box-shadow:none!important;text-shadow:none!important;border-radius:10px!important}
+body[data-street-lesson] #app :is(.audio,.choice,.token,.mini,.street-standard-choices button,.street-review button,.rec-mic):not(:disabled){background:#edf4ee!important;color:var(--st-jade)!important;border:1px solid #a6c4b5!important;box-shadow:none!important;text-shadow:none!important;border-radius:11px!important}
+body[data-street-lesson] #app :is(.choice.selected,.street-standard-choices button[aria-pressed=true]){background:#d2e8dc!important;border-color:var(--st-jade)!important}
+body[data-street-lesson] #app .audio.redplay:not(:disabled){width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;background:var(--st-jade)!important;color:#fff!important;border-radius:50%!important}
+body[data-street-lesson] #app .audio.redplay::before{background:none!important;box-shadow:none!important}
+body[data-street-lesson] #app :is(.audio,.choice,.token,.mini):disabled{opacity:.55}
+body[data-street-lesson] #app :is(button,a):focus-visible{outline:2px solid #8a641f!important;outline-offset:2px}
+body[data-street-lesson] #app :is(button,a){transition:transform .18s ease,filter .18s ease}
+body[data-street-lesson] #app :is(button,a):active{transform:translateY(2px);filter:brightness(.93)}
+body[data-street-lesson] #app #pg-content:not([data-stage=cover]):not([data-stage=finish]):not([data-stage=dialogue]):not([data-stage=ai]) :is(.mascot,.pair-art,.street-sakura-art){display:none!important}
+body[data-street-lesson] #app .street-cover:before,body[data-street-lesson] #app .street-cover:after{display:none!important}
+body[data-street-lesson] #app .street-adult-cover{display:flex!important;flex-direction:column;min-height:100%;height:auto;gap:12px;background:none!important;text-align:left;padding:0!important}
+body[data-street-lesson] #app .street-adult-hero{display:block;width:100%;height:clamp(125px,25dvh,245px);object-fit:contain;object-position:center;background:#182a2b;border-radius:15px;border:1px solid #c6a567}
+body[data-street-lesson] #app .street-adult-kicker{font-size:12px;letter-spacing:1.25px;font-weight:750;color:#6b542b}
+body[data-street-lesson] #app .street-adult-cover h1{font-size:clamp(32px,10vw,50px);line-height:1.12;margin:3px 0;color:var(--st-ink)}
+body[data-street-lesson] #app .street-adult-cover h2{font-size:clamp(19px,5.5vw,25px);line-height:1.2;margin:4px 0;color:var(--st-ink)}
+body[data-street-lesson] #app .street-adult-copy{padding:0 3px}
+body[data-street-lesson] #app .street-adult-copy p{margin:5px 0;color:var(--st-muted);font-size:15px;line-height:1.35}
+body[data-street-lesson] #app .street-adult-actions{margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+body[data-street-lesson] #app .street-adult-actions :is(button,a){display:flex;align-items:center;justify-content:center;text-decoration:none;min-height:48px;min-width:0;padding:7px 5px;text-align:center;border:1px solid #b4c6b8;border-radius:12px;background:#fffdf7;color:var(--st-jade);font-size:14px;font-weight:750;line-height:1.2;box-shadow:none}
+body[data-street-lesson] #app .street-adult-actions .street-adult-start{grid-column:1/-1;min-height:52px;font-size:17px}
+@media(max-height:700px){body[data-street-lesson] #app .street-adult-cover{gap:7px}body[data-street-lesson] #app .street-adult-hero{height:clamp(100px,21dvh,155px)}body[data-street-lesson] #app .street-adult-actions{gap:5px}}
+@media(prefers-reduced-motion:reduce){body[data-street-lesson] #app :is(button,a){transition:none!important}}
