@@ -1,0 +1,4 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {motionPlan,createPremiumMotion} from '../assets/panda-premium-motion-v1.mjs';
+test('motion respects consent and replaces active animations',()=>{const events=[];const el={animate(k,o){events.push({k,o});return {cancel(){events.push('cancel')},addEventListener(){}};}};const m=createPremiumMotion({reduced:()=>false});assert.ok(m.press(el));assert.ok(m.release(el));assert.ok(events.includes('cancel'));assert.ok(m.step(el));assert.equal(m.complete(el),false);assert.ok(m.complete(el,{confirmed:true}));assert.equal(m.complete(el,{confirmed:true}),false);m.reset();assert.equal(events.at(-1),'cancel');const n=events.length;const r=createPremiumMotion({reduced:()=>true});assert.equal(r.press(el),false);assert.equal(events.length,n);assert.ok(motionPlan('step').keyframes.every(x=>!('transform' in x)));});

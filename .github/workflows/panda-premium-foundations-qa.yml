@@ -1,0 +1,21 @@
+name: Panda Premium foundations QA
+on:
+  push:
+    branches: [feature/premium-study-tools-20261128]
+    paths:
+      - 'assets/panda-*premium*.mjs'
+      - 'tests/panda-*premium*.test.mjs'
+      - '.github/workflows/panda-premium-foundations-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  foundations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run independent study, life, mirror and motion tests
+        run: node --test tests/panda-premium-study-v1.test.mjs tests/panda-life-premium-v1.test.mjs tests/panda-mirror-premium-v1.test.mjs tests/panda-premium-motion-v1.test.mjs
