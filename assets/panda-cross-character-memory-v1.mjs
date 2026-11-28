@@ -8,6 +8,10 @@ export const PANDA_SHARED_PROFILE_CONSENT_KEY='pg-panda-shared-profile-consent-v
 const RELATIVES=['哥哥','姐姐','弟弟','妹妹','爸爸','妈妈'];
 const SIMPLE_FIELDS=['name','role','profession','workplace','subject','freeDay','city'];
 const EMPTY=()=>({family:{},siblingAges:{}});
+export const PANDA_LEARNING_PREFERENCES=Object.freeze({
+ hobby:Object.freeze(['跑步','看书','听音乐','游泳']),
+ studyFocus:Object.freeze(['声调','发音','语法','汉字','听力','口语'])
+});
 function safeStorage(storage){return storage&&typeof storage.getItem==='function'&&typeof storage.setItem==='function'}
 function shortText(value,max=80){
  if(typeof value!=='string')return null;
@@ -20,6 +24,9 @@ export function cleanSharedPandaProfile(source){
  for(const field of SIMPLE_FIELDS){
   const value=shortText(source[field],field==='workplace'?120:80);
   if(value)output[field]=value;
+ }
+ for(const [field,allowed] of Object.entries(PANDA_LEARNING_PREFERENCES)){
+  if(allowed.includes(source[field]))output[field]=source[field];
  }
  for(const field of ['age','familySize']){
   const value=source[field];
@@ -65,6 +72,9 @@ export function saveSharedPandaProfile(storage,profile){
  if(!sharedPandaMemoryEnabled(storage))return false;
  const previous=readSharedPandaProfile(storage);
  const incoming=cleanSharedPandaProfile(profile);
+ // Only explicit preference updates may change these fields; an older in-memory
+ // legacy profile must not resurrect a preference deleted in another character.
+ for(const field of Object.keys(PANDA_LEARNING_PREFERENCES))delete incoming[field];
  const combined=cleanSharedPandaProfile({
   ...previous,...incoming,
   family:{...previous.family,...incoming.family},
@@ -77,4 +87,12 @@ export function saveSharedPandaProfile(storage,profile){
 }
 export function clearSharedPandaProfile(storage=globalThis.localStorage){
  try{storage?.removeItem(PANDA_SHARED_PROFILE_KEY);return true}catch{return false}
+}
+
+export function updateSharedPandaPreference(storage,field,value){
+ if(!sharedPandaMemoryEnabled(storage)||!Object.hasOwn(PANDA_LEARNING_PREFERENCES,field))return false;
+ if(value!==null&&!PANDA_LEARNING_PREFERENCES[field].includes(value))return false;
+ const profile=readSharedPandaProfile(storage);
+ if(value===null)delete profile[field];else profile[field]=value;
+ try{storage.setItem(PANDA_SHARED_PROFILE_KEY,JSON.stringify({version:1,profile}));return true;}catch{return false;}
 }

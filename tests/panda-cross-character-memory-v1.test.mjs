@@ -4,7 +4,7 @@ import {
  PANDA_SHARED_PROFILE_KEY,PANDA_SHARED_PROFILE_CONSENT_KEY,
  cleanSharedPandaProfile,sharedPandaMemoryEnabled,
  setSharedPandaMemoryEnabled,readSharedPandaProfile,
- saveSharedPandaProfile,clearSharedPandaProfile
+ saveSharedPandaProfile,clearSharedPandaProfile,updateSharedPandaPreference
 } from '../assets/panda-cross-character-memory-v1.mjs';
 import {mergePandaFacts435} from '../assets/panda-natural-memory-v435.mjs';
 
@@ -71,4 +71,17 @@ test('corrupt data is ignored and can be deleted',()=>{
  assert.deepEqual(readSharedPandaProfile(s),{family:{},siblingAges:{}});
  assert.equal(clearSharedPandaProfile(s),true);
  assert.equal(s.getItem(PANDA_SHARED_PROFILE_KEY),null);
+});
+
+test('preference changes are allowlisted, consent-gated and cannot be resurrected by stale legacy writes',()=>{
+ const s=storage();assert.equal(updateSharedPandaPreference(s,'hobby','跑步'),false);
+ setSharedPandaMemoryEnabled(s,true);assert.equal(updateSharedPandaPreference(s,'hobby','跑步'),true);
+ assert.equal(updateSharedPandaPreference(s,'studyFocus','声调'),true);
+ assert.equal(updateSharedPandaPreference(s,'hobby','private raw text'),false);
+ const stale=readSharedPandaProfile(s);assert.equal(stale.hobby,'跑步');
+ assert.equal(updateSharedPandaPreference(s,'hobby',null),true);
+ saveSharedPandaProfile(s,{...stale,name:'安东'});
+ assert.equal(readSharedPandaProfile(s).hobby,undefined);assert.equal(readSharedPandaProfile(s).studyFocus,'声调');
+ assert.equal(readSharedPandaProfile(s).name,'安东');
+ setSharedPandaMemoryEnabled(s,false);assert.equal(readSharedPandaProfile(s).studyFocus,undefined);
 });

@@ -88,3 +88,22 @@ test('summary cannot leak across reset or unrelated turn; empty summary invents 
   const x=morningSend(p,'说说我的一天');assert.match(x.line.hanzi,/还不知道/);assert.doesNotMatch(x.line.hanzi,/八个小时/);
  }
 });
+
+import {setSharedPandaMemoryEnabled,readSharedPandaProfile} from '../assets/panda-cross-character-memory-v1.mjs';
+function preferenceStorage(){const map=new Map();return {getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,String(v)),removeItem:k=>map.delete(k)};}
+test('opt-in shared preference survives new character and can be recalled and corrected',()=>{
+ const storage=preferenceStorage();setSharedPandaMemoryEnabled(storage,true);
+ const p=make({storage});assert.equal(morningSend(p,'我喜欢跑步').kind,'living-memory');assert.equal(morningSend(p,'我想练习声调').kind,'living-memory');
+ const q=make({storage});assert.match(morningSend(q,'你还记得我的爱好吗').line.hanzi,/喜欢跑步/);
+ assert.match(morningSend(q,'你记得我想练习什么吗').line.hanzi,/练习声调/);
+ morningSend(q,'我不喜欢跑步了');assert.equal(readSharedPandaProfile(storage).hobby,undefined);
+ assert.match(morningSend(make({storage}),'你还记得我的爱好吗').line.hanzi,/还不知道/);
+ setSharedPandaMemoryEnabled(storage,false);assert.match(morningSend(make({storage}),'你记得我想练习什么吗').line.hanzi,/还不知道/);
+});
+test('memory disabled, uncertain speech or unverified Street speech does not persist preferences',()=>{
+ const storage=preferenceStorage();const p=make({storage});answer(p,'我喜欢跑步');assert.equal(readSharedPandaProfile(storage).hobby,undefined);
+ setSharedPandaMemoryEnabled(storage,true);answer(p,'我喜欢跑步',{confidence:.6});answer(p,'我想练习声调',{allowMemoryWrite:false});
+ assert.equal(readSharedPandaProfile(storage).hobby,undefined);assert.equal(readSharedPandaProfile(storage).studyFocus,undefined);
+ for(const raw of ['我今天很累','我想休息','我今天很开心'])answer(p,raw);
+ assert.deepEqual(readSharedPandaProfile(storage),{family:{},siblingAges:{}});
+});
