@@ -1,0 +1,2 @@
+# Panda AI — 86 MP3 import
+Upload the unchanged Panda_AI_86_MP3.zip at the root of this branch. SHA-256: 3b276f9d420672218a4af885b951c52a59e02ef626b183fea70f72313c60d2d9. The branch-only workflow validates every clip, decodes all MP3s, extends the exact female voice registry without overriding earlier recordings, and commits the result only if checks pass. No automatic main merge or deployment. Native listening and live phone review remain pending. The archive is removed from the working tree after successful import.

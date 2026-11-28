@@ -1237,6 +1237,697 @@ export const PANDA_USER_20261127_BATCH=Object.freeze([
   }
 ]);
 const USER_20261127_BY_ZH=new Map(PANDA_USER_20261127_BATCH.map(e=>[voiceNorm(e.zh),e]));
+const PANDA_USER_20261128_BATCH=Object.freeze([
+  {
+    "id": "PA-20261128-001",
+    "zh": "谢谢你！你喜欢这里的风景吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-001.mp3",
+    "role": "panda-ai-female",
+    "bytes": 30380,
+    "sha256": "82d480bb812f5172e285f498cf3d1046e1503e7be84c70cfec6cfd4a85108b08"
+  },
+  {
+    "id": "PA-20261128-002",
+    "zh": "谢谢你！你喜欢熊猫吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-002.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26156,
+    "sha256": "d0e0ae99d5371b2b7a27cb16f5b7541e2bc93b7e5b160a31dd1f016ea029538c"
+  },
+  {
+    "id": "PA-20261128-003",
+    "zh": "谢谢你！我很开心！你叫什么名字？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-003.mp3",
+    "role": "panda-ai-female",
+    "bytes": 40364,
+    "sha256": "0d214c644c6161f994c6021623a9bdec8018f813bddcba35cb0c2eb7f75e92d7"
+  },
+  {
+    "id": "PA-20261128-004",
+    "zh": "太好了！",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-004.mp3",
+    "role": "panda-ai-female",
+    "bytes": 8684,
+    "sha256": "2718ae7330e9d4c85de686dadffe60bb2930cfdf20166fdfe4e7e66f50695413"
+  },
+  {
+    "id": "PA-20261128-005",
+    "zh": "太好了！我们继续聊吧！",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-005.mp3",
+    "role": "panda-ai-female",
+    "bytes": 25004,
+    "sha256": "562a589d7cc1ddbb702081c8f529c56f506f3c84b03dc75947a38f6231dded97"
+  },
+  {
+    "id": "PA-20261128-006",
+    "zh": "怎么了？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-006.mp3",
+    "role": "panda-ai-female",
+    "bytes": 7532,
+    "sha256": "e3a62f43ec59a4615838724b227af3045c6f28f95a460755443ecd75c4d8d27c"
+  },
+  {
+    "id": "PA-20261128-007",
+    "zh": "没关系。你想聊什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-007.mp3",
+    "role": "panda-ai-female",
+    "bytes": 25388,
+    "sha256": "ea931ba6deedc9d90b3a7eb01be3ed285e905337e0b1374f466e63fd0b5d5e3e"
+  },
+  {
+    "id": "PA-20261128-008",
+    "zh": "你想问什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-008.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11756,
+    "sha256": "889b8c9764a4bc6eed85cb9cb90974da480eeedc01229254e6852de582287d7d"
+  },
+  {
+    "id": "PA-20261128-009",
+    "zh": "你想问我什么时候做什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-009.mp3",
+    "role": "panda-ai-female",
+    "bytes": 22508,
+    "sha256": "f56bba314af6f8027c113673102458ff1a6d637eb31bb158a7bdbaa77308fa9f"
+  },
+  {
+    "id": "PA-20261128-010",
+    "zh": "谢谢你！你喜欢我的耳机吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-010.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28652,
+    "sha256": "759249e07817b76b8c3e5f7b1ef56f3678c380b05d20e0be37b1952e90cb4d36"
+  },
+  {
+    "id": "PA-20261128-011",
+    "zh": "谢谢你！我们一起加油！",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-011.mp3",
+    "role": "panda-ai-female",
+    "bytes": 25964,
+    "sha256": "2c6d22c8901fab25a5e8b666b0a1d2bd4e059c2e9bcf3a2b5fea7f4c9eca5d94"
+  },
+  {
+    "id": "PA-20261128-012",
+    "zh": "很高兴认识你！你今天怎么样？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-012.mp3",
+    "role": "panda-ai-female",
+    "bytes": 29996,
+    "sha256": "e943d8222fc9c246ceb2e8f3fee732a21c9d75e6c8f8a9dc1927e96b8b2407d1"
+  },
+  {
+    "id": "PA-20261128-013",
+    "zh": "太好了！你想聊什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-013.mp3",
+    "role": "panda-ai-female",
+    "bytes": 23852,
+    "sha256": "280f58ebce6d151f1628232df6b6df9e14a87d8717174d204d8f2eed3777fb86"
+  },
+  {
+    "id": "PA-20261128-014",
+    "zh": "可以！我们说中文吧！",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-014.mp3",
+    "role": "panda-ai-female",
+    "bytes": 23276,
+    "sha256": "30e4fc03c37f1a484be478366691296a46b5241f5c5ffcd341530b8fd24e595e"
+  },
+  {
+    "id": "PA-20261128-015",
+    "zh": "你好！你喜欢做什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-015.mp3",
+    "role": "panda-ai-female",
+    "bytes": 23852,
+    "sha256": "3d5cb0480ac18c837dc6aae2e56dd977f8edfda89e36ee5d2a4e2fe0bd61487d"
+  },
+  {
+    "id": "PA-20261128-016",
+    "zh": "今天有什么好事？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-016.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15212,
+    "sha256": "9e58332e79ab493cc2c20deae595a51ca8ea435e299798e18eec61b8f5e23b2e"
+  },
+  {
+    "id": "PA-20261128-017",
+    "zh": "真好！你还喜欢什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-017.mp3",
+    "role": "panda-ai-female",
+    "bytes": 24428,
+    "sha256": "b32983ed3869040abb2f4677f8255f0297d24ec4377d130f1c50a2080f8a0533"
+  },
+  {
+    "id": "PA-20261128-018",
+    "zh": "我知道了。你想休息一下吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-018.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28076,
+    "sha256": "e0bff13458dc889c2cb3a1c8a112a546cae0a3a3a490e1318540d414ef72fc62"
+  },
+  {
+    "id": "PA-20261128-019",
+    "zh": "我明白了！你今天还想做什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-019.mp3",
+    "role": "panda-ai-female",
+    "bytes": 30380,
+    "sha256": "92a7ab1f3ee4afc9f939a528086bed148db542c37d806973987de8536dcdb513"
+  },
+  {
+    "id": "PA-20261128-020",
+    "zh": "你吃了什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-020.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11564,
+    "sha256": "ca7ef1f2c5010c88f8ac74e435ecba29df702348d2f2729778586f53f31ef9c6"
+  },
+  {
+    "id": "PA-20261128-021",
+    "zh": "你喜欢喝茶吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-021.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14444,
+    "sha256": "fe5a328025fc0f421c160fcf2fdba010c41d36353bb5c9b340bdfdd52aa1900d"
+  },
+  {
+    "id": "PA-20261128-022",
+    "zh": "你经常游泳吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-022.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14252,
+    "sha256": "d1cfa7757b025b5c26a1d81057c2115ef9f74ff932d425185edb45a42e5e19d1"
+  },
+  {
+    "id": "PA-20261128-023",
+    "zh": "你每天喝咖啡吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-023.mp3",
+    "role": "panda-ai-female",
+    "bytes": 16172,
+    "sha256": "da3b16b0af972fd32c686b6b2088d687da2e7e8b02c7556c0ea5bb8cf1bdcc62"
+  },
+  {
+    "id": "PA-20261128-024",
+    "zh": "你喜欢看什么书？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-024.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15404,
+    "sha256": "6332e72f920b59baedb17a9218517ecb9b449e815ab4984e59b52cd969b7ee90"
+  },
+  {
+    "id": "PA-20261128-025",
+    "zh": "你在看什么书？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-025.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14060,
+    "sha256": "f42c844d65e7a557b176275b4fe01617b55f420bbb37c79dfea7881cd46dc39e"
+  },
+  {
+    "id": "PA-20261128-026",
+    "zh": "你在听什么音乐？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-026.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14636,
+    "sha256": "731a96a527c80fbdb98070d5a991b0a4a31a23605b0545288db3985800b4624c"
+  },
+  {
+    "id": "PA-20261128-027",
+    "zh": "你在吃什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-027.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12140,
+    "sha256": "46be5a1c801cd56a8826fa73b5fc206eb0a8a3c9ce5a49ed782b793701b66ce7"
+  },
+  {
+    "id": "PA-20261128-028",
+    "zh": "你在看什么节目？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-028.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15404,
+    "sha256": "bd400acede436930d16bdc1203abc5a44f402cdbcae694f302db435de61d9849"
+  },
+  {
+    "id": "PA-20261128-029",
+    "zh": "你今天想做什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-029.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15404,
+    "sha256": "08b3fcc70e19a705a20f981e12e2f4a9a72e06688743e43ee9e7837a8ede6555"
+  },
+  {
+    "id": "PA-20261128-030",
+    "zh": "你今天休息吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-030.mp3",
+    "role": "panda-ai-female",
+    "bytes": 13292,
+    "sha256": "ff52d018d7b97f1bd2858ca65accce4e3ee13fe9d58e59b81777173f0ada870c"
+  },
+  {
+    "id": "PA-20261128-031",
+    "zh": "你每天都喝吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-031.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14444,
+    "sha256": "ce52d3fc82421db9b09d8d9a3283132e2ff21559d9f6665673be3924f6ec2205"
+  },
+  {
+    "id": "PA-20261128-032",
+    "zh": "你常吃吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-032.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11180,
+    "sha256": "1021dc291ba318ad5ab729b44e7df93a7d0e0321d15fc41093e3bca3249ae379"
+  },
+  {
+    "id": "PA-20261128-033",
+    "zh": "明白了。你喜欢吃什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-033.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26156,
+    "sha256": "68a05c8d4a9f8d9a9f7ad5fc815037dee83bfb42aa0c560c8a0f8af7c98b628d"
+  },
+  {
+    "id": "PA-20261128-034",
+    "zh": "你想看什么电影？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-034.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15596,
+    "sha256": "b585e6b5f1894d6a4afee91b7f65b02b08a880e4fd92a931a1375a66ed6653e7"
+  },
+  {
+    "id": "PA-20261128-035",
+    "zh": "真好！你每天都喜欢做这件事吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-035.mp3",
+    "role": "panda-ai-female",
+    "bytes": 33452,
+    "sha256": "448b51350eef56ffbb673716a720c6605fcac5d202d920360aa4b8ecac666379"
+  },
+  {
+    "id": "PA-20261128-036",
+    "zh": "他为什么迟到？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-036.mp3",
+    "role": "panda-ai-female",
+    "bytes": 12908,
+    "sha256": "818d178b9398757baaf485239dcb7cccbe63d186decc2643f8cf14736ff55909"
+  },
+  {
+    "id": "PA-20261128-037",
+    "zh": "你退休后喜欢做什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-037.mp3",
+    "role": "panda-ai-female",
+    "bytes": 19436,
+    "sha256": "d5321475bd25bc56a9d077c60f13cf6c7d27827272e4f83958e548371f53b9bf"
+  },
+  {
+    "id": "PA-20261128-038",
+    "zh": "那你最近忙什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-038.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14636,
+    "sha256": "80c9de0c5cb9eceb12e9b083812368bf5dc790802081a422eb9f0d69a34895d9"
+  },
+  {
+    "id": "PA-20261128-039",
+    "zh": "我明白了。你喜欢你住的地方吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-039.mp3",
+    "role": "panda-ai-female",
+    "bytes": 31724,
+    "sha256": "411f25f773b18de7b33ac817b1a14031f213008e0379c02213346d791b092a1b"
+  },
+  {
+    "id": "PA-20261128-040",
+    "zh": "我住在山里。你住在哪里？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-040.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28652,
+    "sha256": "f91b19f3c11cbeb02f1042631a7fa167ba6688db6b12a48f2847f2049d502674"
+  },
+  {
+    "id": "PA-20261128-041",
+    "zh": "我在这里陪你练习中文。你做什么工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-041.mp3",
+    "role": "panda-ai-female",
+    "bytes": 38444,
+    "sha256": "03935b5d18b55d49f7940c1a41f42760cdf70b6e326c1178852071308fea7270"
+  },
+  {
+    "id": "PA-20261128-042",
+    "zh": "你是老板！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-042.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26540,
+    "sha256": "3f4936f444050f90e2ae1a5c2107d484ded8c93b56e995b25ecd8e6bf2476e15"
+  },
+  {
+    "id": "PA-20261128-043",
+    "zh": "你是经理！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-043.mp3",
+    "role": "panda-ai-female",
+    "bytes": 31148,
+    "sha256": "455a9c149d89c47783f15d6a06830e546a57068c39ee9f19cd1e81d273427a2f"
+  },
+  {
+    "id": "PA-20261128-044",
+    "zh": "你是服务员！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-044.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28076,
+    "sha256": "a56e1dfc9960fa9d383180a87d99ba31f7e037bdf39321e98935c03106c8830e"
+  },
+  {
+    "id": "PA-20261128-045",
+    "zh": "你是警察！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-045.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26924,
+    "sha256": "0d3cea5e1b224bd00dcaeb60aaaaa97adef330619382fee59ee6b850d9a06236"
+  },
+  {
+    "id": "PA-20261128-046",
+    "zh": "你是销售员！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-046.mp3",
+    "role": "panda-ai-female",
+    "bytes": 29612,
+    "sha256": "7218b44fc3cb3cbd20ef1e4bc4928b908d27d996a17fec233601fdfe12351149"
+  },
+  {
+    "id": "PA-20261128-047",
+    "zh": "你是工人！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-047.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26732,
+    "sha256": "ea1855c769109dd845c5941e648e1a3bf85920429bc5f004e6616ad385a5da53"
+  },
+  {
+    "id": "PA-20261128-048",
+    "zh": "你是翻译！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-048.mp3",
+    "role": "panda-ai-female",
+    "bytes": 27308,
+    "sha256": "8626f7ee7d4a0b21f103c2a68289c6709cc8101dcd40a691023a9bf55bc184e5"
+  },
+  {
+    "id": "PA-20261128-049",
+    "zh": "你是演员！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-049.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26924,
+    "sha256": "828854d1cef69edf939e222787bc5622655b3f2d01b212a252f99a45c3384f4d"
+  },
+  {
+    "id": "PA-20261128-050",
+    "zh": "你是商人！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-050.mp3",
+    "role": "panda-ai-female",
+    "bytes": 27308,
+    "sha256": "f95e75cd14046d7ebc31057cdf3cd275a8de152ba282ebbe7afacec677a9443a"
+  },
+  {
+    "id": "PA-20261128-051",
+    "zh": "你是程序员！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-051.mp3",
+    "role": "panda-ai-female",
+    "bytes": 29420,
+    "sha256": "2514109ae90c85f007a58b3e28263d31be48d96f42980730ffaa23d4575a3642"
+  },
+  {
+    "id": "PA-20261128-052",
+    "zh": "你是设计师！你在哪儿工作？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-052.mp3",
+    "role": "panda-ai-female",
+    "bytes": 29420,
+    "sha256": "cd1f342dbacfb827b11c81209a92fef773c65a8bb04221fa601b421622b32345"
+  },
+  {
+    "id": "PA-20261128-053",
+    "zh": "我不知道实际的价格。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-053.mp3",
+    "role": "panda-ai-female",
+    "bytes": 19052,
+    "sha256": "93d77f0880fab2b09c681a57639bbda093a5a651181724e07e3dc9c4b20177c7"
+  },
+  {
+    "id": "PA-20261128-054",
+    "zh": "我不知道实际的数量。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-054.mp3",
+    "role": "panda-ai-female",
+    "bytes": 18860,
+    "sha256": "610aa1e2bbf9391ba878bc48a8e7adbc30dc8c24c574d4667cc24f35c4ed3b33"
+  },
+  {
+    "id": "PA-20261128-055",
+    "zh": "五十块钱。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-055.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11756,
+    "sha256": "3873009a9861d32b2d067421a3ac3d1deeed4511f273e42d06b695f22cf02b13"
+  },
+  {
+    "id": "PA-20261128-056",
+    "zh": "有两件。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-056.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9836,
+    "sha256": "17dd8660a34b46c084b7a5a6580a8125dceacdd2dd60d7e5d892d3ee1b12a34a"
+  },
+  {
+    "id": "PA-20261128-057",
+    "zh": "真不错！你今天做了什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-057.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26732,
+    "sha256": "5f6e5ed26cf34782b9d9cf95f63355d68543852708f6705b5c407dca3ca25437"
+  },
+  {
+    "id": "PA-20261128-058",
+    "zh": "太好了！你今天有什么计划？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-058.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28076,
+    "sha256": "d154b300717063fb25bee25eedad5b0ca54349e37f5501e5a2d81ee64a4e5b4c"
+  },
+  {
+    "id": "PA-20261128-059",
+    "zh": "那就好！你睡了几个小时？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-059.mp3",
+    "role": "panda-ai-female",
+    "bytes": 27692,
+    "sha256": "5d4c36a5407e3e47a704f601003f5ca59806d49914fc5d6aff05345af46230c0"
+  },
+  {
+    "id": "PA-20261128-060",
+    "zh": "真不错！你几点起床的？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-060.mp3",
+    "role": "panda-ai-female",
+    "bytes": 26732,
+    "sha256": "38925750859304cfec1760fcd64e6ac2cab5cc0e0a2f50c014fd2041af77aa72"
+  },
+  {
+    "id": "PA-20261128-061",
+    "zh": "谢谢！你今天学会了什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-061.mp3",
+    "role": "panda-ai-female",
+    "bytes": 27116,
+    "sha256": "79496cfba94d30d0cf5d52574eaf207791b15e521e9399814e17055ac498c8f5"
+  },
+  {
+    "id": "PA-20261128-062",
+    "zh": "太好了！你还想学什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-062.mp3",
+    "role": "panda-ai-female",
+    "bytes": 25580,
+    "sha256": "ced4cfc2b681b5927c075e0ed59211c8aee5d2359ab1d3ae112f018115be8330"
+  },
+  {
+    "id": "PA-20261128-063",
+    "zh": "太好了！你喜欢你的工作吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-063.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28268,
+    "sha256": "1922c887882de367201236508c7e81219f28b1722a2600360154066ec2902151"
+  },
+  {
+    "id": "PA-20261128-064",
+    "zh": "真不错！你还喜欢吃什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-064.mp3",
+    "role": "panda-ai-female",
+    "bytes": 27692,
+    "sha256": "a44cc1c8632aaac3f7013c38e0f2564aabcd892fa4722be86e543d6b994d5577"
+  },
+  {
+    "id": "PA-20261128-065",
+    "zh": "太好了！你经常吃这个吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-065.mp3",
+    "role": "panda-ai-female",
+    "bytes": 27116,
+    "sha256": "f2de228b865c8e42d13bc162d3d9b1adc21b1c74a5de647c4c3df9d1f97baa7b"
+  },
+  {
+    "id": "PA-20261128-066",
+    "zh": "你今天很忙吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-066.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14060,
+    "sha256": "01da1bad577ed78fe20a0d038bdcee1755102580e23f1787b99cb0d107e8c3cc"
+  },
+  {
+    "id": "PA-20261128-067",
+    "zh": "你想说说今天的事吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-067.mp3",
+    "role": "panda-ai-female",
+    "bytes": 18476,
+    "sha256": "d7e2e2de719b2e386a50086653df855498ffcd67d0b720a250534c73a66f0683"
+  },
+  {
+    "id": "PA-20261128-068",
+    "zh": "你昨晚睡了几个小时？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-068.mp3",
+    "role": "panda-ai-female",
+    "bytes": 19052,
+    "sha256": "caa2f4bd9832d748a75ff2ae4bb6439e1e01ec49d1266feb560090f898d4da19"
+  },
+  {
+    "id": "PA-20261128-069",
+    "zh": "你今天想休息吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-069.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15404,
+    "sha256": "559b94b29e7e7e07d2762761600027afcb0c1081c908438ea8aff2d8914de868"
+  },
+  {
+    "id": "PA-20261128-070",
+    "zh": "你觉得什么最难？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-070.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15596,
+    "sha256": "f0bc5459d5afc9f34d4805b69aa80b3e76ccc3f2d68af8abe42c3cc1eb2a2c4a"
+  },
+  {
+    "id": "PA-20261128-071",
+    "zh": "为什么呢？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-071.mp3",
+    "role": "panda-ai-female",
+    "bytes": 9644,
+    "sha256": "e5498e0d6edad51b99091447dec476bb3c65a981285d6b3e27e63e10ce75e08f"
+  },
+  {
+    "id": "PA-20261128-072",
+    "zh": "你能多说一点儿吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-072.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14828,
+    "sha256": "5457bd35985c9982409c3955a76ad4540046d8f05327c1fbf3c8aae9ff8ec3f5"
+  },
+  {
+    "id": "PA-20261128-073",
+    "zh": "你今天几点起床？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-073.mp3",
+    "role": "panda-ai-female",
+    "bytes": 16556,
+    "sha256": "4e02db6fb0d9f39500a45bdf7de40d8b26d25a7263c3a05d6150b8b177325e3c"
+  },
+  {
+    "id": "PA-20261128-074",
+    "zh": "你今天吃早饭了吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-074.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15596,
+    "sha256": "f7ffa18a16539c659e58b76d35792f122466f4f5b6eba010543299f289da201d"
+  },
+  {
+    "id": "PA-20261128-075",
+    "zh": "你早饭吃了什么？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-075.mp3",
+    "role": "panda-ai-female",
+    "bytes": 14636,
+    "sha256": "2b4a66697cb4514336af478402bf58f1616ad3b29c54a675db1e7c23f8bfab55"
+  },
+  {
+    "id": "PA-20261128-076",
+    "zh": "你今天喝咖啡了吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-076.mp3",
+    "role": "panda-ai-female",
+    "bytes": 16748,
+    "sha256": "7352f5cfa9f69cd46848fb65c7e0ab8c2a7e34565f18322e26411b05d4302ccb"
+  },
+  {
+    "id": "PA-20261128-077",
+    "zh": "我还不知道。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-077.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11564,
+    "sha256": "338128409e32882f0c49f46e79c26a548a1a5581bd9ddb6fb736b63c369e83a3"
+  },
+  {
+    "id": "PA-20261128-078",
+    "zh": "我记住了。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-078.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10220,
+    "sha256": "755cbe9d852ae6acc07b25a3ec814670cb53233b49ba091712edf047066b7e39"
+  },
+  {
+    "id": "PA-20261128-079",
+    "zh": "我还不知道。我们先聊聊吧！",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-079.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28076,
+    "sha256": "653cd4793a57087657f8dad1f71181701e37995123c332885c13fa5b5be20a5a"
+  },
+  {
+    "id": "PA-20261128-080",
+    "zh": "你每天学中文吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-080.mp3",
+    "role": "panda-ai-female",
+    "bytes": 15980,
+    "sha256": "121aa32a62228dfb75a4ad6d46bbc2a95b03f4708d7327ef3cfa7142b0bba695"
+  },
+  {
+    "id": "PA-20261128-081",
+    "zh": "很好！今天先练到这里吧。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-081.mp3",
+    "role": "panda-ai-female",
+    "bytes": 28460,
+    "sha256": "4ccd283c7a7b08f808d6097d59f1efac057d9149917079a9545d45fc1b8b9f17"
+  },
+  {
+    "id": "PA-20261128-082",
+    "zh": "好的，下次再练吧。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-082.mp3",
+    "role": "panda-ai-female",
+    "bytes": 18860,
+    "sha256": "545ed30c0f9d19265404c2626f07324104fd0916d07dcc89f6e6e50f83e4ecf1"
+  },
+  {
+    "id": "PA-20261128-083",
+    "zh": "你睡觉吗？",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-083.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10988,
+    "sha256": "4039666746f047a3bd43710537d207fd0f85b26ea05531a67ae48d57cc1e949a"
+  },
+  {
+    "id": "PA-20261128-084",
+    "zh": "你很漂亮。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-084.mp3",
+    "role": "panda-ai-female",
+    "bytes": 11180,
+    "sha256": "49ae6c6e7035be487c6c722bb08fd9b22e65e53a8ee95fe5112fadb2018a0fb3"
+  },
+  {
+    "id": "PA-20261128-085",
+    "zh": "你很可爱。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-085.mp3",
+    "role": "panda-ai-female",
+    "bytes": 10796,
+    "sha256": "da9a2d1f75cb27264dedad1407ddd6bded36541ced70f87d3d8477da83a8997e"
+  },
+  {
+    "id": "PA-20261128-086",
+    "zh": "今天。",
+    "src": "./assets/panda-ai-voice-20261128/PA-20261128-086.mp3",
+    "role": "panda-ai-female",
+    "bytes": 8300,
+    "sha256": "0aad01bf9feeb3ec2183cd959c91016f14bcd3c0f7f31855f6d66797127834f9"
+  }
+]);
+const USER_20261128_BY_ZH=new Map(PANDA_USER_20261128_BATCH.map(e=>[voiceNorm(e.zh),e]));
 export function lookupApprovedPandaVoice(text){
  const key=voiceNorm(text);if(!key)return null;
  const travel=TRAVEL_VOICE_BY_ZH.get(key);if(travel)return {src:travel.src,start:0,end:null,source:'panda-user-upload:travel-20261126'};
@@ -1252,5 +1943,6 @@ export function lookupApprovedPandaVoice(text){
  const courseSrc=Object.hasOwn(APPROVED_HSK2,key)?APPROVED_HSK2[key]:null;
  if(courseSrc)return {src:courseSrc,start:0,end:null,source:'panda-approved-luvvoice:hsk2-20261122'};
  const supplied=USER_V563_BY_ZH.get(key);if(supplied)return {src:supplied.src,start:0,end:null,source:'panda-user-upload:batch01-v563'};
- const added=USER_20261127_BY_ZH.get(key);return added?{src:added.src,start:0,end:null,source:'panda-user-upload:20261127'}:null;
+ const added=USER_20261127_BY_ZH.get(key);if(added)return {src:added.src,start:0,end:null,source:'panda-user-upload:20261127'};
+ const batch86=USER_20261128_BY_ZH.get(key);return batch86?{src:batch86.src,start:0,end:null,source:'panda-user-upload:20261128'}:null;
 }

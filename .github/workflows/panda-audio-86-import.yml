@@ -1,0 +1,33 @@
+name: Import Panda AI 86 owner recordings
+on:
+  push:
+    branches: [feature/panda-audio-86-20261128]
+    paths: [Panda_AI_86_MP3.zip, .github/workflows/panda-audio-86-import.yml, scripts/import-panda-audio-86.py]
+permissions:
+  contents: write
+concurrency:
+  group: panda-audio-86-import
+  cancel-in-progress: false
+jobs:
+  import-and-verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends ffmpeg
+          fi
+          command -v ffmpeg
+          python3 scripts/import-panda-audio-86.py
+          node --test scripts/verify-panda-voice-20261128.mjs scripts/verify-panda-voice-20261127.mjs tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs tests/offline-active-assets-v434.test.mjs tests/panda-living-conversation-v1.test.mjs
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/panda-ai-voice-20261128 assets/panda-approved-voice-registry-v516.mjs assets/offline-pack.json sw.js
+          git rm -- Panda_AI_86_MP3.zip
+          git commit -m "Import and verify 86 owner-supplied Panda AI MP3s"
+          git push origin HEAD:feature/panda-audio-86-20261128
