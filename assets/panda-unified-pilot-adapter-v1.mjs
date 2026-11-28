@@ -67,7 +67,7 @@ const pools={
 function livingTopic(previous){
  const q=String(previous??'').normalize('NFC').split(/[。！!]/u).at(-1).replace(/[\p{P}\s]/gu,'');
  if(/^(?:你)?(?:昨晚|昨天晚上|今天|最近)?睡得怎么样$/u.test(q))return 'sleep';
- if(/^(?:你觉得)?(?:今天的?|这节|这堂|这个)?(?:中文)?(?:课|课程| урок)(?:怎么样|好吗)$/u.test(q))return 'lesson';
+ if(/^(?:你觉得)?(?:今天的?|这节|这堂|这个)?(?:中文)?(?:课|课程)(?:怎么样|好吗)$/u.test(q))return 'lesson';
  if(/^(?:你觉得)?(?:你)?(?:今天的?|最近的?|你的)?工作(?:怎么样|好吗)$/u.test(q))return 'work';
  if(/^(?:你觉得)?(?:这个菜|这道菜|今天的饭|饭菜|这个|这家餐厅)(?:怎么样|好吃吗)$/u.test(q))return 'food';
  if(/^(?:你)?(?:今天|最近)?(?:怎么样|好吗|还好吗|过得怎么样)$/u.test(q)&&q!=='怎么样')return 'wellbeing';
@@ -78,10 +78,10 @@ function planLiving(raw,previous,recent,lookupExact){
  const topic=livingTopic(previous);
  // Subject-explicit self reports are valid without a prior question; bare evaluations are not.
  const data=mood||evalData;
- if(!data||(!mood&&!topic))return null;
- if(!mood&&key.startsWith('我')&&topic!=='wellbeing')return null;
+ if(!data||(!mood&&!topic&&!key.startsWith('我')))return null;
+ if(!mood&&key.startsWith('我')&&topic&&topic!=='wellbeing')return null;
  const [pinyin,translation,polarity]=data;
- const group=mood?(polarity==='happy'?'wellbeing':polarity):polarity==='positive'?topic:topic==='sleep'?'negativeSleep':topic==='lesson'?'negativeLesson':topic==='wellbeing'?(polarity==='negative'?'sad':'neutral'):'negativeOther';
+ const group=mood?(polarity==='happy'?'wellbeing':polarity):polarity==='positive'?(topic||'wellbeing'):topic==='sleep'?'negativeSleep':topic==='lesson'?'negativeLesson':(!topic||topic==='wellbeing')?(polarity==='negative'?'sad':'neutral'):'negativeOther';
  const options=pools[group];
  if(!options)return null;
  const ranked=options.map(([hanzi,pinyin,ru],index)=>{
@@ -101,6 +101,12 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
   observePanda(line,{continuesLearnerTurn=false,legacyFamily=false}={}){
    if(line?.hanzi)recent=[...recent,livingClean(line.hanzi)].slice(-24);
    state=reduceSemanticContext(state,{type:'panda',line,continuesLearnerTurn:pending&&continuesLearnerTurn===true,legacyFamily}).state;pending=false;
+  },
+  planLiving(raw,{mode='graded',confidence=null}={}){
+   if(!enabled||!livingConversation||mode!=='free-chat'||!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85)))return null;
+   const living=planLiving(raw,state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null,recent,lookupExact);
+   if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;}
+   return living;
   },
   plan(raw,{mode='graded',confidence=null}={}){
    if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];return null;}

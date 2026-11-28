@@ -38,3 +38,9 @@ test('ambiguous stale, unrelated, low-confidence, disabled and graded turns neve
  observe(p,'你好吗？');p.reset();assert.notEqual(answer(p)?.kind,'living-reaction');
  const disabled=make({livingConversation:false});observe(disabled,'你好吗？');assert.notEqual(answer(disabled)?.kind,'living-reaction');
 });
+
+test('priority probe does not consume unrelated turns and handles explicit self reports',()=>{
+ const p=make();observe(p,'你好吗？');const before=p.snapshot();assert.equal(p.planLiving('我想学中文',{mode:'free-chat'}),null);assert.deepEqual(p.snapshot(),before);
+ const x=p.planLiving('非常好',{mode:'free-chat'});assert.equal(x.kind,'living-reaction');assert.equal(p.snapshot().lastSpeaker,'learner');
+ const y=make().planLiving('我非常好',{mode:'free-chat'});assert.equal(y.kind,'living-reaction');
+});
