@@ -76,13 +76,51 @@ const PERSONAL_LINES={
  '我起床以后洗脸然后刷牙':['Wǒ qǐchuáng yǐhòu xǐliǎn, ránhòu shuāyá.','После подъёма я умываюсь, затем чищу зубы.'],
  '我起床以后刷牙然后洗脸':['Wǒ qǐchuáng yǐhòu shuāyá, ránhòu xǐliǎn.','После подъёма я чищу зубы, затем умываюсь.']
 };
+const PERSONAL_ACTIVITIES={
+ '刷牙':['shuāyá','чищу зубы'],'洗脸':['xǐliǎn','умываюсь'],'洗澡':['xǐzǎo','принимаю душ'],
+ '喝水':['hē shuǐ','пью воду'],'喝茶':['hē chá','пью чай'],'喝咖啡':['hē kāfēi','пью кофе'],
+ '跑步':['pǎobù','бегаю'],'运动':['yùndòng','занимаюсь спортом'],'锻炼':['duànliàn','тренируюсь'],
+ '看手机':['kàn shǒujī','смотрю в телефон'],'看书':['kàn shū','читаю книгу'],
+ '学习中文':['xuéxí Zhōngwén','учу китайский'],'学中文':['xué Zhōngwén','учу китайский'],
+ '吃早饭':['chī zǎofàn','завтракаю'],'吃早餐':['chī zǎocān','завтракаю'],
+ '做早饭':['zuò zǎofàn','готовлю завтрак'],'做早餐':['zuò zǎocān','готовлю завтрак'],
+ '穿衣服':['chuān yīfu','одеваюсь'],'休息':['xiūxi','отдыхаю'],'遛狗':['liù gǒu','выгуливаю собаку']
+};
+const PERSONAL_BREAKFAST={
+ '我有时候吃早饭':['Wǒ yǒushíhou chī zǎofàn.','Я иногда завтракаю.'],
+ '我每天吃早饭':['Wǒ měitiān chī zǎofàn.','Я завтракаю каждый день.'],
+ '我从来不吃早饭':['Wǒ cónglái bù chī zǎofàn.','Я никогда не завтракаю.'],
+ '我很少吃早饭':['Wǒ hěn shǎo chī zǎofàn.','Я редко завтракаю.'],
+ '我今天吃了早饭':['Wǒ jīntiān chī le zǎofàn.','Сегодня я позавтракал(а).'],
+ '我今天不去上班':['Wǒ jīntiān bú qù shàngbān.','Сегодня я не иду на работу.'],
+ '我今天休息':['Wǒ jīntiān xiūxi.','Сегодня я отдыхаю.'],
+ '我退休了':['Wǒ tuìxiū le.','Я на пенсии.'],
+ '我不用上班':['Wǒ búyòng shàngbān.','Мне не нужно идти на работу.']
+};
+function reviewedActivity(key){
+ const prefix=/^(?:我)?起床(?:以后|之后|后)/u.exec(key);
+ if(!prefix)return null;
+ const remainder=key.slice(prefix[0].length);
+ const parts=remainder.split(/(然后|再|和)/u);
+ if(!parts.length||parts.length>5||!parts.every((x,i)=>i%2===1?['然后','再','和'].includes(x):Object.hasOwn(PERSONAL_ACTIVITIES,x)))return null;
+ const links={'然后':['ránhòu','затем'],'再':['zài','потом'],'和':['hé','и']};
+ const py=['Wǒ qǐchuáng '+(prefix[0].endsWith('以后')?'yǐhòu':prefix[0].endsWith('之后')?'zhīhòu':'hòu')];
+ const ru=['После подъёма я'];
+ for(let i=0;i<parts.length;i++){
+  const entry=i%2?links[parts[i]]:PERSONAL_ACTIVITIES[parts[i]];
+  py.push(entry[0]);ru.push(entry[1]);
+ }
+ return [py.join(' ')+'.',ru.join(' ')+'.'];
+}
 function personalStoryLines(values){
  return values.filter(x=>typeof x==='string'&&x.trim()).map(zh=>{
   let key=norm(zh);
   // Complete only unambiguous short answers already accepted in the morning context.
   const short={'刷牙':'我起床以后刷牙','洗脸':'我起床以后洗脸','喝咖啡':'我起床以后喝咖啡','喝水':'我起床以后喝水','不吃早饭':'我早上不吃早饭','不吃早餐':'我早上不吃早饭','吃早饭':'我早上吃早饭','吃早餐':'我早上吃早饭','不上班':'我不上班','没有工作':'我没有工作','在家工作':'我在家工作','是学生':'我是学生'};
   if(Object.hasOwn(short,key)){key=short[key];zh=key+'。'}
-  const own=Object.hasOwn(PERSONAL_LINES,key)?PERSONAL_LINES[key]:null;
+  else if(Object.hasOwn(PERSONAL_ACTIVITIES,key)&&!['吃早饭','吃早餐'].includes(key)){key='我起床以后'+key;zh=key+'。'}
+  if(!key.startsWith('我')&&Object.hasOwn(PERSONAL_BREAKFAST,'我'+key)){key='我'+key;zh=key+'。'}
+  const own=Object.hasOwn(PERSONAL_LINES,key)?PERSONAL_LINES[key]:Object.hasOwn(PERSONAL_BREAKFAST,key)?PERSONAL_BREAKFAST[key]:reviewedActivity(key);
   if(own)return [zh,...own];
   if(!/[，,；;]/u.test(zh)){
    const reviewed=getDayCorrectionLine(zh);
