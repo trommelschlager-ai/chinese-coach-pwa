@@ -44,3 +44,26 @@ test('priority probe does not consume unrelated turns and handles explicit self 
  const x=p.planLiving('非常好',{mode:'free-chat'});assert.equal(x.kind,'living-reaction');assert.equal(p.snapshot().lastSpeaker,'learner');
  const y=make().planLiving('我非常好',{mode:'free-chat'});assert.equal(y.kind,'living-reaction');
 });
+
+test('morning chain maintains six linked learner turns, exact facts and no tone claims',()=>{
+ const p=make();observe(p,'你昨晚睡得怎么样？');
+ const exchanges=[['非常好',/睡了几个小时/],['我睡了八个小时',/几点起床/],['七点',/吃早饭/],['吃了',/吃了什么/],['鸡蛋',/喝咖啡/],['没喝',/接下来/],['我想休息',/休息一下/]];
+ for(const [raw,want] of exchanges){const x=answer(p,raw);assert.equal(x?.kind,'living-reaction',raw);assert.match(x.line.hanzi,want);assert.equal(x.toneVerified,false);p.observePanda(x.line);}
+ assert.deepEqual(p.morningSnapshot(),{hours:8,wake:7,breakfast:true,food:'鸡蛋',drink:false,next:'休息'});
+});
+test('negative breakfast skips food question and respects learner refusal',()=>{
+ const p=make();observe(p,'你昨晚睡得怎么样？');for(const raw of ['非常好','八个小时','七点']){const x=answer(p,raw);p.observePanda(x.line);}
+ const x=answer(p,'没吃');assert.match(x.line.hanzi,/喝咖啡/);p.observePanda(x.line);assert.equal(p.morningSnapshot().breakfast,false);assert.equal(p.morningSnapshot().food,undefined);
+ const refusal=answer(p,'我不想说');assert.match(refusal.line.hanzi,/别的/);assert.equal(p.morningSnapshot(),null);
+});
+test('reset, unrelated line or unrelated answer cannot preserve stale morning chain',()=>{
+ for(const action of ['reset','line','answer','low-confidence','graded']){
+  const p=make();observe(p,'你昨晚睡得怎么样？');const x=answer(p);p.observePanda(x.line);
+  if(action==='reset')p.reset();
+  else if(action==='line')observe(p,'你几岁？');
+  else if(action==='answer')answer(p,'火星');
+  else if(action==='low-confidence')answer(p,'八个小时',{confidence:.6});
+  else answer(p,'八个小时',{mode:'graded'});
+  assert.equal(p.morningSnapshot(),null,action);assert.notEqual(answer(p,'八个小时')?.kind,'living-reaction',action);
+ }
+});
