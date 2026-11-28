@@ -78,7 +78,10 @@ const PERSONAL_LINES={
 };
 function personalStoryLines(values){
  return values.filter(x=>typeof x==='string'&&x.trim()).map(zh=>{
-  const key=norm(zh);
+  let key=norm(zh);
+  // Complete only unambiguous short answers already accepted in the morning context.
+  const short={'刷牙':'我起床以后刷牙','洗脸':'我起床以后洗脸','喝咖啡':'我起床以后喝咖啡','喝水':'我起床以后喝水','不吃早饭':'我早上不吃早饭','不吃早餐':'我早上不吃早饭','吃早饭':'我早上吃早饭','吃早餐':'我早上吃早饭','不上班':'我不上班','没有工作':'我没有工作','在家工作':'我在家工作','是学生':'我是学生'};
+  if(Object.hasOwn(short,key)){key=short[key];zh=key+'。'}
   const own=Object.hasOwn(PERSONAL_LINES,key)?PERSONAL_LINES[key]:null;
   if(own)return [zh,...own];
   if(!/[，,；;]/u.test(zh)){
@@ -143,6 +146,8 @@ function init(stage){
  const personal=document.createElement('details');personal.className='pg-day-chat-log';personal.hidden=true;
  personal.innerHTML='<summary>📖 Моя китайская история</summary><p id="day-personal-count"></p><p id="day-personal-zh" lang="zh-Hans"></p><p id="day-personal-py"></p><p id="day-personal-ru"></p><div><button id="day-personal-prev" type="button">←</button> <button id="day-personal-next" type="button">→</button> <button id="day-personal-audio" type="button">🔊 Слушать</button></div><p><button id="day-personal-save" type="button">Сохранить на устройстве</button> <button id="day-personal-delete" type="button">Удалить сохранённое</button></p><p id="day-personal-status" role="status"></p>';
  panel.append(personal);
+ personal.querySelector('#day-personal-prev').setAttribute('aria-label','Предложение назад');
+ personal.querySelector('#day-personal-next').setAttribute('aria-label','Следующее предложение');
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
  // Approved Street screen is a reference for control hierarchy only:
  // move existing interactive nodes; do not replace mascot/scenery or handlers.
@@ -214,6 +219,7 @@ function init(stage){
   const values=current?personalCurrent:stored;
   const rows=personalStoryLines(values);
   personal.hidden=!['ready','results'].includes(phase)||!rows.length;
+  if(phase==='results'&&current)personal.open=true;
   if(personal.hidden){personal.open=false;return}
   personalIndex=Math.max(0,Math.min(personalIndex,rows.length-1));
   const row=rows[personalIndex];
@@ -643,7 +649,7 @@ function init(stage){
   status('✓ Сообщение отправлено. '+result.message);
  }
  async function finishQuestions(){
-   stop();personalCurrent=answers.filter(Boolean);personalIndex=0;const list=personalStoryLines(answers);
+   stop();personalCurrent=answers.filter(Boolean);personalIndex=0;$('day-personal-status').textContent='';const list=personalStoryLines(answers);
    if(!list.length){monologue();return}
    stagePhase('summary');
    const intro=['这是你的一天。','Zhè shì nǐ de yì tiān.','Это твой день.'];
