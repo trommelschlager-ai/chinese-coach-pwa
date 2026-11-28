@@ -127,3 +127,13 @@ test('adaptive practice stays opt-in, not graded, and uncertainty does not incre
  morningSend(p,'我们练习对话吧');assert.notEqual(answer(p,'喜欢',{confidence:.7})?.kind,'living-adaptive');assert.equal(p.adaptiveSnapshot(),null);
  morningSend(p,'我们练习对话吧');p.reset();assert.equal(p.adaptiveSnapshot(),null);
 });
+
+test('emotional cue is based on understood semantic reaction, not pronunciation or grade',()=>{
+ for(const [raw,want] of [['我今天很开心','positive'],['我今天很累','supportive'],['我不开心','supportive'],['非常好','positive'],['还好','neutral']]){
+  const p=make();observe(p,'你好吗？');const x=answer(p,raw);assert.equal(x.expression,want,raw);assert.equal(x.toneVerified,false);
+ }
+ const p=make();for(const raw of ['我们练习对话吧','喜欢','每天'])morningSend(p,raw);
+ assert.equal(morningSend(p,'太难了').expression,'supportive');
+ assert.notEqual(answer(p,'我今天很开心',{confidence:.6})?.expression,'positive');
+ assert.equal(answer(p,'我今天很开心',{mode:'graded'}),null);
+});

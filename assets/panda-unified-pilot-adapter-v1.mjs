@@ -264,6 +264,15 @@ function adaptiveTurn(raw,session,previous,lookupExact){
  return make(adaptiveQs[nextSlot],row,nextSlot,level,nextSlot==='end'?null:{slot:nextSlot,score,helped:session.helped,expected:livingClean(adaptiveQs[nextSlot][0])});
 }
 
+// A conversational expression cue, never a pronunciation/HSK assessment.
+export function livingExpression(reply){
+ const s=reply?.semantic;
+ if(reply?.kind==='living-adaptive'&&s?.help)return 'supportive';
+ if(reply?.kind!=='living-reaction')return 'neutral';
+ if(['positive','happy'].includes(s?.polarity))return 'positive';
+ if(['negative','sad','tired'].includes(s?.polarity))return 'supportive';
+ return 'neutral';
+}
 export function createSemanticPilot({enabled=false,lookupExact=null,correctGrammar=null,metadata=null,allowTextOnly=false,livingConversation=false,storage=null}={}){
  let state=initialSemanticState(),pending=false,recent=[],morning=null,expectedMorning=null,adaptive=null;
  function routeLiving(raw,allowMemoryWrite){
@@ -310,14 +319,14 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
    if(!enabled||!livingConversation||mode!=='free-chat'||!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85)))return null;
    const living=routeLiving(raw,allowMemoryWrite);
    if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;}
-   return living;
+   return living?{...living,expression:livingExpression(living)}:null;
   },
   plan(raw,{mode='graded',confidence=null,allowMemoryWrite=true}={}){
    if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;adaptive=null;return null;}
    if(!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){morning=null;expectedMorning=null;adaptive=null;}
    if(livingConversation&&(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){
     const living=routeLiving(raw,allowMemoryWrite);
-    if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;return living;}
+    if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;return {...living,expression:livingExpression(living)};}
    }
    const oldMemory=state.hobbyMemory,oldTopics=state.topicMemory;
    const c=(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))&&typeof correctGrammar==='function'?correctGrammar(raw,{confidence})?.spoken?.correction:null;

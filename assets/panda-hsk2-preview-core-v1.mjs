@@ -41,7 +41,7 @@ const dayLaunch=dayParams.get('practice')==='day';
 // No personal profile or microphone data is stored by the semantic pilot.
 // Standard home entry uses reviewed free chat; semantic=0 is an explicit rollback route.
 const semanticRequested=dayParams.get('semantic')!=='0'&&!['practice','scenario','from','topic','lesson'].some(k=>dayParams.has(k));
-let semanticPilot=null,semanticMetadata=null,semanticContinues=false;
+let semanticPilot=null,semanticMetadata=null,semanticContinues=false,expressionSequence=0;
 const semanticFreeChat=()=>!!semanticPilot&&!state.dayMode&&entry.beginnerGreeting&&hsk2?.id===101&&hsk2.openChat===true&&state.mode==='nonstop';
 function resetSemanticPilot(){semanticPilot?.reset();semanticContinues=false;}
 function observeSemanticPanda(line,owned=line?.analysis?.semanticPilot===true){
@@ -426,7 +426,7 @@ function submit(raw){
   if(living){
    friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
    learner(input,living.spoken);semanticContinues=false;
-   say(living.line,living.voiceStatus==='registered-exact',{semanticPilot:true,kind:living.kind,toneVerified:false});
+   say(living.line,living.voiceStatus==='registered-exact',{semanticPilot:true,kind:living.kind,toneVerified:false,expression:living.expression,expressionId:++expressionSequence});
    note(living.kind==='living-adaptive'?(living.semantic.help?'Упростили вопрос. Это не оценка произношения.':living.semantic.level==='extended'?'Попробуй ответить полным предложением с 因为.':'Диалог: простой вопрос. Тоны не оценивались.'):living.kind==='living-summary'?'Рассказ только по твоим ответам. Тоны не оценивались.':living.semantic?.slot==='next'?'Хочешь услышать рассказ о своём дне? Скажи: 说说我的一天。':'Панда поняла смысл реплики. Тоны произношения не оценивались.');return;
   }
   const priorCourseLine=state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null;

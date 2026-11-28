@@ -153,7 +153,7 @@ if (!bridge) {
     return bridge.getAudioLevel?.() ?? NaN;
   });
   let lastRows='',lastPhrase='',lastTopics='',lastFeedback='',showPy=true,showRu=true;
-  let lastSpeechSignalId=0,effectTimer=0,headsetResult='idle',assessmentUntil=0,assessmentText='';
+  let lastSpeechSignalId=0,effectTimer=0,headsetResult='idle',assessmentUntil=0,assessmentText='',lastExpressionId=0;
   const stopHistoryAudio=()=>{if(historyAudio){const previous=historyAudio;historyAudio=null;previous.pause();}};
   function clipFor(entry){return lookupPandaVoiceClip(entry?.hanzi||entry?.panda)||lookupPandaVoiceClip(entry?.audioKey)}
   // History shares the main player: stops recognition, pending replies and prior audio.
@@ -370,6 +370,12 @@ if (!bridge) {
     stage.dataset.listening=String(s.active);stage.dataset.welcome=String(s.history.length<=1);
     stage.dataset.pose=s.active?'listening':pandaSpeaking?'talking':'idle';
     liveMouth.setTalking(!s.active&&pandaSpeaking);
+    const latest=s.history.at(-1);
+    if(s.active)liveMouth.react?.('neutral');
+    else if(latest?.who==='panda'&&latest.analysis?.expressionId&&latest.analysis.expressionId!==lastExpressionId){
+     lastExpressionId=latest.analysis.expressionId;
+     liveMouth.react?.(latest.analysis.expression);
+    }
     stage.dataset.headphones=s.active?'listening':headsetResult;$('#pg346-mic').setAttribute('aria-pressed',String(s.active));$('#pg346-mic').setAttribute('aria-label',s.active?'Микрофон включён. Говори по-китайски.':'Ответить Панде голосом');$('#pg346-short').setAttribute('aria-pressed',String(s.mode==='short'));$('#pg346-nonstop').setAttribute('aria-pressed',String(s.mode==='nonstop'));
     const a=s.current||{},phrase=[a.hanzi,a.panda,a.pinyin,a.ru,s.slow,s.audioAvailable].join('|');if(phrase!==lastPhrase){lastPhrase=phrase;$('.pg346-main-zh').textContent=a.hanzi||a.panda||'你好！';$('.pg346-main-py').textContent=a.pinyin||'';$('.pg346-main-ru').textContent=a.ru||'';$('#pg346-hear').disabled=!s.audioAvailable;$('#pg346-play').disabled=!s.audioAvailable;$('#pg346-repeat').disabled=!s.audioAvailable;$('#pg357-audio-note').hidden=!!s.audioAvailable}
     $('#pg346-speed').textContent=s.slow?'0,8× ▾':'1× ▾';const rows=JSON.stringify(s.history.map(e=>[e.who,e.hanzi,e.pinyin,e.ru,e.analysis?.kind,e.analysis?.explanation]));if(rows!==lastRows){lastRows=rows;renderRows(s.history)}
