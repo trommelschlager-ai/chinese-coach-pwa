@@ -107,3 +107,23 @@ test('memory disabled, uncertain speech or unverified Street speech does not per
  for(const raw of ['我今天很累','我想休息','我今天很开心'])answer(p,raw);
  assert.deepEqual(readSharedPandaProfile(storage),{family:{},siblingAges:{}});
 });
+
+test('adaptive exercise progresses after two understood answers and accepts negative daily answer',()=>{
+ const p=make();let x=morningSend(p,'我们练习对话吧');assert.equal(x.kind,'living-adaptive');assert.equal(x.semantic.level,'basic');
+ x=morningSend(p,'喜欢');assert.match(x.line.hanzi,/每天/);
+ x=morningSend(p,'不是');assert.equal(x.semantic.level,'extended');assert.match(x.line.hanzi,/为什么/);
+ x=morningSend(p,'因为我想去中国');assert.match(x.line.hanzi,/练习什么/);
+ x=morningSend(p,'声调');assert.equal(x.semantic.slot,'end');assert.equal(p.adaptiveSnapshot(),null);assert.equal(x.toneVerified,false);
+});
+test('adaptive explicit help lowers complexity, negative preference avoids assumed motivation',()=>{
+ const p=make();for(const raw of ['我们练习对话吧','喜欢','每天'])morningSend(p,raw);
+ const x=morningSend(p,'太难了');assert.equal(x.semantic.level,'basic');assert.equal(x.semantic.help,true);assert.match(x.line.hanzi,/练习什么/);
+ const q=make();morningSend(q,'我们练习对话吧');assert.match(morningSend(q,'不喜欢').line.hanzi,/练习什么/);
+ const stop=morningSend(q,'我不想练习了');assert.equal(stop.semantic.slot,'stop');assert.equal(q.adaptiveSnapshot(),null);
+});
+test('adaptive practice stays opt-in, not graded, and uncertainty does not increase difficulty',()=>{
+ const p=make();assert.notEqual(answer(p,'喜欢')?.kind,'living-adaptive');
+ assert.equal(answer(p,'我们练习对话吧',{mode:'graded'}),null);
+ morningSend(p,'我们练习对话吧');assert.notEqual(answer(p,'喜欢',{confidence:.7})?.kind,'living-adaptive');assert.equal(p.adaptiveSnapshot(),null);
+ morningSend(p,'我们练习对话吧');p.reset();assert.equal(p.adaptiveSnapshot(),null);
+});

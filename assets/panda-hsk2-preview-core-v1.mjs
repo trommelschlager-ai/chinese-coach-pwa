@@ -427,7 +427,7 @@ function submit(raw){
    friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
    learner(input,living.spoken);semanticContinues=false;
    say(living.line,living.voiceStatus==='registered-exact',{semanticPilot:true,kind:living.kind,toneVerified:false});
-   note(living.kind==='living-summary'?'Рассказ только по твоим ответам. Тоны не оценивались.':living.semantic?.slot==='next'?'Хочешь услышать рассказ о своём дне? Скажи: 说说我的一天。':'Панда поняла смысл реплики. Тоны произношения не оценивались.');return;
+   note(living.kind==='living-adaptive'?(living.semantic.help?'Упростили вопрос. Это не оценка произношения.':living.semantic.level==='extended'?'Попробуй ответить полным предложением с 因为.':'Диалог: простой вопрос. Тоны не оценивались.'):living.kind==='living-summary'?'Рассказ только по твоим ответам. Тоны не оценивались.':living.semantic?.slot==='next'?'Хочешь услышать рассказ о своём дне? Скажи: 说说我的一天。':'Панда поняла смысл реплики. Тоны произношения не оценивались.');return;
   }
   const priorCourseLine=state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null;
   const city=respondToCourseCityQuestion(input,priorCourseLine)||respondToCourseFamilyQuestion(input,priorCourseLine)||respondToCourseWorkStudyQuestion(input)||respondToCourseRoutineQuestion(input)||respondToCourseFoodShopQuestion(input)||respondToCourseWellbeing(input)||respondToCourseSocialTravel(input,priorCourseLine);
