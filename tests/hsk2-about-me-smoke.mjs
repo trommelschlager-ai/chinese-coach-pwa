@@ -25,11 +25,20 @@ try {
   // Premium intro uses the same native bottom navigation as every other screen.
   check(await page.locator('.premium-cover-hero').isVisible(),'Premium cover missing');
   check(await page.locator('#next').isVisible(),'Native start button must be visible');
-  await page.screenshot({path:output+'/cover-393.png',animations:'disabled'});
+  await page.screenshot({path:output+'/cover-fresh-393.png',animations:'disabled'});
   await page.locator('#next').click();
   await page.locator('#app[data-view="2"] .word-row').first().waitFor();
   check(await page.locator('.word-row').count()===6,'Six word cards expected');
   check(await page.locator('.word-row svg.about-illustration:visible').count()===0,'Mascot must not appear on vocabulary cards');
+  for(const width of [360,393,412]){
+    await page.setViewportSize({width,height:width===360?800:width===393?873:915});
+    const rows=await page.locator('.word-row.about-myday-word').evaluateAll(rows=>rows.map(row=>{
+      const hz=row.querySelector('.cn'), copy=row.querySelector('.about-myday-copy');
+      return {color:getComputedStyle(hz).color,copyWidth:copy.getBoundingClientRect().width,copyOverflow:copy.scrollWidth>copy.clientWidth+1,wordBreak:getComputedStyle(copy.querySelector('.py')).wordBreak};
+    }));
+    check(rows.every(row=>row.color==='rgb(23, 72, 61)'&&row.copyWidth>=100&&!row.copyOverflow&&row.wordBreak==='normal'),'Vocabulary typography regression at '+width+': '+JSON.stringify(rows));
+  }
+  await page.setViewportSize({width:393,height:873});
   check(await page.locator('.word-row .tone-strokes path').count()===12,'Each syllable must have contour');
   check(await page.locator('#next').isDisabled(),'Words should block progress until all marked');
   for(let i=0;i<6;i++){
@@ -49,6 +58,11 @@ try {
   await page.locator('#next').click();
   check(await page.locator('[data-start]').count()===1,'30-task test should start here');
   await page.locator('[data-start]').click();
+  for(const width of [360,393,412]){
+    await page.setViewportSize({width,height:width===360?800:width===393?873:915});
+    await page.screenshot({path:output+'/quiz-question-'+width+'.png',animations:'disabled'});
+  }
+  await page.setViewportSize({width:393,height:873});
   let correct=0;
   const progress=()=>page.evaluate(()=>window.PandaGoHSK2Preview.getProgress());
   async function answer(word,type){
