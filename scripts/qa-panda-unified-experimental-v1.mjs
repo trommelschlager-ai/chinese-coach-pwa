@@ -18,6 +18,48 @@ try{
   await page.evaluate(()=>{window.__pilotPlaying=[];});
   const first=await send('我一回家就吃饭');if(flag){assert.equal(first.history.at(-1).hanzi,'然后呢？');assert.equal(first.history.at(-1).analysis.semanticPilot,true);assert.equal(first.history.at(-2).ru,'Как только прихожу домой, сразу ем.');assert.equal(first.audioAvailable,true);await page.waitForFunction(()=>window.__pilotPlaying.some(src=>src.includes('/panda-ai-voice-batch01-v563/PA-V563-01.mp3')),null,{timeout:10000});}else assert(!first.history.at(-1).analysis?.semanticPilot);
   for(const [q,expected] of [['吃饭','你想吃什么？'],['睡觉','你晚上几点睡觉？'],['非常好，你呢？','我也很好，谢谢！']]){const x=await send(q);assert.equal(x.history.at(-1).hanzi,expected,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);}
+  if(flag){
+   for(const [q,a] of [['请问，银行在哪里？','银行在学校旁边。'],['那公园呢？','公园在医院后面。'],['公园离医院远吗？','不远，很近。'],['去机场要多久？','需要一个小时。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
+  if(flag){
+   for(const [q,a] of [['请问，你有几个孩子？','我没有孩子。'],['你爸爸是做什么的？','我是虚拟熊猫。你爸爸呢？'],['那你妈妈呢？','我是虚拟熊猫。你妈妈呢？'],['你结婚了没有？','没有，我是虚拟熊猫。'],['你有没有朋友？','有啊，我们可以做朋友。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
+  if(flag){
+   for(const [q,a] of [['请问，你的职业是什么？','我是老师。'],['你在什么地方工作？','我在这里陪你练习中文。'],['你工作忙不忙？','我现在有空，可以陪你练习。'],['你一般几点下班？','我没有固定的下班时间。'],['你会不会说俄语？','我可以用俄语解释中文。'],['你会不会用电脑？','会，我会用电脑。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
+  if(flag){
+   for(const [q,a] of [['请问，你一般几点起床？','我没有固定的起床时间。你几点起床？'],['你今天吃早饭了吗？','我早上不吃早饭。'],['你今天干了什么？','我今天和你练习中文。'],['你今天有没有空？','今天我有空，可以聊聊天。'],['你要不要休息一下？','不用，谢谢你。'],['你通常几点睡觉？','我没有固定的睡觉时间。你呢？']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
+  if(flag){
+   for(const [q,a] of [['请问，你想吃点什么？','我想吃竹子。'],['你饿不饿？','不饿。你呢？'],['你还想要什么？','我还要一碗汤。'],['你喜欢哪种颜色？','我喜欢紫色。'],['哪一个更便宜？','这个比那个便宜。'],['能便宜一点吗？','练习对话：四十块钱，可以吗？'],['能刷卡吗？','练习对话：可以刷卡。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
+  if(flag){
+   for(const [q,a] of [['请问，你现在感觉怎么样？','我很好，谢谢！你呢？'],['你是不是生病了？','没有，我是虚拟熊猫。'],['你今天累不累？','不累。你呢？'],['我今天感觉不舒服。','怎么了？你想说说吗？'],['我心情不好。','怎么了？你想说说吗？']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
+  if(flag){
+   for(const [q,a] of [['请问，我们可以做朋友吗？','有啊，我们可以做朋友。'],['你有没有男朋友？','没有，我是虚拟熊猫。'],['你周六有空吗？','有空，我们见面吧。'],['几点呢？','星期六下午三点。'],['你喜欢旅游吗？','我是虚拟熊猫，没有实际的旅行经历。'],['你打算什么时候去北京？','我还没有计划。'],['你以前坐过飞机吗？','我是虚拟熊猫，不会真的坐飞机。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,a,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);assert.equal(x.audioAvailable,true,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+  }
   const travel=await send('去中国');assert.equal(travel.history.at(-1).hanzi,'你打算什么时候去？');assert.equal(travel.audioAvailable,true);assert(travel.history.at(-2).pinyin&&travel.history.at(-2).ru);const time=await send('明天');assert.equal(time.history.at(-1).hanzi,'然后呢？');
   for(const q of ['我先刷牙然后吃早饭','我先刷牙再吃早饭']){const x=await send(q);assert.equal(x.history.at(-1).hanzi,'你早上吃什么？',q);assert.equal(x.audioAvailable,true,q);}
   if(flag){
