@@ -22,11 +22,14 @@ try {
   await page.goto(root,{waitUntil:'load'});
   check(await page.locator('.pg433-tabs button').count()===5,'Must have 5 top sections');
   check(await page.locator('.pg433-tabs button:disabled').count()===4,'Other 4 sections must start locked');
-  // The approved full-cover overlay intentionally hides the legacy start button.
-  await page.locator('.pg-approved-start').click();
+  // Premium intro uses the same native bottom navigation as every other screen.
+  check(await page.locator('.premium-cover-hero').isVisible(),'Premium cover missing');
+  check(await page.locator('#next').isVisible(),'Native start button must be visible');
+  await page.screenshot({path:output+'/cover-393.png',animations:'disabled'});
+  await page.locator('#next').click();
   await page.locator('#app[data-view="2"] .word-row').first().waitFor();
   check(await page.locator('.word-row').count()===6,'Six word cards expected');
-  check(await page.locator('.word-row svg.about-illustration').count()===6,'Missing themed word illustrations');
+  check(await page.locator('.word-row svg.about-illustration:visible').count()===0,'Mascot must not appear on vocabulary cards');
   check(await page.locator('.word-row .tone-strokes path').count()===12,'Each syllable must have contour');
   check(await page.locator('#next').isDisabled(),'Words should block progress until all marked');
   for(let i=0;i<6;i++){
@@ -92,7 +95,7 @@ try {
     'Progress did not survive browser reload');
   for(const width of [360,393,412]){
     await page.setViewportSize({width,height:width===360?800:width===393?873:915});
-    for(const [step,name] of [[2,'words'],[4,'grammar'],[6,'tones'],[7,'dialogue']]){
+    for(const [step,name] of [[1,'cover'],[2,'words'],[4,'grammar'],[6,'tones'],[3,'quiz'],[5,'story'],[7,'dialogue'],[8,'finish']]){
       await page.goto(root+'?step='+step,{waitUntil:'load'});
       await page.locator('.pg433-content').waitFor();
       await page.waitForTimeout(160);
@@ -101,7 +104,16 @@ try {
         bottom:document.querySelector('.pg433-footer').getBoundingClientRect().bottom,
         viewport:innerHeight}));
       check(dims.scroll<=dims.width+1,'Horizontal scroll at '+width+'px '+name+': '+JSON.stringify(dims));
-      check(dims.bottom<=dims.viewport+2,'Footer outside screen at '+width+'px '+name);
+      check(Math.abs(dims.bottom-dims.viewport)<=3,'Footer must align with bottom of viewport at '+width+'px '+name+': '+JSON.stringify(dims));
+      const footer=page.locator('.pg433-footer');
+      check(await footer.isVisible(),'Footer hidden on '+name);
+      check(await page.locator('#next').isVisible(),'Next button hidden on '+name);
+      const nextRect=await page.locator('#next').boundingBox();
+      check(Math.abs(nextRect.height-52)<=2,'Navigation button height is not 52px on '+name);
+      const before=(await footer.boundingBox()).y;
+      await page.locator('.pg433-content').evaluate(el=>{el.scrollTop=el.scrollHeight});
+      check(Math.abs((await footer.boundingBox()).y-before)<=1,'Footer moved while scrolling on '+name);
+      await page.locator('.pg433-content').evaluate(el=>{el.scrollTop=0});
       await page.screenshot({path:output+'/'+name+'-'+width+'.png',animations:'disabled'});
     }
   }
