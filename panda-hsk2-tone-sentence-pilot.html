@@ -44,21 +44,49 @@
 .whole-durations{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin:8px 0 5px}
 .whole-duration{padding:6px 8px;border-radius:10px;background:#f2e7f8;font-size:12px;font-weight:750;color:#705184;font-variant-numeric:tabular-nums}
 .whole-duration.user{background:#ede1fd;color:#60409a}
+
+/* Compact first screen: preserve the complete plot and move advanced controls into details. */
+main{padding:5px 8px 8px}
+.kicker{display:none}
+h1{font-size:16px;margin:0 0 2px;text-align:center}
+.lead{font-size:11px;line-height:1.2;text-align:center;margin:0 0 4px}
+.panel{padding:7px 8px;margin-top:5px;border-radius:14px;box-shadow:none}
+#phrase-select{min-height:36px!important;margin:0 0 3px!important;font-size:13px!important}
+.phrase{font-size:clamp(22px,6.6vw,29px);line-height:1.15;letter-spacing:0}
+.pinyin{font-size:14px;line-height:1.2}
+.translation{font-size:12px;line-height:1.2;margin:2px 0 4px}
+.actions{gap:5px}
+.action{min-height:40px;padding:4px 3px;font-size:12px;line-height:1.2;border-radius:10px}
+.rms{height:3px;margin-top:5px}
+.status{min-height:0;font-size:11px;line-height:1.2;margin:4px 0 0;max-height:2.4em;overflow:auto}
+.whole-head h2{font-size:14px}
+.whole-live{font-size:10px;padding:3px 6px}
+.whole-svg{margin-top:4px;max-height:clamp(112px,calc(100dvh - 340px),240px)}
+.whole-legend{font-size:10px;margin:3px 0;gap:8px}
+.whole-durations{margin:2px 0;gap:4px}
+.whole-duration{font-size:10px;padding:2px 4px}
+#whole-active,#whole-info{font-size:11px;line-height:1.25;margin:4px 0}
+#tone-details{margin-top:6px;border:1px solid #d6b8eb;border-radius:12px;background:#f2e4f6}
+#tone-details>summary{cursor:pointer;min-height:40px;padding:10px;text-align:center;font-size:13px;font-weight:800;color:#663384}
+#tone-details>section{margin:5px}
+#phrase-rule:empty{display:none}
+.syllables{grid-template-columns:repeat(auto-fit,minmax(45px,1fr))}
+@media(max-height:520px){main{padding:3px 6px}h1{font-size:14px}.lead{font-size:10px}.panel{padding:4px 6px;margin-top:3px}.action{min-height:34px}.phrase{font-size:22px}.pinyin{font-size:12px}.translation{font-size:11px}.whole-svg{max-height:clamp(90px,calc(100dvh - 275px),170px)}#tone-details>summary{min-height:34px;padding:7px}}
 </style></head><body><main>
 <span class="kicker">🐼 PANDA GO · HSK 2 · МОЙ ДЕНЬ</span>
-<h1>🎙️ Проверь произношение</h1>
-<p class="lead">Пилот: измерение высоты голоса на каждом слоге предложения. Границы слогов определяются <b>приблизительно</b>, без оценки «правильно/неправильно».</p>
+<h1>Сравни свой голос с образцом</h1>
+<p class="lead">Высота голоса · без автоматической оценки</p>
 <section class="panel" aria-label="Фраза из урока">
-<label class="small" for="phrase-select">Слово или фраза урока</label><select id="phrase-select" style="width:100%;min-height:44px;font:inherit;border:1px solid #d6b8eb;border-radius:12px;background:white;color:inherit;margin:5px 0 10px"></select><div id="target-phrase" class="phrase" lang="zh-Hans">我早上洗脸。</div><div id="target-pinyin" class="pinyin">Wǒ zǎoshang xǐliǎn.</div>
-<div id="target-translation" class="translation">Я утром умываюсь.</div><p id="phrase-rule" class="small"></p>
-<div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец урока</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Завершить запись</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
+<label for="phrase-select" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Слово или фраза урока</label><select id="phrase-select" style="width:100%;min-height:44px;font:inherit;border:1px solid #d6b8eb;border-radius:12px;background:white;color:inherit;margin:5px 0 10px"></select><div id="target-phrase" class="phrase" lang="zh-Hans">我早上洗脸。</div><div id="target-pinyin" class="pinyin">Wǒ zǎoshang xǐliǎn.</div>
+<div id="target-translation" class="translation">Я утром умываюсь.</div>
+<div class="actions"><button class="action alt" id="listen" type="button">🔊 Образец</button><button class="action" id="record" type="button">🎙 Записать себя</button><button class="action alt" id="stop" type="button" disabled>■ Остановить</button><button class="action alt" id="replay" type="button" disabled>🔁 Мой голос</button></div>
 <div class="rms"><div id="level"></div></div>
 <p id="status" class="status" role="status" aria-live="polite">Загружаю эталонную запись из действующего урока…</p>
 </section>
 
 <section class="panel" aria-labelledby="whole-title" id="whole-panel">
-<div class="whole-head"><h2 id="whole-title">📈 Всё предложение — одна шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
-<p class="small">Пунктир — вся фраза из урока. Фиолетовая линия появляется во время речи и после записи показывает твой голос целиком. Обе линии построены по настоящему времени в секундах, без растяжения фразы. По вертикали — относительная высота голоса.</p>
+<div class="whole-head"><h2 id="whole-title">Тоновая шкала</h2><span class="whole-live" id="whole-state">Эталон</span></div>
+
 <svg class="whole-svg" id="whole-chart" viewBox="0 0 560 242" role="img" aria-label="Общий график высоты голоса по настоящему времени в секундах">
  <g stroke="#eee3f2" stroke-dasharray="4 5" stroke-width="1"><path d="M28 37H542 M28 77H542 M28 117H542 M28 157H542"/></g>
  <g id="whole-uncertainty"></g><rect id="whole-focus" class="whole-focus" x="28" y="22" width="0" height="137"/><g id="whole-dividers"></g><g id="whole-time-ticks"></g><g id="whole-labels"></g>
@@ -70,7 +98,8 @@
 </svg>
 <div class="whole-legend"><span><i class="ref"></i> Голос из урока</span><span><i></i> Твой голос</span></div>
 <div class="whole-durations"><span class="whole-duration" id="ref-seconds">Образец: измеряется…</span><span class="whole-duration user" id="my-seconds">Твой голос: ещё нет записи</span></div>
-<p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
+</section>
+<details id="tone-details"><summary>Анализ каждого слога ▾</summary><section class="panel"><p id="phrase-rule" class="small"></p><p id="whole-active">Нажми «Записать себя», чтобы увидеть движение голоса.</p><p id="whole-info" class="whole-note" aria-live="polite">Сначала послушай образец, затем произнеси всё предложение за одну запись.</p>
 <div class="align-panel">
  <button type="button" class="align-button" id="guided-align" disabled>🎯 Сопоставить с образцом по звучанию</button>
  <small>Разметка переносится по акустическим признакам записи, не просто по её длительности. Это предварительное выравнивание, <b>не распознавание фонем и не оценка правильности тонов</b>.</small>
@@ -84,13 +113,13 @@
 </section>
 <section class="panel"><h2>Тон каждого слога</h2>
 <p class="small">Нажми на иероглиф: внизу появится увеличенная кривая. Пунктир — запись урока; фиолетовая линия — твой голос.</p>
-<div class="syllables" id="syllables" role="group" aria-label="Пять слогов предложения"></div>
+<div class="syllables" id="syllables" role="group" aria-label="Слоги выбранного слова или фразы"></div>
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
 <details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
 </section>
 <section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
-<footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer>
+<footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer></details>
 </main><script src="./assets/hsk2-lesson1-voice-v459.js?v=459"></script>
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';

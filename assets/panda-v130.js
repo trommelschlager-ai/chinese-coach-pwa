@@ -89,10 +89,47 @@ function settingsView(){
  '</div>');
  if(nativeSettings){nativeSettings.open=false;root.querySelector('.pg393-old-settings').append(nativeSettings)}
 }
-// Four-level menu: approved art is kept intact; the existing petalMarkup/frame stays in use.
+const homeSixArt='./assets/panda-home-approved-39982.webp';
+// On first install the image may have loaded before the worker claimed the page.
+navigator.serviceWorker?.addEventListener('controllerchange',()=>{
+ if(current==='home'&&!root.hidden)fetch(homeSixArt).catch(()=>{});
+});
+let homeSixReady=false,homeSixLoading=false;
+function home(){
+ if(homeSixReady){homeSix();return}
+ homeFour();
+ if(homeSixLoading)return;
+ homeSixLoading=true;
+ const candidate=new Image();
+ candidate.onload=()=>{homeSixReady=true;homeSixLoading=false;if(current==='home'&&!root.hidden)homeSix()};
+ candidate.onerror=()=>{homeSixLoading=false};
+ candidate.src=homeSixArt;
+}
+
+function homeSix(){
+ // Tap bounds in pixels on the phone-chrome-free artwork.
+ const links=[
+  ['./hsk1-map.html','Начальный уровень HSK 1',12,568,670,120],
+  ['./hsk2-life-course.html?view=welcome','Продолжающий уровень HSK 2',12,699,670,118],
+  ['./panda-street-hsk1-map.html','Начальный разговорный уровень HSK 1',12,828,670,111],
+  ['./hsk2-life-course.html?view=map','Продолжающий разговорный уровень HSK 2',12,949,670,114],
+  ['./panda-voice-pilot.html','Панда ИИ — Диалоги и практика',16,1097,326,123],
+  ['./panda-street-ai-preview.html','Панда Street — Живой китайский',352,1097,325,123],
+ ];
+ const hits=links.map(([href,label,x,y,w,h])=>
+  `<a class="pg-six-hit" href="${href}" aria-label="${label}" style="--x:${x/694*100}%;--y:${y/1332*100}%;--w:${w/694*100}%;--h:${h/1332*100}%"></a>`
+ ).join('');
+ frame(`<div class="pg-six-stage">
+  <img class="pg-six-art" src="${homeSixArt}" width="694" height="1332" alt="" draggable="false">
+  <h1 class="pg-hsk-accessible">Panda Go — китайский это несложно</h1>
+  <nav class="pg-six-menu" aria-label="Разделы Panda Go">${hits}</nav>
+  ${petalMarkup()}
+ </div><button hidden data-action="resume" aria-label="Продолжить предыдущий курс">Продолжить</button>`,
+ 'pg-home pg-hsk-page pg-six-approved');
+}
 const homeFourArt='./assets/panda-home-approved-four-levels.png';
 let homeFourReady=false,homeFourLoading=false;
-function home(){
+function homeFour(){
  if(!homeFourReady){
   homeLegacy();
   if(!homeFourLoading){

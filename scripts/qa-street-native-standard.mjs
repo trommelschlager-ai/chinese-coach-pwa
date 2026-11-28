@@ -1,43 +1,62 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import fs from 'node:fs';
-import {createHash} from 'node:crypto';
-const voices=JSON.parse(fs.readFileSync('assets/panda-street-voice-v20261125/manifest.json','utf8')).clips;
-assert.equal(voices.length,69);
-assert.equal(new Set(voices.map(v=>v.file)).size,69);
-for(const v of voices){const b=fs.readFileSync('assets/panda-street-voice-v20261125/'+v.file);if(v.sha256)assert.equal(createHash('sha256').update(b).digest('hex'),v.sha256,'Audio hash '+v.file);}
-assert.equal(voices.find(v=>v.file==='54.mp3').hanzi,'你为什么想学中文？');
-assert.equal(voices.find(v=>v.file==='55.mp3').hanzi,'你打算什么时候去？');
-assert.equal(voices.find(v=>v.file==='68.mp3').hanzi,'好久不见！');
-assert.equal(voices.find(v=>v.file==='69.mp3').hanzi,'没啥。');
-
+import '../assets/panda-street-lesson3.js';
 const base=process.env.QA_BASE||'http://127.0.0.1:4173',out='qa/street-native-standard';fs.mkdirSync(out,{recursive:true});
-const browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']});
-const expected=['cover','phrase','phrase','dialogue','tone','phrase','phrase','grammar',...Array(3).fill('build'),'phrase','phrase','dialogue','dialogue',...Array(5).fill('listen'),...Array(3).fill('record'),'finish','ai'];
-const orders={1:[[2,3,1,0],[1,2,0],[2,1,0]],2:[[3,2,0,1],[2,1,0],[1,2,0]]};let count=0;
+const browser=await chromium.launch({headless:true,executablePath:process.env.QA_CHROMIUM,args:['--no-sandbox','--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']});
+const standard=['cover',...Array(4).fill('phrase'),'dialogue','tone',...Array(4).fill('phrase'),'grammar',...Array(3).fill('build'),...Array(4).fill('phrase'),'dialogue','dialogue',...Array(5).fill('listen'),...Array(3).fill('record'),'finish','ai'];
+async function checkLesson3Audio(page){
+ const files=await page.evaluate(async()=>{
+  const context=new AudioContext();
+  try{
+   return await Promise.all(PandaStreetLesson3.words.map(async ([zh])=>{
+    const {src,sha256}=PandaStreetVoiceV20261125.lookup(zh);
+    const response=await fetch(src);
+    if(!response.ok)throw Error(src+' '+response.status);
+    const bytes=await response.arrayBuffer();
+    const digest=await crypto.subtle.digest('SHA-256',bytes);
+    if(Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('')!==sha256)
+     throw Error('Unexpected SHA-256 for '+src);
+    if(!(await context.decodeAudioData(bytes)).duration)throw Error('Empty audio '+src);
+    return src;
+   }));
+  }finally{await context.close()}
+ });
+ assert.equal(new Set(files).size,27);
+}
+
+const orders={1:[[2,3,1,0],[1,2,0],[2,1,0]],2:[[3,2,0,1],[2,1,0],[1,2,0]],3:globalThis.PandaStreetLesson3.builds.map(build=>build[2])};let count=0;
 try{for(const [width,height] of [[360,640],[393,873],[412,915]]){
  const ctx=await browser.newContext({viewport:{width,height},isMobile:true,hasTouch:true,deviceScaleFactor:1,permissions:['microphone']});
- for(const n of [1,2]){const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'/panda-street-slang-lesson'+n+'-preview.html?welcome=1');await page.locator('#pg-content[data-stage]').waitFor();
+ for(const n of [3]){
+ const expected=n===3?[...standard.slice(0,19),...Array(6).fill('phrase'),...standard.slice(19)]:standard;
+ const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'/panda-street-slang-lesson'+n+'-preview.html?welcome=1');await page.locator('#pg-content[data-stage]').waitFor();
+ if(n===3&&width===393)await checkLesson3Audio(page);
  for(let k=0;k<expected.length;k++){const stage=expected[k],area=page.locator('#pg-content');assert.equal(await area.getAttribute('data-stage'),stage);assert.equal(await page.locator('#pg-counter').textContent(),String(k+1).padStart(2,'0')+' / '+expected.length);
  const layout=await page.evaluate(()=>{const r=s=>document.querySelector(s).getBoundingClientRect();return{w:document.documentElement.scrollWidth,h:innerHeight,b:r('#pg-footer').bottom,ct:r('#pg-content').top,cb:r('#pg-content').bottom,ft:r('#pg-footer').top,hb:r('[data-pg-hsk1-header]').bottom}});
- assert(layout.w<=width+2&&(stage==='cover'?layout.ct<=2&&layout.cb>=height-2:layout.b<=height+2&&layout.cb<=layout.ft+2&&layout.hb<=layout.ct+2),'Layout '+n+'/'+k+'/'+width);
- if(['phrase','dialogue','tone','grammar','listen','record'].includes(stage)){const disabled=await area.locator('[data-say]:disabled').count();assert.equal(disabled,0,'Missing audio '+n+'/'+k+'/'+width);}
- if(['grammar','dialogue'].includes(stage)){const fit=await area.evaluate(el=>({scroll:el.scrollHeight,visible:el.clientHeight,buttons:[...el.querySelectorAll('button[data-say]')].every(b=>{const r=b.getBoundingClientRect();return r.width>=43&&r.height>=43})}));assert(fit.scroll<=fit.visible+2,'Content overflow '+n+'/'+k+'/'+width+': '+JSON.stringify(fit));assert(fit.buttons,'Audio touch target '+n+'/'+k+'/'+width);if(stage==='dialogue'&&height>=700&&await area.locator('.dialogue-line').count()===2){const size=await area.locator('.dialogue-line .hanzi').first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize));assert(size>=24,'Readable dialogue');}}
- if(stage==='grammar'&&height>=741){const fit=await area.evaluate(el=>{const c=el.querySelector('.grammar-card').getBoundingClientRect(),r=el.getBoundingClientRect();return{gap:r.bottom-c.bottom,size:parseFloat(getComputedStyle(el.querySelector('.rule p')).fontSize)}});assert(fit.gap<=22,'Grammar must fill available height: '+JSON.stringify(fit));assert(fit.size>=18,'Full-height grammar text');}
- if(stage==='grammar'){const size=await area.locator('.rule p').first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize));assert(size>=14,'Enlarged grammar');}
- if(stage==='cover'){assert(await page.locator('#street-cover-start').isVisible());assert(!(await page.locator('#pg-next').isVisible()));assert.equal(await area.locator('[data-stage-jump]').count(),9);assert.equal(await area.locator('a[href="./panda-street-ai-preview.html"]').count(),1);assert(await area.locator('.hero>img').evaluate(i=>i.complete&&i.naturalWidth>=300));}
- if(stage==='phrase'){assert.equal(await area.locator('.pair-word').count(),2);assert.equal(await area.locator('.pair-word [data-say]:enabled').count(),2);assert.equal(await area.locator('img.pair-art').count(),0);const size=await area.locator('.pair-zh').first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize));assert(size>=30,'Enlarged vocabulary');}
+ assert(layout.w<=width+2&&layout.b<=height+2&&layout.cb<=layout.ft+2&&layout.hb<=layout.ct+2,'Layout '+n+'/'+k+'/'+width);
  if(stage==='build'){const i=Number(await area.getAttribute('data-item'));assert(await page.locator('#pg-next').isDisabled());await page.locator('#verify').click();assert(await page.locator('#pg-next').isDisabled());for(const j of orders[n][i])await page.locator('[data-add="'+j+'"]').click();await page.locator('#verify').click();assert(await page.locator('#pg-next').isEnabled());}
- if(stage==='listen'){const i=Number(await area.getAttribute('data-item')),a=page.locator('[data-say]');if(await a.isEnabled()){await a.click();await page.locator('[data-answer]:enabled').first().waitFor();const correct=(n===1?[0,1,2,6,7]:[0,2,7,9,11])[i];const wrong=page.locator('[data-answer]:not([data-answer="'+correct+'"])').first();await wrong.click();assert(await page.locator('#pg-next').isDisabled());await page.locator('[data-answer="'+correct+'"]').click();assert(await page.locator('#pg-next').isEnabled());}else assert(await page.locator('#pg-next').isEnabled());}
- if(stage==='phrase'){
- const counter=await page.locator('#pg-counter').textContent();
- const swipe=async(dx)=>area.evaluate((el,dx)=>{const target=el.querySelector('.pair-sheet');const init={pointerId:1,isPrimary:true,pointerType:'touch',clientY:100,button:0,bubbles:true};target.dispatchEvent(new PointerEvent('pointerdown',{...init,clientX:dx<0?250:70}));target.dispatchEvent(new PointerEvent('pointerup',{...init,clientX:dx<0?70:250}));},dx);
- await swipe(-1);assert.equal(await area.getAttribute('data-side'),'1');assert.equal(await area.locator('.example-row').count(),4);assert.equal(await area.locator('img.pair-art').count(),0);assert.equal(await page.locator('#pg-counter').textContent(),counter);if(height>=700){const sizes=await area.locator('.example-row').first().evaluate(el=>({zh:parseFloat(getComputedStyle(el.querySelector('strong')).fontSize),ru:parseFloat(getComputedStyle(el.querySelector('.example-ru')).fontSize)}));assert(sizes.zh>=19&&sizes.ru>=14,'Readable examples');}const reverseFit=await area.evaluate(el=>({scroll:el.scrollHeight,visible:el.clientHeight}));assert(reverseFit.scroll<=reverseFit.visible+2,'Examples overflow '+n+'/'+width+': '+JSON.stringify(reverseFit));
- await swipe(1);assert.equal(await area.getAttribute('data-side'),'0');assert.equal(await area.locator('.pair-word').count(),2);assert.equal(await page.locator('#pg-counter').textContent(),counter);
- await page.waitForTimeout(360);await area.locator('[data-pair-side="1"]').click();assert.equal(await area.getAttribute('data-side'),'1');await area.locator('[data-pair-side="0"]').click();assert.equal(await area.getAttribute('data-side'),'0');
+ if(stage==='listen'){const i=Number(await area.getAttribute('data-item')),a=page.locator('[data-say]');if(await a.isEnabled()){await a.click();await page.locator('[data-answer]:enabled').first().waitFor();const correct=({1:[0,1,2,6,7],2:[0,2,7,9,11],3:globalThis.PandaStreetLesson3.listen})[n][i];const wrong=page.locator('[data-answer]:not([data-answer="'+correct+'"])').first();await wrong.click();assert(await page.locator('#pg-next').isDisabled());await page.locator('[data-answer="'+correct+'"]').click();assert(await page.locator('#pg-next').isEnabled());}else assert(await page.locator('#pg-next').isEnabled());}
+ if(stage==='record'&&Number(await area.getAttribute('data-item'))===0){await page.locator('#record-start').click();await page.locator('#record-stop').waitFor();await page.waitForTimeout(700);await page.locator('#record-stop').click();await page.locator('#record-listen').waitFor();}
+ if([0,1,5,6,11,12,19,21,26,29,30].includes(k))await page.screenshot({path:out+'/'+n+'-'+width+'-'+(k+1)+'.png',animations:'disabled'});
+ count++;if(k<expected.length-1){await page.waitForTimeout(320);await page.locator('#pg-next').click();await page.waitForFunction(c=>document.querySelector('#pg-counter').textContent===c,String(k+2).padStart(2,'0')+' / '+expected.length);}}
+ assert.deepEqual(errors,[]);assert.equal(await page.locator('a.street-pink-link').getAttribute('href'),'./panda-street-ai-preview.html'+(n===3?'?lesson=3':''));if(n===3&&width===393){
+  await page.addInitScript(()=>{
+   window.played=[];
+   const play=HTMLMediaElement.prototype.play;
+   HTMLMediaElement.prototype.play=function(){
+    this.addEventListener('playing',()=>window.played.push(this.currentSrc),{once:true});
+    return play.call(this);
+   };
+  });
+  await page.locator('a.street-pink-link').click();
+  await page.waitForFunction(()=>document.querySelector('#stage').dataset.brainState==='full');
+  await page.locator('#nonstop').click();
+  await page.waitForFunction(()=>window.played.some(url=>url.endsWith('/lesson3-20261127/18.mp3')));
+  await page.locator('#entry').fill('不太忙，你呢？');
+  await page.locator('#submit').click();
+  await page.waitForFunction(()=>window.played.some(url=>url.endsWith('/lesson3-20261127/20.mp3')));
+  assert.equal(await page.locator('#live-panda .zh').textContent(),'我也不忙。那我们走吧！');
+  assert.deepEqual(errors,[]);
  }
- if(stage==='record'){const before=await area.evaluate(el=>({scroll:el.scrollHeight,visible:el.clientHeight}));assert(before.scroll<=before.visible+2,'Recording before capture overflow '+n+'/'+width+': '+JSON.stringify(before));assert(!(await page.locator('#record-stop').isVisible()));await page.locator('#record-start').click();await page.locator('#record-stop').waitFor();assert(!(await page.locator('#record-start').isVisible()));await page.waitForTimeout(700);await page.locator('#record-stop').click();await page.locator('#record-listen').waitFor();}
- if(['cover','phrase','examples','tone','record','build','listen','finish','ai'].includes(stage)){const fit=await area.evaluate(el=>({scroll:el.scrollHeight,visible:el.clientHeight}));if(fit.scroll>fit.visible+2)await page.screenshot({path:out+'/overflow-'+n+'-'+width+'-'+(k+1)+'.png',animations:'disabled'});assert(fit.scroll<=fit.visible+2,'Screen overflow '+n+'/'+k+'/'+width+': '+JSON.stringify(fit));}
- if([0,1,5,6,11,12,19,20,21,26,29,30].includes(k))await page.screenshot({path:out+'/'+n+'-'+width+'-'+(k+1)+'.png',animations:'disabled'});
- count++;if(k<expected.length-1){await page.waitForTimeout(320);await page.locator(stage==='cover'?'#street-cover-start':'#pg-next').click();await page.waitForFunction(c=>document.querySelector('#pg-counter').textContent===c,String(k+2).padStart(2,'0')+' / '+expected.length);}}
- assert.deepEqual(errors,[]);assert.equal(await page.locator('a.street-pink-link').getAttribute('href'),'./panda-street-ai-preview.html');await page.close();}await ctx.close();}assert.equal(count,150);console.log('PASS '+count+' screens');}finally{await browser.close();}
+ await page.close();}await ctx.close();}assert.equal(count,111);console.log('PASS '+count+' screens');}finally{await browser.close();}

@@ -60,8 +60,11 @@ if(hasFour){
  class FakeImage{constructor(){pending=this}}
  const vmContext={document,root,Image:FakeImage,current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
  const from=js.indexOf('const homeFourArt=');
+ const entry=js.includes('function homeFour(){')?'homeFour':'home';
  assert(from>=0&&from<start);
- vm.runInNewContext(js.slice(from,end)+'\nhome();',vmContext);
+ vmContext.home=()=>vm.runInContext(entry+'()',vmContext);
+ vm.createContext(vmContext);
+ vm.runInContext(js.slice(from,end)+'\n'+entry+'();',vmContext);
  assert(root.querySelector('.pg-photo1-image'),'Legacy fallback remains until new art loads');
  assert.equal(pending.src,'./assets/panda-home-approved-four-levels.png');
  pending.onload();
@@ -80,4 +83,37 @@ if(hasFour){
  assert(course.includes('./assets/panda-home-approved-four-levels.png'));assert(course.includes('./panda-street-hsk1-map.html'));
  active.window.close();
  console.log('PASS home261: immutable four-level PNG, loading fallback, three routes and fourth-level notice.');
+}
+
+if(js.includes('const homeSixArt=')){
+ const artPath='./assets/panda-home-approved-39982.webp';
+ const image=fs.readFileSync(artPath);
+ assert.equal(crypto.createHash('sha1').update('blob '+image.length+'\0').update(image).digest('hex'),
+  '92513f464b4a7324848c23cdab8678ec824653bd','The approved crop must keep its original pixels');
+ const live=new JSDOM('<main id="pg130"></main>');
+ const document=live.window.document,root=document.querySelector('#pg130');
+ const pending=[];
+ class FakeImage{constructor(){pending.push(this)}}
+ const context={document,root,navigator:document.defaultView.navigator,Image:FakeImage,petalMarkup:()=>'<div class="pg-sakura"></div>',current:'home',esc:s=>String(s),setTimeout:()=>0,frame:(html,cls)=>{root.innerHTML=html;root.className=cls}};
+ const from=js.indexOf('const homeSixArt=');
+ vm.runInNewContext(js.slice(from,end)+'\nhome();',context);
+ assert(root.querySelector('.pg-photo1-image'));
+ assert.equal(pending.length,2);
+ const latest=pending.find(i=>i.src===artPath);assert(latest);
+ latest.onload();assert(root.classList.contains('pg-six-approved'));
+ const hits=[...root.querySelectorAll('.pg-six-hit')];assert.equal(hits.length,6);
+ assert.deepEqual(hits.map(x=>x.getAttribute('href')),['./hsk1-map.html','./hsk2-life-course.html?view=welcome','./panda-street-hsk1-map.html','./hsk2-life-course.html?view=map','./panda-voice-pilot.html','./panda-street-ai-preview.html']);
+ assert(hits.every(x=>x.getAttribute('aria-label')));
+ const arts=[...root.querySelectorAll('img.pg-six-art')];
+ assert.equal(arts.length,1);
+ assert.equal(arts[0].getAttribute('src'),artPath);
+ assert.equal(arts[0].getAttribute('width'),'694');
+ assert.equal(arts[0].getAttribute('height'),'1332');
+ assert(root.querySelector('.pg-six-stage > .pg-sakura'));
+ const menuCSS='./assets/panda-home-approved-39982.css';
+ assert(shell.includes(menuCSS));
+ assert(pack.files.includes(menuCSS));
+ const course=vm.runInNewContext(sw.slice(0,sw.indexOf("self.addEventListener('install'"))+'COURSE_SHELL');
+ assert(course.includes(latest.src));assert(pack.files.some(x=>x.split('?')[0]===latest.src));
+ live.window.close();console.log('PASS six-level home: approved original, six accessible controls, offline asset and old fallback.');
 }

@@ -108,7 +108,7 @@ test('Street service worker preloads the once-missing memory and motion module f
 
 test('broken module import cannot block Panda Street chat or silent mouth reactions',()=>{
  assert.match(source,/function createStreetOfflineBrain\(\)/);
- assert.match(source,/streetBrainPromise=import\('\.\/assets\/panda-street-shared-brain-v1\.mjs\?v=3'\)/);
+ assert.match(source,/streetBrainPromise=import\('\.\/assets\/panda-street-shared-brain-v1\.mjs\?v=4'\)/);
  assert.match(source,/stage\.dataset\.brainState='fallback'/);
  assert.match(source,/createStreetOfflineBrain\(\)\.answer\(zh\)/);
  assert.match(source,/streetFaceRig\?\.acknowledge\?\.\(\)/);
