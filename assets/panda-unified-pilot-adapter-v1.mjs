@@ -1,6 +1,7 @@
 /* Shared reviewed free chat. Exact voice is required for Panda AI; Street may explicitly permit reviewed text-only replies. */
 import {initialSemanticState,reduceSemanticContext} from './panda-unified-context-v1.mjs';
 import {planSemanticConversationTurn} from './panda-unified-replies-v1.mjs';
+import {sharedPandaMemoryEnabled,readSharedPandaProfile,updateSharedPandaPreference} from './panda-cross-character-memory-v1.mjs';
 const SAFE_REPLIES=new Set(['那你休息一下吧。','你想学什么？','你为什么想学中文？','然后呢？','你打算什么时候去？','你接下来想做什么？','我在和你聊天。','我今天和你练习中文。','你打算怎么去？','祝你旅途愉快！','你有什么爱好？','你想吃什么？','好的。我们聊点别的吧！','你经常做这件事吗？','还要别的吗？','你周末喜欢做什么？','你还喜欢吃什么？','你周末有什么计划？','你早上吃早饭吗？','你晚上几点睡觉？','你今天忙吗？','你几点去上班？','你有兄弟姐妹吗？','明白了。你家有几口人？','我是虚拟熊猫，没有实际的旅行经历。','你想练习什么？','没关系，我们慢慢来。','你想买什么？','你喜欢什么颜色？','你想买几件？']);
 
 /* Living Conversation: reviewed, bounded reactions. Never infer tone from text.
@@ -183,9 +184,47 @@ function morningStory(f){
  return rows.length?[0,1,2].map(i=>rows.map(r=>r[i]).join(i===0?'':' ')):null;
 }
 
-export function createSemanticPilot({enabled=false,lookupExact=null,correctGrammar=null,metadata=null,allowTextOnly=false,livingConversation=false}={}){
+
+const preferenceHobbies={'跑步':['pǎobù','бегать'],'看书':['kàn shū','читать книги'],'听音乐':['tīng yīnyuè','слушать музыку'],'游泳':['yóuyǒng','плавать']};
+const preferenceStudy={'声调':['shēngdiào','тоны'],'发音':['fāyīn','произношение'],'语法':['yǔfǎ','грамматику'],'汉字':['Hànzì','иероглифы'],'听力':['tīnglì','понимание на слух'],'口语':['kǒuyǔ','разговорную речь']};
+function preferenceReply(raw,storage,lookupExact,allowWrite,previous){
+ if(!storage)return null;
+ const key=livingClean(raw),profile=readSharedPandaProfile(storage),enabled=sharedPandaMemoryEnabled(storage);
+ const queries={
+  '你还记得我的爱好吗':['hobby','Nǐ hái jìde wǒ de àihào ma?','Ты ещё помнишь моё увлечение?'],
+  '你记得我想练习什么吗':['studyFocus','Nǐ jìde wǒ xiǎng liànxí shénme ma?','Ты помнишь, что я хочу тренировать?']
+ };
+ const make=(tuple,spoken,slot)=>{const x=morningLine(tuple,lookupExact,spoken,slot,null);x.kind='living-memory';x.semantic.topic='learning-preference';return x;};
+ if(Object.hasOwn(queries,key)){
+  const [field,py,ru]=queries[key],value=profile[field];
+  const options=field==='hobby'?preferenceHobbies:preferenceStudy;
+  if(enabled&&Object.hasOwn(options,value)){
+   const [vp,vr]=options[value];
+   return make(field==='hobby'?['记得，你喜欢'+value+'。','Jìde, nǐ xǐhuan '+vp+'.','Помню, ты любишь '+vr+'.']:['记得，你想练习'+value+'。','Jìde, nǐ xiǎng liànxí '+vp+'.','Помню, ты хочешь тренировать '+vr+'.'],[py,ru],'recall');
+  }
+  return make(['我还不知道。','Wǒ hái bù zhīdào.','У меня пока нет сохранённого ответа.'],[py,ru],'recall');
+ }
+ if(!enabled||!allowWrite)return null;
+ const correct=key.match(/^我不喜欢(跑步|看书|听音乐|游泳)了$/);
+ if(correct&&profile.hobby===correct[1]){
+  const [py,ru]=preferenceHobbies[correct[1]];
+  if(!updateSharedPandaPreference(storage,'hobby',null))return null;
+  return make(['明白了。','Míngbai le.','Понятно.'],['Wǒ bù xǐhuan '+py+' le.','Я больше не люблю '+ru+'.'],'forget');
+ }
+ const hobby=key.match(/^我喜欢(跑步|看书|听音乐|游泳)$/);
+ const study=key.match(/^我想练习(声调|发音|语法|汉字|听力|口语)$/);
+ // Let existing reviewed question chains handle contextual answers.
+ if(hobby&&livingClean(previous)==='你有什么爱好')return null;
+ if(study&&['你想练习什么','你想学什么'].includes(livingClean(previous)))return null;
+ if(!hobby&&!study)return null;
+ const field=hobby?'hobby':'studyFocus',value=(hobby||study)[1],[py,ru]=(hobby?preferenceHobbies:preferenceStudy)[value];
+ if(!updateSharedPandaPreference(storage,field,value))return null;
+ return make(['我记住了。','Wǒ jìzhù le.','Я запомнила.'],hobby?['Wǒ xǐhuan '+py+'.','Я люблю '+ru+'.']:['Wǒ xiǎng liànxí '+py+'.','Я хочу тренировать '+ru+'.'],'remember');
+}
+
+export function createSemanticPilot({enabled=false,lookupExact=null,correctGrammar=null,metadata=null,allowTextOnly=false,livingConversation=false,storage=null}={}){
  let state=initialSemanticState(),pending=false,recent=[],morning=null,expectedMorning=null;
- function routeLiving(raw){
+ function routeLiving(raw,allowMemoryWrite){
   const previous=state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null;
   const key=livingClean(raw);
   if(Object.hasOwn(morningStart,key)){
@@ -198,6 +237,8 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
    const reply=morningLine(story||['我还不知道。我们先聊聊吧！','Wǒ hái bù zhīdào. Wǒmen xiān liáoliao ba!','Я пока не знаю. Давай сначала поговорим!'],lookupExact,morningStoryRequests[key],'summary',null);
    reply.kind='living-summary';expectedMorning=morning?livingClean(reply.line.hanzi):null;return reply;
   }
+  const memory=preferenceReply(raw,storage,lookupExact,allowMemoryWrite,previous);
+  if(memory){morning=null;expectedMorning=null;return memory;}
   const slot=morning&&morningSlot(previous);
   let living=slot?morningAnswer(raw,slot,morning,lookupExact):null;
   if(living){
@@ -219,17 +260,17 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
    if(line?.hanzi)recent=[...recent,livingClean(line.hanzi)].slice(-24);
    state=reduceSemanticContext(state,{type:'panda',line,continuesLearnerTurn:pending&&continuesLearnerTurn===true,legacyFamily}).state;pending=false;
   },
-  planLiving(raw,{mode='graded',confidence=null}={}){
+  planLiving(raw,{mode='graded',confidence=null,allowMemoryWrite=true}={}){
    if(!enabled||!livingConversation||mode!=='free-chat'||!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85)))return null;
-   const living=routeLiving(raw);
+   const living=routeLiving(raw,allowMemoryWrite);
    if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;}
    return living;
   },
-  plan(raw,{mode='graded',confidence=null}={}){
+  plan(raw,{mode='graded',confidence=null,allowMemoryWrite=true}={}){
    if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;return null;}
    if(!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){morning=null;expectedMorning=null;}
    if(livingConversation&&(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){
-    const living=routeLiving(raw);
+    const living=routeLiving(raw,allowMemoryWrite);
     if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;return living;}
    }
    const oldMemory=state.hobbyMemory,oldTopics=state.topicMemory;
@@ -247,6 +288,11 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
     if(step.semantic?.intent!=='correct-hobby-memory')state={...state,hobbyMemory:oldMemory,topicMemory:oldTopics};
     pending=false;
     return null;
+   }
+   if(livingConversation&&allowMemoryWrite&&!inline&&spoken?.known&&(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){
+    const s=step.semantic;
+    if(s?.intent==='answer-open-reviewed'&&s.slot==='hobby')updateSharedPandaPreference(storage,'hobby',s.value);
+    if(s?.intent==='answer-open-reviewed'&&s.slot==='study-practice')updateSharedPandaPreference(storage,'studyFocus',s.value);
    }
    return {...reply,semantic:step.semantic,...(spoken?{spoken:inline?{...spoken,known:false,hanzi:String(raw),probable:inline.ru,correction:{...inline,inlineConversation:true,retry:'Продолжай разговор. Исправленный вариант можно повторить позже.'}}:spoken}:{}),inlineCorrection:!!inline};
   },

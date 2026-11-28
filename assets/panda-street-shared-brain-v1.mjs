@@ -30,7 +30,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
  }
  const state={turn:0,mode:'nonstop',prompt:null,pending:null,topic:1,
   questions:[],profile:{...readSharedPandaProfile(storage),recentQuestions:[]},recent:[]};
- const semantic=createSemanticPilot({enabled:unified,lookupExact:typeof lookupMale==='function'?lookupMale:null,metadata:pilotLearnerMetadata,allowTextOnly:true,livingConversation:true});
+ const semantic=createSemanticPilot({enabled:unified,lookupExact:typeof lookupMale==='function'?lookupMale:null,metadata:pilotLearnerMetadata,allowTextOnly:true,livingConversation:true,storage});
  const observe=(p,linked=false)=>{if(unified&&state.mode==='nonstop'&&p?.zh)semantic.observePanda({hanzi:p.zh,pinyin:p.py,ru:p.ru},{continuesLearnerTurn:linked});};
  const allowed=()=>{try{return accessibleLessons(storage,1)}catch{return [1]}};
  const remember=(input,result)=>{
@@ -85,7 +85,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    // Preserve the established Street greeting and reviewed correction behavior.
    // Unified responses are limited to reviewed metadata and the common allowlist.
    if(unified&&state.mode==='nonstop'){
-     const planned=semantic.plan(raw,{mode:'free-chat'});
+     const planned=semantic.plan(raw,{mode:'free-chat',allowMemoryWrite:!fromSpeech});
      if(planned?.spoken){
        const p=normalizeLine(planned.line);
        state.pending=null;state.prompt=null;

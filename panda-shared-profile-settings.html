@@ -6,13 +6,13 @@ label{display:flex;align-items:center;gap:14px;font-weight:750;font-size:18px}in
 </style></head><body><main>
 <header><a href="./panda-voice-pilot.html">← Panda AI</a><h1>🐼 Общая память Панд</h1><p>Один ученик — две панды. Panda Go и Panda Street могут помнить подтверждённые факты о тебе между посещениями страниц.</p></header>
 <section class="panel" aria-labelledby="privacy"><h2 id="privacy">Что именно сохраняем</h2>
-<p>Например, как тебя зовут, кем ты работаешь, кого ты упоминал в семье. Не сохраняем полную переписку, твой голос, MP3 или непроверенные догадки.</p>
+<p>Например, как тебя зовут, кем ты работаешь, кого ты упоминал в семье, какое увлечение и какую учебную цель ты назвал(а). Не сохраняем полную переписку, твой голос, MP3 или непроверенные догадки.</p>
 <p class="fine">Данные остаются только в этом браузере на этом устройстве. Они не синхронизируются с аккаунтом и не переносятся на другой телефон. На общем устройстве другой человек в этом же браузере может их увидеть, поэтому включай память только для личного устройства.</p>
 </section>
 <section class="panel" aria-labelledby="switch"><h2 id="switch">Управление</h2>
 <label><input id="consent" type="checkbox"> Разрешить обеим пандам использовать мою личную память на этом устройстве</label>
 <div class="actions"><button id="clear" class="secondary" type="button">Удалить сохранённые факты</button></div>
-<p id="status" role="status" aria-live="polite"></p>
+<p id="status" role="status" aria-live="polite"></p><p id="preferences" class="fine"></p>
 </section>
 <nav class="actions" aria-label="Вернуться к пандам"><a class="btn" href="./panda-voice-pilot.html">🐼 Panda AI</a><a class="btn" href="./panda-street-ai-preview.html">🌃 Panda Street AI</a></nav>
 </main><script type="module">
@@ -20,6 +20,7 @@ import {readSharedPandaProfile,setSharedPandaMemoryEnabled,sharedPandaMemoryEnab
 const consent=document.getElementById('consent'),status=document.getElementById('status');
 function refresh(){consent.checked=sharedPandaMemoryEnabled(localStorage);const p=readSharedPandaProfile(localStorage);
  const count=Object.keys(p).filter(key=>!['family','siblingAges'].includes(key)).length+Object.keys(p.family||{}).length+Object.keys(p.siblingAges||{}).length;
+ document.getElementById('preferences').textContent=consent.checked?[p.hobby?'Увлечение: '+p.hobby:'',p.studyFocus?'Учебная цель: '+p.studyFocus:''].filter(Boolean).join(' · '):'';
  status.textContent=consent.checked?'Память включена. Сохранено подтверждённых сведений: '+count+'.':'Память отключена. Подтверждённые сведения не сохраняются.'}
 consent.addEventListener('change',()=>{try{setSharedPandaMemoryEnabled(localStorage,consent.checked);refresh()}catch(e){status.textContent='Не удалось изменить настройки: '+e.message;consent.checked=false}});
 document.getElementById('clear').addEventListener('click',()=>{if(!confirm('Удалить все сохранённые личные факты из этого браузера?'))return;clearSharedPandaProfile(localStorage);refresh()});
