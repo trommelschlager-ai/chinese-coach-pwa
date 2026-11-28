@@ -1365,6 +1365,49 @@ html.course-layout body #app[data-view]:not([data-view='1']) #pg433 button:not(:
 @media (prefers-reduced-motion:reduce){html.course-layout body #app[data-view]:not([data-view='1']) #pg433 *{animation:none!important;transition:none!important}}
 
 </style>
+<style id="panda-premium-compact">
+
+/* Premium compact standard: dedicated scroll area + stable bottom navigation. */
+html.course-layout body{background:#102d25!important}
+html.course-layout body #app[data-view]:not([data-view='1']){
+ display:flex!important;flex-direction:column!important;height:100dvh!important;min-height:0!important;max-height:100dvh!important;overflow:hidden!important;background:#102d25!important;
+}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433{display:flex!important;flex-direction:column!important;flex:1 1 0!important;height:100%!important;min-height:0!important;background:#102d25!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-header{flex:0 0 auto!important;padding:calc(6px + env(safe-area-inset-top,0px)) 12px 9px!important;background:#102d25!important;border-bottom:1px solid #536c5d!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-topline{height:44px!important;min-height:44px!important;gap:8px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-title strong{color:#f5f2eb!important;font-size:21px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-title small{color:#e1c38a!important;font-size:11px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-pill{color:#f5f2eb!important;background:#24483d!important;font-size:11px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-back{background:#24483d!important;color:#f5f2eb!important;border:1px solid #687c6b!important;width:44px!important;height:44px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-tabs{margin-top:5px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-tabs button{color:#e4e6d9!important;min-height:44px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-tabs button.active{background:#e0c18a!important;border-color:#e0c18a!important;color:#102d25!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-tabs::after{background:linear-gradient(90deg,#e0c18a var(--pg2-progress),#36594c var(--pg2-progress))!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-content{flex:1 1 0!important;height:auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:contain!important;background:#102d25!important;padding:12px 12px 16px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-content>:is(h1,h2,.pill-title,.builder-title),html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .about-approved-story-head h1{color:#f5f2eb!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-footer{position:relative!important;inset:auto!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr)!important;gap:8px!important;align-items:stretch!important;background:#102d25!important;border-top:1px solid #536c5d!important;padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px))!important;box-shadow:none!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-footer .pg433-counter{display:none!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-footer button{width:100%!important;height:52px!important;min-height:52px!important;max-height:52px!important;font-size:15px!important;line-height:1.15!important;white-space:normal!important;overflow-wrap:anywhere!important;margin:0!important;padding:6px 9px!important;border-radius:11px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-footer #back{background:#102d25!important;color:#f5f2eb!important;border:1px solid #c6aa76!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-footer #next{background:#245c49!important;color:#fffefa!important;border:1px solid #c6aa76!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .pg433-footer #next:disabled{opacity:.55!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .word-row.about-myday-word{background:#f5f2eb!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 :is(.about-quiz-photo,.about-dialogue-image,.about-chat-photo){display:none!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .about-dialogue-head{display:block!important;grid-template-columns:1fr!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .panda-ai-shortcut{grid-template-columns:minmax(0,1fr) auto!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .quiz-word{color:#17483d!important;background:#f5f2eb!important;font-size:clamp(28px,10vw,50px)!important;line-height:1.3!important;overflow-wrap:anywhere!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .section-panel{padding:14px!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .choice{font-size:clamp(15px,4.5vw,19px)!important}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-hanzi-link{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;margin:9px 0;padding:10px 12px;text-decoration:none;background:#f5f2eb;color:#17483d;border:1px solid #c6aa76;border-radius:10px;font-weight:700;font-size:14px}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-hanzi-link small{display:block;color:#52675d;font-size:12px;font-weight:500;margin-top:3px}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform{margin:12px 0;padding:13px;background:#f5f2eb;border-radius:12px;color:#202a27}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform h2{font-size:18px!important;margin-bottom:8px}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform p{padding:6px 0;border-bottom:1px solid #deded3}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform p:last-child{border:0}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform b{display:block;color:#17483d;font-size:22px}
+html.course-layout body #app[data-view]:not([data-view='1']) #pg433 .premium-transform small{font-size:13px;color:#52675d}
+
+</style>
 </head>
 <body>
 <div class="app" id="app">
@@ -1820,6 +1863,7 @@ function newWords() {
       '<div class="about-myday-tones">' + toneStrokes(word.tones) + '</div>' +
       '<div class="about-myday-copy">' + translate([word.zh,word.py,word.ru]) + '</div>' +
       audioButton(word.zh,playIcon) + '</article>').join('') + '</div>' +
+    '<a class="premium-hanzi-link" href="./hanzi-lab.html"><span>PANDA HANZI · Пропись<small>Дополнительная практика базовых иероглифов</small></span><span aria-hidden="true">→</span></a>' +
     (canPlay ? '' : '<button type="button" class="about-manual-complete" data-words-read="1">✓ Прочитал и повторил все 6 слов</button>') + safeStatus();
 }
 
@@ -1964,6 +2008,7 @@ function grammar() {
     '<div class="controls grammar-actions about-grammar-actions"><button type="button" class="soft" data-gram-undo>Отменить</button>' +
     '<button type="button" class="soft" data-gram-clear>Очистить</button>' +
     '<button type="button" class="primary" data-gram-check>✓ Проверить</button></div>' +
+    '<section class="premium-transform"><h2>Одна фраза — три варианта</h2><p><b lang="zh-Hans">我工作。</b><small>Wǒ gōngzuò. · Я работаю.</small></p><p><b lang="zh-Hans">我不工作。</b><small>Wǒ bù gōngzuò. · Я не работаю.</small></p><p><b lang="zh-Hans">你工作吗？</b><small>Nǐ gōngzuò ma? · Ты работаешь?</small></p></section>' +
     safeStatus() + (state.grammarDone && !feedback ? '<p class="feedback good">✓ Верно!</p>' : '');
 }
 
