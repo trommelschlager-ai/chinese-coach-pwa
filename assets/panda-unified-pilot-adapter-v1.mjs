@@ -94,24 +94,98 @@ function planLiving(raw,previous,recent,lookupExact){
   spoken:{known:true,pinyin,translation,toneVerified:false}};
 }
 
+
+const morningQuestions={
+ hours:['那就好！你睡了几个小时？','Nà jiù hǎo! Nǐ shuì le jǐ ge xiǎoshí?','Хорошо! Сколько часов ты спал(а)?'],
+ wake:['你今天几点起床？','Nǐ jīntiān jǐ diǎn qǐchuáng?','Во сколько ты сегодня встал(а)?'],
+ breakfast:['你今天吃早饭了吗？','Nǐ jīntiān chī zǎofàn le ma?','Ты сегодня завтракал(а)?'],
+ food:['你早饭吃了什么？','Nǐ zǎofàn chī le shénme?','Что ты ел(а) на завтрак?'],
+ drink:['你今天喝咖啡了吗？','Nǐ jīntiān hē kāfēi le ma?','Ты сегодня пил(а) кофе?'],
+ next:['你接下来想做什么？','Nǐ jiēxiàlai xiǎng zuò shénme?','Что ты хочешь делать дальше?']
+};
+const morningNumbers={'一':'yī','两':'liǎng','二':'èr','三':'sān','四':'sì','五':'wǔ','六':'liù','七':'qī','八':'bā','九':'jiǔ','十':'shí','十一':'shíyī','十二':'shí’èr'};
+const morningDigits={'一':1,'两':2,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,'十一':11,'十二':12};
+const morningFoods={'鸡蛋':['jīdàn','яйца'],'面包':['miànbāo','хлеб'],'粥':['zhōu','кашу'],'米饭':['mǐfàn','рис'],'面条':['miàntiáo','лапшу']};
+const morningActions={'休息':['xiūxi','отдохнуть'],'学中文':['xué Zhōngwén','учить китайский'],'学习中文':['xuéxí Zhōngwén','учить китайский'],'跑步':['pǎobù','побегать'],'去公园':['qù gōngyuán','пойти в парк']};
+const capMorning=s=>s[0].toUpperCase()+s.slice(1);
+function morningSlot(line){
+ const k=livingClean(line);
+ if(/^(?:那就好|真不错)?你(?:昨晚)?睡了几个小时$/.test(k))return 'hours';
+ if(k==='真不错你几点起床的'||k===livingClean(morningQuestions.wake[0]))return 'wake';
+ return ['breakfast','food','drink','next'].find(s=>livingClean(morningQuestions[s][0])===k)||null;
+}
+function morningLine(tuple,lookupExact,spoken,slot,fact){
+ const [hanzi,pinyin,ru]=tuple, audio=typeof lookupExact==='function'?lookupExact(hanzi):null;
+ return {kind:'living-reaction',line:{hanzi,pinyin,ru},audio:audio?.src?audio:null,voiceStatus:audio?.src?'registered-exact':'text-only',
+  continuesLearnerTurn:false,toneVerified:false,semantic:{intent:'living-reaction',topic:'morning',slot,fact},spoken:{known:true,pinyin:spoken[0],translation:spoken[1],toneVerified:false}};
+}
+function morningAnswer(raw,slot,facts,lookupExact){
+ const k=livingClean(raw);
+ if(['不想说','我不想说'].includes(k))return morningLine(['好的。我们聊点别的吧！','Hǎo de. Wǒmen liáo diǎn bié de ba!','Хорошо. Поговорим о другом!'],lookupExact,[k.startsWith('我')?'Wǒ bù xiǎng shuō.':'Bù xiǎng shuō.','Не хочу говорить.'],'stop',null);
+ let spoken,fact,next;
+ if(slot==='hours'||slot==='wake'){
+  const m=slot==='hours'?k.match(/^(我)?(睡了)?(十一|十二|[一两二三四五六七八九十])个小时$/):k.match(/^(我)?(今天)?(十一|十二|[一两二三四五六七八九十])点(起床)?(的)?$/);
+  if(!m)return null;
+  const n=morningDigits[m[3]],py=morningNumbers[m[3]];
+  if(slot==='hours'){
+   spoken=[capMorning((m[1]?'wǒ ':'')+(m[2]?'shuì le ':'')+py+' ge xiǎoshí.') , 'Спал(а) '+n+' ч.'];fact=n;next=facts.wake!==undefined?'breakfast':'wake';
+  }else{
+   spoken=[capMorning((m[1]?'wǒ ':'')+(m[2]?'jīntiān ':'')+py+' diǎn'+(m[4]?' qǐchuáng':'')+(m[5]?' de':'')+'.'),'Встал(а) в '+n+':00.'];fact=n;next='breakfast';
+  }
+ }else if(slot==='breakfast'||slot==='drink'){
+  const food=slot==='breakfast';
+  const yes=food?{'吃了':'Chī le.','我吃了早饭':'Wǒ chī le zǎofàn.','吃了早饭':'Chī le zǎofàn.'}:{'喝了':'Hē le.','我喝了咖啡':'Wǒ hē le kāfēi.','喝了咖啡':'Hē le kāfēi.'};
+  const no=food?{'没吃':'Méi chī.','我没吃早饭':'Wǒ méi chī zǎofàn.','没吃早饭':'Méi chī zǎofàn.'}:{'没喝':'Méi hē.','我没喝咖啡':'Wǒ méi hē kāfēi.','没喝咖啡':'Méi hē kāfēi.'};
+  if(Object.hasOwn(yes,k)){fact=true;spoken=[yes[k],food?'Да, завтракал(а).':'Да, пил(а) кофе.'];}
+  else if(Object.hasOwn(no,k)){fact=false;spoken=[no[k],food?'Не завтракал(а).':'Не пил(а) кофе.'];}
+  else return null;
+  next=food?(fact?'food':'drink'):'next';
+ }else if(slot==='food'||slot==='next'){
+  const m=slot==='food'?k.match(/^(我)?(吃了)?(鸡蛋|面包|粥|米饭|面条)$/):k.match(/^(我)?(想)?(休息|学中文|学习中文|跑步|去公园)$/);
+  if(!m)return null;
+  const [py,ru]=(slot==='food'?morningFoods:morningActions)[m[3]];
+  spoken=[capMorning((m[1]?'wǒ ':'')+(m[2]?(slot==='food'?'chī le ':'xiǎng '):'')+py+'.'),slot==='food'?'Ел(а) '+ru+'.':'Хочу '+ru+'.'];fact=m[3];next=slot==='food'?'drink':null;
+ }else return null;
+ const close=slot==='next'&&fact==='休息'?['那你休息一下吧。','Nà nǐ xiūxi yíxià ba.','Тогда немного отдохни.']:['谢谢你介绍你的一天。','Xièxie nǐ jièshào nǐ de yì tiān.','Спасибо, что рассказал(а) о своём дне.'];
+ return morningLine(next?morningQuestions[next]:close,lookupExact,spoken,slot,fact);
+}
+
 export function createSemanticPilot({enabled=false,lookupExact=null,correctGrammar=null,metadata=null,allowTextOnly=false,livingConversation=false}={}){
- let state=initialSemanticState(),pending=false,recent=[];
+ let state=initialSemanticState(),pending=false,recent=[],morning=null,expectedMorning=null;
+ function routeLiving(raw){
+  const previous=state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null;
+  const slot=morning&&morningSlot(previous);
+  let living=slot?morningAnswer(raw,slot,morning,lookupExact):null;
+  if(living){
+   if(living.semantic.slot==='stop')morning=null;
+   else morning={...morning,[slot]:living.semantic.fact};
+  }else{
+   // An unrelated turn invalidates the narrow chain, never attach a later short answer to it.
+   morning=null;
+   living=planLiving(raw,previous,recent,lookupExact);
+   if(living?.semantic.topic==='sleep'&&morningSlot(living.line.hanzi))morning={};
+  }
+  expectedMorning=morning&&living?livingClean(living.line.hanzi):null;
+  return living;
+ }
  return {
-  reset(){state=initialSemanticState();pending=false;recent=[];},
+  reset(){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;},
   observePanda(line,{continuesLearnerTurn=false,legacyFamily=false}={}){
+   if(morning&&livingClean(line?.hanzi)!==expectedMorning){morning=null;expectedMorning=null;}
    if(line?.hanzi)recent=[...recent,livingClean(line.hanzi)].slice(-24);
    state=reduceSemanticContext(state,{type:'panda',line,continuesLearnerTurn:pending&&continuesLearnerTurn===true,legacyFamily}).state;pending=false;
   },
   planLiving(raw,{mode='graded',confidence=null}={}){
    if(!enabled||!livingConversation||mode!=='free-chat'||!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85)))return null;
-   const living=planLiving(raw,state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null,recent,lookupExact);
+   const living=routeLiving(raw);
    if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;}
    return living;
   },
   plan(raw,{mode='graded',confidence=null}={}){
-   if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];return null;}
+   if(!enabled||mode!=='free-chat'){state=initialSemanticState();pending=false;recent=[];morning=null;expectedMorning=null;return null;}
+   if(!(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){morning=null;expectedMorning=null;}
    if(livingConversation&&(confidence===null||(Number.isFinite(confidence)&&confidence>=.85))){
-    const living=planLiving(raw,state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null,recent,lookupExact);
+    const living=routeLiving(raw);
     if(living){state=reduceSemanticContext(state,{type:'learner',raw}).state;pending=false;return living;}
    }
    const oldMemory=state.hobbyMemory,oldTopics=state.topicMemory;
@@ -132,6 +206,7 @@ export function createSemanticPilot({enabled=false,lookupExact=null,correctGramm
    }
    return {...reply,semantic:step.semantic,...(spoken?{spoken:inline?{...spoken,known:false,hanzi:String(raw),probable:inline.ru,correction:{...inline,inlineConversation:true,retry:'Продолжай разговор. Исправленный вариант можно повторить позже.'}}:spoken}:{}),inlineCorrection:!!inline};
   },
-  snapshot(){return JSON.parse(JSON.stringify(state));}
+  snapshot(){return JSON.parse(JSON.stringify(state));},
+  morningSnapshot(){return morning?{...morning}:null;}
  };
 }
