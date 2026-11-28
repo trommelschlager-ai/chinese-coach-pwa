@@ -2,7 +2,7 @@ name: Import Panda AI 86 owner recordings
 on:
   push:
     branches: [feature/panda-audio-86-20261128]
-    paths: [Panda_AI_86_MP3.zip]
+    paths: [Panda_AI_86_MP3.zip, .github/workflows/panda-audio-86-import.yml, scripts/import-panda-audio-86.py]
 permissions:
   contents: write
 concurrency:
@@ -17,6 +17,10 @@ jobs:
         with:
           node-version: '22'
       - run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends ffmpeg
+          fi
           command -v ffmpeg
           python3 scripts/import-panda-audio-86.py
           node --test scripts/verify-panda-voice-20261128.mjs scripts/verify-panda-voice-20261127.mjs tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs tests/offline-active-assets-v434.test.mjs tests/panda-living-conversation-v1.test.mjs
