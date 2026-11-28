@@ -30,7 +30,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
  }
  const state={turn:0,mode:'nonstop',prompt:null,pending:null,topic:1,
   questions:[],profile:{...readSharedPandaProfile(storage),recentQuestions:[]},recent:[]};
- const semantic=createSemanticPilot({enabled:unified,lookupExact:typeof lookupMale==='function'?lookupMale:null,metadata:pilotLearnerMetadata,allowTextOnly:true});
+ const semantic=createSemanticPilot({enabled:unified,lookupExact:typeof lookupMale==='function'?lookupMale:null,metadata:pilotLearnerMetadata,allowTextOnly:true,livingConversation:true});
  const observe=(p,linked=false)=>{if(unified&&state.mode==='nonstop'&&p?.zh)semantic.observePanda({hanzi:p.zh,pinyin:p.py,ru:p.ru},{continuesLearnerTurn:linked});};
  const allowed=()=>{try{return accessibleLessons(storage,1)}catch{return [1]}};
  const remember=(input,result)=>{

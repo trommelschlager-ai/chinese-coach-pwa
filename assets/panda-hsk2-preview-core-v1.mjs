@@ -1027,7 +1027,7 @@ if(entry.kind==='hsk2'){
 // Load only on the explicit experimental URL, fail open to the established brain.
 if(semanticRequested){
  Promise.all([import('./panda-unified-pilot-adapter-v1.mjs'),import('./panda-unified-pilot-metadata-v1.mjs')]).then(([adapter,meta])=>{
-  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip,correctGrammar:correctPandaGrammarV2,metadata:meta.pilotLearnerMetadata});
+  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip,correctGrammar:correctPandaGrammarV2,metadata:meta.pilotLearnerMetadata,livingConversation:true});
   if(semanticFreeChat()){const last=state.history.at(-1);if(last?.who==='panda')observeSemanticPanda(last);}
   document.documentElement.dataset.pandaSemanticPilot='ready';
  }).catch(()=>{semanticPilot=null;document.documentElement.dataset.pandaSemanticPilot='unavailable';});
