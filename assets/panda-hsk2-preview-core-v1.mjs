@@ -996,6 +996,7 @@ window.PandaApprovedBridge337={
  getAudioLevel:()=>audio&&!audio.paused&&!audio.ended?pandaVisualAudioLevel:null,
  toggleSpeed:()=>$('speed-toggle').click(),
  setMode:mode=>{if(mode==='short'||mode==='nonstop')setMode(mode)},
+ pauseForTonePractice:()=>{cancelFollowup();stopRecognition();stopAudio();},
  send:value=>submit(value),mic:()=>startRecognition(),note:text=>note(text)
 };
 

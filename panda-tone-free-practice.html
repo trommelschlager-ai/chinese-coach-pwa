@@ -1,0 +1,81 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Panda Tone · Свободная фраза</title><style>
+*{box-sizing:border-box}body{margin:0;background:#faf2ff;color:#43255f;font:15px/1.45 system-ui,sans-serif}main{max-width:540px;margin:auto;padding:14px;display:grid;gap:12px}h1{font-size:22px;margin:0}p{margin:0}.card{background:#fff;border:1px solid #e7d4f1;border-radius:16px;padding:13px;display:grid;gap:10px}.row{display:flex;gap:8px}button{font:700 14px system-ui;min-height:44px;border:1px solid #cdb5e3;border-radius:12px;padding:9px;background:#f2e6fc;color:#563283;flex:1;cursor:pointer}button:first-child{background:#7951bd;color:white}button:disabled{opacity:.5;cursor:default}svg{width:100%;height:auto;background:#fff;border:1px solid #eadcf5;border-radius:12px}.note{font-size:12px;color:#705783}label{display:flex;gap:8px;align-items:center}input[type=checkbox]{width:18px;height:18px}a{color:#5c338c}
+</style></head><body><main><h1>🐼 Panda Tone · Свободная фраза</h1><p>Произнеси любую короткую китайскую фразу. Посмотри, как меняется высота голоса. Это не проверка правильности тонов.</p>
+<section class="card"><div class="row"><button id="start" type="button">🎙 Записать до 8 с</button><button id="stop" type="button" disabled>■ Стоп</button></div><p id="status" role="status" aria-live="polite">Микрофон включится только после нажатия.</p><button id="replay" disabled type="button">🔊 Послушать себя</button>
+<svg viewBox="0 0 340 152" role="img" aria-label="Измеренная высота голоса по времени"><path stroke="#e8def0" stroke-dasharray="4 4" d="M25 25H328 M25 65H328 M25 105H328 M25 25V122 M100.75 25V122 M176.5 25V122 M252.25 25V122 M328 25V122"/><path id="curve" d="" stroke="#7951bd" stroke-width="2.5" fill="none" stroke-linecap="round"/><g fill="#765b88" font-size="10"><text x="25" y="141">0</text><text x="97" y="141">2</text><text x="173" y="141">4</text><text x="249" y="141">6</text><text x="315" y="141">8 с</text><text x="25" y="15">Выше ↑</text></g></svg><p id="detail" class="note">График использует фактическое время записи, без соединения пауз. Высота относительно медианы голоса.</p><p class="note">Нет автоматического деления на слоги. Запись обрабатывается в памяти браузера и не отправляется на сервер.</p></section>
+<section class="card"><strong>Моя практика на этом устройстве</strong><label><input type="checkbox" id="save">Сохранять только число завершённых записей</label><p id="stats" role="status">Статистика выключена.</p><button id="clear" type="button">Удалить счётчик</button><p class="note">Не сохраняются звук, слова, графики или оценки. Счётчик не измеряет точность произношения.</p></section></main>
+<script type="module">
+import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
+import {analysePhraseBlob} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
+const $=id=>document.getElementById(id);
+let session=null,opening=false,closed=false,epoch=0,clip=null,url=null;
+const key='panda-tone-practice-count-v1';
+let saved=false,count=0;
+try{const data=JSON.parse(localStorage.getItem(key)||'null');if(data?.enabled===true&&Number.isSafeInteger(data.count)&&data.count>=0){saved=true;count=data.count}}catch{}
+$('save').checked=saved;
+function showStats(){ $('stats').textContent=saved?'Завершённых записей: '+count:'Статистика выключена.'; }
+function persist(){try{if(saved)localStorage.setItem(key,JSON.stringify({enabled:true,count}));else localStorage.removeItem(key)}catch{$('stats').textContent='Хранилище браузера недоступно.'}}
+$('save').onchange=()=>{saved=$('save').checked;if(!saved)count=0;showStats();persist()};
+$('clear').onclick=()=>{count=0;saved=false;$('save').checked=false;showStats();persist()};showStats();
+function clearClip(){clip?.pause();clip=null;if(url)URL.revokeObjectURL(url);url=null;$('replay').disabled=true}
+function release(s){clearInterval(s.timer);clearTimeout(s.deadline);try{s.source?.disconnect();s.analyser?.disconnect()}catch{}s.stream?.getTracks().forEach(t=>t.stop());try{s.ctx?.close().catch(()=>{})}catch{}}
+function render(points){
+ const ordered=points.map(p=>p.hz).sort((a,b)=>a-b),m=ordered[Math.floor(ordered.length/2)];
+ if(points.length<8||!m){$('curve').setAttribute('d','');return false}
+ let d='',previous=null;
+ for(const p of points){const st=12*Math.log2(p.hz/m),x=25+303*Math.max(0,Math.min(8,p.t))/8,y=65-6.5*Math.max(-7,Math.min(7,st));const pen=previous&&p.t-previous.t<=.085&&Math.abs(12*Math.log2(p.hz/previous.hz))<5?'L':'M';d+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';previous=p}
+ $('curve').setAttribute('d',d);return true;
+}
+function finish(save=true){
+ const s=session;if(!s)return;session=null;
+ clearInterval(s.timer);clearTimeout(s.deadline);
+ if(s.rec?.state==='recording'){try{s.rec.stop()}catch{}}
+ release(s);$('start').disabled=false;$('stop').disabled=true;
+ if(!save)return;
+ const ok=render(s.points);
+ $('status').textContent=ok?'Предварительный контур измерен во время записи. Это не оценка китайских тонов.':'Недостаточно устойчивого голоса. Попробуй в тихом месте.';
+ $('detail').textContent='Точек F0: '+s.points.length+'. Пропуски и резкие скачки не соединяются. Слоговые границы не определены.';
+ if(s.heard>0&&saved){count=Math.min(Number.MAX_SAFE_INTEGER,count+1);showStats();persist()}
+}
+$('start').onclick=async()=>{
+ if(opening||session||closed)return;
+ if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){$('status').textContent='Открой страницу по HTTPS в Chrome.';return}
+ opening=true;const token=++epoch;$('start').disabled=true;clearClip();$('curve').setAttribute('d','');$('status').textContent='Запрашиваю микрофон…';
+ const s={stream:null,ctx:null,points:[],chunks:[],heard:0};
+ try{
+  s.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:true}});
+  if(closed||token!==epoch||document.hidden){release(s);return}
+  const AC=window.AudioContext||window.webkitAudioContext;s.ctx=new AC();await s.ctx.resume();
+  if(closed||token!==epoch||document.hidden){release(s);return}
+  s.analyser=s.ctx.createAnalyser();s.analyser.fftSize=4096;s.source=s.ctx.createMediaStreamSource(s.stream);s.source.connect(s.analyser);
+  session=s;const buffer=new Float32Array(4096),begin=performance.now();
+  if(typeof MediaRecorder!=='undefined'){try{
+    s.rec=new MediaRecorder(s.stream);s.rec.ondataavailable=e=>{if(e.data.size)s.chunks.push(e.data)};
+    s.rec.onstop=async()=>{
+      if(closed||token!==epoch||!s.chunks.length)return;
+      const blob=new Blob(s.chunks,{type:s.rec.mimeType});s.chunks=[];
+      if(blob.size<=128)return;
+      clearClip();url=URL.createObjectURL(blob);$('replay').disabled=false;
+      try{
+       const result=await analysePhraseBlob(blob,{estimatePitch,AudioContextClass:window.AudioContext||window.webkitAudioContext});
+       if(closed||token!==epoch||session||document.hidden||!result.available)return;
+       const ok=render(result.frames);
+       $('status').textContent=ok?'Контур всей записи измерен. Это не оценка китайских тонов.':'Недостаточно устойчивых точек F0 в записи. Это не ошибка произношения.';
+       $('detail').textContent='Точек F0: '+result.frames.length+'. Устойчивых участков: '+result.runs.length+'. Участки не равны слогам. Слоговые границы не определены.';
+      }catch{
+       if(!closed&&token===epoch&&!session&&!document.hidden)$('detail').textContent+=' Декодирование записи недоступно: показаны измерения во время записи.';
+      }
+    };
+    s.rec.start()
+  }catch{}}
+  $('stop').disabled=false;$('status').textContent='Говори естественно. Запись остановится через 8 секунд.';
+  s.timer=setInterval(()=>{if(session!==s)return;s.analyser.getFloatTimeDomainData(buffer);let sq=0;for(let i=0;i<buffer.length;i+=4)sq+=buffer[i]**2;if(Math.sqrt(sq/(buffer.length/4))>.012)s.heard++;const p=estimatePitch(buffer,s.ctx.sampleRate);if(p&&p.clarity>.78)s.points.push({t:(performance.now()-begin)/1000,hz:p.hz});},32);
+  s.deadline=setTimeout(()=>finish(),8000);
+ }catch{release(s);if(session===s)session=null;$('status').textContent='Микрофон недоступен. Проверь разрешение Chrome.';}
+ finally{opening=false;if(!session&&!closed)$('start').disabled=false}
+};
+$('stop').onclick=()=>finish();
+$('replay').onclick=async()=>{if(!url||session||opening)return;try{if(clip&&!clip.paused){clip.pause();return}clip=new Audio(url);await clip.play()}catch{$('status').textContent='Не удалось воспроизвести запись.'}};
+function shutdown(){closed=true;epoch++;finish(false);clearClip()}
+window.addEventListener('pagehide',shutdown);document.addEventListener('visibilitychange',()=>{if(document.hidden){epoch++;finish(false);clearClip()}});
+</script></body></html>

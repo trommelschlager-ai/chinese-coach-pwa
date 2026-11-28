@@ -3806,6 +3806,11 @@
     "./assets/panda-street-sakura-reference-v567.webp",
     "./assets/panda-street-approved-v582.css?v=588",
     "./assets/panda-street-approved-art-v582.js?v=588",
-    "./assets/panda-street-hsk1-approved-v588.js?v=1"
+    "./assets/panda-street-hsk1-approved-v588.js?v=1",
+    "./panda-tone-free-practice.html",
+    "./assets/panda-tone-phrase-ref-v567/bushi.mp3",
+    "./assets/panda-tone-phrase-ref-v567/yitian.mp3",
+    "./panda-hsk2-tone-sentence-pilot.html",
+    "./assets/panda-sentence-align-v4.mjs?v=8"
   ]
 }

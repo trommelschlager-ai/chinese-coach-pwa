@@ -116,7 +116,7 @@ h1{font-size:16px;margin:0 0 2px;text-align:center}
 <div class="syllables" id="syllables" role="group" aria-label="Слоги выбранного слова или фразы"></div>
 <svg id="large" class="chart" viewBox="0 0 340 150" role="img" aria-label="Сравнение контура высоты выбранного слога"><path d="M25 35H323 M25 73H323 M25 111H323" stroke="#e8daed" stroke-dasharray="4 5"/><path id="reference-line" stroke="#b09bbf" stroke-width="3.8" stroke-dasharray="7 6" fill="none"/><path id="learner-line" stroke="#7a50b5" stroke-width="3.8" fill="none"/><text x="8" y="14" fill="#886a98" font-size="10">Выше ↑</text><text x="267" y="142" fill="#886a98" font-size="10">Время →</text></svg>
 <div class="legend"><span><i class="line ref"></i> Образец урока</span><span><i class="line"></i> Твой голос</span></div>
-<details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
+<div class="actions" style="margin:8px 0"><button type="button" class="action alt" id="review-ref" disabled>🔊 Участок образца</button><button type="button" class="action alt" id="review-mine" disabled>🔊 Мой участок</button></div><p class="small" id="review-status" aria-live="polite">Прослушай выбранный участок и проверь, соответствует ли он иероглифу. Границы предварительные.</p><details id="boundary-controls" hidden><summary>⚙️ Уточнить границы слогов</summary><p class="boundary-hint">Границы приблизительные. Если разделитель оказался не там, сдвинь ползунок. Меняется только отображение графика, не запись.</p><div id="boundary-sliders"></div><button type="button" id="boundary-reset">↻ Вернуть автоматические границы</button></details><label id="boundary-verified-row" class="boundary-hint" hidden><input id="boundary-verified" type="checkbox"> Я прослушал обе записи и проверил границы слогов в образце и своей записи.</label><p id="detail" class="note">Измерение запускается после нажатия на микрофон. Это учебное сравнение, не вердикт о произношении.</p>
 </section>
 <section class="panel"><h2>Почему пока без оценки?</h2><p class="small">Программа измеряет частоту F0 и предварительно делит непрерывную речь на слоги по времени и тихим участкам. В быстрой связной речи границы могут быть неверными. Учитываются изменения третьего тона: <b>我早</b> ≈ wó zǎo, <b>洗脸</b> ≈ xí liǎn. Для полноценной проверки нужны точное выравнивание слогов и проверка фонетики.</p></section>
 <footer>🔒 Запись обрабатывается локально в браузере и не отправляется на сервер. Не сохраняется в аккаунте. Образец — существующая запись урока, не заявленная как живая носительница. Для микрофона требуется HTTPS, разрешение браузера и поддержка записи звука.</footer></details>
@@ -124,9 +124,9 @@ h1{font-size:16px;margin:0 0 2px;text-align:center}
 <script type="module">
 import {estimatePitch} from './assets/panda-tone-analytics-v457.mjs?v=468';
 import {estimatePitchAutocorrelation} from './assets/panda-tone-recording-analysis-v465.mjs?v=467';
-import {alignFromReference} from './assets/panda-sentence-align-v4.mjs?v=4';
+import {alignFromReference,reviewInterval,intervalPitchEvidence,compareContextualPitch,sentencePitchWindowSize,sentenceLivePitchFrame,sentencePitchPen,SENTENCE_LIVE_POLL_MS} from './assets/panda-sentence-align-v4.mjs?v=8';
 const $=id=>document.getElementById(id);
-const phraseOptions=[{"id":"daily","zh":"我早上洗脸。","py":"Wǒ zǎoshang xǐliǎn.","ru":"Я утром умываюсь.","rule":"洗脸: 3 + 3 → 2 + 3. 我早上: возможен переход 3 → 2 в связной речи.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон"},{"zh":"早","py":"zǎo","tone":"3-й словарный тон"},{"zh":"上","py":"shang","tone":"нейтральный тон"},{"zh":"洗","py":"xǐ","tone":"3-й словарный тон"},{"zh":"脸","py":"liǎn","tone":"3-й словарный тон"}],"weights":[1,1,0.65,1,1]},{"id":"wake","zh":"起床","py":"qǐchuáng","ru":"Вставать с постели","rule":"","tokens":[{"zh":"起","py":"qǐ","tone":"3-й словарный тон"},{"zh":"床","py":"chuáng","tone":"2-й словарный тон"}],"weights":[1,1]},{"id":"wash","zh":"洗脸","py":"xǐliǎn","ru":"Умываться","rule":"Два третьих тона: первый обычно звучит как второй (xíliǎn).","tokens":[{"zh":"洗","py":"xǐ","tone":"3-й словарный тон"},{"zh":"脸","py":"liǎn","tone":"3-й словарный тон"}],"weights":[1,1]},{"id":"brush","zh":"刷牙","py":"shuāyá","ru":"Чистить зубы","rule":"","tokens":[{"zh":"刷","py":"shuā","tone":"1-й словарный тон"},{"zh":"牙","py":"yá","tone":"2-й словарный тон"}],"weights":[1,1]},{"id":"breakfast","zh":"吃早饭","py":"chī zǎofàn","ru":"Завтракать","rule":"","tokens":[{"zh":"吃","py":"chī","tone":"1-й словарный тон"},{"zh":"早","py":"zǎo","tone":"3-й словарный тон"},{"zh":"饭","py":"fàn","tone":"4-й словарный тон"}],"weights":[1,1,1]},{"id":"work","zh":"去上班","py":"qù shàngbān","ru":"Идти на работу","rule":"","tokens":[{"zh":"去","py":"qù","tone":"4-й словарный тон"},{"zh":"上","py":"shàng","tone":"4-й словарный тон"},{"zh":"班","py":"bān","tone":"1-й словарный тон"}],"weights":[1,1,1]},{"id":"sleep","zh":"睡觉","py":"shuìjiào","ru":"Ложиться спать","rule":"","tokens":[{"zh":"睡","py":"shuì","tone":"4-й словарный тон"},{"zh":"觉","py":"jiào","tone":"4-й словарный тон"}],"weights":[1,1]},{"id":"question","zh":"你每天几点起床？","py":"Nǐ měitiān jǐ diǎn qǐchuáng?","ru":"Во сколько ты каждый день встаёшь?","rule":"Цепочки третьих тонов зависят от смысловых групп и темпа речи.","tokens":[{"zh":"你","py":"nǐ","tone":"3-й словарный тон"},{"zh":"每","py":"měi","tone":"3-й словарный тон"},{"zh":"天","py":"tiān","tone":"1-й словарный тон"},{"zh":"几","py":"jǐ","tone":"3-й словарный тон"},{"zh":"点","py":"diǎn","tone":"3-й словарный тон"},{"zh":"起","py":"qǐ","tone":"3-й словарный тон"},{"zh":"床","py":"chuáng","tone":"2-й словарный тон"}],"weights":[1,1,1,1,1,1,1]},{"id":"seven","zh":"我每天七点起床。","py":"Wǒ měitiān qī diǎn qǐchuáng.","ru":"Я каждый день встаю в семь часов.","rule":"В соседних третьих тонах возможен переход 3 → 2.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон"},{"zh":"每","py":"měi","tone":"3-й словарный тон"},{"zh":"天","py":"tiān","tone":"1-й словарный тон"},{"zh":"七","py":"qī","tone":"1-й словарный тон"},{"zh":"点","py":"diǎn","tone":"3-й словарный тон"},{"zh":"起","py":"qǐ","tone":"3-й словарный тон"},{"zh":"床","py":"chuáng","tone":"2-й словарный тон"}],"weights":[1,1,1,1,1,1,1]},{"id":"eight","zh":"我每天八点起床。","py":"Wǒ měitiān bā diǎn qǐchuáng.","ru":"Я каждый день встаю в восемь часов.","rule":"В соседних третьих тонах возможен переход 3 → 2.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон"},{"zh":"每","py":"měi","tone":"3-й словарный тон"},{"zh":"天","py":"tiān","tone":"1-й словарный тон"},{"zh":"八","py":"bā","tone":"1-й словарный тон"},{"zh":"点","py":"diǎn","tone":"3-й словарный тон"},{"zh":"起","py":"qǐ","tone":"3-й словарный тон"},{"zh":"床","py":"chuáng","tone":"2-й словарный тон"}],"weights":[1,1,1,1,1,1,1]},{"id":"after","zh":"我起床以后刷牙。","py":"Wǒ qǐchuáng yǐhòu shuāyá.","ru":"После подъёма я чищу зубы.","rule":"Третий тон перед другим третьим часто переходит во второй.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон"},{"zh":"起","py":"qǐ","tone":"3-й словарный тон"},{"zh":"床","py":"chuáng","tone":"2-й словарный тон"},{"zh":"以","py":"yǐ","tone":"3-й словарный тон"},{"zh":"后","py":"hòu","tone":"4-й словарный тон"},{"zh":"刷","py":"shuā","tone":"1-й словарный тон"},{"zh":"牙","py":"yá","tone":"2-й словарный тон"}],"weights":[1,1,1,1,1,1,1]}];
+const phraseOptions=[{"id":"daily","zh":"我早上洗脸。","py":"Wǒ zǎoshang xǐliǎn.","ru":"Я утром умываюсь.","rule":"洗脸: 3 + 3 → 2 + 3. 我早上: возможен переход 3 → 2 в связной речи.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"早","py":"zǎo","tone":"3-й словарный тон","surfaceTone":3},{"zh":"上","py":"shang","tone":"нейтральный тон","surfaceTone":0},{"zh":"洗","py":"xǐ","tone":"3-й словарный тон","surfaceTone":2},{"zh":"脸","py":"liǎn","tone":"3-й словарный тон","surfaceTone":3}],"weights":[1,1,0.65,1,1]},{"id":"wake","zh":"起床","py":"qǐchuáng","ru":"Вставать с постели","rule":"","tokens":[{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":3},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1]},{"id":"wash","zh":"洗脸","py":"xǐliǎn","ru":"Умываться","rule":"Два третьих тона: первый обычно звучит как второй (xíliǎn).","tokens":[{"zh":"洗","py":"xǐ","tone":"3-й словарный тон","surfaceTone":2},{"zh":"脸","py":"liǎn","tone":"3-й словарный тон","surfaceTone":3}],"weights":[1,1]},{"id":"brush","zh":"刷牙","py":"shuāyá","ru":"Чистить зубы","rule":"","tokens":[{"zh":"刷","py":"shuā","tone":"1-й словарный тон","surfaceTone":1},{"zh":"牙","py":"yá","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1]},{"id":"breakfast","zh":"吃早饭","py":"chī zǎofàn","ru":"Завтракать","rule":"","tokens":[{"zh":"吃","py":"chī","tone":"1-й словарный тон","surfaceTone":1},{"zh":"早","py":"zǎo","tone":"3-й словарный тон","surfaceTone":3},{"zh":"饭","py":"fàn","tone":"4-й словарный тон","surfaceTone":4}],"weights":[1,1,1]},{"id":"work","zh":"去上班","py":"qù shàngbān","ru":"Идти на работу","rule":"","tokens":[{"zh":"去","py":"qù","tone":"4-й словарный тон","surfaceTone":4},{"zh":"上","py":"shàng","tone":"4-й словарный тон","surfaceTone":4},{"zh":"班","py":"bān","tone":"1-й словарный тон","surfaceTone":1}],"weights":[1,1,1]},{"id":"sleep","zh":"睡觉","py":"shuìjiào","ru":"Ложиться спать","rule":"","tokens":[{"zh":"睡","py":"shuì","tone":"4-й словарный тон","surfaceTone":4},{"zh":"觉","py":"jiào","tone":"4-й словарный тон","surfaceTone":4}],"weights":[1,1]},{"id":"question","zh":"你每天几点起床？","py":"Nǐ měitiān jǐ diǎn qǐchuáng?","ru":"Во сколько ты каждый день встаёшь?","rule":"Цепочки третьих тонов зависят от смысловых групп и темпа речи.","tokens":[{"zh":"你","py":"nǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"每","py":"měi","tone":"3-й словарный тон","surfaceTone":null},{"zh":"天","py":"tiān","tone":"1-й словарный тон","surfaceTone":1},{"zh":"几","py":"jǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"点","py":"diǎn","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]},{"id":"seven","zh":"我每天七点起床。","py":"Wǒ měitiān qī diǎn qǐchuáng.","ru":"Я каждый день встаю в семь часов.","rule":"В соседних третьих тонах возможен переход 3 → 2.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"每","py":"měi","tone":"3-й словарный тон","surfaceTone":null},{"zh":"天","py":"tiān","tone":"1-й словарный тон","surfaceTone":1},{"zh":"七","py":"qī","tone":"1-й словарный тон","surfaceTone":1},{"zh":"点","py":"diǎn","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]},{"id":"eight","zh":"我每天八点起床。","py":"Wǒ měitiān bā diǎn qǐchuáng.","ru":"Я каждый день встаю в восемь часов.","rule":"В соседних третьих тонах возможен переход 3 → 2.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"每","py":"měi","tone":"3-й словарный тон","surfaceTone":null},{"zh":"天","py":"tiān","tone":"1-й словарный тон","surfaceTone":1},{"zh":"八","py":"bā","tone":"1-й словарный тон","surfaceTone":1},{"zh":"点","py":"diǎn","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]},{"id":"after","zh":"我起床以后刷牙。","py":"Wǒ qǐchuáng yǐhòu shuāyá.","ru":"После подъёма я чищу зубы.","rule":"Третий тон перед другим третьим часто переходит во второй.","tokens":[{"zh":"我","py":"wǒ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"起","py":"qǐ","tone":"3-й словарный тон","surfaceTone":null},{"zh":"床","py":"chuáng","tone":"2-й словарный тон","surfaceTone":2},{"zh":"以","py":"yǐ","tone":"3-й словарный тон","surfaceTone":3},{"zh":"后","py":"hòu","tone":"4-й словарный тон","surfaceTone":4},{"zh":"刷","py":"shuā","tone":"1-й словарный тон","surfaceTone":1},{"zh":"牙","py":"yá","tone":"2-й словарный тон","surfaceTone":2}],"weights":[1,1,1,1,1,1,1]}];
 const query=new URLSearchParams(location.search);
 const phrase=phraseOptions.find(p=>p.id===query.get('phrase'))||phraseOptions[0];
 const {tokens,weights}=phrase;
@@ -156,13 +156,13 @@ function estimateBounds(arr,begin,end,peak){
 }
 
 function analyze(buffer){
- const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=Math.min(4096,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
+ const d=buffer.getChannelData(0),rate=buffer.sampleRate,win=sentencePitchWindowSize(rate,d.length),hop=Math.max(512,Math.round(rate*.025));let arr=[],peak=0;
  for(let i=0;i+win<=d.length;i+=hop){const en=rms(d,i,i+win);arr.push({t:(i+win/2)/rate,en,start:i});peak=Math.max(peak,en);}
  const gate=Math.max(.0035,Math.min(.018,peak*.16));
  const active=arr.filter(x=>x.en>gate);
  if(active.length<6)return {valid:false,reason:'Недостаточно звукового сигнала',frames:[],bounds:[]};
  let begin=active[0].t,end=active[active.length-1].t;
- if(end-begin<.35)return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
+ if(end-begin<Math.max(.15,weights.length*.075))return {valid:false,reason:'Слишком короткая запись',frames:[],bounds:[]};
  // Estimate syllable positions from their approximate durations; snap to nearby RMS valleys.
  // This is not forced alignment, and is intentionally never used as a correctness score.
  const bounds=estimateBounds(arr,begin,end,peak);
@@ -172,7 +172,7 @@ function analyze(buffer){
   for(let i=0;i<win;i++)sample[i]=Math.max(-1,Math.min(1,d[a.start+i]*gain));
   const p=estimatePitch(sample,rate);
   const q=p&&p.clarity>=.7?p:estimatePitchAutocorrelation(sample,rate);
-  if(q&&q.clarity>=.55&&q.hz>=65&&q.hz<=550)frames.push({t:a.t,hz:q.hz});
+  if(q&&q.clarity>=.55&&q.hz>=65&&q.hz<=550)frames.push({t:a.t,hz:q.hz,method:q.method||'yin'});
  }
  const base=median(frames.map(x=>x.hz));
  return {valid:frames.length>=5,bounds,frames,base,reason:frames.length<5?'Не удалось надёжно измерить высоту голоса':'Измерено'};
@@ -185,28 +185,23 @@ function path(data,i,x0,y0,w,h){
  for(let j=0;j<pts.length;j++){
   const a=pts[j],x=x0+w*(a.t-start)/(end-start),st=Math.max(-6,Math.min(6,12*Math.log2(a.hz/data.base))),y=y0+h/2-st*(h/13);
   // Do not join across very large unvoiced gaps.
-  const pen=j===0||a.t-pts[j-1].t>.105?'M':'L';p+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
+  const pen=j===0||a.t-pts[j-1].t>.085||Math.abs(12*Math.log2(a.hz/pts[j-1].hz))>=5?'M':'L';p+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
  }
  return p.trim();
 }
 
 function syllableQuality(i){
  if(!learner?.valid)return {text:'ожидает',weak:true,count:0};
- const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
- const coverage=pts.length/Math.max(1,(b-a)/.025);
- const weak=pts.length<4||coverage<.32;
- return {text:pts.length<4?'мало F0':coverage<.32?'пропуски F0':'контур виден',weak,count:pts.length};
+ return intervalPitchEvidence(learner.frames,learner.bounds,i);
 }
 function describeMovement(i){
  if(!learner?.valid)return '';
- const a=learner.bounds[i],b=learner.bounds[i+1],pts=learner.frames.filter(p=>p.t>=a&&p.t<=b);
- if(pts.length<6)return 'Мало точек F0 для анализа движения.';
- const k=Math.max(2,Math.floor(pts.length*.25)),first=median(pts.slice(0,k).map(p=>p.hz)),last=median(pts.slice(-k).map(p=>p.hz));
- if(!first||!last)return 'Недостаточно данных.';
- const delta=12*Math.log2(last/first);
- return delta>1.8?'Высота в измеренном участке в основном повышается.':delta< -1.8?'Высота в измеренном участке в основном снижается.':'Высота в измеренном участке меняется незначительно.';
+ if(!$('boundary-verified').checked)return 'Границы пока не проверены на слух: отдельный контур не связываем с конкретным иероглифом.';
+ if(!reference?.valid)return 'Нет проверяемого образца: доступен только график своей записи.';
+ return compareContextualPitch({surfaceTone:tokens[i].surfaceTone,evidence:syllableQuality(i),referenceEvidence:intervalPitchEvidence(reference.frames,reference.bounds,i),verified:true}).text;
 }
 function adjustControls(){
+ $('boundary-verified').checked=false;$('boundary-verified-row').hidden=!(learner?.valid&&reference?.valid);
  const root=$('boundary-controls');root.hidden=!learner?.valid;
  const list=$('boundary-sliders');list.replaceChildren();
  if(!learner?.valid)return;
@@ -221,7 +216,7 @@ function adjustControls(){
    const min=learner.bounds[i-1]+.07,max=learner.bounds[i+1]-.07;
    if(min>max)return;
    const desired=a+dur*Number(input.value)/1000;
-   learner.bounds[i]=Math.max(min,Math.min(max,desired));
+   learner.bounds[i]=Math.max(min,Math.min(max,desired));$('boundary-verified').checked=false;
    output.textContent=(learner.bounds[i]-a).toFixed(2)+' с';
    render();updateWhole();
   });row.append(label,input,output);list.append(row);
@@ -252,9 +247,11 @@ function showFocus(){
 }
 
 function render(){
+ $('review-ref').disabled=!!recorder||!reviewInterval(decodedReference,reference?.bounds,selected);
+ $('review-mine').disabled=!!recorder||!reviewInterval(decodedLearner,learner?.bounds,selected);
  const parent=$('syllables');parent.innerHTML='';
  for(let i=0;i<tokens.length;i++){
-  const t=tokens[i],btn=document.createElement('button');btn.type='button';btn.className='syllable';btn.setAttribute('aria-pressed',String(i===selected));btn.setAttribute('aria-label',t.zh+', '+t.py);btn.innerHTML='<b>'+t.zh+'</b><span>'+t.py+'</span><small class="quality '+(syllableQuality(i).weak?'sparse':'')+'">'+syllableQuality(i).text+'</small><svg viewBox="0 0 130 68" class="mini" aria-hidden="true"><path d="'+path(reference,i,7,8,116,52)+'" stroke="#b09bbf" stroke-width="3" stroke-dasharray="6 4" fill="none"/><path d="'+path(learner,i,7,8,116,52)+'" stroke="#7a50b5" stroke-width="3.5" fill="none"/></svg>';btn.addEventListener('click',()=>{selected=i;render();updateWhole();});parent.append(btn);
+  const t=tokens[i],btn=document.createElement('button');btn.type='button';btn.className='syllable';btn.setAttribute('aria-pressed',String(i===selected));btn.setAttribute('aria-label',t.zh+', '+t.py);btn.innerHTML='<b>'+t.zh+'</b><span>'+t.py+'</span><small class="quality '+(syllableQuality(i).weak?'sparse':'')+'">'+syllableQuality(i).text+'</small><svg viewBox="0 0 130 68" class="mini" aria-hidden="true"><path d="'+path(reference,i,7,8,116,52)+'" stroke="#b09bbf" stroke-width="3" stroke-dasharray="6 4" fill="none"/><path d="'+path(learner,i,7,8,116,52)+'" stroke="#7a50b5" stroke-width="3.5" fill="none"/></svg>';btn.addEventListener('click',()=>{stopReview();selected=i;render();updateWhole();});parent.append(btn);
  }
  $('reference-line').setAttribute('d',path(reference,selected,25,22,298,106));
  $('learner-line').setAttribute('d',path(learner,selected,25,22,298,106));
@@ -262,10 +259,40 @@ function render(){
  const userCount=learner?.frames.filter(x=>x.t>=learner.bounds[selected]&&x.t<=learner.bounds[selected+1]).length||0;
  $('detail').textContent=tokens[selected].zh+' · '+tokens[selected].py+' — '+tokens[selected].tone+'. '+describeMovement(selected)+' Точки F0: образец '+refCount+', ученик '+userCount+'. Нет точек F0 — не обязательно ошибка ученика. Оценка правильности не выставляется.';
 }
+let reviewContext=null,reviewSource=null,reviewEpoch=0,fullPlayback=null;
+function stopReview(){
+ reviewEpoch++;
+ try{reviewSource?.stop()}catch{}
+ reviewSource=null;
+ try{reviewContext?.close().catch(()=>{})}catch{}
+ reviewContext=null;
+ try{fullPlayback?.pause()}catch{}
+ fullPlayback=null;
+}
+async function playInterval(buffer,bounds){
+ if(recorder)return;
+ stopReview();const token=reviewEpoch,interval=reviewInterval(buffer,bounds,selected);
+ if(!interval)return;
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  const ctx=new AC();reviewContext=ctx;await ctx.resume();
+  if(token!==reviewEpoch||recorder||document.hidden){if(reviewContext===ctx)stopReview();else try{await ctx.close()}catch{};return}
+  const node=ctx.createBufferSource();reviewSource=node;node.buffer=buffer;node.connect(ctx.destination);
+  node.onended=()=>{if(token===reviewEpoch)stopReview()};
+  node.start(0,interval.startSec,interval.durationSec);
+  $('review-status').textContent='Предварительный участок '+tokens[selected].zh+': '+interval.durationSec.toFixed(2)+' с. Проверь, слышен ли именно этот слог.';
+ }catch{if(token===reviewEpoch){stopReview();$('review-status').textContent='Не удалось воспроизвести участок.'}}
+}
+$('review-ref').onclick=()=>playInterval(decodedReference,reference?.bounds);
+$('review-mine').onclick=()=>playInterval(decodedLearner,learner?.bounds);
+function playFull(url){
+ if(recorder||!url)return;
+ stopReview();fullPlayback=new Audio(url);fullPlayback.play().catch(()=>say('Не удалось воспроизвести запись.'));
+}
 async function decode(url){const resp=await fetch(url);if(!resp.ok)throw new Error('Не удалось прочитать запись');const b=await resp.arrayBuffer();const c=new (window.AudioContext||window.webkitAudioContext)();try{return await c.decodeAudioData(b.slice(0));}finally{await c.close();}}
 
 const GRAPH_LEFT=28,GRAPH_W=514,GRAPH_TOP=23,GRAPH_BOTTOM=159,MAX_RECORD_SECONDS=6;
-let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0;
+let liveContext=null,liveSource=null,liveAnalyzer=null,liveTimer=null,liveFrame=null,liveFrames=[],liveStarted=0,liveEpoch=0,livePeak=0;
 function voicedSeconds(data){
  if(!data?.valid||!data.bounds?.length)return 0;
  return Math.max(0,data.bounds.at(-1)-data.bounds[0]);
@@ -294,8 +321,7 @@ function wholePath(data,isLive=false,axisLive=isLive){
   const x=xAt(p.t-start,axisLive);
   const st=Math.max(-7,Math.min(7,12*Math.log2(p.hz/baseline)));
   const y=Math.max(GRAPH_TOP,Math.min(GRAPH_BOTTOM,90-st*8.7));
-  const jump=prev?Math.abs(12*Math.log2(p.hz/prev.hz)):0;
-  const pen=!prev||p.t-prev.t>.16||jump>8?'M':'L';
+  const pen=sentencePitchPen(prev,p);
   out+=pen+x.toFixed(1)+' '+y.toFixed(1)+' ';
   prev=p;
  }
@@ -341,7 +367,7 @@ function referenceSliders(){
   input.addEventListener('input',()=>{
    const min=reference.bounds[k-1]+.055,max=reference.bounds[k+1]-.055;
    if(min>=max)return;
-   reference.bounds[k]=Math.max(min,Math.min(max,origin+duration*Number(input.value)/1000));
+   reference.bounds[k]=Math.max(min,Math.min(max,origin+duration*Number(input.value)/1000));$('boundary-verified').checked=false;
    value.textContent=(reference.bounds[k]-origin).toFixed(2)+' с';
    alignmentStatus='Границы эталона изменены. Нажми «Сопоставить с образцом», чтобы пересчитать запись ученика.';
    wholeGuides();render();updateWhole();
@@ -351,10 +377,11 @@ function referenceSliders(){
 }
 $('ref-reset').addEventListener('click',()=>{
  if(!refAutoBounds||!reference?.valid)return;
- reference.bounds=refAutoBounds.slice();alignmentStatus='Разметка эталона сброшена к приблизительным границам.';
+ reference.bounds=refAutoBounds.slice();$('boundary-verified').checked=false;alignmentStatus='Разметка эталона сброшена к приблизительным границам.';
  referenceSliders();wholeGuides();render();updateWhole();
 });
 function guidedAlign(){
+ $('boundary-verified').checked=false;
  if(!decodedReference||!decodedLearner||!reference?.valid||!learner?.valid)
   return {ok:false,reason:'Для сравнения нужны обе аудиозаписи'};
  const result=alignFromReference(decodedReference,decodedLearner,reference.bounds,autoBounds||learner.bounds);
@@ -412,10 +439,11 @@ function updateWhole(){
   $('whole-cursor').style.display='none';
   $('whole-info').textContent=alignmentStatus|| (learner?.valid
    ?'Обе записи показаны на общей временной шкале в настоящих секундах, без растягивания. По высоте нормализованы, границы слогов предварительные. Оценки тонов нет.'
-   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':'Данные эталона ещё не готовы.');
+   :reference?.valid?'Пунктир — измеренный эталон. Запиши предложение целиком, чтобы поверх появилась твоя кривая.':source?'Данные эталона ещё не готовы.':'Для этой фразы пока нет подтверждённой записи образца.');
  }
 }
 function stopLive(){
+ liveEpoch++;
  if(liveTimer){clearInterval(liveTimer);liveTimer=null;}
  try{liveSource?.disconnect();}catch{}
  try{liveAnalyzer?.disconnect();}catch{}
@@ -426,14 +454,14 @@ function stopLive(){
  $('whole-cursor').style.display='none';
 }
 async function startLive(s){
- stopLive();liveFrames=[];
+ stopLive();liveFrames=[];livePeak=0;const epoch=liveEpoch;
  if(!(window.AudioContext||window.webkitAudioContext))return;
  try{
   const context=new (window.AudioContext||window.webkitAudioContext)();
   liveContext=context;await context.resume();
-  if(!stream||stream!==s){stopLive();return;}
+  if(epoch!==liveEpoch||!stream||stream!==s||!recorder||document.hidden){if(liveContext===context)stopLive();else try{await context.close()}catch{};return;}
   liveSource=context.createMediaStreamSource(s);liveAnalyzer=context.createAnalyser();
-  liveAnalyzer.fftSize=4096;liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
+  liveAnalyzer.fftSize=Math.max(2048,2**Math.ceil(Math.log2(sentencePitchWindowSize(context.sampleRate,131072))));liveAnalyzer.smoothingTimeConstant=0;liveSource.connect(liveAnalyzer);
   liveFrame=new Float32Array(liveAnalyzer.fftSize);
   liveStarted=performance.now();firstLiveVoice=null;drawTimeAxis(true);updateDurationLabels();wholeGuides(true);$('whole-ref').setAttribute('d',wholePath(reference,false,true));
   $('whole-state').textContent='● Запись';$('whole-state').classList.add('recording');
@@ -441,63 +469,69 @@ async function startLive(s){
   liveTimer=setInterval(()=>{
    if(!liveAnalyzer||!liveContext)return;
    liveAnalyzer.getFloatTimeDomainData(liveFrame);
-   let energy=0;for(let i=0;i<liveFrame.length;i+=4)energy+=liveFrame[i]*liveFrame[i];
-   const level=Math.sqrt(energy/(liveFrame.length/4));
+   const frame=sentenceLivePitchFrame(liveFrame,context.sampleRate);if(!frame)return;
+   const level=rms(frame,0,frame.length);livePeak=Math.max(level,livePeak*.98);
    $('level').style.width=Math.round(Math.max(0,Math.min(100,level*1800)))+'%';
    const elapsed=(performance.now()-liveStarted)/1000;
    const pos=xAt(Math.max(0,elapsed-(firstLiveVoice??elapsed)),true);
    const cursor=$('whole-cursor');cursor.style.display='';cursor.setAttribute('x1',pos.toFixed(1));cursor.setAttribute('x2',pos.toFixed(1));
-   if(level>.007){
+   if(level>Math.max(.0035,Math.min(.018,livePeak*.16))){
+    const gain=Math.max(1,Math.min(9,.055/Math.max(.004,livePeak)));
+    const sample=Float32Array.from(frame,v=>Math.max(-1,Math.min(1,v*gain)));
+    const p=estimatePitch(sample,context.sampleRate);
+    if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
     if(firstLiveVoice===null)firstLiveVoice=elapsed;
     const seconds=reference?.valid?reference.bounds.at(-1)-reference.bounds[0]:2;
     const progress=Math.max(0,Math.min(.999,(elapsed-firstLiveVoice)/Math.max(1.2,seconds*1.2)));
     const total=weights.reduce((a,b)=>a+b,0);let sum=0,index=weights.length-1;
     for(let k=0;k<weights.length;k++){sum+=weights[k]/total;if(progress<sum){index=k;break;}}
-    $('whole-active').textContent='≈ Сейчас: '+tokens[index].zh+' · '+tokens[index].py+' (приблизительно)';
+    $('whole-active').textContent='≈ По времени: '+tokens[index].zh+' · '+tokens[index].py+' (приблизительно)';
     for(const [k,el] of [...$('syllables').children].entries())el.classList.toggle('active',k===index);
-    const p=estimatePitch(liveFrame,context.sampleRate);
-    if(p&&p.clarity>=.70&&p.hz>=65&&p.hz<=550){
-     liveFrames.push({t:elapsed,hz:p.hz});
-     if(liveFrames.length>90)liveFrames.shift();
+    liveFrames.push({t:elapsed,hz:p.hz});
+     if(liveFrames.length>180)liveFrames.shift();
     }
    }
    if(liveFrames.length>1){
     $('whole-mine').setAttribute('d',wholePath({frames:liveFrames,base:median(liveFrames.map(p=>p.hz))},true));
    }
-  },110);
- }catch(e){stopLive();$('whole-info').textContent='Живой график недоступен на этом устройстве; после записи попробуем построить итоговый.';}
+  },SENTENCE_LIVE_POLL_MS);
+ }catch(e){if(epoch!==liveEpoch)return;stopLive();$('whole-info').textContent='Живой график недоступен на этом устройстве; после записи попробуем построить итоговый.';}
 }
 
 function stopStream(){stopLive();if(micTimer){clearTimeout(micTimer);micTimer=null;}stream?.getTracks().forEach(x=>x.stop());stream=null;$('level').style.width='0%';}
 async function load(){
- if(!source){say('Не найдена точная запись фразы в аудиокарте урока.');return;}
+ if(!source){say('Нет подтверждённой записи образца. Можно записать и прослушать себя; сопоставление и персональные подсказки по слогам недоступны.');return;}
  try{decodedReference=await decode(source);reference=analyze(decodedReference);refAutoBounds=reference.bounds?.slice()||null;referenceSliders();wholeGuides();say(reference.valid?'Образец загружен. Послушай запись и нажми «Записать себя».':'Образец загружен, но данных F0 недостаточно для тоновой кривой.');render();updateWhole();}
  catch(e){say('Не удалось прочитать образец: '+(e?.message||'ошибка'));}
 }
-$('listen').addEventListener('click',()=>{if(!source)return;const a=new Audio(source);a.play().catch(()=>say('Звук не воспроизведён: проверь громкость и разрешения Chrome.'));});
+$('listen').addEventListener('click',()=>playFull(source));
 $('record').addEventListener('click',async()=>{
  if(recorder||!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('Для записи открой страницу в Chrome через HTTPS и разреши микрофон.');return;}
  try{
+  $('record').disabled=true;$('phrase-select').disabled=true;
+  stopReview();
   if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}
   learner=null;autoBounds=null;decodedLearner=null;alignmentStatus='';$('guided-align').disabled=true;chunks=[];$('replay').disabled=true;adjustControls();render();updateWhole();
   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
   recorder=new MediaRecorder(stream);recorder.addEventListener('dataavailable',e=>{if(e.data.size)chunks.push(e.data);});
   recorder.addEventListener('stop',async()=>{
-   const mime=recorder?.mimeType||'audio/webm';recorder=null;stopStream();$('record').disabled=false;$('stop').disabled=true;
-   if(!chunks.length){say('Запись пустая. Попробуй снова.');return;}
+   const mime=recorder?.mimeType||'audio/webm';recorder=null;stopStream();$('record').disabled=true;$('stop').disabled=true;
+   if(!chunks.length){$('record').disabled=false;$('phrase-select').disabled=false;say('Запись пустая. Попробуй снова.');return;}
    recorded=new Blob(chunks,{type:mime});recordedUrl=URL.createObjectURL(recorded);$('replay').disabled=false;
    say('Анализирую короткую запись…');
    try{decodedLearner=await decode(recordedUrl);learner=analyze(decodedLearner);autoBounds=learner?.bounds?.slice()||null;adjustControls();$('guided-align').disabled=!(learner?.valid&&reference?.valid&&decodedReference);if(!($('guided-align').disabled))guidedAlign();say(learner.valid?'Готово! Нажимай на иероглифы и сравнивай линии. Разделение на слоги пока приблизительное.':'Звук записан, но F0 извлечён не полностью. Попробуй произнести фразу естественно в тишине.');render();updateWhole();}
    catch(e){say('Запись есть, но браузер не смог построить график: '+(e?.message||'ошибка'));}
+   finally{$('record').disabled=false;$('phrase-select').disabled=false;}
   },{once:true});
-  recorder.start();updateWhole();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «'+phrase.zh+'» естественным голосом. Остановка автоматически через 6 секунд.');
+  recorder.start();$('review-ref').disabled=true;$('review-mine').disabled=true;updateWhole();void startLive(stream);$('record').disabled=true;$('stop').disabled=false;say('🎙 Говори «'+phrase.zh+'» естественным голосом. Остановка автоматически через 6 секунд.');
   micTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop();},6000);
- }catch(e){stopStream();recorder=null;$('record').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
+ }catch(e){stopStream();recorder=null;$('record').disabled=false;$('phrase-select').disabled=false;$('stop').disabled=true;say(e?.name==='NotAllowedError'?'Микрофон запрещён. Разреши доступ в Chrome.':'Микрофон недоступен: '+(e?.message||'ошибка'));}
 });
 $('stop').addEventListener('click',()=>{if(recorder?.state==='recording')recorder.stop();});
-$('replay').addEventListener('click',()=>{if(!recordedUrl)return;new Audio(recordedUrl).play().catch(()=>say('Не удалось воспроизвести запись.'));});
-function cleanup(){if(recorder?.state==='recording'){recorder.onstop=null;try{recorder.stop();}catch{}}stopStream();if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}}
+$('replay').addEventListener('click',()=>playFull(recordedUrl));
+function cleanup(){stopReview();if(recorder?.state==='recording'){recorder.onstop=null;try{recorder.stop();}catch{}}stopStream();if(recordedUrl){URL.revokeObjectURL(recordedUrl);recordedUrl=null;}}
 window.addEventListener('pagehide',cleanup);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&recorder?.state==='recording')recorder.stop();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){stopReview();if(recorder?.state==='recording')recorder.stop();}});
+$('boundary-verified').addEventListener('change',render);
 wholeGuides();render();updateWhole();void load();
 </script></body></html>
