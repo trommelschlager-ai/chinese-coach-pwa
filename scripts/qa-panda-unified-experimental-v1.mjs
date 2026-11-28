@@ -161,6 +161,14 @@ try{
    assert.equal(spokenCorrection.speechSignal.toneVerified,false);
    console.log('PASS reviewed inline correction, real browser history, resumed questions and topic memory');
   }
+  if(flag){
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+   for(const [q,expected] of [['聊聊我的早上吧','你昨晚睡了几个小时？'],['八个小时','你今天几点起床？'],['七点','你今天吃早饭了吗？'],['没吃','你今天喝咖啡了吗？'],['没喝','你接下来想做什么？'],['我想休息','那你休息一下吧。'],['说说我的一天','你睡了八个小时。你七点起床。你今天没吃早饭。你今天没喝咖啡。接下来你想休息。']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,expected,q);assert(x.history.at(-2).pinyin&&x.history.at(-2).ru,q);
+   }
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+   console.log('PASS morning summary from actual Panda AI entry');
+  }
   const before=await page.evaluate(()=>JSON.stringify(window.PandaApprovedBridge337.snapshot().history));
   const unsure=await speak('我想学中文',.4);assert.equal(JSON.stringify(unsure.history),before);assert.equal(unsure.speechSignal.kind,'uncertain');
   console.log('PASS simulated ASR .72/.93, meaning explanation, low confidence confirmation',flag);
@@ -195,6 +203,11 @@ try{
   await street.waitForFunction(file=>window.__streetAudio.some(s=>s.endsWith('/'+file)),expectedFile);
  }
  console.log('PASS Street repeat previous question and resume the China travel chain');
+ for(const [q,expected] of [['聊聊我的早上吧','你昨晚睡了几个小时？'],['八个小时','你今天几点起床？'],['七点','你今天吃早饭了吗？'],['没吃','你今天喝咖啡了吗？'],['没喝','你接下来想做什么？'],['我想休息','那你休息一下吧。'],['说说我的一天','你睡了八个小时。你七点起床。你今天没吃早饭。你今天没喝咖啡。接下来你想休息。']]){
+  await street.locator('#send').click();await street.locator('#entry').fill(q);await street.locator('#submit').click();
+  await street.waitForFunction(({q,expected})=>{const last=JSON.parse(sessionStorage.getItem('panda-street-v7-log')||'[]').at(-1);return last?.user===q&&last?.panda?.zh===expected&&!!last.userInfo?.py&&!!last.userInfo?.ru;},{q,expected});
+ }
+ console.log('PASS Street morning story from real entry');
  const newAudio=await street.evaluate(async()=>{
   const manifest=await fetch('./assets/panda-ai-voice-20261127/manifest.json').then(r=>r.json());
   const paths=[...manifest.clips.map(x=>x.src),'./assets/panda-street-voice-v20261125/54.mp3','./assets/panda-street-voice-v20261125/55.mp3'];

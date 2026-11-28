@@ -67,3 +67,24 @@ test('reset, unrelated line or unrelated answer cannot preserve stale morning ch
   assert.equal(p.morningSnapshot(),null,action);assert.notEqual(answer(p,'八个小时')?.kind,'living-reaction',action);
  }
 });
+
+function morningSend(p,raw){
+ const x=answer(p,raw);assert(x,raw);p.observePanda(x.line);return x;
+}
+test('explicit morning opener and fact-only story with negative coffee',()=>{
+ const p=make();for(const raw of ['聊聊我的早上吧','八个小时','七点','吃了','鸡蛋','没喝','我想休息'])morningSend(p,raw);
+ const x=morningSend(p,'说说我的一天');assert.equal(x.kind,'living-summary');
+ assert.equal(x.line.hanzi,'你睡了八个小时。你七点起床。你早饭吃了鸡蛋。你今天没喝咖啡。接下来你想休息。');
+ assert.match(x.line.pinyin,/méi hē kāfēi/);assert.match(x.line.ru,/не пил/);assert.equal(x.voiceStatus,'text-only');assert.equal(x.toneVerified,false);
+});
+test('partial story omits unanswered slots, negative breakfast and refusal are respected',()=>{
+ const p=make();for(const raw of ['聊聊我的早上吧','八个小时','七点','没吃'])morningSend(p,raw);
+ const x=morningSend(p,'请说说我的一天');assert.match(x.line.hanzi,/没吃早饭/);assert.doesNotMatch(x.line.hanzi,/鸡蛋|咖啡|休息/);
+ const q=make();morningSend(q,'聊聊我的早上吧');morningSend(q,'八个小时');morningSend(q,'我不想说');assert.match(morningSend(q,'说说我的一天').line.hanzi,/还不知道/);
+});
+test('summary cannot leak across reset or unrelated turn; empty summary invents nothing',()=>{
+ for(const mode of ['reset','unrelated','empty']){
+  const p=make();if(mode!=='empty'){morningSend(p,'聊聊我的早上吧');morningSend(p,'八个小时');if(mode==='reset')p.reset();else observe(p,'你几岁？');}
+  const x=morningSend(p,'说说我的一天');assert.match(x.line.hanzi,/还不知道/);assert.doesNotMatch(x.line.hanzi,/八个小时/);
+ }
+});

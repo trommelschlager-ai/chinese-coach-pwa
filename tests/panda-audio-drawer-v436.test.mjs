@@ -65,8 +65,13 @@ test('v436 drawer renders each recording as a Chinese+pinyin+Russian play button
  const html=read('panda-voice-pilot.html'),js=read('assets/panda-live-v346.mjs');
  assert(html.includes('panda-topic-catalog-v374.css?v=374'),'The original roomy topic menu stays active');
  assert(!html.includes('panda-topics-compact-v436.css?v=436'),'Never use the v436 shallow drawer that hides the question cards');
- assert(html.includes('panda-live-screen-v270.mjs?v=445'));
- assert(html.includes('panda-live-v346.mjs?v=445'));
+ assert.match(html,/src="\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/);
+ assert.match(html,/src="\.\/assets\/panda-hsk2-preview-ui-v1\.mjs\?v=\d+/);
+ const activeUI=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ for(const selector of ['pg436-audio-zh','pg436-audio-py','pg436-audio-ru','pg436-audio-icon','pg374-question'])assert(activeUI.includes(selector),'Current drawer lost '+selector);
+ assert(activeUI.includes('audioStudyLine436(clip)'));
+ assert(activeUI.includes('bridge.playEntry({hanzi:clip.zh})'));
+ assert(activeUI.includes('bridge.startTopicQuestion(id,q.hanzi)'));
  assert(js.includes("audioStudyLine436(clip)"));
  for(const selector of ['pg436-audio-zh','pg436-audio-py','pg436-audio-ru','pg436-audio-icon'])assert(js.includes(selector));
  assert(js.includes('bridge.playEntry({hanzi:clip.zh})'));
@@ -90,8 +95,8 @@ test('v436 offline pack and install service worker include new study metadata wi
  for(const file of [
   './assets/panda-audio-study-v436.mjs?v=436',
   './assets/panda-topics-compact-v436.css?v=436',
-  './assets/panda-live-screen-v270.mjs?v=445',
-  './assets/panda-live-v346.mjs?v=445',
+  './assets/panda-live-screen-v270.mjs?v=465',
+  './assets/panda-live-v346.mjs?v=453',
   './assets/panda-live-audio.mjs?v=436'
  ])assert(offline.files.includes(file),'Missing offline asset '+file);
  for(const c of PANDA_CLIPS)assert(offline.files.some(x=>x.split('?')[0]===c.src),'Missing audio '+c.src);
@@ -101,8 +106,12 @@ test('v436 offline pack and install service worker include new study metadata wi
  const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
  for(const file of ['./assets/panda-audio-study-v436.mjs?v=436','./assets/panda-topics-compact-v436.css?v=436'])assert(core.includes(file));
  const art=JSON.parse(sw.match(/const CORE_ART=new Set\((\[[^\n]+\])\)/)[1]);
- const shell=core.filter(p=>!/\.(?:mp3|ogg)(?:\?|$)/i.test(p)&&(!/\.(?:png|jpe?g|webp)(?:\?|$)/i.test(p)||art.includes(p)));
- assert(shell.length<=205,'Keep install shell bounded while retaining all required offline assets');
+ // CORE is now the downloadable course pack. The install handler uses INSTALL_SHELL.
+ const shell=JSON.parse(sw.match(/const INSTALL_SHELL=(\[[\s\S]*?\]);/)[1].replace(/,\s*\]/,']'));
+ assert(shell.length<=205,'Keep the actual install shell bounded');
+ assert.equal(new Set(shell).size,shell.length,'No duplicate install requests');
+ assert(!shell.some(p=>/\.(?:mp3|ogg)(?:\?|$)/i.test(p)),'Audio belongs in the resumable course pack');
+ assert(sw.includes('cache.addAll(INSTALL_SHELL.map'),'Check the actual install handler');
  assert.equal(new Set(core).size,core.length,'No duplicate precache requests');
 });
 

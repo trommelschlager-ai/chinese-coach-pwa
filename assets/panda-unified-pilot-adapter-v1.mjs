@@ -150,10 +150,54 @@ function morningAnswer(raw,slot,facts,lookupExact){
  return morningLine(next?morningQuestions[next]:close,lookupExact,spoken,slot,fact);
 }
 
+
+const morningStart={
+ '聊聊我的早上吧':['Liáoliao wǒ de zǎoshang ba.','Давай поговорим о моём утре.'],
+ '我们聊聊今天早上的事吧':['Wǒmen liáoliao jīntiān zǎoshang de shì ba.','Давай поговорим о сегодняшнем утре.']
+};
+const morningStoryRequests={
+ '说说我的一天':['Shuōshuo wǒ de yì tiān.','Расскажи о моём дне.'],
+ '请说说我的一天':['Qǐng shuōshuo wǒ de yì tiān.','Расскажи, пожалуйста, о моём дне.'],
+ '你能说说我的一天吗':['Nǐ néng shuōshuo wǒ de yì tiān ma?','Можешь рассказать о моём дне?'],
+ '总结一下我的一天':['Zǒngjié yíxià wǒ de yì tiān.','Подведи итог моего дня.']
+};
+function morningStory(f){
+ const rows=[];
+ const numbers=['','一','两','三','四','五','六','七','八','九','十','十一','十二'];
+ if(Number.isInteger(f?.hours)&&f.hours>=1&&f.hours<=12){
+  const n=numbers[f.hours];rows.push(['你睡了'+n+'个小时。','Nǐ shuì le '+(n==='一'?'yí':morningNumbers[n])+' ge xiǎoshí.','Ты спал(а) '+f.hours+' ч.']);
+ }
+ if(Number.isInteger(f?.wake)&&f.wake>=1&&f.wake<=12){
+  const n=f.wake===2?'两':numbers[f.wake];rows.push(['你'+n+'点起床。','Nǐ '+morningNumbers[n]+' diǎn qǐchuáng.','Ты встал(а) в '+f.wake+':00.']);
+ }
+ if(f?.breakfast===false)rows.push(['你今天没吃早饭。','Nǐ jīntiān méi chī zǎofàn.','Сегодня ты не завтракал(а).']);
+ else if(f?.breakfast===true){
+  if(Object.hasOwn(morningFoods,f.food)){
+   const [py,ru]=morningFoods[f.food];rows.push(['你早饭吃了'+f.food+'。','Nǐ zǎofàn chī le '+py+'.','На завтрак ты ел(а) '+ru+'.']);
+  }else rows.push(['你今天吃了早饭。','Nǐ jīntiān chī le zǎofàn.','Сегодня ты завтракал(а).']);
+ }
+ if(typeof f?.drink==='boolean')rows.push(f.drink?['你今天喝了咖啡。','Nǐ jīntiān hē le kāfēi.','Сегодня ты пил(а) кофе.']:['你今天没喝咖啡。','Nǐ jīntiān méi hē kāfēi.','Сегодня ты не пил(а) кофе.']);
+ if(Object.hasOwn(morningActions,f?.next)){
+  const [py,ru]=morningActions[f.next];rows.push(['接下来你想'+f.next+'。','Jiēxiàlai nǐ xiǎng '+py+'.','Дальше ты хочешь '+ru+'.']);
+ }
+ return rows.length?[0,1,2].map(i=>rows.map(r=>r[i]).join(i===0?'':' ')):null;
+}
+
 export function createSemanticPilot({enabled=false,lookupExact=null,correctGrammar=null,metadata=null,allowTextOnly=false,livingConversation=false}={}){
  let state=initialSemanticState(),pending=false,recent=[],morning=null,expectedMorning=null;
  function routeLiving(raw){
   const previous=state.lastSpeaker==='panda'?state.lastPandaTurn?.hanzi:null;
+  const key=livingClean(raw);
+  if(Object.hasOwn(morningStart,key)){
+   morning={};
+   const start=morningLine(['你昨晚睡了几个小时？','Nǐ zuówǎn shuì le jǐ ge xiǎoshí?','Сколько часов ты спал(а) прошлой ночью?'],lookupExact,morningStart[key],'start',null);
+   expectedMorning=livingClean(start.line.hanzi);return start;
+  }
+  if(Object.hasOwn(morningStoryRequests,key)){
+   const story=morningStory(morning);
+   const reply=morningLine(story||['我还不知道。我们先聊聊吧！','Wǒ hái bù zhīdào. Wǒmen xiān liáoliao ba!','Я пока не знаю. Давай сначала поговорим!'],lookupExact,morningStoryRequests[key],'summary',null);
+   reply.kind='living-summary';expectedMorning=morning?livingClean(reply.line.hanzi):null;return reply;
+  }
   const slot=morning&&morningSlot(previous);
   let living=slot?morningAnswer(raw,slot,morning,lookupExact):null;
   if(living){

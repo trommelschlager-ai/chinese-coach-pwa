@@ -47,6 +47,7 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'tests/hsk2-entry-lilac-v444.test.cjs'
       - 'hsk2-life-course.html'
       - 'assets/hsk2-life-course-*.js'
       - 'assets/hsk2-day-first-ui-v1.js'
