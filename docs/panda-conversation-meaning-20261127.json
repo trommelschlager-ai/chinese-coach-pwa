@@ -1,0 +1,2136 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "79e56cecbf9985153254bd28788b58d36f2f7416",
+  "scope": "Reviewed regression examples, not exhaustive language understanding; some baseline questions are included. City/family metadata remains in the source functions.",
+  "counts": {
+    "city": 24,
+    "family": 44,
+    "work-study": 46,
+    "routine": 42,
+    "food-shop": 48,
+    "wellbeing": 36,
+    "relationships": 34,
+    "travel": 26
+  },
+  "total": 300,
+  "topics": {
+    "city": [
+      {
+        "input": "银行在哪儿？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "银行在哪里？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "银行在哪？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "请问，银行在哪儿？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "哪里有银行？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "这附近有银行吗？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "附近有银行吗？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "怎么去银行？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "银行怎么走？",
+        "answer": "银行在学校旁边。"
+      },
+      {
+        "input": "银行离学校远吗？",
+        "answer": "不远，很近。"
+      },
+      {
+        "input": "公园在哪儿？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "公园在哪里？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "请问公园在哪？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "哪儿有公园？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "这里有公园吗？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "怎么去公园？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "公园怎么走？",
+        "answer": "公园在医院后面。"
+      },
+      {
+        "input": "公园离医院远吗？",
+        "answer": "不远，很近。"
+      },
+      {
+        "input": "你怎么上班？",
+        "answer": "我坐地铁去上班。"
+      },
+      {
+        "input": "你坐什么车去上班？",
+        "answer": "我坐地铁去上班。"
+      },
+      {
+        "input": "你怎么从家到公司？",
+        "answer": "我坐公交车。"
+      },
+      {
+        "input": "去机场要多久？",
+        "answer": "需要一个小时。"
+      },
+      {
+        "input": "到机场要多长时间？",
+        "answer": "需要一个小时。"
+      },
+      {
+        "input": "去机场需要多长时间？",
+        "answer": "需要一个小时。"
+      }
+    ],
+    "family": [
+      {
+        "input": "你有孩子吗？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "请问，你有孩子吗？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "你有没有孩子？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "请问，你有没有孩子？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "你有小孩吗？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "请问，你有小孩吗？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "你有没有小孩？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "请问，你有没有小孩？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "你有几个孩子？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "请问，你有几个孩子？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "你有几个小孩？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "请问，你有几个小孩？",
+        "answer": "我没有孩子。"
+      },
+      {
+        "input": "你爸爸做什么工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "请问，你爸爸做什么工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "你的爸爸做什么工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "请问，你的爸爸做什么工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "你爸爸是做什么的？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "请问，你爸爸是做什么的？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "你爸爸在哪儿工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "请问，你爸爸在哪儿工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "你爸爸在哪里工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "请问，你爸爸在哪里工作？",
+        "answer": "我是虚拟熊猫。你爸爸呢？"
+      },
+      {
+        "input": "你妈妈多大了？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "请问，你妈妈多大了？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "你的妈妈多大了？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "请问，你的妈妈多大了？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "你妈妈今年多大？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "请问，你妈妈今年多大？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "你妈妈今年多大了？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "请问，你妈妈今年多大了？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "你妈妈几岁？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "请问，你妈妈几岁？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "你妈妈多少岁？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "请问，你妈妈多少岁？",
+        "answer": "我是虚拟熊猫。你妈妈呢？"
+      },
+      {
+        "input": "你结婚了吗？",
+        "answer": "没有，我是虚拟熊猫。"
+      },
+      {
+        "input": "请问，你结婚了吗？",
+        "answer": "没有，我是虚拟熊猫。"
+      },
+      {
+        "input": "你结婚了没有？",
+        "answer": "没有，我是虚拟熊猫。"
+      },
+      {
+        "input": "请问，你结婚了没有？",
+        "answer": "没有，我是虚拟熊猫。"
+      },
+      {
+        "input": "你有没有结婚？",
+        "answer": "没有，我是虚拟熊猫。"
+      },
+      {
+        "input": "请问，你有没有结婚？",
+        "answer": "没有，我是虚拟熊猫。"
+      },
+      {
+        "input": "你有朋友吗？",
+        "answer": "有啊，我们可以做朋友。"
+      },
+      {
+        "input": "请问，你有朋友吗？",
+        "answer": "有啊，我们可以做朋友。"
+      },
+      {
+        "input": "你有没有朋友？",
+        "answer": "有啊，我们可以做朋友。"
+      },
+      {
+        "input": "请问，你有没有朋友？",
+        "answer": "有啊，我们可以做朋友。"
+      }
+    ],
+    "work-study": [
+      {
+        "input": "你是做什么工作的？",
+        "pinyin": "Nǐ shì zuò shénme gōngzuò de?",
+        "translation": "Кем ты работаешь?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "请问，你是做什么工作的？",
+        "pinyin": "Qǐngwèn, nǐ shì zuò shénme gōngzuò de?",
+        "translation": "Извините, кем ты работаешь?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "你做什么的？",
+        "pinyin": "Nǐ zuò shénme de?",
+        "translation": "Чем ты занимаешься?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "请问，你做什么的？",
+        "pinyin": "Qǐngwèn, nǐ zuò shénme de?",
+        "translation": "Извините, чем ты занимаешься?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "你的职业是什么？",
+        "pinyin": "Nǐ de zhíyè shì shénme?",
+        "translation": "Какая у тебя профессия?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "请问，你的职业是什么？",
+        "pinyin": "Qǐngwèn, nǐ de zhíyè shì shénme?",
+        "translation": "Извините, какая у тебя профессия?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "你现在做什么工作？",
+        "pinyin": "Nǐ xiànzài zuò shénme gōngzuò?",
+        "translation": "Кем ты сейчас работаешь?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "请问，你现在做什么工作？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài zuò shénme gōngzuò?",
+        "translation": "Извините, кем ты сейчас работаешь?",
+        "answer": "我是老师。"
+      },
+      {
+        "input": "你在什么地方工作？",
+        "pinyin": "Nǐ zài shénme dìfang gōngzuò?",
+        "translation": "Где ты работаешь?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "请问，你在什么地方工作？",
+        "pinyin": "Qǐngwèn, nǐ zài shénme dìfang gōngzuò?",
+        "translation": "Извините, где ты работаешь?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "你工作的地方在哪儿？",
+        "pinyin": "Nǐ gōngzuò de dìfang zài nǎr?",
+        "translation": "Где находится место твоей работы?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "请问，你工作的地方在哪儿？",
+        "pinyin": "Qǐngwèn, nǐ gōngzuò de dìfang zài nǎr?",
+        "translation": "Извините, где находится место твоей работы?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "你现在在哪儿工作？",
+        "pinyin": "Nǐ xiànzài zài nǎr gōngzuò?",
+        "translation": "Где ты сейчас работаешь?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "请问，你现在在哪儿工作？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài zài nǎr gōngzuò?",
+        "translation": "Извините, где ты сейчас работаешь?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "你现在在哪里工作？",
+        "pinyin": "Nǐ xiànzài zài nǎlǐ gōngzuò?",
+        "translation": "Где ты сейчас работаешь?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "请问，你现在在哪里工作？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài zài nǎlǐ gōngzuò?",
+        "translation": "Извините, где ты сейчас работаешь?",
+        "answer": "我在这里陪你练习中文。"
+      },
+      {
+        "input": "你喜欢自己的工作吗？",
+        "pinyin": "Nǐ xǐhuan zìjǐ de gōngzuò ma?",
+        "translation": "Тебе нравится твоя работа?",
+        "answer": "我喜欢帮你学中文。"
+      },
+      {
+        "input": "请问，你喜欢自己的工作吗？",
+        "pinyin": "Qǐngwèn, nǐ xǐhuan zìjǐ de gōngzuò ma?",
+        "translation": "Извините, тебе нравится твоя работа?",
+        "answer": "我喜欢帮你学中文。"
+      },
+      {
+        "input": "你喜不喜欢你的工作？",
+        "pinyin": "Nǐ xǐ bu xǐhuan nǐ de gōngzuò?",
+        "translation": "Тебе нравится твоя работа?",
+        "answer": "我喜欢帮你学中文。"
+      },
+      {
+        "input": "请问，你喜不喜欢你的工作？",
+        "pinyin": "Qǐngwèn, nǐ xǐ bu xǐhuan nǐ de gōngzuò?",
+        "translation": "Извините, тебе нравится твоя работа?",
+        "answer": "我喜欢帮你学中文。"
+      },
+      {
+        "input": "你的工作你喜欢吗？",
+        "pinyin": "Nǐ de gōngzuò nǐ xǐhuan ma?",
+        "translation": "Тебе нравится твоя работа?",
+        "answer": "我喜欢帮你学中文。"
+      },
+      {
+        "input": "请问，你的工作你喜欢吗？",
+        "pinyin": "Qǐngwèn, nǐ de gōngzuò nǐ xǐhuan ma?",
+        "translation": "Извините, тебе нравится твоя работа?",
+        "answer": "我喜欢帮你学中文。"
+      },
+      {
+        "input": "你的工作忙吗？",
+        "pinyin": "Nǐ de gōngzuò máng ma?",
+        "translation": "У тебя много работы?",
+        "answer": "我现在有空，可以陪你练习。"
+      },
+      {
+        "input": "请问，你的工作忙吗？",
+        "pinyin": "Qǐngwèn, nǐ de gōngzuò máng ma?",
+        "translation": "Извините, у тебя много работы?",
+        "answer": "我现在有空，可以陪你练习。"
+      },
+      {
+        "input": "你工作忙不忙？",
+        "pinyin": "Nǐ gōngzuò máng bu máng?",
+        "translation": "У тебя много работы?",
+        "answer": "我现在有空，可以陪你练习。"
+      },
+      {
+        "input": "请问，你工作忙不忙？",
+        "pinyin": "Qǐngwèn, nǐ gōngzuò máng bu máng?",
+        "translation": "Извините, у тебя много работы?",
+        "answer": "我现在有空，可以陪你练习。"
+      },
+      {
+        "input": "你今天工作忙吗？",
+        "pinyin": "Nǐ jīntiān gōngzuò máng ma?",
+        "translation": "У тебя сегодня много работы?",
+        "answer": "我现在有空，可以陪你练习。"
+      },
+      {
+        "input": "请问，你今天工作忙吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān gōngzuò máng ma?",
+        "translation": "Извините, у тебя сегодня много работы?",
+        "answer": "我现在有空，可以陪你练习。"
+      },
+      {
+        "input": "你几点下班？",
+        "pinyin": "Nǐ jǐ diǎn xiàbān?",
+        "translation": "Во сколько ты заканчиваешь работу?",
+        "answer": "我没有固定的下班时间。"
+      },
+      {
+        "input": "请问，你几点下班？",
+        "pinyin": "Qǐngwèn, nǐ jǐ diǎn xiàbān?",
+        "translation": "Извините, во сколько ты заканчиваешь работу?",
+        "answer": "我没有固定的下班时间。"
+      },
+      {
+        "input": "你一般几点下班？",
+        "pinyin": "Nǐ yìbān jǐ diǎn xiàbān?",
+        "translation": "Во сколько обычно заканчиваешь работу?",
+        "answer": "我没有固定的下班时间。"
+      },
+      {
+        "input": "请问，你一般几点下班？",
+        "pinyin": "Qǐngwèn, nǐ yìbān jǐ diǎn xiàbān?",
+        "translation": "Извините, во сколько обычно заканчиваешь работу?",
+        "answer": "我没有固定的下班时间。"
+      },
+      {
+        "input": "你通常几点下班？",
+        "pinyin": "Nǐ tōngcháng jǐ diǎn xiàbān?",
+        "translation": "Во сколько обычно заканчиваешь работу?",
+        "answer": "我没有固定的下班时间。"
+      },
+      {
+        "input": "请问，你通常几点下班？",
+        "pinyin": "Qǐngwèn, nǐ tōngcháng jǐ diǎn xiàbān?",
+        "translation": "Извините, во сколько обычно заканчиваешь работу?",
+        "answer": "我没有固定的下班时间。"
+      },
+      {
+        "input": "你工作多长时间了？",
+        "pinyin": "Nǐ gōngzuò duō cháng shíjiān le?",
+        "translation": "Как давно ты работаешь?",
+        "answer": "我是虚拟中文老师，没有实际的工作年限。"
+      },
+      {
+        "input": "请问，你工作多长时间了？",
+        "pinyin": "Qǐngwèn, nǐ gōngzuò duō cháng shíjiān le?",
+        "translation": "Извините, как давно ты работаешь?",
+        "answer": "我是虚拟中文老师，没有实际的工作年限。"
+      },
+      {
+        "input": "你工作几年了？",
+        "pinyin": "Nǐ gōngzuò jǐ nián le?",
+        "translation": "Сколько лет ты работаешь?",
+        "answer": "我是虚拟中文老师，没有实际的工作年限。"
+      },
+      {
+        "input": "请问，你工作几年了？",
+        "pinyin": "Qǐngwèn, nǐ gōngzuò jǐ nián le?",
+        "translation": "Извините, сколько лет ты работаешь?",
+        "answer": "我是虚拟中文老师，没有实际的工作年限。"
+      },
+      {
+        "input": "你会不会说俄语？",
+        "pinyin": "Nǐ huì bu huì shuō Éyǔ?",
+        "translation": "Ты умеешь говорить по-русски?",
+        "answer": "我可以用俄语解释中文。"
+      },
+      {
+        "input": "请问，你会不会说俄语？",
+        "pinyin": "Qǐngwèn, nǐ huì bu huì shuō Éyǔ?",
+        "translation": "Извините, ты умеешь говорить по-русски?",
+        "answer": "我可以用俄语解释中文。"
+      },
+      {
+        "input": "你能说俄语吗？",
+        "pinyin": "Nǐ néng shuō Éyǔ ma?",
+        "translation": "Ты можешь говорить по-русски?",
+        "answer": "我可以用俄语解释中文。"
+      },
+      {
+        "input": "请问，你能说俄语吗？",
+        "pinyin": "Qǐngwèn, nǐ néng shuō Éyǔ ma?",
+        "translation": "Извините, ты можешь говорить по-русски?",
+        "answer": "我可以用俄语解释中文。"
+      },
+      {
+        "input": "你会不会用电脑？",
+        "pinyin": "Nǐ huì bu huì yòng diànnǎo?",
+        "translation": "Ты умеешь пользоваться компьютером?",
+        "answer": "会，我会用电脑。"
+      },
+      {
+        "input": "请问，你会不会用电脑？",
+        "pinyin": "Qǐngwèn, nǐ huì bu huì yòng diànnǎo?",
+        "translation": "Извините, ты умеешь пользоваться компьютером?",
+        "answer": "会，我会用电脑。"
+      },
+      {
+        "input": "你能用电脑吗？",
+        "pinyin": "Nǐ néng yòng diànnǎo ma?",
+        "translation": "Ты можешь пользоваться компьютером?",
+        "answer": "会，我会用电脑。"
+      },
+      {
+        "input": "请问，你能用电脑吗？",
+        "pinyin": "Qǐngwèn, nǐ néng yòng diànnǎo ma?",
+        "translation": "Извините, ты можешь пользоваться компьютером?",
+        "answer": "会，我会用电脑。"
+      }
+    ],
+    "routine": [
+      {
+        "input": "你早上几点起床？",
+        "pinyin": "Nǐ zǎoshang jǐ diǎn qǐchuáng?",
+        "translation": "Во сколько ты встаёшь утром?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "请问，你早上几点起床？",
+        "pinyin": "Qǐngwèn, nǐ zǎoshang jǐ diǎn qǐchuáng?",
+        "translation": "Извините, во сколько ты встаёшь утром?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "你一般几点起床？",
+        "pinyin": "Nǐ yìbān jǐ diǎn qǐchuáng?",
+        "translation": "Во сколько ты обычно встаёшь?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "请问，你一般几点起床？",
+        "pinyin": "Qǐngwèn, nǐ yìbān jǐ diǎn qǐchuáng?",
+        "translation": "Извините, во сколько ты обычно встаёшь?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "你通常几点起床？",
+        "pinyin": "Nǐ tōngcháng jǐ diǎn qǐchuáng?",
+        "translation": "Во сколько ты обычно встаёшь?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "请问，你通常几点起床？",
+        "pinyin": "Qǐngwèn, nǐ tōngcháng jǐ diǎn qǐchuáng?",
+        "translation": "Извините, во сколько ты обычно встаёшь?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "你什么时候起床？",
+        "pinyin": "Nǐ shénme shíhou qǐchuáng?",
+        "translation": "Когда ты встаёшь?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "请问，你什么时候起床？",
+        "pinyin": "Qǐngwèn, nǐ shénme shíhou qǐchuáng?",
+        "translation": "Извините, когда ты встаёшь?",
+        "answer": "我没有固定的起床时间。你几点起床？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de qǐchuáng shíjiān. Nǐ jǐ diǎn qǐchuáng?",
+        "answerTranslation": "У меня нет фиксированного времени подъёма. А ты во сколько встаёшь?"
+      },
+      {
+        "input": "你一般几点睡觉？",
+        "pinyin": "Nǐ yìbān jǐ diǎn shuìjiào?",
+        "translation": "Во сколько ты обычно ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "请问，你一般几点睡觉？",
+        "pinyin": "Qǐngwèn, nǐ yìbān jǐ diǎn shuìjiào?",
+        "translation": "Извините, во сколько ты обычно ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "你通常几点睡觉？",
+        "pinyin": "Nǐ tōngcháng jǐ diǎn shuìjiào?",
+        "translation": "Во сколько ты обычно ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "请问，你通常几点睡觉？",
+        "pinyin": "Qǐngwèn, nǐ tōngcháng jǐ diǎn shuìjiào?",
+        "translation": "Извините, во сколько ты обычно ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "你每天几点睡觉？",
+        "pinyin": "Nǐ měitiān jǐ diǎn shuìjiào?",
+        "translation": "Во сколько ты каждый день ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "请问，你每天几点睡觉？",
+        "pinyin": "Qǐngwèn, nǐ měitiān jǐ diǎn shuìjiào?",
+        "translation": "Извините, во сколько ты каждый день ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "你什么时候睡觉？",
+        "pinyin": "Nǐ shénme shíhou shuìjiào?",
+        "translation": "Когда ты ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "请问，你什么时候睡觉？",
+        "pinyin": "Qǐngwèn, nǐ shénme shíhou shuìjiào?",
+        "translation": "Извините, когда ты ложишься спать?",
+        "answer": "我没有固定的睡觉时间。你呢？",
+        "answerPinyin": "Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?",
+        "answerTranslation": "У меня нет фиксированного времени сна. А у тебя?"
+      },
+      {
+        "input": "你吃早饭了没有？",
+        "pinyin": "Nǐ chī zǎofàn le méiyǒu?",
+        "translation": "Ты уже позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "请问，你吃早饭了没有？",
+        "pinyin": "Qǐngwèn, nǐ chī zǎofàn le méiyǒu?",
+        "translation": "Извините, ты уже позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "你吃没吃早饭？",
+        "pinyin": "Nǐ chī méi chī zǎofàn?",
+        "translation": "Ты позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "请问，你吃没吃早饭？",
+        "pinyin": "Qǐngwèn, nǐ chī méi chī zǎofàn?",
+        "translation": "Извините, ты позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "你今天吃早饭了吗？",
+        "pinyin": "Nǐ jīntiān chī zǎofàn le ma?",
+        "translation": "Ты сегодня уже позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "请问，你今天吃早饭了吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān chī zǎofàn le ma?",
+        "translation": "Извините, ты сегодня уже позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "你吃早餐了吗？",
+        "pinyin": "Nǐ chī zǎocān le ma?",
+        "translation": "Ты уже позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "请问，你吃早餐了吗？",
+        "pinyin": "Qǐngwèn, nǐ chī zǎocān le ma?",
+        "translation": "Извините, ты уже позавтракал(а)?",
+        "answer": "我早上不吃早饭。",
+        "answerPinyin": "Wǒ zǎoshang bù chī zǎofàn.",
+        "answerTranslation": "Я не завтракаю утром."
+      },
+      {
+        "input": "你今天干了什么？",
+        "pinyin": "Nǐ jīntiān gàn le shénme?",
+        "translation": "Что ты сегодня делал(а)?",
+        "answer": "我今天和你练习中文。",
+        "answerPinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+        "answerTranslation": "Сегодня я практикую китайский с тобой."
+      },
+      {
+        "input": "请问，你今天干了什么？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān gàn le shénme?",
+        "translation": "Извините, что ты сегодня делал(а)?",
+        "answer": "我今天和你练习中文。",
+        "answerPinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+        "answerTranslation": "Сегодня я практикую китайский с тобой."
+      },
+      {
+        "input": "你今天都做了些什么？",
+        "pinyin": "Nǐ jīntiān dōu zuò le xiē shénme?",
+        "translation": "Что ты сегодня делал(а)?",
+        "answer": "我今天和你练习中文。",
+        "answerPinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+        "answerTranslation": "Сегодня я практикую китайский с тобой."
+      },
+      {
+        "input": "请问，你今天都做了些什么？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān dōu zuò le xiē shénme?",
+        "translation": "Извините, что ты сегодня делал(а)?",
+        "answer": "我今天和你练习中文。",
+        "answerPinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+        "answerTranslation": "Сегодня я практикую китайский с тобой."
+      },
+      {
+        "input": "今天你做了什么？",
+        "pinyin": "Jīntiān nǐ zuò le shénme?",
+        "translation": "Что ты сегодня делал(а)?",
+        "answer": "我今天和你练习中文。",
+        "answerPinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+        "answerTranslation": "Сегодня я практикую китайский с тобой."
+      },
+      {
+        "input": "请问，今天你做了什么？",
+        "pinyin": "Qǐngwèn, jīntiān nǐ zuò le shénme?",
+        "translation": "Извините, что ты сегодня делал(а)?",
+        "answer": "我今天和你练习中文。",
+        "answerPinyin": "Wǒ jīntiān hé nǐ liànxí Zhōngwén.",
+        "answerTranslation": "Сегодня я практикую китайский с тобой."
+      },
+      {
+        "input": "你今天有没有空？",
+        "pinyin": "Nǐ jīntiān yǒu méiyǒu kòng?",
+        "translation": "У тебя сегодня есть свободное время?",
+        "answer": "今天我有空，可以聊聊天。",
+        "answerPinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+        "answerTranslation": "Сегодня я свободна, можем поболтать."
+      },
+      {
+        "input": "请问，你今天有没有空？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān yǒu méiyǒu kòng?",
+        "translation": "Извините, у тебя сегодня есть свободное время?",
+        "answer": "今天我有空，可以聊聊天。",
+        "answerPinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+        "answerTranslation": "Сегодня я свободна, можем поболтать."
+      },
+      {
+        "input": "你今天有时间吗？",
+        "pinyin": "Nǐ jīntiān yǒu shíjiān ma?",
+        "translation": "У тебя сегодня есть время?",
+        "answer": "今天我有空，可以聊聊天。",
+        "answerPinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+        "answerTranslation": "Сегодня я свободна, можем поболтать."
+      },
+      {
+        "input": "请问，你今天有时间吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān yǒu shíjiān ma?",
+        "translation": "Извините, у тебя сегодня есть время?",
+        "answer": "今天我有空，可以聊聊天。",
+        "answerPinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+        "answerTranslation": "Сегодня я свободна, можем поболтать."
+      },
+      {
+        "input": "今天你忙不忙？",
+        "pinyin": "Jīntiān nǐ máng bu máng?",
+        "translation": "Ты сегодня занят(а)?",
+        "answer": "今天我有空，可以聊聊天。",
+        "answerPinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+        "answerTranslation": "Сегодня я свободна, можем поболтать."
+      },
+      {
+        "input": "请问，今天你忙不忙？",
+        "pinyin": "Qǐngwèn, jīntiān nǐ máng bu máng?",
+        "translation": "Извините, ты сегодня занят(а)?",
+        "answer": "今天我有空，可以聊聊天。",
+        "answerPinyin": "Jīntiān wǒ yǒu kòng, kěyǐ liáo liáotiān.",
+        "answerTranslation": "Сегодня я свободна, можем поболтать."
+      },
+      {
+        "input": "你需要休息一下吗？",
+        "pinyin": "Nǐ xūyào xiūxi yíxià ma?",
+        "translation": "Тебе нужно немного отдохнуть?",
+        "answer": "不用，谢谢你。",
+        "answerPinyin": "Bú yòng, xièxie nǐ.",
+        "answerTranslation": "Не нужно, спасибо."
+      },
+      {
+        "input": "请问，你需要休息一下吗？",
+        "pinyin": "Qǐngwèn, nǐ xūyào xiūxi yíxià ma?",
+        "translation": "Извините, тебе нужно немного отдохнуть?",
+        "answer": "不用，谢谢你。",
+        "answerPinyin": "Bú yòng, xièxie nǐ.",
+        "answerTranslation": "Не нужно, спасибо."
+      },
+      {
+        "input": "你要不要休息一下？",
+        "pinyin": "Nǐ yào bu yào xiūxi yíxià?",
+        "translation": "Тебе не хочется немного отдохнуть?",
+        "answer": "不用，谢谢你。",
+        "answerPinyin": "Bú yòng, xièxie nǐ.",
+        "answerTranslation": "Не нужно, спасибо."
+      },
+      {
+        "input": "请问，你要不要休息一下？",
+        "pinyin": "Qǐngwèn, nǐ yào bu yào xiūxi yíxià?",
+        "translation": "Извините, тебе не хочется немного отдохнуть?",
+        "answer": "不用，谢谢你。",
+        "answerPinyin": "Bú yòng, xièxie nǐ.",
+        "answerTranslation": "Не нужно, спасибо."
+      },
+      {
+        "input": "你要休息吗？",
+        "pinyin": "Nǐ yào xiūxi ma?",
+        "translation": "Тебе нужно отдохнуть?",
+        "answer": "不用，谢谢你。",
+        "answerPinyin": "Bú yòng, xièxie nǐ.",
+        "answerTranslation": "Не нужно, спасибо."
+      },
+      {
+        "input": "请问，你要休息吗？",
+        "pinyin": "Qǐngwèn, nǐ yào xiūxi ma?",
+        "translation": "Извините, тебе нужно отдохнуть?",
+        "answer": "不用，谢谢你。",
+        "answerPinyin": "Bú yòng, xièxie nǐ.",
+        "answerTranslation": "Не нужно, спасибо."
+      }
+    ],
+    "food-shop": [
+      {
+        "input": "你想吃点什么？",
+        "pinyin": "Nǐ xiǎng chī diǎn shénme?",
+        "translation": "Что ты хочешь съесть?",
+        "answer": "我想吃竹子。",
+        "answerPinyin": "Wǒ xiǎng chī zhúzi.",
+        "answerTranslation": "Я хочу бамбук."
+      },
+      {
+        "input": "请问，你想吃点什么？",
+        "pinyin": "Qǐngwèn, nǐ xiǎng chī diǎn shénme?",
+        "translation": "Извините, что ты хочешь съесть?",
+        "answer": "我想吃竹子。",
+        "answerPinyin": "Wǒ xiǎng chī zhúzi.",
+        "answerTranslation": "Я хочу бамбук."
+      },
+      {
+        "input": "你想要吃什么？",
+        "pinyin": "Nǐ xiǎng yào chī shénme?",
+        "translation": "Что ты хочешь съесть?",
+        "answer": "我想吃竹子。",
+        "answerPinyin": "Wǒ xiǎng chī zhúzi.",
+        "answerTranslation": "Я хочу бамбук."
+      },
+      {
+        "input": "请问，你想要吃什么？",
+        "pinyin": "Qǐngwèn, nǐ xiǎng yào chī shénme?",
+        "translation": "Извините, что ты хочешь съесть?",
+        "answer": "我想吃竹子。",
+        "answerPinyin": "Wǒ xiǎng chī zhúzi.",
+        "answerTranslation": "Я хочу бамбук."
+      },
+      {
+        "input": "你要吃什么？",
+        "pinyin": "Nǐ yào chī shénme?",
+        "translation": "Что будешь есть?",
+        "answer": "我想吃竹子。",
+        "answerPinyin": "Wǒ xiǎng chī zhúzi.",
+        "answerTranslation": "Я хочу бамбук."
+      },
+      {
+        "input": "请问，你要吃什么？",
+        "pinyin": "Qǐngwèn, nǐ yào chī shénme?",
+        "translation": "Извините, что будешь есть?",
+        "answer": "我想吃竹子。",
+        "answerPinyin": "Wǒ xiǎng chī zhúzi.",
+        "answerTranslation": "Я хочу бамбук."
+      },
+      {
+        "input": "你现在饿吗？",
+        "pinyin": "Nǐ xiànzài è ma?",
+        "translation": "Ты сейчас голоден?",
+        "answer": "不饿。你呢？",
+        "answerPinyin": "Bú è. Nǐ ne?",
+        "answerTranslation": "Не голодна. А ты?"
+      },
+      {
+        "input": "请问，你现在饿吗？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài è ma?",
+        "translation": "Извините, ты сейчас голоден?",
+        "answer": "不饿。你呢？",
+        "answerPinyin": "Bú è. Nǐ ne?",
+        "answerTranslation": "Не голодна. А ты?"
+      },
+      {
+        "input": "你饿不饿？",
+        "pinyin": "Nǐ è bu è?",
+        "translation": "Ты голоден?",
+        "answer": "不饿。你呢？",
+        "answerPinyin": "Bú è. Nǐ ne?",
+        "answerTranslation": "Не голодна. А ты?"
+      },
+      {
+        "input": "请问，你饿不饿？",
+        "pinyin": "Qǐngwèn, nǐ è bu è?",
+        "translation": "Извините, ты голоден?",
+        "answer": "不饿。你呢？",
+        "answerPinyin": "Bú è. Nǐ ne?",
+        "answerTranslation": "Не голодна. А ты?"
+      },
+      {
+        "input": "你现在饿不饿？",
+        "pinyin": "Nǐ xiànzài è bu è?",
+        "translation": "Ты сейчас голоден?",
+        "answer": "不饿。你呢？",
+        "answerPinyin": "Bú è. Nǐ ne?",
+        "answerTranslation": "Не голодна. А ты?"
+      },
+      {
+        "input": "请问，你现在饿不饿？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài è bu è?",
+        "translation": "Извините, ты сейчас голоден?",
+        "answer": "不饿。你呢？",
+        "answerPinyin": "Bú è. Nǐ ne?",
+        "answerTranslation": "Не голодна. А ты?"
+      },
+      {
+        "input": "你还要什么？",
+        "pinyin": "Nǐ hái yào shénme?",
+        "translation": "Что ещё хочешь?",
+        "answer": "我还要一碗汤。",
+        "answerPinyin": "Wǒ hái yào yì wǎn tāng.",
+        "answerTranslation": "Я хочу ещё миску супа."
+      },
+      {
+        "input": "请问，你还要什么？",
+        "pinyin": "Qǐngwèn, nǐ hái yào shénme?",
+        "translation": "Извините, что ещё хочешь?",
+        "answer": "我还要一碗汤。",
+        "answerPinyin": "Wǒ hái yào yì wǎn tāng.",
+        "answerTranslation": "Я хочу ещё миску супа."
+      },
+      {
+        "input": "你还想要什么？",
+        "pinyin": "Nǐ hái xiǎng yào shénme?",
+        "translation": "Что ещё хочешь?",
+        "answer": "我还要一碗汤。",
+        "answerPinyin": "Wǒ hái yào yì wǎn tāng.",
+        "answerTranslation": "Я хочу ещё миску супа."
+      },
+      {
+        "input": "请问，你还想要什么？",
+        "pinyin": "Qǐngwèn, nǐ hái xiǎng yào shénme?",
+        "translation": "Извините, что ещё хочешь?",
+        "answer": "我还要一碗汤。",
+        "answerPinyin": "Wǒ hái yào yì wǎn tāng.",
+        "answerTranslation": "Я хочу ещё миску супа."
+      },
+      {
+        "input": "你还想吃什么？",
+        "pinyin": "Nǐ hái xiǎng chī shénme?",
+        "translation": "Что ещё хочешь съесть?",
+        "answer": "我还要一碗汤。",
+        "answerPinyin": "Wǒ hái yào yì wǎn tāng.",
+        "answerTranslation": "Я хочу ещё миску супа."
+      },
+      {
+        "input": "请问，你还想吃什么？",
+        "pinyin": "Qǐngwèn, nǐ hái xiǎng chī shénme?",
+        "translation": "Извините, что ещё хочешь съесть?",
+        "answer": "我还要一碗汤。",
+        "answerPinyin": "Wǒ hái yào yì wǎn tāng.",
+        "answerTranslation": "Я хочу ещё миску супа."
+      },
+      {
+        "input": "你最喜欢什么颜色？",
+        "pinyin": "Nǐ zuì xǐhuan shénme yánsè?",
+        "translation": "Какой цвет тебе нравится больше всего?",
+        "answer": "我喜欢紫色。",
+        "answerPinyin": "Wǒ xǐhuan zǐsè.",
+        "answerTranslation": "Я люблю фиолетовый цвет."
+      },
+      {
+        "input": "请问，你最喜欢什么颜色？",
+        "pinyin": "Qǐngwèn, nǐ zuì xǐhuan shénme yánsè?",
+        "translation": "Извините, какой цвет тебе нравится больше всего?",
+        "answer": "我喜欢紫色。",
+        "answerPinyin": "Wǒ xǐhuan zǐsè.",
+        "answerTranslation": "Я люблю фиолетовый цвет."
+      },
+      {
+        "input": "你喜欢哪种颜色？",
+        "pinyin": "Nǐ xǐhuan nǎ zhǒng yánsè?",
+        "translation": "Какой цвет ты любишь?",
+        "answer": "我喜欢紫色。",
+        "answerPinyin": "Wǒ xǐhuan zǐsè.",
+        "answerTranslation": "Я люблю фиолетовый цвет."
+      },
+      {
+        "input": "请问，你喜欢哪种颜色？",
+        "pinyin": "Qǐngwèn, nǐ xǐhuan nǎ zhǒng yánsè?",
+        "translation": "Извините, какой цвет ты любишь?",
+        "answer": "我喜欢紫色。",
+        "answerPinyin": "Wǒ xǐhuan zǐsè.",
+        "answerTranslation": "Я люблю фиолетовый цвет."
+      },
+      {
+        "input": "你喜欢哪个颜色？",
+        "pinyin": "Nǐ xǐhuan nǎ ge yánsè?",
+        "translation": "Какой цвет ты любишь?",
+        "answer": "我喜欢紫色。",
+        "answerPinyin": "Wǒ xǐhuan zǐsè.",
+        "answerTranslation": "Я люблю фиолетовый цвет."
+      },
+      {
+        "input": "请问，你喜欢哪个颜色？",
+        "pinyin": "Qǐngwèn, nǐ xǐhuan nǎ ge yánsè?",
+        "translation": "Извините, какой цвет ты любишь?",
+        "answer": "我喜欢紫色。",
+        "answerPinyin": "Wǒ xǐhuan zǐsè.",
+        "answerTranslation": "Я люблю фиолетовый цвет."
+      },
+      {
+        "input": "你喜不喜欢这件衣服？",
+        "pinyin": "Nǐ xǐ bu xǐhuan zhè jiàn yīfu?",
+        "translation": "Тебе нравится эта вещь?",
+        "answer": "喜欢，但是太贵了。",
+        "answerPinyin": "Xǐhuan, dànshì tài guì le.",
+        "answerTranslation": "Нравится, но слишком дорого."
+      },
+      {
+        "input": "请问，你喜不喜欢这件衣服？",
+        "pinyin": "Qǐngwèn, nǐ xǐ bu xǐhuan zhè jiàn yīfu?",
+        "translation": "Извините, тебе нравится эта вещь?",
+        "answer": "喜欢，但是太贵了。",
+        "answerPinyin": "Xǐhuan, dànshì tài guì le.",
+        "answerTranslation": "Нравится, но слишком дорого."
+      },
+      {
+        "input": "这件衣服你喜欢吗？",
+        "pinyin": "Zhè jiàn yīfu nǐ xǐhuan ma?",
+        "translation": "Тебе нравится эта вещь?",
+        "answer": "喜欢，但是太贵了。",
+        "answerPinyin": "Xǐhuan, dànshì tài guì le.",
+        "answerTranslation": "Нравится, но слишком дорого."
+      },
+      {
+        "input": "请问，这件衣服你喜欢吗？",
+        "pinyin": "Qǐngwèn, zhè jiàn yīfu nǐ xǐhuan ma?",
+        "translation": "Извините, тебе нравится эта вещь?",
+        "answer": "喜欢，但是太贵了。",
+        "answerPinyin": "Xǐhuan, dànshì tài guì le.",
+        "answerTranslation": "Нравится, но слишком дорого."
+      },
+      {
+        "input": "你喜欢不喜欢这件衣服？",
+        "pinyin": "Nǐ xǐhuan bu xǐhuan zhè jiàn yīfu?",
+        "translation": "Тебе нравится эта вещь?",
+        "answer": "喜欢，但是太贵了。",
+        "answerPinyin": "Xǐhuan, dànshì tài guì le.",
+        "answerTranslation": "Нравится, но слишком дорого."
+      },
+      {
+        "input": "请问，你喜欢不喜欢这件衣服？",
+        "pinyin": "Qǐngwèn, nǐ xǐhuan bu xǐhuan zhè jiàn yīfu?",
+        "translation": "Извините, тебе нравится эта вещь?",
+        "answer": "喜欢，但是太贵了。",
+        "answerPinyin": "Xǐhuan, dànshì tài guì le.",
+        "answerTranslation": "Нравится, но слишком дорого."
+      },
+      {
+        "input": "哪一个更便宜？",
+        "pinyin": "Nǎ yí ge gèng piányi?",
+        "translation": "Какой из них дешевле?",
+        "answer": "这个比那个便宜。",
+        "answerPinyin": "Zhège bǐ nàge piányi.",
+        "answerTranslation": "Этот дешевле того."
+      },
+      {
+        "input": "请问，哪一个更便宜？",
+        "pinyin": "Qǐngwèn, nǎ yí ge gèng piányi?",
+        "translation": "Извините, какой из них дешевле?",
+        "answer": "这个比那个便宜。",
+        "answerPinyin": "Zhège bǐ nàge piányi.",
+        "answerTranslation": "Этот дешевле того."
+      },
+      {
+        "input": "哪个比较便宜？",
+        "pinyin": "Nǎ ge bǐjiào piányi?",
+        "translation": "Какой из них дешевле?",
+        "answer": "这个比那个便宜。",
+        "answerPinyin": "Zhège bǐ nàge piányi.",
+        "answerTranslation": "Этот дешевле того."
+      },
+      {
+        "input": "请问，哪个比较便宜？",
+        "pinyin": "Qǐngwèn, nǎ ge bǐjiào piányi?",
+        "translation": "Извините, какой из них дешевле?",
+        "answer": "这个比那个便宜。",
+        "answerPinyin": "Zhège bǐ nàge piányi.",
+        "answerTranslation": "Этот дешевле того."
+      },
+      {
+        "input": "这两个哪个更便宜？",
+        "pinyin": "Zhè liǎng ge nǎ ge gèng piányi?",
+        "translation": "Какой из этих двух дешевле?",
+        "answer": "这个比那个便宜。",
+        "answerPinyin": "Zhège bǐ nàge piányi.",
+        "answerTranslation": "Этот дешевле того."
+      },
+      {
+        "input": "请问，这两个哪个更便宜？",
+        "pinyin": "Qǐngwèn, zhè liǎng ge nǎ ge gèng piányi?",
+        "translation": "Извините, какой из этих двух дешевле?",
+        "answer": "这个比那个便宜。",
+        "answerPinyin": "Zhège bǐ nàge piányi.",
+        "answerTranslation": "Этот дешевле того."
+      },
+      {
+        "input": "能便宜一点吗？",
+        "pinyin": "Néng piányi yìdiǎn ma?",
+        "translation": "Можно немного дешевле?",
+        "answer": "练习对话：四十块钱，可以吗？",
+        "answerPinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+        "answerTranslation": "Учебный диалог: сорок юаней, подойдёт?"
+      },
+      {
+        "input": "请问，能便宜一点吗？",
+        "pinyin": "Qǐngwèn, néng piányi yìdiǎn ma?",
+        "translation": "Извините, можно немного дешевле?",
+        "answer": "练习对话：四十块钱，可以吗？",
+        "answerPinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+        "answerTranslation": "Учебный диалог: сорок юаней, подойдёт?"
+      },
+      {
+        "input": "能不能便宜一点？",
+        "pinyin": "Néng bu néng piányi yìdiǎn?",
+        "translation": "Можно немного дешевле?",
+        "answer": "练习对话：四十块钱，可以吗？",
+        "answerPinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+        "answerTranslation": "Учебный диалог: сорок юаней, подойдёт?"
+      },
+      {
+        "input": "请问，能不能便宜一点？",
+        "pinyin": "Qǐngwèn, néng bu néng piányi yìdiǎn?",
+        "translation": "Извините, можно немного дешевле?",
+        "answer": "练习对话：四十块钱，可以吗？",
+        "answerPinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+        "answerTranslation": "Учебный диалог: сорок юаней, подойдёт?"
+      },
+      {
+        "input": "可以再便宜一点吗？",
+        "pinyin": "Kěyǐ zài piányi yìdiǎn ma?",
+        "translation": "Можно ещё немного дешевле?",
+        "answer": "练习对话：四十块钱，可以吗？",
+        "answerPinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+        "answerTranslation": "Учебный диалог: сорок юаней, подойдёт?"
+      },
+      {
+        "input": "请问，可以再便宜一点吗？",
+        "pinyin": "Qǐngwèn, kěyǐ zài piányi yìdiǎn ma?",
+        "translation": "Извините, можно ещё немного дешевле?",
+        "answer": "练习对话：四十块钱，可以吗？",
+        "answerPinyin": "Liànxí duìhuà: sìshí kuài qián, kěyǐ ma?",
+        "answerTranslation": "Учебный диалог: сорок юаней, подойдёт?"
+      },
+      {
+        "input": "能刷卡吗？",
+        "pinyin": "Néng shuākǎ ma?",
+        "translation": "Можно оплатить картой?",
+        "answer": "练习对话：可以刷卡。",
+        "answerPinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+        "answerTranslation": "Учебный диалог: можно оплатить картой."
+      },
+      {
+        "input": "请问，能刷卡吗？",
+        "pinyin": "Qǐngwèn, néng shuākǎ ma?",
+        "translation": "Извините, можно оплатить картой?",
+        "answer": "练习对话：可以刷卡。",
+        "answerPinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+        "answerTranslation": "Учебный диалог: можно оплатить картой."
+      },
+      {
+        "input": "能不能刷卡？",
+        "pinyin": "Néng bu néng shuākǎ?",
+        "translation": "Можно оплатить картой?",
+        "answer": "练习对话：可以刷卡。",
+        "answerPinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+        "answerTranslation": "Учебный диалог: можно оплатить картой."
+      },
+      {
+        "input": "请问，能不能刷卡？",
+        "pinyin": "Qǐngwèn, néng bu néng shuākǎ?",
+        "translation": "Извините, можно оплатить картой?",
+        "answer": "练习对话：可以刷卡。",
+        "answerPinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+        "answerTranslation": "Учебный диалог: можно оплатить картой."
+      },
+      {
+        "input": "可以用银行卡付款吗？",
+        "pinyin": "Kěyǐ yòng yínhángkǎ fùkuǎn ma?",
+        "translation": "Можно оплатить банковской картой?",
+        "answer": "练习对话：可以刷卡。",
+        "answerPinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+        "answerTranslation": "Учебный диалог: можно оплатить картой."
+      },
+      {
+        "input": "请问，可以用银行卡付款吗？",
+        "pinyin": "Qǐngwèn, kěyǐ yòng yínhángkǎ fùkuǎn ma?",
+        "translation": "Извините, можно оплатить банковской картой?",
+        "answer": "练习对话：可以刷卡。",
+        "answerPinyin": "Liànxí duìhuà: kěyǐ shuākǎ.",
+        "answerTranslation": "Учебный диалог: можно оплатить картой."
+      }
+    ],
+    "wellbeing": [
+      {
+        "input": "你今天感觉好吗？",
+        "pinyin": "Nǐ jīntiān gǎnjué hǎo ma?",
+        "translation": "Ты сегодня хорошо себя чувствуешь?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "请问，你今天感觉好吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān gǎnjué hǎo ma?",
+        "translation": "Извините, ты сегодня хорошо себя чувствуешь?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "你现在感觉怎么样？",
+        "pinyin": "Nǐ xiànzài gǎnjué zěnmeyàng?",
+        "translation": "Как ты сейчас себя чувствуешь?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "请问，你现在感觉怎么样？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài gǎnjué zěnmeyàng?",
+        "translation": "Извините, как ты сейчас себя чувствуешь?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "你最近感觉怎么样？",
+        "pinyin": "Nǐ zuìjìn gǎnjué zěnmeyàng?",
+        "translation": "Как ты себя чувствуешь в последнее время?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "请问，你最近感觉怎么样？",
+        "pinyin": "Qǐngwèn, nǐ zuìjìn gǎnjué zěnmeyàng?",
+        "translation": "Извините, как ты себя чувствуешь в последнее время?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "你今天身体好吗？",
+        "pinyin": "Nǐ jīntiān shēntǐ hǎo ma?",
+        "translation": "Как твоё здоровье сегодня?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "请问，你今天身体好吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān shēntǐ hǎo ma?",
+        "translation": "Извините, как твоё здоровье сегодня?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "你身体好不好？",
+        "pinyin": "Nǐ shēntǐ hǎo bu hǎo?",
+        "translation": "У тебя хорошее самочувствие?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "请问，你身体好不好？",
+        "pinyin": "Qǐngwèn, nǐ shēntǐ hǎo bu hǎo?",
+        "translation": "Извините, у тебя хорошее самочувствие?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "你最近身体还好吗？",
+        "pinyin": "Nǐ zuìjìn shēntǐ hái hǎo ma?",
+        "translation": "Ты хорошо себя чувствуешь в последнее время?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "请问，你最近身体还好吗？",
+        "pinyin": "Qǐngwèn, nǐ zuìjìn shēntǐ hái hǎo ma?",
+        "translation": "Извините, ты хорошо себя чувствуешь в последнее время?",
+        "answer": "我很好，谢谢！你呢？",
+        "answerPinyin": "Wǒ hěn hǎo, xièxie! Nǐ ne?",
+        "answerTranslation": "Хорошо, спасибо! А ты?"
+      },
+      {
+        "input": "你生病了没有？",
+        "pinyin": "Nǐ shēngbìng le méiyǒu?",
+        "translation": "Ты заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你生病了没有？",
+        "pinyin": "Qǐngwèn, nǐ shēngbìng le méiyǒu?",
+        "translation": "Извините, ты заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你有没有生病？",
+        "pinyin": "Nǐ yǒu méiyǒu shēngbìng?",
+        "translation": "Ты заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你有没有生病？",
+        "pinyin": "Qǐngwèn, nǐ yǒu méiyǒu shēngbìng?",
+        "translation": "Извините, ты заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你是不是生病了？",
+        "pinyin": "Nǐ shì bu shì shēngbìng le?",
+        "translation": "Ты случайно не заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你是不是生病了？",
+        "pinyin": "Qǐngwèn, nǐ shì bu shì shēngbìng le?",
+        "translation": "Извините, ты случайно не заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你今天生病了吗？",
+        "pinyin": "Nǐ jīntiān shēngbìng le ma?",
+        "translation": "Ты сегодня заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你今天生病了吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān shēngbìng le ma?",
+        "translation": "Извините, ты сегодня заболел(а)?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你今天累吗？",
+        "pinyin": "Nǐ jīntiān lèi ma?",
+        "translation": "Ты сегодня устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "请问，你今天累吗？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān lèi ma?",
+        "translation": "Извините, ты сегодня устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "你现在累吗？",
+        "pinyin": "Nǐ xiànzài lèi ma?",
+        "translation": "Ты сейчас устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "请问，你现在累吗？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài lèi ma?",
+        "translation": "Извините, ты сейчас устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "你今天累不累？",
+        "pinyin": "Nǐ jīntiān lèi bu lèi?",
+        "translation": "Ты сегодня устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "请问，你今天累不累？",
+        "pinyin": "Qǐngwèn, nǐ jīntiān lèi bu lèi?",
+        "translation": "Извините, ты сегодня устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "你现在累不累？",
+        "pinyin": "Nǐ xiànzài lèi bu lèi?",
+        "translation": "Ты сейчас устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "请问，你现在累不累？",
+        "pinyin": "Qǐngwèn, nǐ xiànzài lèi bu lèi?",
+        "translation": "Извините, ты сейчас устал(а)?",
+        "answer": "不累。你呢？",
+        "answerPinyin": "Bú lèi. Nǐ ne?",
+        "answerTranslation": "Не устала. А ты?"
+      },
+      {
+        "input": "我身体不舒服。",
+        "pinyin": "Wǒ shēntǐ bù shūfu.",
+        "translation": "Я плохо себя чувствую.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我感觉不舒服。",
+        "pinyin": "Wǒ gǎnjué bù shūfu.",
+        "translation": "Я плохо себя чувствую.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我今天感觉不舒服。",
+        "pinyin": "Wǒ jīntiān gǎnjué bù shūfu.",
+        "translation": "Я сегодня плохо себя чувствую.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我有点儿不舒服。",
+        "pinyin": "Wǒ yǒudiǎnr bù shūfu.",
+        "translation": "Я немного плохо себя чувствую.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我心情不好。",
+        "pinyin": "Wǒ xīnqíng bù hǎo.",
+        "translation": "У меня плохое настроение.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我今天心情不好。",
+        "pinyin": "Wǒ jīntiān xīnqíng bù hǎo.",
+        "translation": "У меня сегодня плохое настроение.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我今天不太开心。",
+        "pinyin": "Wǒ jīntiān bú tài kāixīn.",
+        "translation": "Я сегодня не очень рад(а).",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      },
+      {
+        "input": "我有点儿难过。",
+        "pinyin": "Wǒ yǒudiǎnr nánguò.",
+        "translation": "Мне немного грустно.",
+        "answer": "怎么了？你想说说吗？",
+        "kind": "statement"
+      }
+    ],
+    "relationships": [
+      {
+        "input": "我们可以做朋友吗？",
+        "pinyin": "Wǒmen kěyǐ zuò péngyou ma?",
+        "translation": "Мы можем подружиться?",
+        "answer": "有啊，我们可以做朋友。",
+        "answerPinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+        "answerTranslation": "Да, мы можем дружить."
+      },
+      {
+        "input": "请问，我们可以做朋友吗？",
+        "pinyin": "Qǐngwèn, wǒmen kěyǐ zuò péngyou ma?",
+        "translation": "Извините, мы можем подружиться?",
+        "answer": "有啊，我们可以做朋友。",
+        "answerPinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+        "answerTranslation": "Да, мы можем дружить."
+      },
+      {
+        "input": "你愿意和我做朋友吗？",
+        "pinyin": "Nǐ yuànyì hé wǒ zuò péngyou ma?",
+        "translation": "Ты хочешь со мной дружить?",
+        "answer": "有啊，我们可以做朋友。",
+        "answerPinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+        "answerTranslation": "Да, мы можем дружить."
+      },
+      {
+        "input": "请问，你愿意和我做朋友吗？",
+        "pinyin": "Qǐngwèn, nǐ yuànyì hé wǒ zuò péngyou ma?",
+        "translation": "Извините, ты хочешь со мной дружить?",
+        "answer": "有啊，我们可以做朋友。",
+        "answerPinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+        "answerTranslation": "Да, мы можем дружить."
+      },
+      {
+        "input": "我可以和你做朋友吗？",
+        "pinyin": "Wǒ kěyǐ hé nǐ zuò péngyou ma?",
+        "translation": "Можно с тобой подружиться?",
+        "answer": "有啊，我们可以做朋友。",
+        "answerPinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+        "answerTranslation": "Да, мы можем дружить."
+      },
+      {
+        "input": "请问，我可以和你做朋友吗？",
+        "pinyin": "Qǐngwèn, wǒ kěyǐ hé nǐ zuò péngyou ma?",
+        "translation": "Извините, можно с тобой подружиться?",
+        "answer": "有啊，我们可以做朋友。",
+        "answerPinyin": "Yǒu a, wǒmen kěyǐ zuò péngyou.",
+        "answerTranslation": "Да, мы можем дружить."
+      },
+      {
+        "input": "你有男朋友吗？",
+        "pinyin": "Nǐ yǒu nánpéngyou ma?",
+        "translation": "У тебя есть парень?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你有男朋友吗？",
+        "pinyin": "Qǐngwèn, nǐ yǒu nánpéngyou ma?",
+        "translation": "Извините, у тебя есть парень?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你有没有男朋友？",
+        "pinyin": "Nǐ yǒu méiyǒu nánpéngyou?",
+        "translation": "У тебя есть парень?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你有没有男朋友？",
+        "pinyin": "Qǐngwèn, nǐ yǒu méiyǒu nánpéngyou?",
+        "translation": "Извините, у тебя есть парень?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你有女朋友吗？",
+        "pinyin": "Nǐ yǒu nǚpéngyou ma?",
+        "translation": "У тебя есть девушка?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你有女朋友吗？",
+        "pinyin": "Qǐngwèn, nǐ yǒu nǚpéngyou ma?",
+        "translation": "Извините, у тебя есть девушка?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你有没有女朋友？",
+        "pinyin": "Nǐ yǒu méiyǒu nǚpéngyou?",
+        "translation": "У тебя есть девушка?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你有没有女朋友？",
+        "pinyin": "Qǐngwèn, nǐ yǒu méiyǒu nǚpéngyou?",
+        "translation": "Извините, у тебя есть девушка?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你有对象吗？",
+        "pinyin": "Nǐ yǒu duìxiàng ma?",
+        "translation": "У тебя есть партнёр?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "请问，你有对象吗？",
+        "pinyin": "Qǐngwèn, nǐ yǒu duìxiàng ma?",
+        "translation": "Извините, у тебя есть партнёр?",
+        "answer": "没有，我是虚拟熊猫。",
+        "answerPinyin": "Méiyǒu, wǒ shì xūnǐ xióngmāo.",
+        "answerTranslation": "Нет, я виртуальная панда."
+      },
+      {
+        "input": "你星期六有没有空？",
+        "pinyin": "Nǐ xīngqīliù yǒu méiyǒu kòng?",
+        "translation": "Ты свободен в субботу?",
+        "answer": "有空，我们见面吧。",
+        "answerPinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+        "answerTranslation": "Есть время, давай встретимся.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，你星期六有没有空？",
+        "pinyin": "Qǐngwèn, nǐ xīngqīliù yǒu méiyǒu kòng?",
+        "translation": "Извините, ты свободен в субботу?",
+        "answer": "有空，我们见面吧。",
+        "answerPinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+        "answerTranslation": "Есть время, давай встретимся.",
+        "fictionalScene": true
+      },
+      {
+        "input": "星期六你有时间吗？",
+        "pinyin": "Xīngqīliù nǐ yǒu shíjiān ma?",
+        "translation": "У тебя есть время в субботу?",
+        "answer": "有空，我们见面吧。",
+        "answerPinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+        "answerTranslation": "Есть время, давай встретимся.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，星期六你有时间吗？",
+        "pinyin": "Qǐngwèn, xīngqīliù nǐ yǒu shíjiān ma?",
+        "translation": "Извините, у тебя есть время в субботу?",
+        "answer": "有空，我们见面吧。",
+        "answerPinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+        "answerTranslation": "Есть время, давай встретимся.",
+        "fictionalScene": true
+      },
+      {
+        "input": "你周六有空吗？",
+        "pinyin": "Nǐ zhōuliù yǒu kòng ma?",
+        "translation": "Ты свободен в субботу?",
+        "answer": "有空，我们见面吧。",
+        "answerPinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+        "answerTranslation": "Есть время, давай встретимся.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，你周六有空吗？",
+        "pinyin": "Qǐngwèn, nǐ zhōuliù yǒu kòng ma?",
+        "translation": "Извините, ты свободен в субботу?",
+        "answer": "有空，我们见面吧。",
+        "answerPinyin": "Yǒu kòng, wǒmen jiànmiàn ba.",
+        "answerTranslation": "Есть время, давай встретимся.",
+        "fictionalScene": true
+      },
+      {
+        "input": "我们什么时候碰面？",
+        "pinyin": "Wǒmen shénme shíhou pèngmiàn?",
+        "translation": "Когда мы встретимся?",
+        "answer": "星期六下午三点。",
+        "answerPinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+        "answerTranslation": "В субботу в три часа дня.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，我们什么时候碰面？",
+        "pinyin": "Qǐngwèn, wǒmen shénme shíhou pèngmiàn?",
+        "translation": "Извините, когда мы встретимся?",
+        "answer": "星期六下午三点。",
+        "answerPinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+        "answerTranslation": "В субботу в три часа дня.",
+        "fictionalScene": true
+      },
+      {
+        "input": "我们约几点见面？",
+        "pinyin": "Wǒmen yuē jǐ diǎn jiànmiàn?",
+        "translation": "На какое время договоримся о встрече?",
+        "answer": "星期六下午三点。",
+        "answerPinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+        "answerTranslation": "В субботу в три часа дня.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，我们约几点见面？",
+        "pinyin": "Qǐngwèn, wǒmen yuē jǐ diǎn jiànmiàn?",
+        "translation": "Извините, на какое время договоримся о встрече?",
+        "answer": "星期六下午三点。",
+        "answerPinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+        "answerTranslation": "В субботу в три часа дня.",
+        "fictionalScene": true
+      },
+      {
+        "input": "我们什么时间见面？",
+        "pinyin": "Wǒmen shénme shíjiān jiànmiàn?",
+        "translation": "Когда мы встретимся?",
+        "answer": "星期六下午三点。",
+        "answerPinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+        "answerTranslation": "В субботу в три часа дня.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，我们什么时间见面？",
+        "pinyin": "Qǐngwèn, wǒmen shénme shíjiān jiànmiàn?",
+        "translation": "Извините, когда мы встретимся?",
+        "answer": "星期六下午三点。",
+        "answerPinyin": "Xīngqīliù xiàwǔ sān diǎn.",
+        "answerTranslation": "В субботу в три часа дня.",
+        "fictionalScene": true
+      },
+      {
+        "input": "我们一起去公园好吗？",
+        "pinyin": "Wǒmen yìqǐ qù gōngyuán hǎo ma?",
+        "translation": "Давай вместе пойдём в парк?",
+        "answer": "好，我们一起去吧。",
+        "answerPinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+        "answerTranslation": "Хорошо, пойдём вместе.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，我们一起去公园好吗？",
+        "pinyin": "Qǐngwèn, wǒmen yìqǐ qù gōngyuán hǎo ma?",
+        "translation": "Извините, давай вместе пойдём в парк?",
+        "answer": "好，我们一起去吧。",
+        "answerPinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+        "answerTranslation": "Хорошо, пойдём вместе.",
+        "fictionalScene": true
+      },
+      {
+        "input": "你愿意跟我一起去公园吗？",
+        "pinyin": "Nǐ yuànyì gēn wǒ yìqǐ qù gōngyuán ma?",
+        "translation": "Хочешь пойти со мной в парк?",
+        "answer": "好，我们一起去吧。",
+        "answerPinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+        "answerTranslation": "Хорошо, пойдём вместе.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，你愿意跟我一起去公园吗？",
+        "pinyin": "Qǐngwèn, nǐ yuànyì gēn wǒ yìqǐ qù gōngyuán ma?",
+        "translation": "Извините, хочешь пойти со мной в парк?",
+        "answer": "好，我们一起去吧。",
+        "answerPinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+        "answerTranslation": "Хорошо, пойдём вместе.",
+        "fictionalScene": true
+      },
+      {
+        "input": "你想不想一起去公园？",
+        "pinyin": "Nǐ xiǎng bu xiǎng yìqǐ qù gōngyuán?",
+        "translation": "Хочешь вместе пойти в парк?",
+        "answer": "好，我们一起去吧。",
+        "answerPinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+        "answerTranslation": "Хорошо, пойдём вместе.",
+        "fictionalScene": true
+      },
+      {
+        "input": "请问，你想不想一起去公园？",
+        "pinyin": "Qǐngwèn, nǐ xiǎng bu xiǎng yìqǐ qù gōngyuán?",
+        "translation": "Извините, хочешь вместе пойти в парк?",
+        "answer": "好，我们一起去吧。",
+        "answerPinyin": "Hǎo, wǒmen yìqǐ qù ba.",
+        "answerTranslation": "Хорошо, пойдём вместе.",
+        "fictionalScene": true
+      }
+    ],
+    "travel": [
+      {
+        "input": "你喜欢旅游吗？",
+        "pinyin": "Nǐ xǐhuan lǚyóu ma?",
+        "translation": "Ты любишь путешествовать?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "请问，你喜欢旅游吗？",
+        "pinyin": "Qǐngwèn, nǐ xǐhuan lǚyóu ma?",
+        "translation": "Извините, ты любишь путешествовать?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "你喜不喜欢旅行？",
+        "pinyin": "Nǐ xǐ bu xǐhuan lǚxíng?",
+        "translation": "Ты любишь путешествовать?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "请问，你喜不喜欢旅行？",
+        "pinyin": "Qǐngwèn, nǐ xǐ bu xǐhuan lǚxíng?",
+        "translation": "Извините, ты любишь путешествовать?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "你经常旅行吗？",
+        "pinyin": "Nǐ jīngcháng lǚxíng ma?",
+        "translation": "Ты часто путешествуешь?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "请问，你经常旅行吗？",
+        "pinyin": "Qǐngwèn, nǐ jīngcháng lǚxíng ma?",
+        "translation": "Извините, ты часто путешествуешь?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "你以前去过北京吗？",
+        "pinyin": "Nǐ yǐqián qùguo Běijīng ma?",
+        "translation": "Ты раньше бывал в Пекине?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "请问，你以前去过北京吗？",
+        "pinyin": "Qǐngwèn, nǐ yǐqián qùguo Běijīng ma?",
+        "translation": "Извините, ты раньше бывал в Пекине?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "你去过上海没有？",
+        "pinyin": "Nǐ qùguo Shànghǎi méiyǒu?",
+        "translation": "Ты бывал в Шанхае?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "请问，你去过上海没有？",
+        "pinyin": "Qǐngwèn, nǐ qùguo Shànghǎi méiyǒu?",
+        "translation": "Извините, ты бывал в Шанхае?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "你有没有去过中国？",
+        "pinyin": "Nǐ yǒu méiyǒu qùguo Zhōngguó?",
+        "translation": "Ты бывал в Китае?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "请问，你有没有去过中国？",
+        "pinyin": "Qǐngwèn, nǐ yǒu méiyǒu qùguo Zhōngguó?",
+        "translation": "Извините, ты бывал в Китае?",
+        "answer": "我是虚拟熊猫，没有实际的旅行经历。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, méiyǒu shíjì de lǚxíng jīnglì.",
+        "answerTranslation": "Я виртуальная панда, у меня нет реального опыта путешествий."
+      },
+      {
+        "input": "你打算什么时候去北京？",
+        "pinyin": "Nǐ dǎsuàn shénme shíhou qù Běijīng?",
+        "translation": "Когда ты собираешься поехать в Пекин?",
+        "answer": "我还没有计划。",
+        "answerPinyin": "Wǒ hái méiyǒu jìhuà.",
+        "answerTranslation": "У меня пока нет планов."
+      },
+      {
+        "input": "请问，你打算什么时候去北京？",
+        "pinyin": "Qǐngwèn, nǐ dǎsuàn shénme shíhou qù Běijīng?",
+        "translation": "Извините, когда ты собираешься поехать в Пекин?",
+        "answer": "我还没有计划。",
+        "answerPinyin": "Wǒ hái méiyǒu jìhuà.",
+        "answerTranslation": "У меня пока нет планов."
+      },
+      {
+        "input": "你准备什么时候去北京？",
+        "pinyin": "Nǐ zhǔnbèi shénme shíhou qù Běijīng?",
+        "translation": "Когда ты планируешь поехать в Пекин?",
+        "answer": "我还没有计划。",
+        "answerPinyin": "Wǒ hái méiyǒu jìhuà.",
+        "answerTranslation": "У меня пока нет планов."
+      },
+      {
+        "input": "请问，你准备什么时候去北京？",
+        "pinyin": "Qǐngwèn, nǐ zhǔnbèi shénme shíhou qù Běijīng?",
+        "translation": "Извините, когда ты планируешь поехать в Пекин?",
+        "answer": "我还没有计划。",
+        "answerPinyin": "Wǒ hái méiyǒu jìhuà.",
+        "answerTranslation": "У меня пока нет планов."
+      },
+      {
+        "input": "你最近有什么旅行计划？",
+        "pinyin": "Nǐ zuìjìn yǒu shénme lǚxíng jìhuà?",
+        "translation": "Какие у тебя планы на путешествия в ближайшее время?",
+        "answer": "我还没有计划。",
+        "answerPinyin": "Wǒ hái méiyǒu jìhuà.",
+        "answerTranslation": "У меня пока нет планов."
+      },
+      {
+        "input": "请问，你最近有什么旅行计划？",
+        "pinyin": "Qǐngwèn, nǐ zuìjìn yǒu shénme lǚxíng jìhuà?",
+        "translation": "Извините, какие у тебя планы на путешествия в ближайшее время?",
+        "answer": "我还没有计划。",
+        "answerPinyin": "Wǒ hái méiyǒu jìhuà.",
+        "answerTranslation": "У меня пока нет планов."
+      },
+      {
+        "input": "你要坐飞机吗？",
+        "pinyin": "Nǐ yào zuò fēijī ma?",
+        "translation": "Ты собираешься лететь на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "请问，你要坐飞机吗？",
+        "pinyin": "Qǐngwèn, nǐ yào zuò fēijī ma?",
+        "translation": "Извините, ты собираешься лететь на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "你打算坐飞机吗？",
+        "pinyin": "Nǐ dǎsuàn zuò fēijī ma?",
+        "translation": "Ты планируешь лететь на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "请问，你打算坐飞机吗？",
+        "pinyin": "Qǐngwèn, nǐ dǎsuàn zuò fēijī ma?",
+        "translation": "Извините, ты планируешь лететь на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "你以前坐过飞机吗？",
+        "pinyin": "Nǐ yǐqián zuòguo fēijī ma?",
+        "translation": "Ты раньше летал на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "请问，你以前坐过飞机吗？",
+        "pinyin": "Qǐngwèn, nǐ yǐqián zuòguo fēijī ma?",
+        "translation": "Извините, ты раньше летал на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "你坐没坐过飞机？",
+        "pinyin": "Nǐ zuò méi zuòguo fēijī?",
+        "translation": "Ты когда-нибудь летал на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      },
+      {
+        "input": "请问，你坐没坐过飞机？",
+        "pinyin": "Qǐngwèn, nǐ zuò méi zuòguo fēijī?",
+        "translation": "Извините, ты когда-нибудь летал на самолёте?",
+        "answer": "我是虚拟熊猫，不会真的坐飞机。",
+        "answerPinyin": "Wǒ shì xūnǐ xióngmāo, bú huì zhēn de zuò fēijī.",
+        "answerTranslation": "Я виртуальная панда и не летаю по-настоящему."
+      }
+    ]
+  },
+  "contextual": [
+    {
+      "input": "那公园呢？",
+      "previous": "银行在学校旁边。",
+      "answer": "公园在医院后面。"
+    },
+    {
+      "input": "怎么走？",
+      "previous": "银行在学校旁边。",
+      "answer": "银行在学校旁边。"
+    },
+    {
+      "input": "离这儿远吗？",
+      "previous": "银行在学校旁边。",
+      "answer": "我不知道你在哪儿。"
+    },
+    {
+      "input": "那你妈妈呢？",
+      "previous": "我是虚拟熊猫。你爸爸呢？",
+      "answer": "我是虚拟熊猫。你妈妈呢？"
+    },
+    {
+      "input": "那你爸爸呢？",
+      "previous": "我是虚拟熊猫。你妈妈呢？",
+      "answer": "我是虚拟熊猫。你爸爸呢？"
+    },
+    {
+      "input": "几点呢？",
+      "previous": "有空，我们见面吧。",
+      "answer": "星期六下午三点。"
+    },
+    {
+      "input": "什么时候呢？",
+      "previous": "有空，我们见面吧。",
+      "answer": "星期六下午三点。"
+    }
+  ],
+  "unknownDistance": [
+    {
+      "input": "银行离这儿远吗？",
+      "answer": "我不知道你在哪儿。"
+    },
+    {
+      "input": "银行离医院远吗？",
+      "answer": "我不知道。"
+    }
+  ],
+  "sourceFiles": [
+    "tests/panda-unified-city-meaning-v1.test.mjs",
+    "tests/panda-unified-family-meaning-v1.test.mjs",
+    "tests/panda-unified-work-study-meaning-v1.test.mjs",
+    "tests/panda-unified-routine-meaning-v1.test.mjs",
+    "tests/panda-unified-food-shop-meaning-v1.test.mjs",
+    "tests/panda-unified-wellbeing-meaning-v1.test.mjs",
+    "tests/panda-unified-social-travel-meaning-v1.test.mjs"
+  ]
+}

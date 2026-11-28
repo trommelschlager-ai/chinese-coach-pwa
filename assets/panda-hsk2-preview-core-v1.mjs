@@ -1,6 +1,6 @@
 import {saveGrammarReview,readDayReview,getReviewCardLine,dueDayReview,dayReviewStats,practiceDayReview,clearDayReview} from './panda-hsk2-day-understanding-v1.mjs?v=6';
 import {friendlyIntroduction,everydayMeaning} from './panda-everyday-meaning-v515.mjs?v=543';
-import {respondToNaturalStatement} from './panda-natural-statements-v552.mjs?v=563&rev=568';
+import {respondToNaturalStatement,respondToCourseCityQuestion,respondToCourseFamilyQuestion,respondToCourseWorkStudyQuestion,respondToCourseRoutineQuestion,respondToCourseFoodShopQuestion,respondToCourseWellbeing,respondToCourseSocialTravel} from './panda-natural-statements-v552.mjs?v=563&rev=568';
 import {clarificationLine} from './panda-clarification-map-v504.mjs?v=505';
 import {pickCoursePrompt,courseCoverage} from './panda-hsk1-questions-v281.mjs?v=409';
 // One conversation surface, existing character rig and exact existing audio only.
@@ -422,6 +422,12 @@ function submit(raw){
  // All other input follows the established engine below, including corrections.
  // ASR already asks confirmation below .65. A known transcript is not a tone score.
  if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.65)){
+  const priorCourseLine=state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null;
+  const city=respondToCourseCityQuestion(input,priorCourseLine)||respondToCourseFamilyQuestion(input,priorCourseLine)||respondToCourseWorkStudyQuestion(input)||respondToCourseRoutineQuestion(input)||respondToCourseFoodShopQuestion(input)||respondToCourseWellbeing(input)||respondToCourseSocialTravel(input,priorCourseLine);
+  if(city){
+   friendlyStage=null;state.naturalAwaiting=city.next??null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
+   learner(input,city.spoken);say(city.reply,!!lookupPandaVoiceClip(city.reply.hanzi));note(city.message);return;
+  }
   const planned=semanticPilot.plan(input,{mode:'free-chat',confidence:state.confidence});
   // A specific recorded course follow-up must not be replaced with a generic sequence prompt.
   const legacySequence=planned?.semantic?.intent==='express-linked-actions'&&planned.semantic.relation==='sequence'?

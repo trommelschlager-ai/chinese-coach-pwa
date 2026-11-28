@@ -4,6 +4,7 @@ on:
     paths:
       - 'assets/panda-unified-**'
       - 'assets/panda-hsk2-preview-core-v1.mjs'
+      - 'assets/panda-natural-statements-v552.mjs'
       - 'tests/panda-unified-**'
       - 'scripts/qa-panda-unified-experimental-v1.mjs'
       - '.github/workflows/panda-unified-experimental-v1.yml'
