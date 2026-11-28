@@ -66,9 +66,10 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    if(selected){setPrompt(selected);state.topic=lesson;return normalizeLine(selected)}
    return start(state.mode);
  }
- function answer(input,{mode=state.mode,fromSpeech=false}={}){
+ function answer(input,{mode=state.mode,fromSpeech=false,confidence=null}={}){
    const raw=String(input??'').trim(),s=clean(raw);
    if(!raw)return {kind:'empty',message:'Напиши или скажи фразу по-китайски.'};
+   if(fromSpeech&&Number.isFinite(confidence)&&confidence<.85)return {kind:'uncertain',message:'Речь распознана неуверенно. Проверь текст или повтори. Тоны не оценивались.',toneVerified:false};
    state.turn++;
    state.mode=mode==='short'?'short':'nonstop';
    if(practiceQuestions.size){
@@ -85,7 +86,7 @@ export function createStreetBrain({storage=(()=>{try{return globalThis.localStor
    // Preserve the established Street greeting and reviewed correction behavior.
    // Unified responses are limited to reviewed metadata and the common allowlist.
    if(unified&&state.mode==='nonstop'){
-     const planned=semantic.plan(raw,{mode:'free-chat',allowMemoryWrite:!fromSpeech});
+     const planned=semantic.plan(raw,{mode:'free-chat',confidence:fromSpeech&&Number.isFinite(confidence)?confidence:null,allowMemoryWrite:!fromSpeech});
      if(planned?.spoken){
        const p=normalizeLine(planned.line);
        state.pending=null;state.prompt=null;

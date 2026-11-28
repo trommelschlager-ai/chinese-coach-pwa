@@ -453,15 +453,20 @@ function streetRecall(brain,retry=null){
  el('street-recall-input').focus();
 }
 
-async function respond(text,{fromSpeech=false}={}){
+async function respond(text,{fromSpeech=false,confidence=null}={}){
  const zh=String(text||'').trim();
  if(!zh){tip('Введи или произнеси фразу по-китайски');return}
  const token=++responseSeq;
+ if(fromSpeech&&Number.isFinite(confidence)&&confidence<.85){
+  if(!el('entry'))composition();
+  const entry=el('entry');if(entry)entry.value=zh;
+  tip('Речь распознана неуверенно. Проверь текст и нажми Отправить или повтори. Тоны не оценивались.');return;
+ }
  const brain=await streetBrainPromise;
  if(token!==responseSeq)return;
  if(!brain){tip('Диалог временно не готов. Обнови страницу.');return}
  let result;
- try{result=brain.answer(zh,{mode,fromSpeech})}
+ try{result=brain.answer(zh,{mode,fromSpeech,confidence})}
  catch(error){
   console.error('Street conversation error:',error);
   if(!streetOfflineMode){streetOfflineMode=true;stage.dataset.brainState='fallback';}
@@ -538,14 +543,14 @@ function startStreetRecognition(){
   rec.onstart=()=>{if(streetRecognition===rec){streetMicState(true);streetFaceRig?.setState('listening');tip('🎙 Слушаю китайскую речь…')}};
   rec.onresult=e=>{
    if(streetRecognition!==rec||handled)return;
-   let transcript='';
+   let transcript='',confidence=null;
    for(let i=e.resultIndex||0;i<e.results.length;i++){
-    if(e.results[i].isFinal){transcript=String(e.results[i][0]?.transcript||'').trim();break}
+    if(e.results[i].isFinal){const choice=e.results[i][0];transcript=String(choice?.transcript||'').trim();confidence=Number.isFinite(choice?.confidence)?choice.confidence:null;break}
    }
    if(!transcript)return;
    handled=true;stopStreetRecognition();
    const input=el('entry');if(input)input.value=transcript;
-   respond(transcript,{fromSpeech:true});
+   respond(transcript,{fromSpeech:true,confidence});
   };
   rec.onerror=e=>{
    if(streetRecognition!==rec)return;

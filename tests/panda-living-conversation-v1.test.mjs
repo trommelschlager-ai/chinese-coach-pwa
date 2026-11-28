@@ -137,3 +137,14 @@ test('emotional cue is based on understood semantic reaction, not pronunciation 
  assert.notEqual(answer(p,'我今天很开心',{confidence:.6})?.expression,'positive');
  assert.equal(answer(p,'我今天很开心',{mode:'graded'}),null);
 });
+
+test('adaptive daily replies accept natural negative forms, not malformed/prototype keys',()=>{
+ for(const raw of ['不是每天','不是每天都学','有时候学']){
+  const p=make();morningSend(p,'我们练习对话吧');morningSend(p,'喜欢');
+  assert.match(morningSend(p,raw).line.hanzi,/为什么/);
+ }
+ for(const raw of ['不每天','constructor','__proto__']){
+  const p=make();morningSend(p,'我们练习对话吧');morningSend(p,'喜欢');
+  assert.notEqual(answer(p,raw)?.kind,'living-adaptive');
+ }
+});

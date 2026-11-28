@@ -237,7 +237,7 @@ const adaptiveHelp={'我不懂':['Wǒ bù dǒng.','Я не понимаю.'],'�
 const adaptiveStop={'不想练习了':['Bù xiǎng liànxí le.','Больше не хочу тренироваться.'],'我不想练习了':['Wǒ bù xiǎng liànxí le.','Больше не хочу тренироваться.']};
 const adaptiveAnswers={
  enjoy:{'喜欢':['Xǐhuan.','Нравится.'],'我喜欢学中文':['Wǒ xǐhuan xué Zhōngwén.','Мне нравится учить китайский.'],'不喜欢':['Bù xǐhuan.','Не нравится.'],'我不喜欢学中文':['Wǒ bù xǐhuan xué Zhōngwén.','Мне не нравится учить китайский.']},
- daily:{'每天':['Měitiān.','Каждый день.'],'我每天学中文':['Wǒ měitiān xué Zhōngwén.','Я каждый день учу китайский.'],'不每天':['Bù měitiān.','Не каждый день.'],'我不是每天都学中文':['Wǒ bú shì měitiān dōu xué Zhōngwén.','Я учу китайский не каждый день.'],'不是':['Bú shì.','Нет.']},
+ daily:{'每天':['Měitiān.','Каждый день.'],'我每天学中文':['Wǒ měitiān xué Zhōngwén.','Я каждый день учу китайский.'],'不是每天':['Bú shì měitiān.','Не каждый день.'],'不是每天都学':['Bú shì měitiān dōu xué.','Учу не каждый день.'],'有时候学':['Yǒu shíhou xué.','Иногда учу.'],'我不是每天都学中文':['Wǒ bú shì měitiān dōu xué Zhōngwén.','Я учу китайский не каждый день.'],'不是':['Bú shì.','Нет.']},
  reason:{'因为我想去中国':['Yīnwèi wǒ xiǎng qù Zhōngguó.','Потому что я хочу поехать в Китай.'],'因为我喜欢中文':['Yīnwèi wǒ xǐhuan Zhōngwén.','Потому что мне нравится китайский.'],'因为工作需要':['Yīnwèi gōngzuò xūyào.','Потому что нужно для работы.'],'我想去中国':['Wǒ xiǎng qù Zhōngguó.','Я хочу поехать в Китай.']},
  practice:{'声调':['Shēngdiào.','Тоны.'],'发音':['Fāyīn.','Произношение.'],'语法':['Yǔfǎ.','Грамматику.'],'汉字':['Hànzì.','Иероглифы.'],'口语':['Kǒuyǔ.','Разговорную речь.']}
 };
@@ -254,7 +254,8 @@ function adaptiveTurn(raw,session,previous,lookupExact){
   const nextSlot=session.slot==='reason'?'practice':session.slot;
   return make(adaptiveQs[nextSlot],adaptiveHelp[key],nextSlot,'basic',{slot:nextSlot,score:0,helped:true,expected:livingClean(adaptiveQs[nextSlot][0])},true);
  }
- const row=adaptiveAnswers[session.slot]?.[key];
+ const choices=adaptiveAnswers[session.slot];
+ const row=choices&&Object.hasOwn(choices,key)?choices[key]:null;
  if(!row)return null;
  const score=session.score+1;
  let nextSlot=session.slot==='enjoy'?'daily':session.slot==='daily'?(score>=2&&!session.helped?'reason':'practice'):session.slot==='reason'?'practice':'end';
