@@ -57,6 +57,44 @@ function check(raw,i){
  }
  return {error:'Я не могу уверенно подтвердить этот ответ. Это не обязательно ошибка. Проверь текст или воспользуйся подсказкой.'};
 }
+
+// Personal story: only accepted learner statements, never Panda's sample story.
+// Reviewed metadata is optional; do not guess translations or replace the approved voice.
+const PERSONAL_STORY_KEY='pg-personal-story-my-day-v1';
+const PERSONAL_LINES={
+ '我早上吃早饭':['Wǒ zǎoshang chī zǎofàn.','Утром я завтракаю.'],
+ '我早上不吃早饭':['Wǒ zǎoshang bù chī zǎofàn.','Утром я не завтракаю.'],
+ '我今天没吃早饭':['Wǒ jīntiān méi chī zǎofàn.','Сегодня я не завтракал(а).'],
+ '我不上班':['Wǒ bú shàngbān.','Я не хожу на работу.'],
+ '我没有工作':['Wǒ méiyǒu gōngzuò.','У меня нет работы.'],
+ '我在家工作':['Wǒ zài jiā gōngzuò.','Я работаю дома.'],
+ '我是学生':['Wǒ shì xuésheng.','Я учусь.'],
+ '我起床以后刷牙':['Wǒ qǐchuáng yǐhòu shuāyá.','После подъёма я чищу зубы.'],
+ '我起床以后洗脸':['Wǒ qǐchuáng yǐhòu xǐliǎn.','После подъёма я умываюсь.'],
+ '我起床以后喝咖啡':['Wǒ qǐchuáng yǐhòu hē kāfēi.','После подъёма я пью кофе.'],
+ '我起床以后喝水':['Wǒ qǐchuáng yǐhòu hē shuǐ.','После подъёма я пью воду.'],
+ '我起床以后洗脸然后刷牙':['Wǒ qǐchuáng yǐhòu xǐliǎn, ránhòu shuāyá.','После подъёма я умываюсь, затем чищу зубы.'],
+ '我起床以后刷牙然后洗脸':['Wǒ qǐchuáng yǐhòu shuāyá, ránhòu xǐliǎn.','После подъёма я чищу зубы, затем умываюсь.']
+};
+function personalStoryLines(values){
+ return values.filter(x=>typeof x==='string'&&x.trim()).map(zh=>{
+  const key=norm(zh);
+  const own=Object.hasOwn(PERSONAL_LINES,key)?PERSONAL_LINES[key]:null;
+  if(own)return [zh,...own];
+  if(!/[，,；;]/u.test(zh)){
+   const reviewed=getDayCorrectionLine(zh);
+   if(reviewed[1])return [zh,reviewed[1],reviewed[2]];
+  }
+  return [zh,'','Перевод и пиньинь для этой фразы пока не проверены.'];
+ });
+}
+function readPersonalStory(storage){
+ try{
+  const a=JSON.parse(storage?.getItem(PERSONAL_STORY_KEY)||'[]');
+  return Array.isArray(a)&&a.length<=5&&a.every(x=>typeof x==='string'&&x.length<=260)?a:[];
+ }catch(_){return []}
+}
+
 function init(stage){
  if(stage.dataset.dayScenario)return;stage.dataset.dayScenario='ready';stage.dataset.dayPy='true';stage.dataset.dayRu='true';
  // Match Android browser/PWA status bar to the approved day/night scene.
@@ -102,6 +140,9 @@ function init(stage){
  const review=document.createElement('details');review.className='pg-day-chat-log';
  review.innerHTML='<summary id="day-review-label">📚 Мои ошибки</summary><label><input id="day-review-consent" type="checkbox"> Сохранять исправленные фразы в этом браузере</label><p>Не сохраняем голос и исходную переписку. Согласие выключается после перезагрузки.</p><p id="day-review-stats"></p><button id="day-review-start" type="button">Тренировать ошибки</button><form id="day-review-exercise" hidden><p id="day-review-prompt"></p><input id="day-review-answer" maxlength="100" aria-label="Переведи на китайский" placeholder="Ответ на китайском" autocomplete="off"><button type="submit">Проверить</button><p id="day-review-feedback" role="status"></p><button id="day-review-next" type="button" hidden>Следующая карточка</button><button id="day-review-close" type="button">Закончить тренировку</button></form><div id="day-review-cards"></div><p id="day-review-status" role="status"></p><button id="day-review-clear" type="button">Удалить мои карточки</button>';
  panel.append(review);
+ const personal=document.createElement('details');personal.className='pg-day-chat-log';personal.hidden=true;
+ personal.innerHTML='<summary>📖 Моя китайская история</summary><p id="day-personal-count"></p><p id="day-personal-zh" lang="zh-Hans"></p><p id="day-personal-py"></p><p id="day-personal-ru"></p><div><button id="day-personal-prev" type="button">←</button> <button id="day-personal-next" type="button">→</button> <button id="day-personal-audio" type="button">🔊 Слушать</button></div><p><button id="day-personal-save" type="button">Сохранить на устройстве</button> <button id="day-personal-delete" type="button">Удалить сохранённое</button></p><p id="day-personal-status" role="status"></p>';
+ panel.append(personal);
  stage.querySelector('.pg346-history').after(panel);stage.querySelector('.pg346-scene').after(controls);
  // Approved Street screen is a reference for control hierarchy only:
  // move existing interactive nodes; do not replace mascot/scenery or handlers.
@@ -166,6 +207,52 @@ function init(stage){
  let playbackRate=1; // Normal speed is the learner-approved default; slow and fast are opt-in.
  const status=s=>{$('day-status').textContent=s};
  const reviewStorage=(()=>{try{return localStorage}catch{return null}})();
+ let personalIndex=0,personalCurrent=[];
+ function renderPersonal(){
+  const stored=readPersonalStory(reviewStorage);
+  const current=phase==='results'&&personalCurrent.length>0;
+  const values=current?personalCurrent:stored;
+  const rows=personalStoryLines(values);
+  personal.hidden=!['ready','results'].includes(phase)||!rows.length;
+  if(personal.hidden){personal.open=false;return}
+  personalIndex=Math.max(0,Math.min(personalIndex,rows.length-1));
+  const row=rows[personalIndex];
+  $('day-personal-count').textContent='我的一天 · '+(personalIndex+1)+' / '+rows.length+' · '+(current?'Твой новый рассказ':'Сохранённый рассказ');
+  $('day-personal-zh').textContent=row[0];
+  $('day-personal-py').textContent=row[1]||'Пиньинь пока недоступен';
+  $('day-personal-ru').textContent=row[2];
+  $('day-personal-prev').disabled=personalIndex===0;
+  $('day-personal-next').disabled=personalIndex===rows.length-1;
+  $('day-personal-audio').disabled=!approvedClips(row[0]).length;
+  $('day-personal-audio').title=$('day-personal-audio').disabled?'Нет точной утверждённой MP3':'Прослушать запись';
+  $('day-personal-save').hidden=!current;
+  $('day-personal-delete').hidden=!stored.length;
+ }
+ $('day-personal-prev').onclick=()=>{personalIndex--;renderPersonal()};
+ $('day-personal-next').onclick=()=>{personalIndex++;renderPersonal()};
+ $('day-personal-audio').onclick=async()=>{
+  if(!['ready','results'].includes(phase))return;
+  const row=personalStoryLines(phase==='results'&&personalCurrent.length?personalCurrent:readPersonalStory(reviewStorage))[personalIndex];
+  if(!row||!approvedClips(row[0]).length)return;
+  stop();stopRecognition();const old=$('day-status').textContent,token=sequence;
+  await speak(row);if(token===sequence)status(old);
+ };
+ $('day-personal-save').onclick=()=>{
+  if(phase!=='results'||!personalCurrent.length)return;
+  try{
+   if(!reviewStorage)throw Error('storage');
+   if(readPersonalStory(reviewStorage).length&&!window.confirm('Заменить сохранённый рассказ «Мой день»?'))return;
+   reviewStorage.setItem(PERSONAL_STORY_KEY,JSON.stringify(personalCurrent));
+   $('day-personal-status').textContent='Рассказ сохранён только в этом браузере. Голос не сохранён.';
+  }catch(_){$('day-personal-status').textContent='Не удалось сохранить рассказ на устройстве.'}
+  renderPersonal();
+ };
+ $('day-personal-delete').onclick=()=>{
+  if(!window.confirm('Удалить сохранённый рассказ «Мой день» с этого устройства?'))return;
+  try{if(!reviewStorage)throw Error('storage');reviewStorage.removeItem(PERSONAL_STORY_KEY);$('day-personal-status').textContent='Сохранённый рассказ удалён.'}
+  catch(_){$('day-personal-status').textContent='Не удалось удалить рассказ.'}
+  renderPersonal();
+ };
  let activeReview=null,retryReview=null;
  const safeReviewPhase=()=>['ready','results'].includes(phase);
  function closeReview(){
@@ -311,7 +398,7 @@ function init(stage){
  function line(a){last=a;$('day-zh').textContent=a[0];$('day-py').textContent=a[1]||'';$('day-ru').textContent=a[2]||'';const repeat=$('day-hear');if(repeat){repeat.disabled=!approvedClips(a[0]).length;repeat.title=repeat.disabled?'Нет точной записи утверждённым голосом':'Повторить одобренную запись'};updateStoryPlayer()}
  function storyLines(){
   return phase==='story'||phase==='monologue'?STORY[round%2]:
-    phase==='summary'?answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']):[];
+    phase==='summary'?personalStoryLines(answers):[];
  }
  function updateStoryPlayer(){
   const lines=storyLines();
@@ -372,7 +459,7 @@ function init(stage){
   $('day-pause').textContent='Ⅱ';
   $('day-pause').setAttribute('aria-label','Пауза');
   $('day-pause').title='Пауза';
-  updateStoryPlayer();
+  updateStoryPlayer();renderPersonal();
  }
  function stop(){
   sequence++;clearTimeout(silence);silence=null;
@@ -556,7 +643,7 @@ function init(stage){
   status('✓ Сообщение отправлено. '+result.message);
  }
  async function finishQuestions(){
-   stop();const list=answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
+   stop();personalCurrent=answers.filter(Boolean);personalIndex=0;const list=personalStoryLines(answers);
    if(!list.length){monologue();return}
    stagePhase('summary');
    const intro=['这是你的一天。','Zhè shì nǐ de yì tiān.','Это твой день.'];
@@ -708,7 +795,7 @@ function init(stage){
   else if(mode==='story'||mode==='summary'){
     await delay(1000);
     if(token!==sequence)return;
-    const lines=mode==='story'?STORY[round%2]:answers.filter(Boolean).map(x=>[x,'','Из твоего ответа']);
+    const lines=mode==='story'?STORY[round%2]:personalStoryLines(answers);
     if(position+1<lines.length)playList(lines,mode,position+1);
     else if(mode==='story')ask(0);
     else monologue();
@@ -817,7 +904,7 @@ function init(stage){
    stop();const token=sequence;
    await speak(['我们再试一次。','Wǒmen zài shì yí cì.','Давай попробуем ещё раз.']);
    if(token!==sequence)return;
-   round++;answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;pendingCorrection=null;transcript.hidden=true;begin();
+   round++;personalCurrent=[];personalIndex=0;$('day-personal-status').textContent='';answers=Array(5).fill(null);notes=[];errors=[];spoken=[];i=0;pendingCorrection=null;transcript.hidden=true;begin();
  };
  $('day-show-py').onclick=()=>{stage.dataset.dayPy=String(stage.dataset.dayPy!=='true');$('day-show-py').setAttribute('aria-pressed',stage.dataset.dayPy)};
  $('day-show-ru').onclick=()=>{stage.dataset.dayRu=String(stage.dataset.dayRu!=='true');$('day-show-ru').setAttribute('aria-pressed',stage.dataset.dayRu)};

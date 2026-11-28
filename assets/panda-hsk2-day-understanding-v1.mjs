@@ -67,7 +67,8 @@ function timeAnswer(s,i){
   return correct('我'+reversed[1]+m.text+after+action,'Время ставится перед действием. Повтори исправленный вариант.');
  if(!after||after==='左右'||after==='前后'){
   if(!/^(?:我)?(?:(?:每天|平时|一般|通常|大概|差不多|早上|晚上|凌晨|上午|下午|有时候|今天|周末))*$/.test(before))return unknown();
-  return accept(i===0?'我每天'+m.text+'起床':'我晚上'+m.text+'睡觉');
+  const qualifier=before.replace(/^我/u,'');
+  return accept('我'+(qualifier||(i===0?'每天':'晚上'))+m.text+after+action);
  }
  if(!s.endsWith(action)&&!s.endsWith(i===0?'起来':'睡'))return clarify(i===0?'你几点起床？ — Назови время подъёма.':'你几点睡觉？ — Назови время сна.');
  if(m.index>s.indexOf(i===0?'起':'睡'))
