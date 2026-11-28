@@ -18,4 +18,4 @@ jobs:
         with:
           node-version: '22'
       - name: Run independent study, life, mirror and motion tests
-        run: node --test tests/panda-premium-study-v1.test.mjs tests/panda-life-premium-v1.test.mjs tests/panda-mirror-premium-v1.test.mjs tests/panda-premium-motion-v1.test.mjs
+        run: node --test tests/panda-premium-study-v1.test.mjs tests/panda-life-premium-v1.test.mjs tests/panda-mirror-premium-v1.test.mjs tests/panda-premium-motion-v1.test.mjs tests/panda-premium-integration-pilot.test.mjs

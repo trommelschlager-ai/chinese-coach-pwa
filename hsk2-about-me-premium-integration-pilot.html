@@ -2016,6 +2016,7 @@ function refreshPersonalBuilder(){
  holder.innerHTML=personalStory();
  const replacement=holder.firstElementChild;
  if(replacement)current.replaceWith(replacement);
+ window.PandaPremiumPilot?.render();
 }
 
 function personalStory() {

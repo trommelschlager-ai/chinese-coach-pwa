@@ -65,14 +65,14 @@ export function mountPilot({workspace,app,words,clips,normalize,getState,complet
   const stop=btn('■ Остановить',()=>{if(recording?.state==='recording')recording.stop();});stop.disabled=true;
   const start=btn('🎙 Записать',async()=>{
    if(!navigator.mediaDevices?.getUserMedia||!globalThis.MediaRecorder)throw Error('Запись не поддерживается.');
-   const current=++epoch;clearMedia();player?.pause();start.disabled=true;
-   let acquired;try{acquired=await navigator.mediaDevices.getUserMedia({audio:true});if(current!==epoch){acquired.getTracks().forEach(t=>t.stop());return;}stream=acquired;recording=new MediaRecorder(stream);}catch(e){acquired?.getTracks().forEach(t=>t.stop());start.disabled=false;throw e;}
+   const current=++epoch;clearMedia();player?.pause();start.disabled=true;listen.disabled=true;replay.disabled=true;graph.replaceChildren();
+   let acquired;try{acquired=await navigator.mediaDevices.getUserMedia({audio:true});if(current!==epoch){acquired.getTracks().forEach(t=>t.stop());return;}stream=acquired;recording=new MediaRecorder(stream);}catch(e){acquired?.getTracks().forEach(t=>t.stop());start.disabled=false;listen.disabled=false;throw e;}
    const rec=recording,parts=[];rec.ondataavailable=e=>{if(e.data.size)parts.push(e.data);};
-   rec.onstop=async()=>{acquired.getTracks().forEach(t=>t.stop());if(current!==epoch)return;recording=null;stream=null;start.disabled=false;stop.disabled=true;
+   rec.onstop=async()=>{acquired.getTracks().forEach(t=>t.stop());if(current!==epoch)return;recording=null;stream=null;start.disabled=false;listen.disabled=false;stop.disabled=true;
     const blob=new Blob(parts,{type:rec.mimeType});if(!blob.size){status('Запись пустая.');return;}
     if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(blob);
     replay.disabled=false;const AudioCtx=globalThis.AudioContext||globalThis.webkitAudioContext;if(!AudioCtx){status('Анализ аудио недоступен.');return;}
-    const ctx=new AudioCtx();try{const response=await fetch(src);if(!response.ok)throw Error('Образец недоступен');const [a,b]=await Promise.all([ctx.decodeAudioData(await response.arrayBuffer()),ctx.decodeAudioData(await blob.arrayBuffer())]);if(current!==epoch)return;const result=analyseMirrorBuffers(a,b,{singleSyllable:true});status(result.message);if(result.available){graph.replaceChildren();draw(result,graph);}}catch(e){status(e.message||'Анализ недоступен.');}finally{await ctx.close().catch(()=>{});}
+    const ctx=new AudioCtx();try{const response=await fetch(src);if(!response.ok)throw Error('Образец недоступен');const [a,b]=await Promise.all([ctx.decodeAudioData(await response.arrayBuffer()),ctx.decodeAudioData(await blob.arrayBuffer())]);if(current!==epoch)return;const result=analyseMirrorBuffers(a,b,{singleSyllable:true});status(result.message);graph.replaceChildren();if(result.available)draw(result,graph);}catch(e){status(e.message||'Анализ недоступен.');}finally{await ctx.close().catch(()=>{});}
    };
    rec.start();stop.disabled=false;setTimeout(()=>{if(rec.state==='recording')rec.stop();},3000);
   });
