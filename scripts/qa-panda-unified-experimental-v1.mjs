@@ -169,6 +169,19 @@ try{
    await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
    console.log('PASS morning summary from actual Panda AI entry');
   }
+  if(flag){
+   for(const [q,expected] of [['我们练习对话吧','你喜欢学中文吗？'],['喜欢','你每天学中文吗？'],['不是每天','你为什么想学中文？'],['太难了','你想练习什么？']]){
+    const x=await send(q);assert.equal(x.history.at(-1).hanzi,expected,q);assert.equal(x.history.at(-1).analysis.kind,'living-adaptive');
+   }
+   await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.expression==='supportive');
+   const end=await send('声调');assert.equal(end.history.at(-1).hanzi,'很好！今天先练到这里吧。');
+   const happy=await send('我今天很开心');assert.equal(happy.history.at(-1).analysis.expression,'positive');
+   await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.expression==='positive');
+   const sad=await send('我今天不开心');assert.equal(sad.history.at(-1).analysis.expression,'supportive');
+   await page.waitForFunction(()=>document.querySelector('.pg352-mascot')?.dataset.expression==='supportive');
+   await page.evaluate(()=>window.PandaApprovedBridge337.setMode('short'));await page.evaluate(()=>window.PandaApprovedBridge337.setMode('nonstop'));
+   console.log('PASS actual Panda AI adaptive route and semantic expression signals');
+  }
   const before=await page.evaluate(()=>JSON.stringify(window.PandaApprovedBridge337.snapshot().history));
   const unsure=await speak('我想学中文',.4);assert.equal(JSON.stringify(unsure.history),before);assert.equal(unsure.speechSignal.kind,'uncertain');
   console.log('PASS simulated ASR .72/.93, meaning explanation, low confidence confirmation',flag);
@@ -179,7 +192,8 @@ try{
  await menu.goto(base+'/hsk1-map.html');const ai=menu.locator('a[aria-label="Panda AI"]');await ai.click();await menu.waitForFunction(()=>document.documentElement.dataset.pandaSemanticPilot==='ready');await menu.locator('#pg346-nonstop').click();await menu.evaluate(()=>window.PandaApprovedBridge337.send('我打算坐飞机'));await menu.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().history.at(-1)?.hanzi==='祝你旅途愉快！');await menu.close();
  console.log('PASS ordinary course-menu Panda AI link activates reviewed free chat');
  const graded=await browser.newPage();await graded.goto(base+'/panda-voice-pilot.html?topic=1&semantic=1');await graded.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');assert.equal(await graded.locator('html').getAttribute('data-panda-semantic-pilot'),null);await graded.close();
- const street=await browser.newPage({viewport:{width:393,height:800},isMobile:true,hasTouch:true});
+ const streetContext=await browser.newContext({viewport:{width:393,height:800},isMobile:true,hasTouch:true});
+ const street=await streetContext.newPage();
  await street.addInitScript(()=>{window.__streetAudio=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){window.__streetAudio.push(this.src);return play.apply(this,args);};});
  await street.goto(base+'/panda-street-ai-preview.html');await street.waitForFunction(()=>document.querySelector('[data-brain-state="full"]'));
  await street.locator('#nonstop').click();
@@ -208,6 +222,24 @@ try{
   await street.waitForFunction(({q,expected})=>{const last=JSON.parse(sessionStorage.getItem('panda-street-v7-log')||'[]').at(-1);return last?.user===q&&last?.panda?.zh===expected&&!!last.userInfo?.py&&!!last.userInfo?.ru;},{q,expected});
  }
  console.log('PASS Street morning story from real entry');
+ async function sendStreet(q,expected){
+  await street.locator('#send').click();await street.locator('#entry').fill(q);await street.locator('#submit').click();
+  await street.waitForFunction(({q,expected})=>{const last=JSON.parse(sessionStorage.getItem('panda-street-v7-log')||'[]').at(-1);return last?.user===q&&last?.panda?.zh===expected;},{q,expected});
+ }
+ for(const [q,expected] of [['我们练习对话吧','你喜欢学中文吗？'],['喜欢','你每天学中文吗？'],['不是每天','你为什么想学中文？'],['太难了','你想练习什么？'],['声调','很好！今天先练到这里吧。']])await sendStreet(q,expected);
+ await street.evaluate(()=>localStorage.setItem('pg-panda-shared-profile-consent-v1','yes'));
+ await sendStreet('我喜欢跑步','我记住了。');
+ const nature=await street.context().newPage();
+ await nature.goto(base+'/panda-voice-pilot.html');await nature.waitForFunction(()=>document.documentElement.dataset.pandaSemanticPilot==='ready');
+ await nature.locator('#pg346-nonstop').click();
+ await nature.evaluate(()=>window.PandaApprovedBridge337.send('你还记得我的爱好吗'));
+ await nature.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().history.at(-1)?.hanzi==='记得，你喜欢跑步。');
+ await nature.evaluate(()=>window.PandaApprovedBridge337.send('我不喜欢跑步了'));
+ await nature.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().history.at(-1)?.hanzi==='明白了。');
+ await nature.close();
+ await sendStreet('你还记得我的爱好吗','我还不知道。');
+ await street.evaluate(()=>{localStorage.removeItem('pg-panda-shared-profile-v1');localStorage.removeItem('pg-panda-shared-profile-consent-v1')});
+ console.log('PASS adaptive dialogue and actual cross-page memory recall and correction');
  const newAudio=await street.evaluate(async()=>{
   const manifest=await fetch('./assets/panda-ai-voice-20261127/manifest.json').then(r=>r.json());
   const paths=[...manifest.clips.map(x=>x.src),'./assets/panda-street-voice-v20261125/54.mp3','./assets/panda-street-voice-v20261125/55.mp3'];
@@ -216,6 +248,6 @@ try{
  });
  assert.equal(newAudio.length,60);assert(newAudio.every(x=>Number.isFinite(x)&&x>0));
  console.log('PASS decoded every newly imported MP3 in Chromium');
- assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await street.close();
+ assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await streetContext.close();
  console.log('PASS Street shared semantic context and exact male-only playback; explicit rollback, short and graded preserved');
 }finally{await browser.close();}

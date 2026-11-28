@@ -4,11 +4,12 @@
 export function createPandaMouth(mascot, getAudioLevel = null) {
   const picture=mascot.querySelector('.pg346-panda');
   const canvas=mascot.querySelector('.pg353-face-canvas');
-  if(!picture||!canvas)return {setTalking(){},dispose(){}};
+  if(!picture||!canvas)return {setTalking(){},react(){},dispose(){}};
   const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   let ctx=null,source=null,target=null,raf=0,talking=false,alive=true,ready=false;
   let width=440,height=484,lastTime=0,lastMouth=1,lastBlink=1;
   let nextBlink=performance.now()+4600,blinkStart=-1,blinkCount=0;
+  let expression='neutral',reactionStart=0,reactionUntil=0;
   const mouth={cx:.651,cy:.407,inner:.019,outer:.065,radius:.092};
   // Exact original eye locations on the approved transparent panda artwork.
   const eyes=[
@@ -62,6 +63,13 @@ export function createPandaMouth(mascot, getAudioLevel = null) {
         else{blink=1-.88*Math.sin(Math.PI*elapsed/260);mascot.dataset.eyes='blinking'}
       }
     }else mascot.dataset.eyes='open';
+    if(!reduced?.matches&&expression!=='neutral'){
+      if(now>=reactionUntil){expression='neutral';mascot.dataset.expression='neutral';}
+      else{
+       const pulse=Math.sin(Math.PI*Math.max(0,Math.min(1,(now-reactionStart)/(reactionUntil-reactionStart))));
+       blink=Math.min(blink,1-(expression==='positive'?.22:.11)*pulse);
+      }
+    }
     let scale=1;
     if(talking){
       const sample=typeof getAudioLevel==='function'?Number(getAudioLevel()):NaN;
@@ -104,6 +112,11 @@ export function createPandaMouth(mascot, getAudioLevel = null) {
       talking=next;mascot.dataset.lips=next?'moving':'rest';
       if(ready){draw(next?.32:1,1);lastMouth=next?.32:1;lastBlink=1}
     },
-    dispose(){alive=false;cancelAnimationFrame(raf);mascot.dataset.lips='rest'}
+    react(value){
+      expression=['positive','supportive'].includes(value)&&!reduced?.matches?value:'neutral';
+      reactionStart=performance.now();reactionUntil=reactionStart+900;
+      mascot.dataset.expression=expression;
+    },
+    dispose(){alive=false;cancelAnimationFrame(raf);mascot.dataset.lips='rest';mascot.dataset.expression='neutral'}
   };
 }

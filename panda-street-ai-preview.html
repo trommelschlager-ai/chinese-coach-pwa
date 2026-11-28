@@ -288,7 +288,7 @@ const MALE_CUES=Object.freeze({
 let playing=null,voiceToken=0;
 const approvedMaleRegistryPromise=import('./assets/panda-street-approved-male-mp3-v1.mjs?v=1')
  .catch(error=>{console.error('Approved Street male registry:',error);return null});
-function playApprovedStreetMaleClip(clip,token){
+function playApprovedStreetMaleClip(clip,token,expression='neutral'){
  if(token!==voiceToken)return;
  // Only possible after a reviewed same-male entry is activated in the registry.
  const a=new Audio(clip.src);playing=a;a.preload='auto';a.playbackRate=1;streetFaceRig?.bindAudio?.(a);
@@ -296,7 +296,7 @@ function playApprovedStreetMaleClip(clip,token){
  const valid=()=>token===voiceToken&&playing===a;
  const reset=()=>{if(valid()){streetFaceRig?.setState('idle');playing=null}};
  a.addEventListener('playing',()=>{if(valid()){streetFaceRig?.setState('talking');requestAnimationFrame(animate)}});
- a.addEventListener('ended',reset);
+ a.addEventListener('ended',()=>{if(valid()){reset();if(expression!=='neutral')streetFaceRig?.acknowledge?.(expression)}});
  a.addEventListener('pause',()=>{if(valid())streetFaceRig?.setState('idle')});
  a.addEventListener('error',()=>{if(valid()){reset();tip('Мужская MP3 не загрузилась. Фраза остаётся текстом.')}});
  function animate(){
@@ -350,12 +350,12 @@ function speakLegacy(text){
  else a.addEventListener('loadedmetadata',ready,{once:true});
  return true;
 }
-function speak(text){
+function speak(text,expression='neutral'){
  if(playing){playing.pause();playing=null;streetFaceRig?.setState('idle')}
  const token=++voiceToken;
  const clip=globalThis.PandaStreetVoiceV20261125?.lookup(text,'male');
- if(!clip){streetFaceRig?.acknowledge?.();tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
- playApprovedStreetMaleClip(clip,token);return true;
+ if(!clip){streetFaceRig?.acknowledge?.(expression);tip('Фраза показана текстом · мужская запись для неё пока не загружена');return false}
+ playApprovedStreetMaleClip(clip,token,expression);return true;
 }
 function persist(){try{sessionStorage.setItem('panda-street-v7-log',JSON.stringify(history.slice(-100)))}catch(_e){}}
 function liveRow(id,item){
@@ -453,15 +453,20 @@ function streetRecall(brain,retry=null){
  el('street-recall-input').focus();
 }
 
-async function respond(text,{fromSpeech=false}={}){
+async function respond(text,{fromSpeech=false,confidence=null}={}){
  const zh=String(text||'').trim();
  if(!zh){tip('Введи или произнеси фразу по-китайски');return}
  const token=++responseSeq;
+ if(fromSpeech&&Number.isFinite(confidence)&&confidence<.85){
+  if(!el('entry'))composition();
+  const entry=el('entry');if(entry)entry.value=zh;
+  tip('Речь распознана неуверенно. Проверь текст и нажми Отправить или повтори. Тоны не оценивались.');return;
+ }
  const brain=await streetBrainPromise;
  if(token!==responseSeq)return;
  if(!brain){tip('Диалог временно не готов. Обнови страницу.');return}
  let result;
- try{result=brain.answer(zh,{mode,fromSpeech})}
+ try{result=brain.answer(zh,{mode,fromSpeech,confidence})}
  catch(error){
   console.error('Street conversation error:',error);
   if(!streetOfflineMode){streetOfflineMode=true;stage.dataset.brainState='fallback';}
@@ -483,7 +488,7 @@ async function respond(text,{fromSpeech=false}={}){
  const item={user:zh,userInfo:learner,panda,at:Date.now(),feedback:result.message||''};
  history.push(item);history=history.slice(-100);persist();
  liveRow('live-panda',panda);liveRow('live-learner',learner);
- closePopup();if(result.message)tip(result.message);speak(panda.zh);
+ closePopup();if(result.message)tip(result.message);speak(panda.zh,result.expression||'neutral');
  if(mode==='nonstop'&&result.nextQuestion){
    // Keep a conversational turn: acknowledge first, then let Panda ask the next reviewed question.
    setTimeout(()=>{
@@ -538,14 +543,14 @@ function startStreetRecognition(){
   rec.onstart=()=>{if(streetRecognition===rec){streetMicState(true);streetFaceRig?.setState('listening');tip('🎙 Слушаю китайскую речь…')}};
   rec.onresult=e=>{
    if(streetRecognition!==rec||handled)return;
-   let transcript='';
+   let transcript='',confidence=null;
    for(let i=e.resultIndex||0;i<e.results.length;i++){
-    if(e.results[i].isFinal){transcript=String(e.results[i][0]?.transcript||'').trim();break}
+    if(e.results[i].isFinal){const choice=e.results[i][0];transcript=String(choice?.transcript||'').trim();confidence=Number.isFinite(choice?.confidence)?choice.confidence:null;break}
    }
    if(!transcript)return;
    handled=true;stopStreetRecognition();
    const input=el('entry');if(input)input.value=transcript;
-   respond(transcript,{fromSpeech:true});
+   respond(transcript,{fromSpeech:true,confidence});
   };
   rec.onerror=e=>{
    if(streetRecognition!==rec)return;

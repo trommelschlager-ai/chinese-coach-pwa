@@ -49,8 +49,8 @@ try{for(const [width,height] of [[360,640],[393,873],[412,915]]){
     return play.call(this);
    };
   });
-  await page.locator('a.street-pink-link').click();
-  await page.waitForFunction(()=>document.querySelector('#stage').dataset.brainState==='full');
+  await Promise.all([page.waitForURL('**/panda-street-ai-preview.html?lesson=3'),page.locator('a.street-pink-link').click()]);
+   await page.locator('#stage[data-brain-state="full"]').waitFor();
   await page.locator('#nonstop').click();
   await page.waitForFunction(()=>window.played.some(url=>url.endsWith('/lesson3-20261127/18.mp3')));
   await page.locator('#entry').fill('不太忙，你呢？');

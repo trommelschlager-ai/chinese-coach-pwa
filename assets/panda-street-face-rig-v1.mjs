@@ -37,7 +37,7 @@ export function createStreetFaceRig({stage,source}={}){
  const caf=id=>globalThis.cancelAnimationFrame?.(id);
  let layout={width:0,height:0,scale:1,left:0,cutSky:0};
  let state='idle',level=0,blinkUntil=0,blinkTimer=null;
- let reactStart=0,reactUntil=0,reactFrame=0,destroyed=false;
+ let reactStart=0,reactUntil=0,reactFrame=0,destroyed=false,expression='neutral';
  function showState(value){canvas.setAttribute('data-motion-state',value)}
  function clear(){
   if(!ctx)return;
@@ -59,7 +59,7 @@ export function createStreetFaceRig({stage,source}={}){
   if(blink||reacting){
    const intensity=blink?Math.sin(clamp((blinkUntil-at)/250)*Math.PI):
     Math.sin(phase*Math.PI);
-   const alpha=(reacting?0.42:0.32)*Math.max(0,intensity);
+   const alpha=(reacting?(expression==='supportive'?0.15:expression==='positive'?0.42:0.32):0.32)*Math.max(0,intensity);
    // A tiny reflective glint at the real sunglass positions; no eye redraw.
    ctx.fillStyle='rgba(244,230,205,'+alpha.toFixed(3)+')';
    for(const lens of LENSES){
@@ -69,7 +69,7 @@ export function createStreetFaceRig({stage,source}={}){
    }
   }
   const openness=state==='talking'?streetMouthOpenness(level,at):
-   reacting?0.52*Math.pow(Math.sin(phase*Math.PI*2),2):0;
+   reacting&&expression==='neutral'?0.52*Math.pow(Math.sin(phase*Math.PI*2),2):0;
   if(openness<=0.025)return;
   // A clearly visible, limited lip aperture at the ACTUAL mouth position.
   // Feather the dark interior into the original fur instead of deforming it.
@@ -121,7 +121,7 @@ export function createStreetFaceRig({stage,source}={}){
   if(destroyed)return;
   state=['idle','listening','talking'].includes(next)?next:'idle';
   if(state!=='talking')level=0;
-  if(state==='talking'&&reactFrame){caf(reactFrame);reactFrame=0;reactUntil=0}
+  if(state!=='idle'&&reactFrame){caf(reactFrame);reactFrame=0;reactUntil=0;expression='neutral';canvas.setAttribute('data-expression','neutral')}
   showState(state);
   render();
  }
@@ -134,13 +134,14 @@ export function createStreetFaceRig({stage,source}={}){
   if(destroyed||state==='talking')return;
   const at=now();
   if(at>=reactUntil){
-   reactUntil=0;showState(state);render(at);return;
+   reactUntil=0;expression='neutral';canvas.setAttribute('data-expression','neutral');showState(state);render(at);return;
   }
   render(at);
   reactFrame=raf(reactionTick);
  }
- function acknowledge(){
-  if(destroyed||state==='talking'||reduced())return;
+ function acknowledge(value='neutral'){
+  if(destroyed||state!=='idle'||reduced())return;
+  expression=['positive','supportive'].includes(value)?value:'neutral';canvas.setAttribute('data-expression',expression);
   if(reactFrame){caf(reactFrame);reactFrame=0}
   reactStart=now();reactUntil=reactStart+950;
   showState('reaction');
