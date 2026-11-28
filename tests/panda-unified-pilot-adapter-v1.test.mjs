@@ -394,3 +394,34 @@ test('reviewed conversation controls use exact audio, translations and context',
  }
  for(const q of ['他没听清','我没听清音乐','这句话','你决定了','我们聊工作了'])assert.equal(make().plan(q,{mode:'free-chat'}),null,q);
 });
+
+test('shopping dialog uses reviewed exact Panda AI audio and Street text fallback without borrowing female voice',()=>{
+ const expected=['你想买什么？','你喜欢什么颜色？','你想买几件？','你接下来想做什么？'];
+ for(const street of [false,true]){
+  const make=()=>createSemanticPilot({enabled:true,lookupExact:street?()=>null:lookupApprovedPandaVoice,metadata:pilotLearnerMetadata,allowTextOnly:street});
+  for(const item of ['衣服','衬衫','毛衣','外套','T恤'])
+  for(const color of ['红色','蓝色','黑色','白色','绿色','黄色','紫色','粉色','灰色'])
+  for(const count of ['一件','两件','三件']){
+   const p=make();
+   for(const [i,raw] of ['聊聊购物吧','我想买'+item,'我喜欢'+color,'我要'+count].entries()){
+    const x=p.plan(raw,{mode:'free-chat'});
+    assert.equal(x?.line.hanzi,expected[i],raw);
+    assert.equal(x.voiceStatus,street?'text-only':'registered-exact');
+    if(street)assert.equal(x.audio,null);
+    else assert(readFileSync(x.audio.src).length>0,raw);
+    assert.equal(x.toneVerified,false);
+    assert(x.spoken?.translation,raw);
+    p.observePanda(x.line,{continuesLearnerTurn:x.continuesLearnerTurn});
+   }
+  }
+  for(const raw of ['我想看看','我不想买']){
+   const p=make(),x=p.plan('聊聊买衣服吧',{mode:'free-chat'});
+   p.observePanda(x.line,{continuesLearnerTurn:true});
+   assert.equal(p.plan(raw,{mode:'free-chat'})?.line.hanzi,'你接下来想做什么？',raw);
+  }
+  for(const raw of ['两件','红色','我喜欢黑色','多少钱？']){
+   const x=make().plan(raw,{mode:'free-chat'});
+   assert.notEqual(x?.semantic?.topic,'shopping',raw);
+  }
+ }
+});
