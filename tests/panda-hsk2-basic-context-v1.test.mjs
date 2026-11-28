@@ -94,7 +94,7 @@ test('A day-off answer can lead to a real second and third movie-related turn',(
   assert.equal(movie.line.hanzi,'你想看什么电影？');
   assert.equal(movie.line.pinyin,'Nǐ xiǎng kàn shénme diànyǐng?');
   assert.equal(movie.context.awaiting,'movie-choice');
-  assert.equal(lookupApprovedPandaVoice(movie.line.hanzi),null,'Do not pretend a newly drafted question has an approved Xiaoxiao MP3');
+  assert.equal(lookupApprovedPandaVoice(movie.line.hanzi)?.src,'./assets/panda-ai-voice-20261128/PA-20261128-034.mp3','Use the exact new owner-supplied recording');
 
   const genre=replyHSK2('我想看喜剧片。',101,0,false,movie.context);
   assert.equal(genre.kind,'social');

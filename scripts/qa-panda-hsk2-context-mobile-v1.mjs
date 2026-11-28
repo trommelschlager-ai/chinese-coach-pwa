@@ -56,7 +56,12 @@ try{
   assert.equal(await movieRows.nth((await movieRows.count())-2).locator('.pg346-zh').textContent(),'我想看电影。');
   assert.equal(await movieRows.nth((await movieRows.count())-2).locator('.pg346-py').textContent(),'Wǒ xiǎng kàn diànyǐng.');
   assert((await movieRows.nth((await movieRows.count())-2).locator('.pg346-ru').textContent()).includes('Я хочу посмотреть фильм'));
-  assert.equal(await page.locator('#pg346-hear').isDisabled(),true,'Do not invent a voice for an unrecorded follow-up');
+  assert.equal(await page.locator('#pg346-hear').isDisabled(),false,'New exact movie follow-up MP3 must be available');
+  assert.equal(await movieRows.last().locator('.pg346-row-audio').isDisabled(),false);
+  const movieAudio=await page.evaluate(async()=>{const {lookupApprovedPandaVoice}=await import('./assets/panda-approved-voice-registry-v516.mjs?v=546');return lookupApprovedPandaVoice('你想看什么电影？')?.src});
+  assert.equal(movieAudio,'./assets/panda-ai-voice-20261128/PA-20261128-034.mp3');
+  await movieRows.last().locator('.pg346-row-audio').click();
+  await page.waitForFunction(()=>document.querySelector('#pg346')?.dataset.pose==='talking',null,{timeout:7000});
   await page.screenshot({path:'qa/panda-context-v1/panda-'+width+'-movie-followup.png',fullPage:false,animations:'disabled'});
 
   await page.locator('#pg346-send').click();
