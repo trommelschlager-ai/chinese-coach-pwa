@@ -28,10 +28,10 @@ const STREET_SHELL=[
  "./assets/panda-street-sakura-reference-v567.webp",
  "./assets/panda-street-approved-v582.css?v=588",
  "./assets/panda-street-approved-art-v582.js?v=588",
- "./assets/panda-street-hsk1-approved-v588.js?v=1",
+ "./assets/panda-street-hsk1-approved-v588.js?v=adult1",
 
  "./assets/panda-street-hsk1-standard-v2.css?v=3",
- "./assets/panda-street-hsk1-standard-v2.js?v=4",
+ "./assets/panda-street-hsk1-standard-v2.js?v=adult1",
  "./assets/panda-street-sakura-existing-hero.webp",
  "./panda-street-slang-lesson1-preview.html",
  "./panda-street-slang-lesson2-preview.html",
