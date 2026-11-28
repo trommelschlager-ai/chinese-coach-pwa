@@ -422,6 +422,13 @@ function submit(raw){
  // All other input follows the established engine below, including corrections.
  // ASR already asks confirmation below .65. A known transcript is not a tone score.
  if(semanticFreeChat()&&(state.confidence===null||state.confidence>=.65)){
+  const living=semanticPilot.planLiving(input,{mode:'free-chat',confidence:state.confidence});
+  if(living){
+   friendlyStage=null;state.naturalAwaiting=null;state.awaitQuestion=true;state.turns=(state.turns||0)+1;
+   learner(input,living.spoken);semanticContinues=false;
+   say(living.line,living.voiceStatus==='registered-exact',{semanticPilot:true,kind:living.kind,toneVerified:false});
+   note('Панда поняла смысл реплики. Тоны произношения не оценивались.');return;
+  }
   const priorCourseLine=state.history.at(-1)?.who==='panda'?state.history.at(-1).hanzi:null;
   const city=respondToCourseCityQuestion(input,priorCourseLine)||respondToCourseFamilyQuestion(input,priorCourseLine)||respondToCourseWorkStudyQuestion(input)||respondToCourseRoutineQuestion(input)||respondToCourseFoodShopQuestion(input)||respondToCourseWellbeing(input)||respondToCourseSocialTravel(input,priorCourseLine);
   if(city){
@@ -1027,7 +1034,7 @@ if(entry.kind==='hsk2'){
 // Load only on the explicit experimental URL, fail open to the established brain.
 if(semanticRequested){
  Promise.all([import('./panda-unified-pilot-adapter-v1.mjs'),import('./panda-unified-pilot-metadata-v1.mjs')]).then(([adapter,meta])=>{
-  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip,correctGrammar:correctPandaGrammarV2,metadata:meta.pilotLearnerMetadata});
+  semanticMetadata=meta.pilotLearnerMetadata;semanticPilot=adapter.createSemanticPilot({enabled:true,lookupExact:lookupPandaVoiceClip,correctGrammar:correctPandaGrammarV2,metadata:meta.pilotLearnerMetadata,livingConversation:true});
   if(semanticFreeChat()){const last=state.history.at(-1);if(last?.who==='panda')observeSemanticPanda(last);}
   document.documentElement.dataset.pandaSemanticPilot='ready';
  }).catch(()=>{semanticPilot=null;document.documentElement.dataset.pandaSemanticPilot='unavailable';});

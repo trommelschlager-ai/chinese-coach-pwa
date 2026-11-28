@@ -6,6 +6,7 @@ on:
       - 'assets/panda-hsk2-preview-core-v1.mjs'
       - 'assets/panda-natural-statements-v552.mjs'
       - 'tests/panda-unified-**'
+      - 'tests/panda-living-conversation-v1.test.mjs'
       - 'scripts/qa-panda-unified-experimental-v1.mjs'
       - '.github/workflows/panda-unified-experimental-v1.yml'
 permissions:
@@ -19,7 +20,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
-      - run: node --test tests/panda-unified-*.test.mjs
+      - run: node --test tests/panda-unified-*.test.mjs tests/panda-living-conversation-v1.test.mjs
       - run: node --test scripts/verify-panda-voice-20261127.mjs tests/panda-ai-xiaoxiao-voice-boundary-v1.test.mjs tests/offline-active-assets-v434.test.mjs
       - run: npm install --no-save --no-package-lock playwright@1.56.1
       - run: npx playwright install --with-deps chromium
