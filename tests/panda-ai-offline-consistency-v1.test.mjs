@@ -5,7 +5,7 @@ import fs from 'node:fs';
 const read=path=>fs.readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const pack=JSON.parse(read('assets/offline-pack.json'));
 const sw=read('sw.js');
-const VERSION='./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538';
+const VERSION='./assets/panda-hsk2-my-day-scenario-v1.mjs?v=589';
 
 test('Panda AI My Day uses the same current script in both entry pages and offline manifests',()=>{
  for(const page of ['panda-voice-pilot.html','panda-ai-hsk2-preview.html']){
@@ -28,7 +28,7 @@ test('shared review uses bounded install shell and complete optional download ma
  assert(new Set(installUrls).size<=200,'Install shell must stay bounded');
  const activeCore=read('panda-voice-pilot.html').match(/\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+(?:&rev=\d+)?/)?.[0];
  assert(activeCore,'Find currently active Panda AI core from real entrypoint');
- for(const url of ["./assets/panda-hsk2-day-understanding-v1.mjs?v=6","./assets/panda-hsk2-my-day-scenario-v1.mjs?v=538",activeCore]){
+ for(const url of ["./assets/panda-hsk2-day-understanding-v1.mjs?v=6","./assets/panda-hsk2-my-day-scenario-v1.mjs?v=589",activeCore]){
   assert(installUrls.includes(url),'Missing installed asset '+url);
   assert(pack.files.includes(url),'Missing offline manifest asset '+url);
  }
