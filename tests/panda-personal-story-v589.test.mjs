@@ -40,3 +40,30 @@ test('local story can be read; damaged or oversized storage is rejected',()=>{
  assert.deepEqual(readPersonalStory({getItem:()=>JSON.stringify(Array(6).fill('我不上班。'))}),[]);
  assert.deepEqual(readPersonalStory(null),[]);
 });
+
+test('supports three morning activities and retains their order',()=>{
+ const a=understandDayAnswer('起床以后洗澡然后跑步再喝茶',1);
+ assert.equal(a.kind,'accepted');
+ const [row]=personalStoryLines([a.value]);
+ assert.equal(row[0],'我起床以后洗澡然后跑步再喝茶。');
+ assert.match(row[1],/xǐzǎo ránhòu pǎobù zài hē chá/);
+ assert.match(row[2],/душ затем бегаю потом пью чай/);
+});
+test('retains frequency and negation instead of guessing',()=>{
+ for(const [input,expected] of [['我从来不吃早饭','никогда не завтракаю'],['我有时候吃早饭','иногда завтракаю'],['我很少吃早饭','редко завтракаю']]){
+  const a=understandDayAnswer(input,2);
+  assert.equal(a.kind,'accepted');
+  assert.match(personalStoryLines([a.value])[0][2],new RegExp(expected));
+ }
+});
+test('unsupported negative morning activity is not mistranslated',()=>{
+ const [row]=personalStoryLines(['我起床以后不跑步。']);
+ assert.equal(row[0],'我起床以后不跑步。');
+ assert.equal(row[1],'');
+});
+test('story window is scoped and only shown after results or on request',()=>{
+ assert(source.includes("document.createElement('dialog');personal.className='pg-personal-dialog'"));
+ assert(source.includes("personalOpen.hidden=!['ready','results'].includes(phase)||!rows.length"));
+ assert(source.includes("personal.showModal()"));
+ assert(source.includes("grid-template-columns:44px minmax(0,1fr) 44px"));
+});
