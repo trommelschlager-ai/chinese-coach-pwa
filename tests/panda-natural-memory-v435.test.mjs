@@ -121,7 +121,11 @@ test('v435 uses existing audio, offline module, and unchanged approved character
  assert(screen.includes('mergePandaFacts435(state.profile,spoken)'));
  assert(screen.includes('followup=refineFollowup435({'));
  assert(read('assets/panda-live-v346.mjs').includes('panda-character-clean-v349.webp'));
- assert(read('panda-voice-pilot.html').includes('panda-live-screen-v270.mjs?v=445'));
+ const html=read('panda-voice-pilot.html'),live=read('assets/panda-hsk2-preview-core-v1.mjs'),ui=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ assert.match(html,/src="\.\/assets\/panda-hsk2-preview-core-v1\.mjs\?v=\d+/);
+ assert(live.includes('mergePandaFacts435(state.profile,spoken)'));
+ assert(live.includes('followup=refineFollowup435({'));
+ assert(ui.includes('panda-character-clean-v349.webp'));
  const offline=JSON.parse(read('assets/offline-pack.json'));
  assert(offline.files.includes('./assets/panda-natural-memory-v435.mjs?v=435'));
 });

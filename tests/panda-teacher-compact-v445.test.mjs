@@ -74,16 +74,16 @@ test('teacher feedback is text-only, approved Panda image and MP3 remain untouch
 
 test('active Android entry loads new module versions and approved overlay styles',()=>{
  const html=read('panda-voice-pilot.html');
- assert(html.includes('panda-live-screen-v270.mjs?v=445'));
- assert(html.includes('panda-live-v346.mjs?v=445'));
- assert(html.includes('panda-chat-corrections-v377.css?v=445'));
+ const activePaths=['panda-hsk2-preview-core-v1.mjs','panda-hsk2-preview-ui-v1.mjs','panda-chat-corrections-v377.css'].map(name=>{
+  const match=html.match(new RegExp('(?:src|href)="(\\./assets/'+name.replace('.','\\.')+'\\?v=\\d+(?:&rev=\\d+)?)"'));
+  assert(match,'Missing current entry: '+name);
+  return match[1];
+ });
  const offline=JSON.parse(read('assets/offline-pack.json'));
  assert(offline.version>=445);
- for(const name of [
-  './assets/panda-live-screen-v270.mjs?v=445',
-  './assets/panda-live-v346.mjs?v=445',
-  './assets/panda-chat-corrections-v377.css?v=445'
- ])assert(offline.files.includes(name),'Missing cache reference: '+name);
+ for(const name of activePaths)assert(offline.files.includes(name),'Missing cache reference: '+name);
+ const liveUI=read('assets/panda-hsk2-preview-ui-v1.mjs');
+ for(const selector of ['pg445-brief','pg445-details','pg445-example-row','pg445-example-label'])assert(liveUI.includes(selector),'Current UI lost '+selector);
 });
 
 test('PWA installation cache is current and does not reintroduce old correction JS',()=>{
@@ -91,9 +91,15 @@ test('PWA installation cache is current and does not reintroduce old correction 
  const cacheNum=Number(sw.match(/const CACHE='chinese-coach-pwa-v(\d+)-/)?.[1]);
  assert.equal(cacheNum,pack.version);
  const core=JSON.parse(sw.match(/const CORE=(\[[^\n]+\])/)[1]);
- for(const name of ['./assets/panda-live-screen-v270.mjs?v=445',
-  './assets/panda-live-v346.mjs?v=445'])
-  assert(core.includes(name));
- assert.equal(core.filter(x=>x.startsWith('./assets/panda-live-screen-v270.mjs?v=')).length,1);
+ const html=read('panda-voice-pilot.html');
+ const activePaths=['panda-hsk2-preview-core-v1.mjs','panda-hsk2-preview-ui-v1.mjs','panda-chat-corrections-v377.css'].map(name=>{
+  const match=html.match(new RegExp('(?:src|href)="(\\./assets/'+name.replace('.','\\.')+'\\?v=\\d+(?:&rev=\\d+)?)"'));
+  assert(match,'Missing current entry: '+name);
+  return match[1];
+ });
+ const install=JSON.parse(sw.match(/const INSTALL_SHELL=(\[[\s\S]*?\]);/)[1].replace(/,\s*\]/,']'));
+ for(const name of activePaths){assert(core.includes(name),name);assert(install.includes(name),name);assert(pack.files.includes(name),name);}
+ assert.equal(install.filter(x=>x.startsWith('./assets/panda-hsk2-preview-core-v1.mjs?v=')).length,1);
+ assert.equal(install.filter(x=>x.startsWith('./assets/panda-hsk2-preview-ui-v1.mjs?v=')).length,1);
  assert.equal(new Set(core).size,core.length);
 });
