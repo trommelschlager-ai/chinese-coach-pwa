@@ -40,11 +40,11 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
    if(!fact('daily-sleep'))return sleep();
    if(!fact('study-reason'))return study();
    if(!fact('work-busy'))return busy();
-   if(!fact('work-time'))return workTime();
+   if(fact('work-busy')?.value!=='off'&&!fact('work-time'))return workTime();
    return next();
   }
   if(semantic.value==='daily')return !fact('daily-breakfast')?breakfast():!fact('daily-sleep')?sleep():next();
-  if(semantic.value==='work')return !fact('work-busy')?busy():!fact('work-time')?workTime():next();
+  if(semantic.value==='work')return !fact('work-busy')?busy():fact('work-busy')?.value!=='off'&&!fact('work-time')?workTime():next();
   if(semantic.value==='study')return !fact('study-reason')?study():next();
   if(semantic.value==='hobby'){
    const m=prior?.hobbyMemory;
@@ -64,7 +64,7 @@ function chooseSemanticReply(semantic,prior,referencePlanner){
   if(semantic.slot==='family-size')return semantic.value==='skip'?change():next();
   if(semantic.slot==='daily-breakfast')return fact('daily-sleep')?next():sleep();
   if(semantic.slot==='daily-sleep')return next();
-  if(semantic.slot==='work-busy')return fact('work-time')?next():workTime();
+  if(semantic.slot==='work-busy')return semantic.value==='off'||fact('work-time')?next():workTime();
   if(semantic.slot==='work-time')return next();
   if(semantic.slot==='study-reason'&&semantic.value!=='china-trip')return next();
   if(semantic.slot==='hobby')return line('你经常做这件事吗？','Nǐ jīngcháng zuò zhè jiàn shì ma?','Ты часто этим занимаешься?','follow-up',true);
