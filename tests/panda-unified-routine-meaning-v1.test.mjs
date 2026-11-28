@@ -178,3 +178,15 @@ test('reviewed routine paraphrases reuse exact virtual-character voice answers',
 test('learner facts, incomplete phrases and canonical questions retain their existing handling',()=>{
  for(const q of ['我每天七点起床。','我今天没吃早饭。','我想睡觉。','我需要休息。','几点','早饭','你几点起床？','你几点睡觉？','你明天几点起床？','你妈妈几点起床？'])assert.equal(respondToCourseRoutineQuestion(q),null,q);
 });
+
+test('Simple sleep questions are understood and use exact existing audio',()=>{
+ for(const [q,reply] of [["你睡觉吗","我没有固定的睡觉时间。你呢？"],["你现在睡觉吗","我在和你聊天。"],["你睡觉了吗","我在和你聊天。"],["你睡了没有","我在和你聊天。"]]){
+  const x=respondToCourseRoutineQuestion(q+'？');assert.equal(x?.reply.hanzi,reply);assert.equal(x.spoken.toneVerified,false);assert(lookupApprovedPandaVoice(reply)?.src);
+ }
+});
+test('A bare date after a travel-time question advances the topic rather than giving a generic continuation',()=>{
+ for(const q of ['今天','明天','后天','下周','下个月','周末']){
+  const x=respondToNaturalStatement(q,{previousPanda:'你打算什么时候去？'});assert.equal(x?.reply.hanzi,'你打算怎么去？',q);assert(lookupApprovedPandaVoice(x.reply.hanzi)?.src);
+ }
+ assert.equal(respondToNaturalStatement('今天',{previousPanda:'你好！'}),null);
+});
