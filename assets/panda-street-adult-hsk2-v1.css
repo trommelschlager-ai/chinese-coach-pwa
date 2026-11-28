@@ -47,3 +47,21 @@ body[data-street-lesson] #app .street-adult-actions :is(button,a){display:flex;a
 body[data-street-lesson] #app .street-adult-actions .street-adult-start{grid-column:1/-1;min-height:52px;font-size:17px}
 @media(max-height:700px){body[data-street-lesson] #app .street-adult-cover{gap:7px}body[data-street-lesson] #app .street-adult-hero{height:clamp(100px,21dvh,155px)}body[data-street-lesson] #app .street-adult-actions{gap:5px}}
 @media(prefers-reduced-motion:reduce){body[data-street-lesson] #app :is(button,a){transition:none!important}}
+
+/* Contrastive tones: full four-card grid, no decorative clutter. */
+body[data-street-lesson] #app .street-tone-intro{font-size:15px;line-height:1.35;color:var(--st-muted);text-align:center;flex:none;margin:3px 0}
+body[data-street-lesson] #app .street-tone-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;flex:none;width:100%}
+body[data-street-lesson] #app .street-tone-card{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 7px;background:#fffdf8;border:1px solid var(--st-border);border-radius:14px;min-width:0;text-align:center;color:var(--st-ink)}
+body[data-street-lesson] #app .street-tone-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:3px}
+body[data-street-lesson] #app .street-tone-index{font-size:13px;font-weight:750;color:var(--st-muted)}
+body[data-street-lesson] #app .street-tone-play{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid #104d3f;background:var(--st-jade);color:white;font-size:17px;flex:none;padding:0}
+body[data-street-lesson] #app .street-tone-play:disabled{background:#e5e9e1;color:#58675e;border-color:#c9d0c4;opacity:1}
+body[data-street-lesson] #app .street-tone-hanzi{font-size:clamp(34px,10vw,48px);line-height:1.1}
+body[data-street-lesson] #app .street-tone-pinyin{font-size:clamp(21px,6vw,27px);font-weight:750;color:#946220}
+body[data-street-lesson] #app .street-tone-meaning{font-size:15px;line-height:1.2}
+body[data-street-lesson] #app .street-tone-card svg{display:block;width:100%;height:43px;max-width:145px}
+body[data-street-lesson] #app .street-tone-label{font-size:12px;line-height:1.2;color:var(--st-muted)}
+body[data-street-lesson] #app .street-tone-pending{font-size:11px;color:#765a31}
+body[data-street-lesson] #app .street-tone-foot{flex:none;font-size:13px;line-height:1.35;color:var(--st-muted);margin:4px 0;padding:7px;text-align:left;background:#f2ecdc;border-radius:9px}
+body[data-street-lesson] #app .street-tone-extra{flex:none;margin-top:8px}
+@media(max-height:700px){body[data-street-lesson] #app .street-tone-grid{gap:5px}body[data-street-lesson] #app .street-tone-card{padding:5px;gap:1px}body[data-street-lesson] #app .street-tone-hanzi{font-size:32px}body[data-street-lesson] #app .street-tone-card svg{height:34px}}
