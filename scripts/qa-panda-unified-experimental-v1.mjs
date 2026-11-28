@@ -192,7 +192,8 @@ try{
  await menu.goto(base+'/hsk1-map.html');const ai=menu.locator('a[aria-label="Panda AI"]');await ai.click();await menu.waitForFunction(()=>document.documentElement.dataset.pandaSemanticPilot==='ready');await menu.locator('#pg346-nonstop').click();await menu.evaluate(()=>window.PandaApprovedBridge337.send('我打算坐飞机'));await menu.waitForFunction(()=>window.PandaApprovedBridge337.snapshot().history.at(-1)?.hanzi==='祝你旅途愉快！');await menu.close();
  console.log('PASS ordinary course-menu Panda AI link activates reviewed free chat');
  const graded=await browser.newPage();await graded.goto(base+'/panda-voice-pilot.html?topic=1&semantic=1');await graded.waitForFunction(()=>document.documentElement.dataset.pandaUiReady==='true');assert.equal(await graded.locator('html').getAttribute('data-panda-semantic-pilot'),null);await graded.close();
- const street=await browser.newPage({viewport:{width:393,height:800},isMobile:true,hasTouch:true});
+ const streetContext=await browser.newContext({viewport:{width:393,height:800},isMobile:true,hasTouch:true});
+ const street=await streetContext.newPage();
  await street.addInitScript(()=>{window.__streetAudio=[];const play=HTMLMediaElement.prototype.play;HTMLMediaElement.prototype.play=function(...args){window.__streetAudio.push(this.src);return play.apply(this,args);};});
  await street.goto(base+'/panda-street-ai-preview.html');await street.waitForFunction(()=>document.querySelector('[data-brain-state="full"]'));
  await street.locator('#nonstop').click();
@@ -247,6 +248,6 @@ try{
  });
  assert.equal(newAudio.length,60);assert(newAudio.every(x=>Number.isFinite(x)&&x>0));
  console.log('PASS decoded every newly imported MP3 in Chromium');
- assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await street.close();
+ assert((await street.evaluate(()=>window.__streetAudio)).every(s=>s.includes('/panda-street-voice-v20261125/')),'Street must never request Panda AI female recordings');await streetContext.close();
  console.log('PASS Street shared semantic context and exact male-only playback; explicit rollback, short and graded preserved');
 }finally{await browser.close();}
