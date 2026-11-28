@@ -619,6 +619,10 @@ export function respondToCourseWorkStudyQuestion(raw){
 
 // v572: routine questions in free conversation, using existing recorded virtual-character replies.
 const routineAliases572=Object.freeze({
+ "你睡觉吗": ["Nǐ shuìjiào ma?","Ты спишь?",["我没有固定的睡觉时间。你呢？","Wǒ méiyǒu gùdìng de shuìjiào shíjiān. Nǐ ne?","У меня нет фиксированного времени сна. А у тебя?"]],
+ "你现在睡觉吗": ["Nǐ xiànzài shuìjiào ma?","Ты сейчас спишь?",["我在和你聊天。","Wǒ zài hé nǐ liáotiān.","Я разговариваю с тобой."]],
+ "你睡觉了吗": ["Nǐ shuìjiào le ma?","Ты уже лёг (легла) спать?",["我在和你聊天。","Wǒ zài hé nǐ liáotiān.","Я разговариваю с тобой."]],
+ "你睡了没有": ["Nǐ shuì le méiyǒu?","Ты уже лёг (легла) спать?",["我在和你聊天。","Wǒ zài hé nǐ liáotiān.","Я разговариваю с тобой."]],
  "你早上几点起床": [
   "Nǐ zǎoshang jǐ diǎn qǐchuáng?",
   "Во сколько ты встаёшь утром?",
@@ -1611,7 +1615,7 @@ function contextualFragments568(raw,previousPanda){
   return build(pinyin,translation.charAt(0).toUpperCase()+translation.slice(1)+'.',time?(trip?goodTrip:next):askTime,time?null:'travel-time');
  }
  // A bare date answers a when-to-go question only, never becomes a travel plan globally.
- if(prior==='你打算什么时候去'&&q&&Object.hasOwn(times,q))return build(times[q][0],times[q][1]+'.',next);
+ if(prior==='你打算什么时候去'&&q&&Object.hasOwn(times,q))return build(times[q][0],times[q][1]+'.',['你打算怎么去？','Nǐ dǎsuàn zěnme qù?','Как ты собираешься добраться?'],'travel-method');
  // Bare place only after a destination question. No assumption that a place name is a trip.
  if(/^你(?:想|打算|准备|要)?去(?:哪儿|哪里|哪个城市)$/u.test(prior)&&Object.hasOwn(locations,q)){
   const [py,ru]=locations[q];return build(py,ru,askTime,'travel-time');
